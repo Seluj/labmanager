@@ -51,6 +51,7 @@ import fr.utbm.ciad.labmanager.views.appviews.charts.ChartsView;
 import fr.utbm.ciad.labmanager.views.appviews.conferences.ConferencesListView;
 import fr.utbm.ciad.labmanager.views.appviews.culture.ScientificCultureActionsListView;
 import fr.utbm.ciad.labmanager.views.appviews.dashboard.DashboardView;
+import fr.utbm.ciad.labmanager.views.appviews.database.DatabaseCheckSimilarityView;
 import fr.utbm.ciad.labmanager.views.appviews.database.DatabaseInputOutputView;
 import fr.utbm.ciad.labmanager.views.appviews.exports.ReportExportView;
 import fr.utbm.ciad.labmanager.views.appviews.invitations.IncomingInvitationsListView;
@@ -200,6 +201,8 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver, UserI
 	private SideNavItem statisticSection;
 
 	private SideNavItem charts;
+
+	private SideNavItem databaseSimilarity;
 
 	/** Constructor.
 	 *
@@ -456,6 +459,9 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver, UserI
 			this.databaseSection = new SideNavItem(""); //$NON-NLS-1$
 			this.databaseInputOutput = new SideNavItem("", DatabaseInputOutputView.class, LineAwesomeIcon.DATABASE_SOLID.create()); //$NON-NLS-1$
 			this.databaseSection.addItem(this.databaseInputOutput);
+			this.databaseSimilarity = new SideNavItem("", DatabaseCheckSimilarityView.class, LineAwesomeIcon.ANGLE_DOUBLE_RIGHT_SOLID.create()); //$NON-NLS-1$
+			this.databaseSection.addItem(this.databaseSimilarity);
+
 			nav.addItem(this.databaseSection);
 		}
 	}
@@ -820,6 +826,10 @@ public class MainLayout extends AppLayout implements LocaleChangeObserver, UserI
 		if (this.databaseInputOutput != null) {
 			this.databaseInputOutput.setLabel(getTranslation("views.navitem.database_io")); //$NON-NLS-1$
 		}
+		if (this.databaseSimilarity != null) {
+			this.databaseSimilarity.setLabel(getTranslation("views.navitem.database_similarity")); //$NON-NLS-1$
+		}
+
 
 		if (this.documentationSection != null) {
 			this.documentationSection.setLabel(getTranslation("views.navitem.documentations")); //$NON-NLS-1$

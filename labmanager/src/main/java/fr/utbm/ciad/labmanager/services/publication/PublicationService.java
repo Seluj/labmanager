@@ -380,9 +380,7 @@ public class PublicationService extends AbstractPublicationService {
 	 *
 	 * @param identifier the identifier of the person.
 	 * @return the publications.
-	 * @deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	public List<Publication> getPublicationsByPersonId(long identifier) {
 		return this.publicationRepository.findAllByAuthorshipsPersonId(identifier);
 	}

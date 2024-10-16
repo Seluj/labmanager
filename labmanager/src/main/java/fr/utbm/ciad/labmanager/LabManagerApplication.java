@@ -27,6 +27,7 @@ import fr.utbm.ciad.labmanager.views.ViewConstants;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -42,6 +43,7 @@ import org.springframework.scheduling.annotation.Async;
  * @since 4.0
  */
 @SpringBootApplication
+@ComponentScan(basePackages = {"fr.utbm.ciad.labmanager", "fr.utbm.ciad.wprest"})
 @Async
 @Push
 @Theme(value = ViewConstants.DEFAULT_BACKEND_THEME)

@@ -42,9 +42,7 @@ public interface PublicationRepository extends JpaRepository<Publication, Long>,
 	 *
 	 * @param personId the identifier of the person.
 	 * @return the list of publications.
-	 * @deprecated no replacement
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	List<Publication> findAllByAuthorshipsPersonId(long personId);
 
 	/** Replies the list of publications for the person with the given webpage identifier.

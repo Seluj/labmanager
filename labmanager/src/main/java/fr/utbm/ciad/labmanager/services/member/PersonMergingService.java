@@ -42,6 +42,7 @@ import fr.utbm.ciad.labmanager.services.invitation.PersonInvitationService;
 import fr.utbm.ciad.labmanager.services.jury.JuryMembershipService;
 import fr.utbm.ciad.labmanager.services.supervision.SupervisionService;
 import fr.utbm.ciad.labmanager.utils.names.PersonNameComparator;
+import org.apache.commons.compress.harmony.archive.internal.nls.Messages;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -55,7 +56,7 @@ import org.springframework.stereotype.Service;
  * @mavenartifactid $ArtifactId$
  * @Deprecated no replacement.
  */
-@Deprecated(since = "4.0", forRemoval = true)
+@Deprecated(since = "4.0", forRemoval = false)
 @Service
 public class PersonMergingService extends AbstractService {
 
@@ -124,6 +125,7 @@ public class PersonMergingService extends AbstractService {
 		this.structureHolderRepository = structureHolderRepository;
 		this.nameComparator = nameComparator;
 	}
+
 
 	/** Replies the duplicate person names.
 	 * The replied list contains groups of persons who have similar names.

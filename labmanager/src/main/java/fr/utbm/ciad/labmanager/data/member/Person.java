@@ -1163,6 +1163,14 @@ public class Person extends AbstractContextData implements JsonSerializable, Att
 		return this.authorships;
 	}
 
+	/** Replies the number of publications of the person.
+	 *
+	 * @return the number of publications.
+	 */
+	public int getAuthorshipNumber(){
+		return getAuthorships().size();
+	}
+
 	/** Change the list of publications of the person.
 	 *
 	 * @param list the list of publications.
@@ -1177,7 +1185,8 @@ public class Person extends AbstractContextData implements JsonSerializable, Att
 	 */
 	public Set<Membership> getMemberships() {
 		if (this.memberships == null) {
-			this.memberships = new TreeSet<>(EntityUtils.getPreferredMembershipComparator());
+			//this.memberships = new TreeSet<>(EntityUtils.getPreferredMembershipComparator());
+			this.memberships = new HashSet<>();
 		}
 		return this.memberships;
 	}

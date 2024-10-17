@@ -30,9 +30,22 @@ import com.vaadin.flow.i18n.LocaleChangeEvent;
 import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.Route;
+import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
+import fr.utbm.ciad.labmanager.data.member.PersonRepository;
+import fr.utbm.ciad.labmanager.data.project.ProjectMemberRepository;
 import fr.utbm.ciad.labmanager.data.user.UserRole;
+import fr.utbm.ciad.labmanager.services.jury.JuryMembershipService;
+import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
+import fr.utbm.ciad.labmanager.services.member.PersonService;
+import fr.utbm.ciad.labmanager.services.supervision.SupervisionService;
+import fr.utbm.ciad.labmanager.utils.names.PersonNameComparator;
 import fr.utbm.ciad.labmanager.views.appviews.MainLayout;
+import fr.utbm.ciad.labmanager.views.components.similarity.PersonSimilarityLayout;
 import jakarta.annotation.security.RolesAllowed;
+import org.apache.commons.compress.harmony.archive.internal.nls.Messages;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import static fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory.getTranslation;
 
 /** Enable to manage the database.
@@ -44,7 +57,7 @@ import static fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory.g
  * @since 4.0
  */
 @Route(value = "database_similarity", layout = MainLayout.class)
-@RolesAllowed({UserRole.ADMIN_GRANT})
+@RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 @Uses(Icon.class)
 public class DatabaseCheckSimilarityView extends VerticalLayout implements HasDynamicTitle, LocaleChangeObserver {
 
@@ -54,16 +67,19 @@ public class DatabaseCheckSimilarityView extends VerticalLayout implements HasDy
 
     /** Constructor.
      */
-    public DatabaseCheckSimilarityView(){
+    public DatabaseCheckSimilarityView(@Autowired PersonService personService,
+                                       @Autowired PersonNameComparator personNameComparator) {
         tabSheet = new TabSheet();
+        tabSheet.setWidthFull();
+        PersonSimilarityLayout personSimilarityLayout = new PersonSimilarityLayout(personService, personNameComparator);
 
-        tabSheet.add("Personne",
+        tabSheet.add(getTranslation("views.person"),
+                new Div(personSimilarityLayout));
+        tabSheet.add(getTranslation("views.associated_structure.holders.organization"),
                 new Div());
-        tabSheet.add("Organisation",
+        tabSheet.add(getTranslation("views.journal"),
                 new Div());
-        tabSheet.add("Journal",
-                new Div());
-        tabSheet.add("Conférence",
+        tabSheet.add(getTranslation("views.conference"),
                 new Div());
         add(tabSheet);
     }

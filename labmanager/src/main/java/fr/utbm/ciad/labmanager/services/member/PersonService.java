@@ -21,26 +21,16 @@ package fr.utbm.ciad.labmanager.services.member;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
 import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
+import fr.utbm.ciad.labmanager.data.EntityUtils;
 import fr.utbm.ciad.labmanager.data.IdentifiableEntityComparator;
-import fr.utbm.ciad.labmanager.data.member.Gender;
-import fr.utbm.ciad.labmanager.data.member.Person;
-import fr.utbm.ciad.labmanager.data.member.PersonRepository;
-import fr.utbm.ciad.labmanager.data.member.WebPageNaming;
+import fr.utbm.ciad.labmanager.data.member.*;
 import fr.utbm.ciad.labmanager.data.organization.ResearchOrganization;
 import fr.utbm.ciad.labmanager.data.publication.AuthorshipRepository;
 import fr.utbm.ciad.labmanager.data.publication.PublicationRepository;
@@ -1268,6 +1258,62 @@ public class PersonService extends AbstractEntityService<Person> {
 	public record PersonRankingUpdateInformation(Person person, Integer wosHindex, Integer wosCitations,
 			Integer scopusHindex, Integer scopusCitations, Integer googleScholarHindex, Integer googleScholarCitations) {
 		//
+	}
+
+	/** Replies the duplicate person names.
+	 * The replied list contains groups of persons who have similar names.
+	 *
+	 * @param comparator comparator of persons that is used for sorting the groups of duplicates. If it is {@code null},
+	 *      a {@link PersonComparator} is used.
+	 * @param callback the callback invoked during the building.
+	 * @return the duplicate persons that is finally computed.
+	 * @throws Exception if a problem occurred during the building.
+	 */
+	public List<Set<Person>> getPersonDuplicates(Comparator<? super Person> comparator, PersonMergingService.PersonDuplicateCallback callback, @Autowired PersonNameComparator nameComparator) throws Exception {
+		// Each list represents a group of authors that could be duplicate
+		final var matchingAuthors = new ArrayList<Set<Person>>();
+
+		// Copy the list of authors into another list in order to enable its
+		// modification during the function's process
+		final var authorsList = new ArrayList<>(this.personRepository.findAll());
+
+		final Comparator<? super Person> theComparator = comparator == null ? EntityUtils.getPreferredPersonComparator() : comparator;
+
+		final var total = authorsList.size();
+		// Notify the callback
+		if (callback != null) {
+			callback.onDuplicate(0, 0, total);
+		}
+		var duplicateCount = 0;
+
+		for (var i = 0; i < authorsList.size() - 1; ++i) {
+			final var referencePerson = authorsList.get(i);
+
+			final var currentMatching = new TreeSet<Person>(theComparator);
+			currentMatching.add(referencePerson);
+
+			final ListIterator<Person> iterator2 = authorsList.listIterator(i + 1);
+			while (iterator2.hasNext()) {
+				final var otherPerson = iterator2.next();
+				if (nameComparator.isSimilar(
+						referencePerson.getFirstName(), referencePerson.getLastName(),
+						otherPerson.getFirstName(), otherPerson.getLastName())) {
+					currentMatching.add(otherPerson);
+					++duplicateCount;
+					// Consume the other person to avoid to be treated twice times
+					iterator2.remove();
+				}
+			}
+			if (currentMatching.size() > 1) {
+				matchingAuthors.add(currentMatching);
+			}
+			// Notify the callback
+			if (callback != null) {
+				callback.onDuplicate(i, duplicateCount, total);
+			}
+		}
+
+		return matchingAuthors;
 	}
 
 }

@@ -7,10 +7,20 @@ import fr.utbm.ciad.labmanager.services.AbstractService;
 
 import java.util.List;
 
+/** Represent an Abstract for a specific layout for the similarity options.
+ *
+ * @author $Author: sgalland$
+ * @author $Author: erenon$
+ * @version $Name$ $Revision$ $Date$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 public abstract class AbstractSimilarityLayout<T> extends VerticalLayout implements SimilarityLayout {
 
     protected List<Grid<T>> grids;
 
+    /** Constructor.
+     */
     public AbstractSimilarityLayout() {
 
         setWidthFull();

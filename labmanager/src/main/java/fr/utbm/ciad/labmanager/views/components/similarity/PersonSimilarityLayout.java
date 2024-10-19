@@ -12,18 +12,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+/** Represent a layout for the Person similarity options.
+ *
+ * @author $Author: sgalland$
+ * @author $Author: erenon$
+ * @version $Name$ $Revision$ $Date$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 public class PersonSimilarityLayout extends AbstractSimilarityLayout<Person> {
 
     private final PersonService personService;
 
     private final PersonNameComparator personNameComparator;
 
+    /** Constructor.
+     * @param personService the person service
+     * @param personNameComparator the person name comparator
+     */
     public PersonSimilarityLayout(PersonService personService, PersonNameComparator personNameComparator) {
         super();
         this.personService = personService;
         this.personNameComparator = personNameComparator;
     }
 
+    /** Create the grids. Calls the person service to get the person duplicates and creates a grid for each group.
+     */
+    @Override
     public void createGrids() {
 
         try {
@@ -36,7 +51,7 @@ public class PersonSimilarityLayout extends AbstractSimilarityLayout<Person> {
                 grid.setItems(group);
                 grid.addColumn(Person::getFirstName).setHeader("First Name");
                 grid.addColumn(Person::getLastName).setHeader("Last Name");
-                //grid.addColumn(Person::getMemberships).setHeader("Organization");
+                grid.addColumn(Person::getOrganizations).setHeader("Organization");
                 grid.addColumn(Person::getAuthorshipNumber).setHeader("Publications");
                 grid.addColumn(new NativeButtonRenderer<>(item -> ">")).setHeader("Little Merge");
                 grid.addColumn(new NativeButtonRenderer<>(item -> ">>")).setHeader("Ultra Merge");

@@ -81,7 +81,6 @@ public interface MembershipRepository extends JpaRepository<Membership, Long>, J
 	 * @since 3.2
 	 * @deprecated no replacement
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	List<Membership> findDistinctByResearchOrganizationId(long organizationId);
 
 	/** Replies the persons that have memberships fitting the given filter.

@@ -20,13 +20,7 @@
 package fr.utbm.ciad.labmanager.services.organization;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 import com.google.common.base.Strings;
@@ -41,6 +35,7 @@ import fr.utbm.ciad.labmanager.services.DeletionStatus;
 import fr.utbm.ciad.labmanager.utils.country.CountryCode;
 import fr.utbm.ciad.labmanager.utils.io.filemanager.DownloadableFileManager;
 import fr.utbm.ciad.labmanager.utils.names.OrganizationNameComparator;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.hibernate.Hibernate;
@@ -116,7 +111,6 @@ public class ResearchOrganizationService extends AbstractEntityService<ResearchO
 	 * @return the research organizations.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	public List<ResearchOrganization> getAllResearchOrganizations() {
 		return this.organizationRepository.findAll();
 	}
@@ -514,6 +508,43 @@ public class ResearchOrganizationService extends AbstractEntityService<ResearchO
 		});
 		return new DeletingContext(organizations, logger);
 	}
+
+	@Transactional
+	public void removeResearchOrganization(long organizationId) {
+		Optional<ResearchOrganization> optionalOrg = organizationRepository.findById(organizationId);
+
+		if (optionalOrg.isPresent()) {
+			ResearchOrganization organization = optionalOrg.get();
+
+			Iterator<ResearchOrganization> superOrgIterator = organization.getSuperOrganizations().iterator();
+			while (superOrgIterator.hasNext()) {
+				ResearchOrganization superOrg = superOrgIterator.next();
+				unlinkSubOrganization(superOrg.getId(), organization.getId());
+			}
+
+			Iterator<ResearchOrganization> subOrgIterator = organization.getSubOrganizations().iterator();
+			while (subOrgIterator.hasNext()) {
+				ResearchOrganization subOrg = subOrgIterator.next();
+				unlinkSubOrganization(organization.getId(), subOrg.getId());
+			}
+
+			// 2. Supprimer ou dissocier les entités liées (projects, memberships, etc.)
+			organization.getDirectOrganizationMemberships().clear();
+			organization.getSuperOrganizationMemberships().clear();
+			organization.getCoordinatedProjects().clear();
+			organization.getLearOrganizationProjects().clear();
+			organization.getLocalOrganizationProjects().clear();
+			organization.getSuperOrganizationProjects().clear();
+			organization.getOtherPartnerProjects().clear();
+
+			// 3. Supprimer l'organisation elle-même
+			organizationRepository.delete(organization);
+
+		} else {
+			throw new EntityNotFoundException("Organization not found with ID: " + organizationId);
+		}
+	}
+
 
 	/** Context for editing a {@link ResearchOrganization}.
 	 * This context is usually defined when the entity is associated to

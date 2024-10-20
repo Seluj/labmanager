@@ -52,7 +52,6 @@ import org.springframework.stereotype.Service;
  * @since 3.2
  * @Deprecated no replacement.
  */
-@Deprecated(since = "4.0", forRemoval = true)
 @Service
 public class OrganizationMergingService extends AbstractEntityService<ResearchOrganization> {
 
@@ -206,9 +205,8 @@ public class OrganizationMergingService extends AbstractEntityService<ResearchOr
 				var lchange = reassignOrganizationMemberships(source, target);
 				lchange = reassignProjects(source, target) || lchange;
 				lchange = reassignAssociatedStructures(source, target) || lchange;
-				throw new IllegalStateException();
-				//TODO this.organizationService.removeResearchOrganization(source.getId());
-				//TODO changed = changed || lchange;
+				this.organizationService.removeResearchOrganization(source.getId());
+				changed = changed || lchange;
 			}
 		}
 		if (changed) {

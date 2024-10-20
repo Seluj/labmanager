@@ -131,7 +131,7 @@ public class Project implements Serializable, JsonSerializable, Comparable<Proje
 
 	/** List of the local budgets for the budget.
 	 */
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<ProjectBudget> budgets;
 
 	/** Type of the project activity.
@@ -253,7 +253,7 @@ public class Project implements Serializable, JsonSerializable, Comparable<Proje
 	 * List of organizations involved in the project that are neither the {@link #coordinator}
 	 * nor the {@link #localOrganization} nor the {@link #superOrganization}.
 	 */
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "RESEARCH_ORGS_PARTNER_PROJECTS",
 			joinColumns = @JoinColumn(name = "idProjects"),

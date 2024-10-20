@@ -37,9 +37,12 @@ import fr.utbm.ciad.labmanager.data.user.UserRole;
 import fr.utbm.ciad.labmanager.services.jury.JuryMembershipService;
 import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
 import fr.utbm.ciad.labmanager.services.member.PersonService;
+import fr.utbm.ciad.labmanager.services.organization.OrganizationMergingService;
 import fr.utbm.ciad.labmanager.services.supervision.SupervisionService;
+import fr.utbm.ciad.labmanager.utils.names.OrganizationNameComparator;
 import fr.utbm.ciad.labmanager.utils.names.PersonNameComparator;
 import fr.utbm.ciad.labmanager.views.appviews.MainLayout;
+import fr.utbm.ciad.labmanager.views.components.similarity.OrganizationSimilarityLayout;
 import fr.utbm.ciad.labmanager.views.components.similarity.PersonSimilarityLayout;
 import jakarta.annotation.security.RolesAllowed;
 import org.apache.commons.compress.harmony.archive.internal.nls.Messages;
@@ -68,15 +71,18 @@ public class DatabaseCheckSimilarityView extends VerticalLayout implements HasDy
     /** Constructor.
      */
     public DatabaseCheckSimilarityView(@Autowired PersonNameComparator personNameComparator,
-                                       @Autowired PersonMergingService personMergingService) {
+                                       @Autowired PersonMergingService personMergingService,
+                                       @Autowired OrganizationMergingService organizationMergingService,
+                                       @Autowired OrganizationNameComparator organizationNameComparator) {
         tabSheet = new TabSheet();
         tabSheet.setWidthFull();
         PersonSimilarityLayout personSimilarityLayout = new PersonSimilarityLayout(personMergingService, personNameComparator);
+        OrganizationSimilarityLayout organizationSimilarityLayout = new OrganizationSimilarityLayout(organizationMergingService, organizationNameComparator);
 
         tabSheet.add(getTranslation("views.person"),
                 new Div(personSimilarityLayout));
         tabSheet.add(getTranslation("views.associated_structure.holders.organization"),
-                new Div());
+                new Div(organizationSimilarityLayout));
         tabSheet.add(getTranslation("views.journal"),
                 new Div());
         tabSheet.add(getTranslation("views.conference"),

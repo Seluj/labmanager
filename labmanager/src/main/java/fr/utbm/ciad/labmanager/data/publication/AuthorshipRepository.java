@@ -40,10 +40,15 @@ public interface AuthorshipRepository extends JpaRepository<Authorship, Long>, J
 	 * @param personId the identifier of the person.
 	 * @param publicationId the publication of the publication.
 	 * @return the authorship.
-	 * @deprecated no replacement
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	Optional<Authorship> findByPersonIdAndPublicationId(long personId, long publicationId);
+
+	/** Find authorships that corresponds to the given person identifier.
+	 *
+	 * @param personId the identifier of the person.
+	 * @return the authorship.
+	 */
+	List<Authorship> findByPersonId(long personId);
 
 	/** Find the authorships that corresponds are linked to the publication with the given identifier.
 	 *

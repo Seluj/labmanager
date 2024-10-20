@@ -67,11 +67,11 @@ public class DatabaseCheckSimilarityView extends VerticalLayout implements HasDy
 
     /** Constructor.
      */
-    public DatabaseCheckSimilarityView(@Autowired PersonService personService,
-                                       @Autowired PersonNameComparator personNameComparator) {
+    public DatabaseCheckSimilarityView(@Autowired PersonNameComparator personNameComparator,
+                                       @Autowired PersonMergingService personMergingService) {
         tabSheet = new TabSheet();
         tabSheet.setWidthFull();
-        PersonSimilarityLayout personSimilarityLayout = new PersonSimilarityLayout(personService, personNameComparator);
+        PersonSimilarityLayout personSimilarityLayout = new PersonSimilarityLayout(personMergingService, personNameComparator);
 
         tabSheet.add(getTranslation("views.person"),
                 new Div(personSimilarityLayout));

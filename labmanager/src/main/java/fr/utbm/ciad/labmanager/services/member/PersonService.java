@@ -578,7 +578,6 @@ public class PersonService extends AbstractEntityService<Person> {
 	 * @return the updated person.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	public Person updatePerson(long identifier, boolean validated, String firstName, String lastName, Gender gender, String email, PhoneNumber officePhone,
 			PhoneNumber mobilePhone, String officeRoom, String gravatarId, String orcid, String researcherId, String scopusId, String scholarId,
 			String idhal, String linkedInId, String githubId, String researchGateId, String adScientificIndexId, String facebookId, String dblpURL,
@@ -633,7 +632,6 @@ public class PersonService extends AbstractEntityService<Person> {
 	 *     the identifier does not correspond to a person.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	@Transactional
 	public Person removePerson(long identifier) {
 		final var id = Long.valueOf(identifier);
@@ -1260,60 +1258,6 @@ public class PersonService extends AbstractEntityService<Person> {
 		//
 	}
 
-	/** Replies the duplicate person names.
-	 * The replied list contains groups of persons who have similar names.
-	 *
-	 * @param comparator comparator of persons that is used for sorting the groups of duplicates. If it is {@code null},
-	 *      a {@link PersonComparator} is used.
-	 * @param callback the callback invoked during the building.
-	 * @return the duplicate persons that is finally computed.
-	 * @throws Exception if a problem occurred during the building.
-	 */
-	public List<Set<Person>> getPersonDuplicates(Comparator<? super Person> comparator, PersonMergingService.PersonDuplicateCallback callback, @Autowired PersonNameComparator nameComparator) throws Exception {
-		// Each list represents a group of authors that could be duplicate
-		final var matchingAuthors = new ArrayList<Set<Person>>();
 
-		// Copy the list of authors into another list in order to enable its
-		// modification during the function's process
-		final var authorsList = new ArrayList<>(this.personRepository.findAll());
-
-		final Comparator<? super Person> theComparator = comparator == null ? EntityUtils.getPreferredPersonComparator() : comparator;
-
-		final var total = authorsList.size();
-		// Notify the callback
-		if (callback != null) {
-			callback.onDuplicate(0, 0, total);
-		}
-		var duplicateCount = 0;
-
-		for (var i = 0; i < authorsList.size() - 1; ++i) {
-			final var referencePerson = authorsList.get(i);
-
-			final var currentMatching = new TreeSet<Person>(theComparator);
-			currentMatching.add(referencePerson);
-
-			final ListIterator<Person> iterator2 = authorsList.listIterator(i + 1);
-			while (iterator2.hasNext()) {
-				final var otherPerson = iterator2.next();
-				if (nameComparator.isSimilar(
-						referencePerson.getFirstName(), referencePerson.getLastName(),
-						otherPerson.getFirstName(), otherPerson.getLastName())) {
-					currentMatching.add(otherPerson);
-					++duplicateCount;
-					// Consume the other person to avoid to be treated twice times
-					iterator2.remove();
-				}
-			}
-			if (currentMatching.size() > 1) {
-				matchingAuthors.add(currentMatching);
-			}
-			// Notify the callback
-			if (callback != null) {
-				callback.onDuplicate(i, duplicateCount, total);
-			}
-		}
-
-		return matchingAuthors;
-	}
 
 }

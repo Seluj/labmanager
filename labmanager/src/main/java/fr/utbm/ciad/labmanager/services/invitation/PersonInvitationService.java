@@ -135,7 +135,6 @@ public class PersonInvitationService extends AbstractEntityService<PersonInvitat
 	 * @return the invitations for the person.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	public List<PersonInvitation> getInvitationsForPerson(long personId) {
 		return this.invitationRepository.findAllByGuestIdOrInviterId(personId, personId);
 	}
@@ -268,7 +267,6 @@ public class PersonInvitationService extends AbstractEntityService<PersonInvitat
 	 * @param invitation the invitation to save.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	public void save(PersonInvitation invitation) {
 		this.invitationRepository.save(invitation);
 	}

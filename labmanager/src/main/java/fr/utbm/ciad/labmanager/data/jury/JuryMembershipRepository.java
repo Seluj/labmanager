@@ -41,7 +41,6 @@ public interface JuryMembershipRepository extends JpaRepository<JuryMembership, 
 	 * @return the list of memberships.
 	 * @deprecated no replacement
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	List<JuryMembership> findAllByPersonId(long personId);
 
 	/** Replies the list of memberships that are associated to the candidate with the given identifier.
@@ -50,7 +49,6 @@ public interface JuryMembershipRepository extends JpaRepository<JuryMembership, 
 	 * @return the list of memberships.
 	 * @deprecated no replacement
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	List<JuryMembership> findAllByCandidateId(long candidateId);
 
 	/** Replies the list of memberships that are associated to the promoter with the given identifier.
@@ -59,7 +57,6 @@ public interface JuryMembershipRepository extends JpaRepository<JuryMembership, 
 	 * @return the list of memberships.
 	 * @deprecated no replacement
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	List<JuryMembership> findAllByPromotersId(long promoterId);
 
 	/** Replies a membership that corresponds to the person, candidate and type.

@@ -2,7 +2,9 @@ package fr.utbm.ciad.labmanager.views.components.similarity;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import fr.utbm.ciad.labmanager.services.AbstractService;
 
 import java.util.List;
@@ -22,10 +24,19 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
     /** Constructor.
      */
     public AbstractSimilarityLayout() {
+        grids = new java.util.ArrayList<>();
 
         setWidthFull();
-        add(new Button("Check", event -> createGrids()));
-        grids = new java.util.ArrayList<>();
+        Button button = new Button("Check");
+
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setIndeterminate(true);
+        progressBar.setVisible(false);
+
+        button.addClickListener(event -> {
+            createGrids();
+        });
+        add(button);
     }
 
 }

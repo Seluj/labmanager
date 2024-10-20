@@ -116,7 +116,6 @@ public class JuryMembershipService extends AbstractEntityService<JuryMembership>
 	 * @return the list of jury memberships.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	public List<JuryMembership> getMembershipsForPerson(long personId) {
 		return this.membershipRepository.findAllByPersonId(personId);
 	}
@@ -127,7 +126,6 @@ public class JuryMembershipService extends AbstractEntityService<JuryMembership>
 	 * @return the list of jury memberships.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	public List<JuryMembership> getMembershipsForCandidate(long candidateId) {
 		return this.membershipRepository.findAllByCandidateId(candidateId);
 	}
@@ -138,7 +136,6 @@ public class JuryMembershipService extends AbstractEntityService<JuryMembership>
 	 * @return the list of jury memberships.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	public List<JuryMembership> getMembershipsForPromoter(long promoterId) {
 		return this.membershipRepository.findAllByPromotersId(promoterId);
 	}
@@ -266,7 +263,6 @@ public class JuryMembershipService extends AbstractEntityService<JuryMembership>
 	 * @param membership the jury membership to save.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	public void save(JuryMembership membership) {
 		this.membershipRepository.save(membership);
 	}

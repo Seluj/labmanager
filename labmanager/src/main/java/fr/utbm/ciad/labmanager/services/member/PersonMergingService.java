@@ -37,6 +37,10 @@ import fr.utbm.ciad.labmanager.data.member.PersonComparator;
 import fr.utbm.ciad.labmanager.data.member.PersonRepository;
 import fr.utbm.ciad.labmanager.data.project.ProjectMember;
 import fr.utbm.ciad.labmanager.data.project.ProjectMemberRepository;
+import fr.utbm.ciad.labmanager.data.publication.Authorship;
+import fr.utbm.ciad.labmanager.data.publication.AuthorshipRepository;
+import fr.utbm.ciad.labmanager.data.publication.Publication;
+import fr.utbm.ciad.labmanager.data.publication.PublicationRepository;
 import fr.utbm.ciad.labmanager.services.AbstractService;
 import fr.utbm.ciad.labmanager.services.invitation.PersonInvitationService;
 import fr.utbm.ciad.labmanager.services.jury.JuryMembershipService;
@@ -56,7 +60,6 @@ import org.springframework.stereotype.Service;
  * @mavenartifactid $ArtifactId$
  * @Deprecated no replacement.
  */
-@Deprecated(since = "4.0", forRemoval = false)
 @Service
 public class PersonMergingService extends AbstractService {
 
@@ -79,6 +82,8 @@ public class PersonMergingService extends AbstractService {
 	private final ProjectMemberRepository projectMemberRepository;
 
 	private final AssociatedStructureHolderRepository structureHolderRepository;
+
+	private final AuthorshipRepository authorshipRepository;
 
 	private PersonNameComparator nameComparator;
 
@@ -112,7 +117,8 @@ public class PersonMergingService extends AbstractService {
 			@Autowired PersonNameComparator nameComparator,
 			@Autowired MessageSourceAccessor messages,
 			@Autowired ConfigurationConstants constants,
-			@Autowired SessionFactory sessionFactory) {
+			@Autowired SessionFactory sessionFactory,
+			@Autowired AuthorshipRepository publicationRepository) {
 		super(messages, constants, sessionFactory);
 		this.personRepository = personRepository;
 		this.personService = personService;
@@ -124,6 +130,7 @@ public class PersonMergingService extends AbstractService {
 		this.projectMemberRepository = projectMemberRepository;
 		this.structureHolderRepository = structureHolderRepository;
 		this.nameComparator = nameComparator;
+		this.authorshipRepository = publicationRepository;
 	}
 
 
@@ -227,7 +234,7 @@ public class PersonMergingService extends AbstractService {
 		for (final var source : sources) {
 			if (source.getId() != target.getId()) {
 				//getLogger().info("Reassign to " + target.getFullName() + " the elements of " + source.getFullName()); //$NON-NLS-1$ //$NON-NLS-2$
-				var lchange = reassignPublications(source, target);
+				var lchange = reassignPublicationsV2(source, target);
 				lchange = reassignOrganizationMemberships(source, target) || lchange;
 				lchange = reassignJuryMemberships(source, target) || lchange;
 				lchange = reassignSupervisions(source, target) || lchange;
@@ -261,6 +268,34 @@ public class PersonMergingService extends AbstractService {
 			// Test if the target is co-author. If yes, don't do re-assignment to avoid
 			// the same person multiple times as author.
 			if (!authorship.getPublication().getAuthors().contains(target)) {
+				authorship.setPerson(target);
+				iterator.remove();
+				target.getAuthorships().add(authorship);
+				changed = true;
+			}
+		}
+		return changed;
+	}
+
+	/** Re-assign the publication attached to the source person to the target person.
+	 *
+	 * @param sources the person to remove and replace by the target person.
+	 * @param target the target person who should replace the source persons.
+	 * @return {@code true} if publication has changed.
+	 * @throws Exception if the change cannot be completed.
+	 */
+	@SuppressWarnings("static-method")
+	protected boolean reassignPublicationsV2(Person source, Person target) throws Exception {
+
+		List<Authorship> autPubs = authorshipRepository.findByPersonId(source.getId());
+		final var iterator = autPubs.iterator();
+
+		var changed = false;
+		while (iterator.hasNext()) {
+			final var authorship = iterator.next();
+			// Test if the target is co-author. If yes, don't do re-assignment to avoid
+			// the same person multiple times as author.
+			if (authorshipRepository.findByPersonIdAndPublicationId(target.getId(), authorship.getPublication().getId()).isEmpty()) {
 				authorship.setPerson(target);
 				iterator.remove();
 				target.getAuthorships().add(authorship);

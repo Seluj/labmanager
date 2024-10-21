@@ -19,10 +19,7 @@ import fr.utbm.ciad.labmanager.utils.phone.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -67,9 +64,9 @@ public class PersonRestService {
      * @param id the ID of the user
      * @return the card data if found, or a {@code 404 error} if no user is found.
      */
-    @GetMapping("/card")
+    @GetMapping("/card/{id}")
     public ResponseEntity<PersonCardDTO> getPersonCard(
-            @RequestParam long id
+            @PathVariable("id") long id
     ) {
         Person p = personService.getPersonById(id);
         if (p == null) {
@@ -97,9 +94,9 @@ public class PersonRestService {
      * @param id the id of the user
      * @return the biography of the user if found, or a {@code 404 error} if no user is found.
      */
-    @GetMapping("/biography")
+    @GetMapping("/biography/{id}")
     public ResponseEntity<PersonBiographyDTO> getPersonBiography(
-            @RequestParam long id
+            @PathVariable("id") long id
     ) {
         Person p = personService.getPersonById(id);
         if (p == null) {
@@ -127,10 +124,10 @@ public class PersonRestService {
      * @return a ResponseEntity containing a list of PublicationsDTO objects that match the specified filters, or an appropriate error response
      *         if the person is not found or no publications match the criteria.
      */
-    @GetMapping("/publications")
+    @GetMapping("/publications/{id}")
     @Transactional
     public ResponseEntity<List<PublicationsDTO>> getPersonPublications(
-            @RequestParam long id,
+            @PathVariable("id") long id,
             @RequestParam(required = false) Optional<Long> year,
             @RequestParam(required = false) Optional<String> language,
             @RequestParam(required = false) Optional<String> keywords) {
@@ -195,9 +192,7 @@ public class PersonRestService {
             PublicationType publicationType = publication.getType();
 
             List<String> authors = new ArrayList<>();
-            publication.getAuthors().forEach(author -> {
-                authors.add(author.getFullName());
-            });
+            publication.getAuthors().forEach(author -> authors.add(author.getFullName()));
 
             String abstractText = publication.getAbstractText();
             String pdfUrl = publication.getPathToDownloadablePDF();
@@ -235,10 +230,10 @@ public class PersonRestService {
      * @param id the id of the user
      * @return the list of invitations if found, or a {@code 404 error} if no user is found.
      */
-    @GetMapping("/inviterInvitations")
+    @GetMapping("/inviterInvitations/{id}")
     @Transactional
     public ResponseEntity<Map<PersonInvitationType, Set<PersonInvitationData>>> getPersonInviterInvitations(
-            @RequestParam long id
+            @PathVariable("id") long id
     ) {
         Person p = personService.getPersonById(id);
         if (p == null) {
@@ -278,10 +273,10 @@ public class PersonRestService {
      * @param id the id of the user
      * @return the list of jurys if found, or a {@code 404 error} if no user is found.
      */
-    @GetMapping("/jurys")
+    @GetMapping("/jurys/{id}")
     @Transactional
     public ResponseEntity<Set<PersonJuryMembershipDTO>> getPersonJuryMemberships(
-            @RequestParam long id
+            @PathVariable("id") long id
     ) {
         Person p = personService.getPersonById(id);
         Set<PersonJuryMembershipDTO> jurys = new HashSet<>();
@@ -294,9 +289,7 @@ public class PersonRestService {
 
             List<String> promotersOrDirectorsNames = new ArrayList<>();
             List<Person> promotersOrDirectors = new ArrayList<>(jury.getPromoters());
-            promotersOrDirectors.forEach(person -> {
-                promotersOrDirectorsNames.add(person.getFullName());
-            });
+            promotersOrDirectors.forEach(person -> promotersOrDirectorsNames.add(person.getFullName()));
 
 
             String university = jury.getUniversity();
@@ -319,10 +312,10 @@ public class PersonRestService {
      * @param id the id of the user
      * @return the list of jurys if found, or a {@code 404 error} if no user is found.
      */
-    @GetMapping("/supervisions")
+    @GetMapping("/supervisions{id}")
     @Transactional
     public ResponseEntity<List<SupervisionsDTO>> getPersonSupervisions(
-            @RequestParam long id
+            @PathVariable("id") long id
     ) {
         List<SupervisionsDTO> supervisions = new ArrayList<>();
 

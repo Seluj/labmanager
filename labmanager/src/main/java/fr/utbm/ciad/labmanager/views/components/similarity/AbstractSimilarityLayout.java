@@ -40,7 +40,8 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
         grids = new java.util.ArrayList<>();
 
         setWidthFull();
-        Button button = new Button("Check");
+        //TODO : Put translation
+        Button button = new Button("Lancer la vérification");
 
         ProgressBar progressBar = new ProgressBar();
         progressBar.setIndeterminate(true);

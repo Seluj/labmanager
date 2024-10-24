@@ -5,14 +5,11 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.renderer.NativeButtonRenderer;
-import fr.utbm.ciad.labmanager.data.member.Person;
 import fr.utbm.ciad.labmanager.views.components.similarity.AbstractSimilarityLayout;
 
 import java.util.ArrayList;
@@ -22,10 +19,26 @@ import java.util.Map;
 
 import static fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory.getTranslation;
 
-public abstract class AbstractSimilarityNativeButtonRenderer<T> extends NativeButtonRenderer<T> implements ISimilarityNativeButtonRenderer<T> {
+/** Represent an abstract of a specific native button renderer for similarity.
+ *
+ * @author $Author: sgalland$
+ * @author $Author: erenon$
+ * @version $Name$ $Revision$ $Date$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+public abstract class AbstractSimilarityNativeButtonRenderer<T> extends NativeButtonRenderer<T> implements SimilarityNativeButtonRenderer<T> {
 
     private Map<T, Checkbox> checkboxMap = new HashMap<>();
 
+    /**
+     * Constructor.
+     *
+     * @param label  the label
+     * @param grid   the grid
+     * @param grids  the grids
+     * @param layout the layout
+     */
     public AbstractSimilarityNativeButtonRenderer(String label, Grid<T> grid, List<Grid<T>> grids, AbstractSimilarityLayout<T> layout) {
         super(label);
         addItemClickListener(event -> {
@@ -86,6 +99,11 @@ public abstract class AbstractSimilarityNativeButtonRenderer<T> extends NativeBu
         });
     }
 
+    /**
+     * Set the checkbox Map.
+     *
+     * @param checkboxMap the checkbox map
+     */
     protected void setCheckboxMap(Map<T, Checkbox> checkboxMap) {
         this.checkboxMap = checkboxMap;
     }

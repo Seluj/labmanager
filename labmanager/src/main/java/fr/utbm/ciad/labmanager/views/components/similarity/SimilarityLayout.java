@@ -18,17 +18,17 @@ public interface SimilarityLayout<T> {
 
     /** Create the grids.
      */
-    public void createGrids();
+    void createGrids();
 
     /** Get the entity duplicates.
      */
-    public List<Set<T>> getDuplicates();
+    List<Set<T>> getDuplicates();
 
     /** Set the grid headers.
      */
-    public void setGridHeaders(Grid<T> grid);
+    void setGridHeaders(Grid<T> grid);
 
     /** Create new button
      */
-    public AbstractSimilarityNativeButtonRenderer<T> createButton(Grid<T> grid, List<Grid<T>> grids);
+    AbstractSimilarityNativeButtonRenderer<T> createButton(Grid<T> grid, List<Grid<T>> grids);
 }

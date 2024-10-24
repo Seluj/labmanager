@@ -19,6 +19,7 @@ import fr.utbm.ciad.labmanager.services.organization.OrganizationMergingService;
 import fr.utbm.ciad.labmanager.services.organization.ResearchOrganizationService;
 import fr.utbm.ciad.labmanager.utils.names.OrganizationNameComparator;
 import fr.utbm.ciad.labmanager.utils.names.PersonNameComparator;
+import fr.utbm.ciad.labmanager.views.components.similarity.buttons.AbstractSimilarityNativeButtonRenderer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -202,5 +203,20 @@ public class OrganizationSimilarityLayout extends AbstractSimilarityLayout<Resea
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Set<ResearchOrganization>> getDuplicates() {
+        return List.of();
+    }
+
+    @Override
+    public void setGridHeaders(Grid<ResearchOrganization> grid) {
+
+    }
+
+    @Override
+    public AbstractSimilarityNativeButtonRenderer<ResearchOrganization> createButton(Grid<ResearchOrganization> grid, List<Grid<ResearchOrganization>> grids) {
+        return null;
     }
 }

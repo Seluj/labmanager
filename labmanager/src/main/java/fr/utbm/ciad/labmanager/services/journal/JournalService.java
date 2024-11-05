@@ -44,6 +44,9 @@ import fr.utbm.ciad.labmanager.data.journal.Journal;
 import fr.utbm.ciad.labmanager.data.journal.JournalQualityAnnualIndicators;
 import fr.utbm.ciad.labmanager.data.journal.JournalQualityAnnualIndicatorsRepository;
 import fr.utbm.ciad.labmanager.data.journal.JournalRepository;
+import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
+import fr.utbm.ciad.labmanager.data.publication.type.JournalEdition;
+import fr.utbm.ciad.labmanager.data.publication.type.JournalEditionRepository;
 import fr.utbm.ciad.labmanager.data.publication.type.JournalPaperRepository;
 import fr.utbm.ciad.labmanager.services.AbstractEntityService;
 import fr.utbm.ciad.labmanager.services.DeletionStatus;
@@ -89,6 +92,8 @@ public class JournalService extends AbstractEntityService<Journal> {
 
 	private final JournalPaperRepository publicationRepository;
 
+	private final JournalEditionRepository journalEditionRepository;
+
 	private final NetConnection netConnection;
 
 	private final JournalNameOrPublisherComparator journalNameAndPublisherComparator;
@@ -112,16 +117,16 @@ public class JournalService extends AbstractEntityService<Journal> {
 	 * @param sessionFactory the Hibernate session factory.
 	 */
 	public JournalService(
-			@Autowired JournalRepository journalRepository,
-			@Autowired JournalQualityAnnualIndicatorsRepository indicatorRepository,
-			@Autowired JournalPaperRepository publicationRepository,
-			@Autowired ScimagoPlatform scimago,
-			@Autowired WebOfSciencePlatform wos,
-			@Autowired NetConnection netConnection,
-			@Autowired JournalNameOrPublisherComparator journalNameAndPublisherComparator,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ConfigurationConstants constants,
-			@Autowired SessionFactory sessionFactory) {
+            @Autowired JournalRepository journalRepository,
+            @Autowired JournalQualityAnnualIndicatorsRepository indicatorRepository,
+            @Autowired JournalPaperRepository publicationRepository,
+            @Autowired ScimagoPlatform scimago,
+            @Autowired WebOfSciencePlatform wos,
+            @Autowired NetConnection netConnection,
+            @Autowired JournalNameOrPublisherComparator journalNameAndPublisherComparator,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ConfigurationConstants constants,
+            @Autowired SessionFactory sessionFactory, JournalEditionRepository journalEditionRepository) {
 		super(messages, constants, sessionFactory);
 		this.journalRepository = journalRepository;
 		this.indicatorRepository = indicatorRepository;
@@ -130,7 +135,8 @@ public class JournalService extends AbstractEntityService<Journal> {
 		this.wos = wos;
 		this.netConnection = netConnection;
 		this.journalNameAndPublisherComparator = journalNameAndPublisherComparator;
-	}
+        this.journalEditionRepository = journalEditionRepository;
+    }
 
 	/** Save the given journal or create a JPA entity if the given object is a fake.
 	 *
@@ -336,9 +342,7 @@ public class JournalService extends AbstractEntityService<Journal> {
 	 *
 	 * @param identifier the identifier of the journal to remove.
 	 * @throws AttachedJournalPaperException when the journal has attached papers.
-	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	@Transactional
 	public void removeJournal(long identifier) throws AttachedJournalPaperException {
 		final var id = Long.valueOf(identifier);
@@ -594,6 +598,23 @@ public class JournalService extends AbstractEntityService<Journal> {
 			this.indicatorRepository.delete(indicators);
 			this.journalRepository.save(journal);
 		}
+	}
+
+	/**
+	 * Get all quality indicators associated with a specific journal.
+	 *
+	 * @param journalId the ID of the journal.
+	 * @return a list of quality indicators associated with the journal.
+	 */
+	public Map<Integer, JournalQualityAnnualIndicators> getQualityIndicatorsMap(Long journalId) {
+		List<JournalQualityAnnualIndicators> indicatorsList = this.indicatorRepository.findByJournalId(journalId);
+
+		// Convert the list to a map using the referenceYear as the key
+		return indicatorsList.stream()
+				.collect(Collectors.toMap(
+						JournalQualityAnnualIndicators::getReferenceYear,
+						indicator -> indicator
+				));
 	}
 
 	/** Download the journal indicators for the given reference year for the Scimago platform.
@@ -965,6 +986,19 @@ public class JournalService extends AbstractEntityService<Journal> {
 			}
 		});
 		return new DeletingContext(journals, logger);
+	}
+
+	/**
+	 * Get all papers published in the given journal.
+	 *
+	 * @param journalId the ID of the journal.
+	 * @return a set of publications associated with the journal.
+	 */
+	public Set<AbstractJournalBasedPublication> getPapersByJournalId(Long journalId) {
+		Set<AbstractJournalBasedPublication> papers = new HashSet<>();
+		papers.addAll(publicationRepository.findByJournalId(journalId));
+		papers.addAll(journalEditionRepository.findByJournalId(journalId));
+		return papers;
 	}
 
 	/** Context for editing a {@link Journal}.

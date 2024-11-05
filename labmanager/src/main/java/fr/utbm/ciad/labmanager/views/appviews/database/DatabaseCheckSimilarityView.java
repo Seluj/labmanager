@@ -34,14 +34,17 @@ import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
 import fr.utbm.ciad.labmanager.data.member.PersonRepository;
 import fr.utbm.ciad.labmanager.data.project.ProjectMemberRepository;
 import fr.utbm.ciad.labmanager.data.user.UserRole;
+import fr.utbm.ciad.labmanager.services.journal.JournalMergingService;
 import fr.utbm.ciad.labmanager.services.jury.JuryMembershipService;
 import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
 import fr.utbm.ciad.labmanager.services.member.PersonService;
 import fr.utbm.ciad.labmanager.services.organization.OrganizationMergingService;
 import fr.utbm.ciad.labmanager.services.supervision.SupervisionService;
+import fr.utbm.ciad.labmanager.utils.names.JournalNameOrPublisherComparator;
 import fr.utbm.ciad.labmanager.utils.names.OrganizationNameComparator;
 import fr.utbm.ciad.labmanager.utils.names.PersonNameComparator;
 import fr.utbm.ciad.labmanager.views.appviews.MainLayout;
+import fr.utbm.ciad.labmanager.views.components.similarity.JournalSimilarityLayout;
 import fr.utbm.ciad.labmanager.views.components.similarity.OrganizationSimilarityLayout;
 import fr.utbm.ciad.labmanager.views.components.similarity.PersonSimilarityLayout;
 import jakarta.annotation.security.RolesAllowed;
@@ -73,18 +76,21 @@ public class DatabaseCheckSimilarityView extends VerticalLayout implements HasDy
     public DatabaseCheckSimilarityView(@Autowired PersonNameComparator personNameComparator,
                                        @Autowired PersonMergingService personMergingService,
                                        @Autowired OrganizationMergingService organizationMergingService,
-                                       @Autowired OrganizationNameComparator organizationNameComparator) {
+                                       @Autowired OrganizationNameComparator organizationNameComparator,
+                                       @Autowired JournalMergingService journalMergingService,
+                                       @Autowired JournalNameOrPublisherComparator journalNameOrPublisherComparator) {
         tabSheet = new TabSheet();
         tabSheet.setWidthFull();
         PersonSimilarityLayout personSimilarityLayout = new PersonSimilarityLayout(personMergingService, personNameComparator);
         OrganizationSimilarityLayout organizationSimilarityLayout = new OrganizationSimilarityLayout(organizationMergingService, organizationNameComparator);
+        JournalSimilarityLayout journalSimilarityLayout = new JournalSimilarityLayout(journalMergingService, journalNameOrPublisherComparator);
 
         tabSheet.add(getTranslation("views.person"),
                 new Div(personSimilarityLayout));
         tabSheet.add(getTranslation("views.associated_structure.holders.organization"),
                 new Div(organizationSimilarityLayout));
         tabSheet.add(getTranslation("views.journal"),
-                new Div());
+                new Div(journalSimilarityLayout));
         tabSheet.add(getTranslation("views.conference"),
                 new Div());
         add(tabSheet);

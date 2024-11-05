@@ -22,6 +22,7 @@ package fr.utbm.ciad.labmanager.data.publication.type;
 import java.util.List;
 import java.util.Set;
 
+import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -49,5 +50,12 @@ public interface JournalPaperRepository extends JpaRepository<JournalPaper, Long
 	 */
 	Set<JournalPaper> findAllByAuthorshipsPersonIdIn(Set<Long> personIds);
 
+	/**
+	 * Find all papers associated with a specific journal.
+	 *
+	 * @param journalId the ID of the journal to retrieve papers for.
+	 * @return a set of publications associated with the given journal.
+	 */
+    Set<AbstractJournalBasedPublication> findByJournalId(Long journalId);
 }
 

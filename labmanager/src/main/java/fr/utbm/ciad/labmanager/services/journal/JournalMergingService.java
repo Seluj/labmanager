@@ -1,0 +1,229 @@
+package fr.utbm.ciad.labmanager.services.journal;
+
+import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
+import fr.utbm.ciad.labmanager.data.EntityUtils;
+import fr.utbm.ciad.labmanager.data.journal.*;
+import fr.utbm.ciad.labmanager.data.member.Person;
+import fr.utbm.ciad.labmanager.data.member.PersonComparator;
+import fr.utbm.ciad.labmanager.data.organization.ResearchOrganization;
+import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
+import fr.utbm.ciad.labmanager.data.publication.type.JournalEdition;
+import fr.utbm.ciad.labmanager.data.publication.type.JournalEditionRepository;
+import fr.utbm.ciad.labmanager.data.publication.type.JournalPaper;
+import fr.utbm.ciad.labmanager.data.publication.type.JournalPaperRepository;
+import fr.utbm.ciad.labmanager.services.AbstractEntityService;
+import fr.utbm.ciad.labmanager.services.AbstractService;
+import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
+import fr.utbm.ciad.labmanager.utils.names.JournalNameOrPublisherComparator;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+/** Service for the merging journals.
+ *
+ * @author $Author: sgalland$
+ * @author $Author: erenon$
+ * @version $Name$ $Revision$ $Date$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @Deprecated no replacement.
+ */
+@Service
+public class JournalMergingService extends AbstractEntityService<Journal> {
+
+    private static final long serialVersionUID = 1L;
+
+    private final JournalRepository journalRepository;
+
+    private final JournalService journalService;
+
+    private final JournalNameOrPublisherComparator nameComparator;
+
+    private final JournalQualityAnnualIndicatorsRepository qualityIndicatorsRepository;
+
+    private final JournalPaperRepository journalPaperRepository;
+
+    private final JournalEditionRepository journalEditionRepository;
+
+
+    /**
+     * Constructor.
+     *
+     * @param messages       the provider of messages.
+     * @param constants      the accessor to the constants.
+     * @param sessionFactory the factory of JPA session.
+     * @since 4.0
+     */
+    public JournalMergingService(MessageSourceAccessor messages, ConfigurationConstants constants, SessionFactory sessionFactory, JournalRepository journalRepository, JournalService journalService, JournalNameOrPublisherComparator nameComparator, JournalQualityAnnualIndicatorsRepository qualityIndicatorsRepository, JournalPaperRepository journalPaperRepository, JournalEditionRepository journalEditionRepository) {
+        super(messages, constants, sessionFactory);
+        this.journalRepository = journalRepository;
+        this.journalService = journalService;
+        this.nameComparator = nameComparator;
+        this.qualityIndicatorsRepository = qualityIndicatorsRepository;
+        this.journalPaperRepository = journalPaperRepository;
+        this.journalEditionRepository = journalEditionRepository;
+    }
+
+    /** Replies the duplicate journal names.
+     * The replied list contains groups of journals who have similar names and publishers.
+     *
+     * @param comparator comparator of journals that is used for sorting the groups of duplicates. If it is {@code null},
+     *      a {@link JournalComparator} is used.
+     * @param callback the callback invoked during the building.
+     * @return the duplicate journals that is finally computed.
+     * @throws Exception if a problem occurred during the building.
+     */
+    public List<Set<Journal>> getJournalDuplicates(Comparator<? super Journal> comparator, JournalMergingService.JournalDuplicateCallback callback) throws Exception {
+        // Each list represents a group of authors that could be duplicate
+        final var matchingJournals = new ArrayList<Set<Journal>>();
+
+        // Copy the list of authors into another list in order to enable its
+        // modification during the function's process
+        final var journalsList = new ArrayList<>(this.journalRepository.findAll());
+
+        final Comparator<? super Journal> theComparator = comparator == null ? EntityUtils.getPreferredJournalComparator() : comparator;
+
+        final var total = journalsList.size();
+        // Notify the callback
+        if (callback != null) {
+            callback.onDuplicate(0, 0, total);
+        }
+        var duplicateCount = 0;
+
+        for (var i = 0; i < journalsList.size() - 1; ++i) {
+            final var referenceJournal = journalsList.get(i);
+
+            final var currentMatching = new TreeSet<Journal>(theComparator);
+            currentMatching.add(referenceJournal);
+
+            final ListIterator<Journal> iterator2 = journalsList.listIterator(i + 1);
+            while (iterator2.hasNext()) {
+                final var otherJournal = iterator2.next();
+                if (this.nameComparator.isSimilar(
+                        referenceJournal.getJournalName(), referenceJournal.getPublisher(),
+                        otherJournal.getJournalName(), otherJournal.getPublisher())) {
+                    currentMatching.add(otherJournal);
+                    ++duplicateCount;
+                    // Consume the other person to avoid to be treated twice times
+                    iterator2.remove();
+                }
+            }
+            if (currentMatching.size() > 1) {
+                matchingJournals.add(currentMatching);
+            }
+            // Notify the callback
+            if (callback != null) {
+                callback.onDuplicate(i, duplicateCount, total);
+            }
+        }
+
+        return matchingJournals;
+    }
+
+    /** Merge the entities by replacing those with an old journal by those with the new journal.
+     *
+     * @param sources the list of journals to remove and replace by the target journal.
+     * @param target the target journal who should replace the source journals.
+     * @throws Exception if the merging cannot be completed.
+     */
+    public void mergeJournals(Iterable<Journal> sources, Journal target) throws Exception {
+        assert target != null;
+        assert sources != null;
+        var changed = false;
+        for (final var source : sources) {
+            if (source.getId() != target.getId()) {
+                //getLogger().info("Reassign to " + target.getAcronymOrName() + " the elements of " + source.getAcronymOrName()); //$NON-NLS-1$ //$NON-NLS-2$
+                var lchange = reassignJournalPublicationPapers(source, target);
+                lchange = reassignQualityIndicators(source, target) || lchange;
+                this.journalService.removeJournal(source.getId());
+                changed = changed || lchange;
+            }
+        }
+        if (changed) {
+            this.journalRepository.save(target);
+        }
+    }
+
+    /** Re-assign the publication papers attached to the source journal to the target journal.
+     *
+     * @param source the journal to remove and replace by the target journal.
+     * @param target the target journal which should replace the source journals.
+     * @return {@code true} if journal publication papers has changed.
+     * @throws Exception if the change cannot be completed.
+     */
+    protected boolean reassignJournalPublicationPapers(Journal source, Journal target) throws Exception {
+        var changed = false;
+
+        Set<AbstractJournalBasedPublication> sourcePapers = journalService.getPapersByJournalId(source.getId());
+        Set<AbstractJournalBasedPublication> targetPapers = journalService.getPapersByJournalId(target.getId());
+
+        for (AbstractJournalBasedPublication paper : sourcePapers) {
+            if (!targetPapers.contains(paper)) {
+                paper.setJournal(target);
+                changed = true;
+                if(paper instanceof JournalPaper) {
+                    this.journalPaperRepository.save((JournalPaper) paper);
+                } else {
+                    this.journalEditionRepository.save((JournalEdition) paper);
+                }
+            }
+        }
+        return changed;
+    }
+
+    public boolean reassignQualityIndicators(Journal source, Journal target) {
+        Map<Integer, JournalQualityAnnualIndicators> sourceIndicators = journalService.getQualityIndicatorsMap(source.getId());
+        Map<Integer, JournalQualityAnnualIndicators> targetIndicators = journalService.getQualityIndicatorsMap(target.getId());
+
+        var changed = false;
+
+        for (Integer year : sourceIndicators.keySet()) {
+            if (!targetIndicators.containsKey(year)) {
+                targetIndicators.put(year, sourceIndicators.get(year));
+            }
+        }
+
+        target.setQualityIndicators(targetIndicators);
+
+        return changed;
+    }
+
+    @Override
+    public EntityEditingContext<Journal> startEditing(Journal entity, Logger logger) {
+        return (EntityEditingContext<Journal>) new UnsupportedOperationException();
+    }
+
+    @Override
+    public EntityDeletingContext<Journal> startDeletion(Set<Journal> entities, Logger logger) {
+        return (EntityDeletingContext<Journal>) new UnsupportedOperationException();
+    }
+
+
+    /** Callback that is invoked when building the list of duplicate journals.
+     *
+     * @author $Author: sgalland$
+     * @author $Author: erenon$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 2.2
+     */
+    @FunctionalInterface
+    public interface JournalDuplicateCallback {
+
+        /** Invoked for each journal.
+         *
+         * @param index the position of the reference journal in the list of journals. It represents the progress of the treatment
+         *     of each journal.
+         * @param duplicateCount the count of discovered duplicates.
+         * @param total the total number of journals in the list.
+         * @throws Exception if there is an error during the callback treatment. This exception is forwarded to the
+         *     caller of the function that has invoked this callback.
+         */
+        void onDuplicate(int index, int duplicateCount, int total) throws Exception;
+
+    }
+}

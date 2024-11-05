@@ -19,6 +19,7 @@
 
 package fr.utbm.ciad.labmanager.data.journal;
 
+import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -50,5 +51,6 @@ public interface JournalRepository extends JpaRepository<Journal, Long>, JpaSpec
 	 */
 	@Deprecated(since = "4.0", forRemoval = true)
 	Optional<Journal> findByJournalName(String name);
+
 
 }

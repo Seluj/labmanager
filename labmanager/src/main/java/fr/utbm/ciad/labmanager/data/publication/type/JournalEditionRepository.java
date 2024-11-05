@@ -19,8 +19,11 @@
 
 package fr.utbm.ciad.labmanager.data.publication.type;
 
+import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.Set;
 
 /** JPA Repository for editions of journals and special issues.
  * 
@@ -31,6 +34,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @mavenartifactid $ArtifactId$
  */
 public interface JournalEditionRepository extends JpaRepository<JournalEdition, Long>, JpaSpecificationExecutor<JournalEdition> {
-	//
+
+    /**
+     * Find all papers associated with a specific journal.
+     *
+     * @param journalId the ID of the journal to retrieve papers for.
+     * @return a set of publications associated with the given journal.
+     */
+    Set<AbstractJournalBasedPublication> findByJournalId(Long journalId);
+
 }
 

@@ -21,6 +21,8 @@ package fr.utbm.ciad.labmanager.data.publication.type;
 
 import java.util.Set;
 
+import fr.utbm.ciad.labmanager.data.conference.Conference;
+import fr.utbm.ciad.labmanager.data.publication.AbstractConferenceBasedPublication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -40,6 +42,15 @@ public interface ConferencePaperRepository extends JpaRepository<ConferencePaper
 	 * @return the list of journal papers.
 	 */
 	Set<ConferencePaper> findAllByAuthorshipsPersonIdIn(Set<Long> personIds);
+
+	/** Replies the list of conference papers for the conference.
+	 *
+	 * @param conference the conference.
+	 * @return the list of conference papers.
+	 */
+	Set<ConferencePaper> findAllByConference(Conference conference);
+
+
 
 }
 

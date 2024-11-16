@@ -605,7 +605,7 @@ public class JournalService extends AbstractEntityService<Journal> {
 	 *
 	 * @param journalId the ID of the journal.
 	 * @return a list of quality indicators associated with the journal.
-	 */
+
 	public Map<Integer, JournalQualityAnnualIndicators> getQualityIndicatorsMap(Long journalId) {
 		List<JournalQualityAnnualIndicators> indicatorsList = this.indicatorRepository.findByJournalId(journalId);
 
@@ -615,7 +615,7 @@ public class JournalService extends AbstractEntityService<Journal> {
 						JournalQualityAnnualIndicators::getReferenceYear,
 						indicator -> indicator
 				));
-	}
+	}*/
 
 	/** Download the journal indicators for the given reference year for the Scimago platform.
 	 * This function uses the {@link ScimagoPlatform} tool for downloading the CSV file from the Scimago

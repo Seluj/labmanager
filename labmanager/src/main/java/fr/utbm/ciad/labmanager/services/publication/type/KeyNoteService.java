@@ -22,6 +22,7 @@ package fr.utbm.ciad.labmanager.services.publication.type;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.base.Strings;
 import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
@@ -190,6 +191,10 @@ public class KeyNoteService extends AbstractPublicationTypeService {
 
 			this.repository.save(res.get());
 		}
+	}
+
+	public Set<KeyNote> getKeyNoteByConference(Conference conference) {
+		return this.repository.findAllByConference(conference);
 	}
 
 	/** Remove the keynote from the database.

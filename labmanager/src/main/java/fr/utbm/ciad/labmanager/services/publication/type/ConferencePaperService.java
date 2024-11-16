@@ -250,4 +250,8 @@ public class ConferencePaperService extends AbstractPublicationTypeService {
 		this.repository.deleteById(Long.valueOf(identifier));
 	}
 
+	public Set<ConferencePaper> getConferencePapersByConference(Conference conference) {
+		return this.repository.findAllByConference(conference);
+	}
+
 }

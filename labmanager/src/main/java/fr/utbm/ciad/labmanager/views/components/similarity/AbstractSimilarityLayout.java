@@ -1,24 +1,10 @@
 package fr.utbm.ciad.labmanager.views.components.similarity;
 
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
-import com.vaadin.flow.data.provider.Query;
-import com.vaadin.flow.data.renderer.NativeButtonRenderer;
-import fr.utbm.ciad.labmanager.data.member.Person;
-import fr.utbm.ciad.labmanager.data.organization.ResearchOrganization;
-import fr.utbm.ciad.labmanager.services.AbstractService;
-import fr.utbm.ciad.labmanager.views.components.similarity.buttons.AbstractSimilarityNativeButtonRenderer;
-import fr.utbm.ciad.labmanager.views.components.similarity.buttons.PersonSimilarityNativeButtonRenderer;
 
 import java.util.*;
 
@@ -81,12 +67,11 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
             Iterator<Set<T>> iterator = similarityGroups.iterator();
             while(iterator.hasNext()) {
                 Set<T> group = iterator.next();
-                int size = group.size()*68;
                 Grid<T> grid = new Grid<>();
                 grid.setItems(group);
                 setGridHeaders(grid);
                 grid.addColumn(createButton(grid, grids)).setHeader("Ultra Merge");
-                grid.setHeight(size + "px");
+                grid.setAllRowsVisible(true);
                 grids.add(grid);
                 add(grid);
             }
@@ -96,5 +81,8 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
         }
 
 
+    }
+
+    public static class ConferenceSimilarityLayout {
     }
 }

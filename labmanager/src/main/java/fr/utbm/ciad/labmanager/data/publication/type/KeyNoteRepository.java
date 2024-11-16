@@ -19,8 +19,12 @@
 
 package fr.utbm.ciad.labmanager.data.publication.type;
 
+import fr.utbm.ciad.labmanager.data.conference.Conference;
+import fr.utbm.ciad.labmanager.data.publication.AbstractConferenceBasedPublication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.Set;
 
 /** JPA Repository for keynote speaks.
  * 
@@ -31,6 +35,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @mavenartifactid $ArtifactId$
  */
 public interface KeyNoteRepository extends JpaRepository<KeyNote, Long>, JpaSpecificationExecutor<KeyNote> {
-	//
+
+    /** Replies the list of keynotes for the conference.
+     *
+     * @param conference the conference.
+     * @return the list of keynotes.
+     */
+    Set<KeyNote> findAllByConference(Conference conference);
 }
 

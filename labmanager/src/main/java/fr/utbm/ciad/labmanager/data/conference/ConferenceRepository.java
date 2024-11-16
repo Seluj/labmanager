@@ -58,4 +58,7 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long>, J
 	@Query("SELECT DISTINCT c FROM Conference c WHERE c.acronym = :name OR c.name = :name")
 	Set<Conference> findDistinctByAcronymOrName(String name);
 
+	Set<Conference> findByEnclosingConference(Conference conference);
+
+
 }

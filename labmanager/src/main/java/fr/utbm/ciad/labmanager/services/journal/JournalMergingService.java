@@ -77,10 +77,10 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
      * @throws Exception if a problem occurred during the building.
      */
     public List<Set<Journal>> getJournalDuplicates(Comparator<? super Journal> comparator, JournalMergingService.JournalDuplicateCallback callback) throws Exception {
-        // Each list represents a group of authors that could be duplicate
+        // Each list represents a group of journal that could be duplicate
         final var matchingJournals = new ArrayList<Set<Journal>>();
 
-        // Copy the list of authors into another list in order to enable its
+        // Copy the list of journals into another list in order to enable its
         // modification during the function's process
         final var journalsList = new ArrayList<>(this.journalRepository.findAll());
 
@@ -99,6 +99,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
             final var currentMatching = new TreeSet<Journal>(theComparator);
             currentMatching.add(referenceJournal);
 
+            this.nameComparator.setSimilarityLevel(0.9);
             final ListIterator<Journal> iterator2 = journalsList.listIterator(i + 1);
             while (iterator2.hasNext()) {
                 final var otherJournal = iterator2.next();
@@ -107,7 +108,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
                         otherJournal.getJournalName(), otherJournal.getPublisher())) {
                     currentMatching.add(otherJournal);
                     ++duplicateCount;
-                    // Consume the other person to avoid to be treated twice times
+
                     iterator2.remove();
                 }
             }
@@ -137,7 +138,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
             if (source.getId() != target.getId()) {
                 //getLogger().info("Reassign to " + target.getAcronymOrName() + " the elements of " + source.getAcronymOrName()); //$NON-NLS-1$ //$NON-NLS-2$
                 var lchange = reassignJournalPublicationPapers(source, target);
-                lchange = reassignQualityIndicators(source, target) || lchange;
+                //lchange = reassignQualityIndicators(source, target) || lchange;
                 this.journalService.removeJournal(source.getId());
                 changed = changed || lchange;
             }
@@ -174,6 +175,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
         return changed;
     }
 
+    /*
     public boolean reassignQualityIndicators(Journal source, Journal target) {
         Map<Integer, JournalQualityAnnualIndicators> sourceIndicators = journalService.getQualityIndicatorsMap(source.getId());
         Map<Integer, JournalQualityAnnualIndicators> targetIndicators = journalService.getQualityIndicatorsMap(target.getId());
@@ -189,7 +191,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
         target.setQualityIndicators(targetIndicators);
 
         return changed;
-    }
+    }*/
 
     @Override
     public EntityEditingContext<Journal> startEditing(Journal entity, Logger logger) {

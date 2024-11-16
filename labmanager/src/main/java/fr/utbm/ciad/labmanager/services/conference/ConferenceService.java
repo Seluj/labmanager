@@ -358,7 +358,6 @@ public class ConferenceService extends AbstractEntityService<Conference> {
 	 * @param identifier the identifier of the conference to be removed.
 	 * @Deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
 	@Transactional
 	public void removeConference(long identifier) {
 		final Long id = Long.valueOf(identifier);
@@ -583,6 +582,15 @@ public class ConferenceService extends AbstractEntityService<Conference> {
 			}
 		}
 		progress0.end();
+	}
+
+	/** Replies the conference that is enclosing the given conference.
+	 *
+	 * @param conference the conference.
+	 * @return the enclosing conference or {@code null} if the given conference is not enclosed by another conference.
+	 */
+	public Set<Conference> getEnclosedConferences(Conference source) {
+		return this.conferenceRepository.findByEnclosingConference(source);
 	}
 
 	@Override

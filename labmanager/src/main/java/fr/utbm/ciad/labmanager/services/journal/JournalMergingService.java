@@ -3,17 +3,12 @@ package fr.utbm.ciad.labmanager.services.journal;
 import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
 import fr.utbm.ciad.labmanager.data.EntityUtils;
 import fr.utbm.ciad.labmanager.data.journal.*;
-import fr.utbm.ciad.labmanager.data.member.Person;
-import fr.utbm.ciad.labmanager.data.member.PersonComparator;
-import fr.utbm.ciad.labmanager.data.organization.ResearchOrganization;
 import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
 import fr.utbm.ciad.labmanager.data.publication.type.JournalEdition;
 import fr.utbm.ciad.labmanager.data.publication.type.JournalEditionRepository;
 import fr.utbm.ciad.labmanager.data.publication.type.JournalPaper;
 import fr.utbm.ciad.labmanager.data.publication.type.JournalPaperRepository;
 import fr.utbm.ciad.labmanager.services.AbstractEntityService;
-import fr.utbm.ciad.labmanager.services.AbstractService;
-import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
 import fr.utbm.ciad.labmanager.utils.names.JournalNameOrPublisherComparator;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -21,6 +16,8 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /** Service for the merging journals.
  *
@@ -42,8 +39,6 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
 
     private final JournalNameOrPublisherComparator nameComparator;
 
-    private final JournalQualityAnnualIndicatorsRepository qualityIndicatorsRepository;
-
     private final JournalPaperRepository journalPaperRepository;
 
     private final JournalEditionRepository journalEditionRepository;
@@ -62,7 +57,6 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
         this.journalRepository = journalRepository;
         this.journalService = journalService;
         this.nameComparator = nameComparator;
-        this.qualityIndicatorsRepository = qualityIndicatorsRepository;
         this.journalPaperRepository = journalPaperRepository;
         this.journalEditionRepository = journalEditionRepository;
     }
@@ -99,7 +93,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
             final var currentMatching = new TreeSet<Journal>(theComparator);
             currentMatching.add(referenceJournal);
 
-            this.nameComparator.setSimilarityLevel(0.9);
+            this.nameComparator.setSimilarityLevel(0.8);
             final ListIterator<Journal> iterator2 = journalsList.listIterator(i + 1);
             while (iterator2.hasNext()) {
                 final var otherJournal = iterator2.next();
@@ -138,7 +132,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
             if (source.getId() != target.getId()) {
                 //getLogger().info("Reassign to " + target.getAcronymOrName() + " the elements of " + source.getAcronymOrName()); //$NON-NLS-1$ //$NON-NLS-2$
                 var lchange = reassignJournalPublicationPapers(source, target);
-                //lchange = reassignQualityIndicators(source, target) || lchange;
+                lchange = reassignJournalQualityIndicators(source, target) || lchange;
                 this.journalService.removeJournal(source.getId());
                 changed = changed || lchange;
             }
@@ -175,23 +169,44 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
         return changed;
     }
 
-    /*
-    public boolean reassignQualityIndicators(Journal source, Journal target) {
-        Map<Integer, JournalQualityAnnualIndicators> sourceIndicators = journalService.getQualityIndicatorsMap(source.getId());
-        Map<Integer, JournalQualityAnnualIndicators> targetIndicators = journalService.getQualityIndicatorsMap(target.getId());
 
+    /** Re-assign the quality indicators attached to the source journal to the target journal. The function checks if the
+     * target journal already has the quality indicators of the source journal.
+     *
+     * @param source the journal to remove and replace by the target journal.
+     * @param target the target journal which should replace the source journals.
+     * @return {@code true} if journal quality indicators has changed.
+     */
+    public boolean reassignJournalQualityIndicators(Journal source, Journal target) {
         var changed = false;
+        List<JournalQualityAnnualIndicators> indicatorsSource = journalService.getJournalQualityIndicatorsByJournalId(source.getId());
+        List<JournalQualityAnnualIndicators> indicatorsTarget = journalService.getJournalQualityIndicatorsByJournalId(target.getId());
 
-        for (Integer year : sourceIndicators.keySet()) {
-            if (!targetIndicators.containsKey(year)) {
-                targetIndicators.put(year, sourceIndicators.get(year));
+        Map<Integer, JournalQualityAnnualIndicators> indicatorsMap = indicatorsTarget.stream()
+                .collect(Collectors.toMap(JournalQualityAnnualIndicators::getReferenceYear, Function.identity()));
+
+        for (JournalQualityAnnualIndicators indicatorSource : indicatorsSource) {
+            Integer referenceYear = indicatorSource.getReferenceYear();
+
+            if (!indicatorsMap.containsKey(referenceYear)) {
+
+                Map<Integer, JournalQualityAnnualIndicators> sample = new TreeMap<>();
+                sample.put(referenceYear, indicatorSource);
+
+                target.setQualityIndicators(sample);
+
+                changed = true;
+
             }
         }
 
-        target.setQualityIndicators(targetIndicators);
+        if (changed) {
+            journalRepository.save(target);
+        }
 
         return changed;
-    }*/
+    }
+
 
     @Override
     public EntityEditingContext<Journal> startEditing(Journal entity, Logger logger) {

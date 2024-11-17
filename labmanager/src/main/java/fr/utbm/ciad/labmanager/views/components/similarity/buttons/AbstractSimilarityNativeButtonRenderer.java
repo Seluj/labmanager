@@ -55,10 +55,8 @@ public abstract class AbstractSimilarityNativeButtonRenderer<T> extends NativeBu
 
                 confirmationDialog.add(buildCheckboxMap(entityInGrid));
 
-                // Bouton pour confirmer l'action
                 Button confirmButton = new Button(getTranslation("views.confirm"), confirmEvent -> {
                     try {
-                        // Créer une liste des personnes sélectionnées
                         List<T> selectedEntities= new ArrayList<>();
                         for (Map.Entry<T, Checkbox> entry : checkboxMap.entrySet()) {
                             if (entry.getValue().getValue()) { // Si la checkbox est cochée

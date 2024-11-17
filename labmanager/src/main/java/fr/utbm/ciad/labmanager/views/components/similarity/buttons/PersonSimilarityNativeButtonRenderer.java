@@ -50,7 +50,6 @@ public class PersonSimilarityNativeButtonRenderer extends AbstractSimilarityNati
         VerticalLayout checkboxLayout = new VerticalLayout();
         Map<Person, Checkbox> checkboxMap = new HashMap<>();
 
-        // Ajouter une checkbox pour chaque personne dans la liste
         for (Person p : entityInGrid) {
             Checkbox checkbox = new Checkbox(p.getFullName());
             checkboxLayout.add(checkbox);

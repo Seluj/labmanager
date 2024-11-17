@@ -24,6 +24,7 @@ public abstract class AbstractConferenceNameComparator extends AbstractNormaliza
 		final var similarityComputer = getStringSimilarityComputer();
         final var s1 = similarityComputer.similarity(normedAcronym1, normedAcronym2);
         final var s2 = similarityComputer.similarity(normedName1, normedName2);
+
         return Math.max(s1, s2);
     }
 

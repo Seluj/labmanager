@@ -49,7 +49,6 @@ public class OrganizationSimilarityNativeButtonRenderer extends AbstractSimilari
         VerticalLayout checkboxLayout = new VerticalLayout();
         Map<ResearchOrganization, Checkbox> checkboxMap = new HashMap<>();
 
-        // Ajouter une checkbox pour chaque personne dans la liste
         for (ResearchOrganization o : entityInGrid) {
             Checkbox checkbox = new Checkbox(o.getName());
             checkboxLayout.add(checkbox);

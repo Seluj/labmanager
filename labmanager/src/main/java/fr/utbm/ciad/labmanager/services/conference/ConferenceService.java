@@ -44,6 +44,7 @@ import fr.utbm.ciad.labmanager.data.conference.Conference;
 import fr.utbm.ciad.labmanager.data.conference.ConferenceQualityAnnualIndicators;
 import fr.utbm.ciad.labmanager.data.conference.ConferenceQualityAnnualIndicatorsRepository;
 import fr.utbm.ciad.labmanager.data.conference.ConferenceRepository;
+import fr.utbm.ciad.labmanager.data.journal.JournalQualityAnnualIndicators;
 import fr.utbm.ciad.labmanager.services.AbstractEntityService;
 import fr.utbm.ciad.labmanager.services.DeletionStatus;
 import fr.utbm.ciad.labmanager.utils.HasAsynchronousUploadService;
@@ -72,6 +73,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author $Author: anoubli$
  * @author $Author: bpdj$
  * @author $Author: pgoubet$
+ * @author $Author: erenon$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -582,6 +584,15 @@ public class ConferenceService extends AbstractEntityService<Conference> {
 			}
 		}
 		progress0.end();
+	}
+
+	/** Replies the conference quality indicators for the given conference identifier.
+	 *
+	 * @param conferenceId the identifier of the conference.
+	 * @return the quality indicators.
+	 */
+	public List<ConferenceQualityAnnualIndicators> getConferenceQualityIndicatorsByJournalId(Long conferenceId) {
+		return this.indicatorsRepository.findByConferenceId(conferenceId);
 	}
 
 	/** Replies the conference that is enclosing the given conference.

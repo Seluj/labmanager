@@ -21,6 +21,8 @@ package fr.utbm.ciad.labmanager.data.journal;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -28,10 +30,20 @@ import java.util.List;
  * 
  * @author $Author: sgalland$
  * @author $Author: tmartine$
+ * @author $Author: erenon$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public interface JournalQualityAnnualIndicatorsRepository extends JpaRepository<JournalQualityAnnualIndicators, Long>, JpaSpecificationExecutor<JournalQualityAnnualIndicators> {
+
+    /**
+     * Replies the quality indicators of the journal with the given identifier.
+     *
+     * @param journalId the identifier of the journal.
+     * @return the quality indicators.
+     */
+    @Query("SELECT qi FROM Journal j JOIN j.qualityIndicators qi WHERE j.id = :journalId")
+    List<JournalQualityAnnualIndicators> findByJournalId(@Param("journalId") Long journalId);
 
 }

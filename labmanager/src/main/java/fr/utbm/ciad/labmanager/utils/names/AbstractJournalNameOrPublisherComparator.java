@@ -19,13 +19,14 @@ public abstract class AbstractJournalNameOrPublisherComparator extends AbstractN
     public double getSimilarity(String name1, String publisher1, String name2, String publisher2) {
 		final var normedName1 = normalizeString(name1);
 		final var normedPublisher1 = normalizeString(publisher1);
-		final var normedName2 = name1 != name2 ? normalizeString(name2) : normedName1;
-		final var normedPublisher2 = publisher1 != publisher2 ? normalizeString(publisher2) : normedPublisher1;
+		final var normedName2 = normalizeString(name2);
+		final var normedPublisher2 = normalizeString(publisher2);
 
 		final var similarityComputer = getStringSimilarityComputer();
         final var s1 = similarityComputer.similarity(normedName1, normedName2);
         final var s2 = similarityComputer.similarity(normedPublisher1, normedPublisher2);
-        return Math.max(s1, s2);
+
+        return s1;
     }
 
 }

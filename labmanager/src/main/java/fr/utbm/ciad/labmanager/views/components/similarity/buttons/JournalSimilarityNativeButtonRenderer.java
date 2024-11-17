@@ -48,7 +48,6 @@ public class JournalSimilarityNativeButtonRenderer extends AbstractSimilarityNat
         VerticalLayout checkboxLayout = new VerticalLayout();
         Map<Journal, Checkbox> checkboxMap = new HashMap<>();
 
-        // Ajouter une checkbox pour chaque personne dans la liste
         for (Journal j : entityInGrid) {
             Checkbox checkbox = new Checkbox(j.getJournalName());
             checkboxLayout.add(checkbox);

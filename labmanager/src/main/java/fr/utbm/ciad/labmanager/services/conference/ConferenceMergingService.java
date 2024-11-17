@@ -3,6 +3,7 @@ package fr.utbm.ciad.labmanager.services.conference;
 import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
 import fr.utbm.ciad.labmanager.data.EntityUtils;
 import fr.utbm.ciad.labmanager.data.conference.Conference;
+import fr.utbm.ciad.labmanager.data.conference.ConferenceQualityAnnualIndicators;
 import fr.utbm.ciad.labmanager.data.conference.ConferenceRepository;
 import fr.utbm.ciad.labmanager.data.journal.*;
 import fr.utbm.ciad.labmanager.data.publication.AbstractConferenceBasedPublication;
@@ -21,6 +22,8 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /** Service for the merging conferences.
  *
@@ -108,6 +111,7 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
             currentMatching.add(referenceConference);
 
             final ListIterator<Conference> iterator2 = conferencesList.listIterator(i + 1);
+            nameComparator.setSimilarityLevel(0.9);
             while (iterator2.hasNext()) {
                 final var otherConference = iterator2.next();
                 if (this.nameComparator.isSimilar(
@@ -146,7 +150,7 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
 
                 var lchange = reassignConferencePublicationPapers(source, target);
                 lchange = reassignSuperConference(source, target) || lchange;
-
+                lchange = reassignConferenceQualityIndicators(source, target) || lchange;
 
                 this.conferenceService.removeConference(source.getId());
                 changed = changed || lchange ;
@@ -157,6 +161,12 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
         }
     }
 
+    /** Reassign the conference publication papers of the source to the target.
+     *
+     * @param source the source conference to remove and replace by the target conference.
+     * @param target the target conference who should replace the source conference.
+     * @throws Exception if the merging cannot be completed.
+     */
     protected boolean reassignConferencePublicationPapers(Conference source, Conference target) throws Exception {
         boolean changed = false;
 
@@ -181,6 +191,12 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
         return changed;
     }
 
+    /** Reassign the conferences under the source to the target.
+     *
+     * @param source the source conference to remove and replace by the target conference.
+     * @param target the target conference who should replace the source conference.
+     * @throws Exception if the merging cannot be completed.
+     */
     protected boolean reassignSuperConference(Conference source, Conference target) throws Exception {
         boolean changed = false;
 
@@ -199,23 +215,42 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
     }
 
 
-    /*
-    public boolean reassignQualityIndicators(Journal source, Journal target) {
-        Map<Integer, JournalQualityAnnualIndicators> sourceIndicators = journalService.getQualityIndicatorsMap(source.getId());
-        Map<Integer, JournalQualityAnnualIndicators> targetIndicators = journalService.getQualityIndicatorsMap(target.getId());
-
+    /** Reassign the conference quality indicators of the source to the target. The function checks if the target conference already
+     *  has the quality indicators of the source conference.
+     *
+     * @param source the source conference to remove and replace by the target conference.
+     * @param target the target conference who should replace the source conference.
+     * @throws Exception if the merging cannot be completed.
+     */
+    public boolean reassignConferenceQualityIndicators(Conference source, Conference target) {
         var changed = false;
+        List<ConferenceQualityAnnualIndicators> indicatorsSource = conferenceService.getConferenceQualityIndicatorsByJournalId(source.getId());
+        List<ConferenceQualityAnnualIndicators> indicatorsTarget = conferenceService.getConferenceQualityIndicatorsByJournalId(target.getId());
 
-        for (Integer year : sourceIndicators.keySet()) {
-            if (!targetIndicators.containsKey(year)) {
-                targetIndicators.put(year, sourceIndicators.get(year));
+        Map<Integer, ConferenceQualityAnnualIndicators> indicatorsMap = indicatorsTarget.stream()
+                .collect(Collectors.toMap(ConferenceQualityAnnualIndicators::getReferenceYear, Function.identity()));
+
+        for (ConferenceQualityAnnualIndicators indicatorSource : indicatorsSource) {
+            Integer referenceYear = indicatorSource.getReferenceYear();
+
+            if (!indicatorsMap.containsKey(referenceYear)) {
+
+                Map<Integer, ConferenceQualityAnnualIndicators> sample = new TreeMap<>();
+                sample.put(referenceYear, indicatorSource);
+
+                target.setQualityIndicators(sample);
+
+                changed = true;
+
             }
         }
 
-        target.setQualityIndicators(targetIndicators);
+        if (changed) {
+            conferenceRepository.save(target);
+        }
 
         return changed;
-    }*/
+    }
 
     @Override
     public EntityEditingContext<Conference> startEditing(Conference entity, Logger logger) {

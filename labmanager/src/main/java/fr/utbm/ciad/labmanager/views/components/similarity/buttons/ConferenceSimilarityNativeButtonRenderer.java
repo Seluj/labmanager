@@ -52,7 +52,6 @@ public class ConferenceSimilarityNativeButtonRenderer extends AbstractSimilarity
         VerticalLayout checkboxLayout = new VerticalLayout();
         Map<Conference, Checkbox> checkboxMap = new HashMap<>();
 
-        // Ajouter une checkbox pour chaque personne dans la liste
         for (Conference c : entityInGrid) {
                 Checkbox checkbox = new Checkbox(c.getName());
             checkboxLayout.add(checkbox);

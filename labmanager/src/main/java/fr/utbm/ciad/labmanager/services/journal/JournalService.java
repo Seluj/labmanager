@@ -957,6 +957,10 @@ public class JournalService extends AbstractEntityService<Journal> {
 		}
 	}
 
+	public List<JournalQualityAnnualIndicators> getJournalQualityIndicatorsByJournalId(Long journalId) {
+		return this.indicatorRepository.findByJournalId(journalId);
+	}
+
 	@Override
 	public EntityEditingContext<Journal> startEditing(Journal journal, Logger logger) {
 		assert journal != null;

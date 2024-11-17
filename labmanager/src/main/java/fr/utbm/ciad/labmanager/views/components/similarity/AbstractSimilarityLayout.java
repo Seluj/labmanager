@@ -20,14 +20,14 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
 
     protected List<Grid<T>> grids;
 
+
     /** Constructor.
      */
     public AbstractSimilarityLayout() {
         grids = new java.util.ArrayList<>();
 
         setWidthFull();
-        //TODO : Put translation
-        Button button = new Button("Lancer la vérification");
+        Button button = new Button(getTranslation("views.merge.button"));
 
         ProgressBar progressBar = new ProgressBar();
         progressBar.setIndeterminate(true);
@@ -70,7 +70,7 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
                 Grid<T> grid = new Grid<>();
                 grid.setItems(group);
                 setGridHeaders(grid);
-                grid.addColumn(createButton(grid, grids)).setHeader("Ultra Merge");
+                grid.addColumn(createButton(grid, grids)).setHeader(getTranslation("views.merge"));
                 grid.setAllRowsVisible(true);
                 grids.add(grid);
                 add(grid);
@@ -83,6 +83,4 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
 
     }
 
-    public static class ConferenceSimilarityLayout {
-    }
 }

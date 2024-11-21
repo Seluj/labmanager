@@ -70,7 +70,8 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
      * @return the duplicate journals that is finally computed.
      * @throws Exception if a problem occurred during the building.
      */
-    public List<Set<Journal>> getJournalDuplicates(Comparator<? super Journal> comparator, JournalMergingService.JournalDuplicateCallback callback) throws Exception {
+    public List<Set<Journal>> getJournalDuplicates(Comparator<? super Journal> comparator, JournalMergingService.JournalDuplicateCallback callback,
+                                                   double threshold) throws Exception {
         // Each list represents a group of journal that could be duplicate
         final var matchingJournals = new ArrayList<Set<Journal>>();
 
@@ -87,6 +88,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
         }
         var duplicateCount = 0;
 
+        nameComparator.setSimilarityLevel(threshold);
         for (var i = 0; i < journalsList.size() - 1; ++i) {
             final var referenceJournal = journalsList.get(i);
 

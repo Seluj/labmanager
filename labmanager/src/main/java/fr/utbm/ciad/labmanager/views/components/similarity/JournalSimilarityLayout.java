@@ -28,10 +28,10 @@ public class JournalSimilarityLayout extends AbstractSimilarityLayout<Journal> {
     }
 
     @Override
-    public List<Set<Journal>> getDuplicates() {
+    public List<Set<Journal>> getDuplicates(double threshold) {
         List<Set<Journal>> journals = new ArrayList<>();
         try {
-            journals = journalMergingService.getJournalDuplicates(null, null);
+            journals = journalMergingService.getJournalDuplicates(null, null, threshold);
         } catch (Exception e) {
             e.printStackTrace();
         }

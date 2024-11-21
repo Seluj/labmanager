@@ -18,11 +18,14 @@ public interface SimilarityLayout<T> {
 
     /** Create the grids.
      */
-    void createGrids();
+    void createGrids(double threshold);
 
     /** Get the entity duplicates.
+     *
+     * @param threshold the threshold
+     * @return the duplicates
      */
-    List<Set<T>> getDuplicates();
+    List<Set<T>> getDuplicates(double threshold);
 
     /** Set the grid headers.
      */

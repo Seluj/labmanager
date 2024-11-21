@@ -115,7 +115,9 @@ public class OrganizationMergingService extends AbstractEntityService<ResearchOr
 	 * @return the duplicate persons that is finally computed.
 	 * @throws Exception if a problem occurred during the building.
 	 */
-	public List<Set<ResearchOrganization>> getOrganizationDuplicates(Comparator<? super ResearchOrganization> comparator, OrganizationDuplicateCallback callback) throws Exception {
+	public List<Set<ResearchOrganization>> getOrganizationDuplicates(Comparator<? super ResearchOrganization> comparator,
+																	 OrganizationDuplicateCallback callback,
+																	 double threshold) throws Exception {
 		// Each list represents a group of organizations that could be duplicate
 		final var matchingOrganizations = new ArrayList<Set<ResearchOrganization>>();
 
@@ -131,7 +133,8 @@ public class OrganizationMergingService extends AbstractEntityService<ResearchOr
 			callback.onDuplicate(0, 0, total);
 		}
 		int duplicateCount = 0;
-		
+
+		nameComparator.setSimilarityLevel(threshold);
 		for (var i = 0; i < organizationsList.size() - 1; ++i) {
 			final var referenceOrganization = organizationsList.get(i);
 

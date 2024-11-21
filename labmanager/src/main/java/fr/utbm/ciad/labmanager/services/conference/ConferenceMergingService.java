@@ -87,7 +87,8 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
      * @return the duplicate conferences that is finally computed.
      * @throws Exception if a problem occurred during the building.
      */
-    public List<Set<Conference>> getConferenceDuplicates(Comparator<? super Conference> comparator, ConferenceMergingService.ConferenceDuplicateCallback callback) throws Exception {
+    public List<Set<Conference>> getConferenceDuplicates(Comparator<? super Conference> comparator, ConferenceMergingService.ConferenceDuplicateCallback callback,
+                                                         double threshold) throws Exception {
         // Each list represents a group of conference that could be duplicate
         final var matchingConferences = new ArrayList<Set<Conference>>();
 
@@ -103,7 +104,7 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
             callback.onDuplicate(0, 0, total);
         }
         var duplicateCount = 0;
-
+        nameComparator.setSimilarityLevel(threshold);
         for (var i = 0; i < conferencesList.size() - 1; ++i) {
             final var referenceConference = conferencesList.get(i);
 
@@ -111,7 +112,6 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
             currentMatching.add(referenceConference);
 
             final ListIterator<Conference> iterator2 = conferencesList.listIterator(i + 1);
-            nameComparator.setSimilarityLevel(0.9);
             while (iterator2.hasNext()) {
                 final var otherConference = iterator2.next();
                 if (this.nameComparator.isSimilar(

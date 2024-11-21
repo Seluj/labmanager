@@ -38,14 +38,13 @@ public class OrganizationSimilarityLayout extends AbstractSimilarityLayout<Resea
 
     }
 
-
     /** Get the entity duplicates.
      */
     @Override
-    public List<Set<ResearchOrganization>> getDuplicates() {
+    public List<Set<ResearchOrganization>> getDuplicates(double threshold) {
         List<Set<ResearchOrganization>> researchOrganizations = new ArrayList<>();
         try {
-            researchOrganizations = organizationMergingService.getOrganizationDuplicates(null, null);
+            researchOrganizations = organizationMergingService.getOrganizationDuplicates(null, null, threshold);
         } catch (Exception e) {
             e.printStackTrace();
         }

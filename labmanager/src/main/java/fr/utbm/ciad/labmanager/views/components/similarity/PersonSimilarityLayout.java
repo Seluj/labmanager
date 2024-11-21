@@ -34,10 +34,10 @@ public class PersonSimilarityLayout extends AbstractSimilarityLayout<Person> {
     }
 
     @Override
-    public List<Set<Person>> getDuplicates() {
+    public List<Set<Person>> getDuplicates(double threshold) {
         List<Set<Person>> persons = new ArrayList<>();
         try {
-            persons = personMergingService.getPersonDuplicates(null, null);
+            persons = personMergingService.getPersonDuplicates(null, null, threshold);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -46,6 +46,7 @@ import fr.utbm.ciad.labmanager.utils.names.JournalNameOrPublisherComparator;
 import fr.utbm.ciad.labmanager.utils.names.OrganizationNameComparator;
 import fr.utbm.ciad.labmanager.utils.names.PersonNameComparator;
 import fr.utbm.ciad.labmanager.views.appviews.MainLayout;
+import fr.utbm.ciad.labmanager.views.components.addons.slider.SingleSlider;
 import fr.utbm.ciad.labmanager.views.components.similarity.ConferenceSimilarityLayout;
 import fr.utbm.ciad.labmanager.views.components.similarity.JournalSimilarityLayout;
 import fr.utbm.ciad.labmanager.views.components.similarity.OrganizationSimilarityLayout;
@@ -84,6 +85,7 @@ public class DatabaseCheckSimilarityView extends VerticalLayout implements HasDy
                                        @Autowired JournalNameOrPublisherComparator journalNameOrPublisherComparator,
                                        @Autowired ConferenceMergingService conferenceMergingService,
                                        @Autowired ConferenceNameComparator conferenceNameComparator) {
+
         tabSheet = new TabSheet();
         tabSheet.setWidthFull();
         PersonSimilarityLayout personSimilarityLayout = new PersonSimilarityLayout(personMergingService, personNameComparator);

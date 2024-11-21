@@ -143,7 +143,8 @@ public class PersonMergingService extends AbstractService {
 	 * @return the duplicate persons that is finally computed.
 	 * @throws Exception if a problem occurred during the building.
 	 */
-	public List<Set<Person>> getPersonDuplicates(Comparator<? super Person> comparator, PersonDuplicateCallback callback) throws Exception {
+	public List<Set<Person>> getPersonDuplicates(Comparator<? super Person> comparator, PersonDuplicateCallback callback,
+												 double threshold) throws Exception {
 		// Each list represents a group of authors that could be duplicate
 		final var matchingAuthors = new ArrayList<Set<Person>>();
 
@@ -159,7 +160,8 @@ public class PersonMergingService extends AbstractService {
 			callback.onDuplicate(0, 0, total);
 		}
 		var duplicateCount = 0;
-		
+
+		nameComparator.setSimilarityLevel(threshold);
 		for (var i = 0; i < authorsList.size() - 1; ++i) {
 			final var referencePerson = authorsList.get(i);
 

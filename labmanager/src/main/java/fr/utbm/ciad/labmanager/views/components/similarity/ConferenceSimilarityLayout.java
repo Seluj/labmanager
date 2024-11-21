@@ -46,10 +46,10 @@ public class ConferenceSimilarityLayout extends AbstractSimilarityLayout<Confere
     /** Get the entity duplicates.
      */
     @Override
-    public List<Set<Conference>> getDuplicates() {
+    public List<Set<Conference>> getDuplicates(double threshold) {
         List<Set<Conference>> conferences = new ArrayList<>();
         try {
-            conferences = conferenceMergingService.getConferenceDuplicates(null, null);
+            conferences = conferenceMergingService.getConferenceDuplicates(null, null, threshold);
         } catch (Exception e) {
             e.printStackTrace();
         }

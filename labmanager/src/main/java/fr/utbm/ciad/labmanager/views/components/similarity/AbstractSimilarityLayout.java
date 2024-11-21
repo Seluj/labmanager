@@ -3,8 +3,10 @@ package fr.utbm.ciad.labmanager.views.components.similarity;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
+import fr.utbm.ciad.labmanager.views.components.addons.slider.SingleSlider;
 
 import java.util.*;
 
@@ -27,7 +29,11 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
         grids = new java.util.ArrayList<>();
 
         setWidthFull();
+
+        HorizontalLayout headLayout = new HorizontalLayout();
+
         Button button = new Button(getTranslation("views.merge.button"));
+        SingleSlider slider = new SingleSlider();
 
         ProgressBar progressBar = new ProgressBar();
         progressBar.setIndeterminate(true);
@@ -39,7 +45,7 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
                 try {
 
                     getUI().ifPresent(ui -> ui.access(() -> {
-                        createGrids();
+                        createGrids(slider.getCurrentValue());
 
                         progressBar.setVisible(false);
 
@@ -53,17 +59,23 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
 
         });
 
-        add(button);
+        headLayout.add(button);
+        headLayout.add(slider);
+        add(headLayout);
         add(progressBar);
     }
 
 
     /** Create the grids. Calls the service to get the duplicates and creates a grid for each group.
+     *
+     * @param threshold the threshold
      */
-    public void createGrids() {
+    public void createGrids(double threshold) {
 
+
+        grids.forEach(this::remove);
         try {
-            List<Set<T>> similarityGroups = getDuplicates();
+            List<Set<T>> similarityGroups = getDuplicates(threshold);
             Iterator<Set<T>> iterator = similarityGroups.iterator();
             while(iterator.hasNext()) {
                 Set<T> group = iterator.next();

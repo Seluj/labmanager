@@ -236,7 +236,8 @@ public class PersonMergingService extends AbstractService {
 		for (final var source : sources) {
 			if (source.getId() != target.getId()) {
 				//getLogger().info("Reassign to " + target.getFullName() + " the elements of " + source.getFullName()); //$NON-NLS-1$ //$NON-NLS-2$
-				var lchange = reassignPublicationsV2(source, target);
+				var lchange = reassignPersonProperties(source, target);
+				lchange = reassignPublicationsV2(source, target);
 				lchange = reassignOrganizationMemberships(source, target) || lchange;
 				lchange = reassignJuryMemberships(source, target) || lchange;
 				lchange = reassignSupervisions(source, target) || lchange;
@@ -279,9 +280,184 @@ public class PersonMergingService extends AbstractService {
 		return changed;
 	}
 
+	/** Re-assign the properties attached to the source person to the target person. There are attached only if
+	 * the target person has null properties.
+	 *
+	 * @param source the personn to remove and replace by the target person.
+	 * @param target the target person which should replace the source person.
+	 * @return {@code true} if person properties has changed.
+	 * @throws Exception if the change cannot be completed.
+	 */
+	protected boolean reassignPersonProperties(Person source, Person target){
+
+		boolean changed = false;
+
+		if (target.getFirstName() == null && source.getFirstName() != null) {
+			target.setFirstName(source.getFirstName());
+			changed = true;
+		}
+
+		if (target.getLastName() == null && source.getLastName() != null) {
+			target.setLastName(source.getLastName());
+			changed = true;
+		}
+
+		if (target.getGender() == null && source.getGender() != null) {
+			target.setGender(source.getGender());
+			changed = true;
+		}
+
+		if (target.getPrimaryEmail() == null && source.getPrimaryEmail() != null) {
+			target.setPrimaryEmail(source.getPrimaryEmail());
+			changed = true;
+		}
+
+		if (target.getSecondaryEmail() == null && source.getSecondaryEmail() != null) {
+			target.setSecondaryEmail(source.getSecondaryEmail());
+			changed = true;
+		}
+
+		if (target.getWebPageNaming() == null && source.getWebPageNaming() != null) {
+			target.setWebPageNaming(source.getWebPageNaming());
+			changed = true;
+		}
+
+		if (target.getWebPageId() == null && source.getWebPageId() != null) {
+			target.setWebPageId(source.getWebPageId());
+			changed = true;
+		}
+
+		if (target.getORCID() == null && source.getORCID() != null) {
+			target.setORCID(source.getORCID());
+			changed = true;
+		}
+
+		if (target.getAcademiaURL() == null && source.getAcademiaURL() != null) {
+			target.setAcademiaURL(source.getAcademiaURL());
+			changed = true;
+		}
+
+		if (target.getOfficePhone() == null && source.getOfficePhone() != null) {
+			target.setOfficePhone(source.getOfficePhone());
+			changed = true;
+		}
+
+		if (target.getMobilePhone() == null && source.getMobilePhone() != null) {
+			target.setMobilePhone(source.getMobilePhone());
+			changed = true;
+		}
+
+		if (target.getOfficeRoom() == null && source.getOfficeRoom() != null) {
+			target.setOfficeRoom(source.getOfficeRoom());
+			changed = true;
+		}
+
+		if (target.getCordisURL() == null && source.getCordisURL() != null) {
+			target.setCordisURL(source.getCordisURL());
+			changed = true;
+		}
+
+		if (target.getDblpURL() == null && source.getDblpURL() != null) {
+			target.setDblpURL(source.getDblpURL());
+			changed = true;
+		}
+
+		if (target.getFacebookId() == null && source.getFacebookId() != null) {
+			target.setFacebookId(source.getFacebookId());
+			changed = true;
+		}
+
+		if (target.getGithubId() == null && source.getGithubId() != null) {
+			target.setGithubId(source.getGithubId());
+			changed = true;
+		}
+
+		if (target.getLinkedInId() == null && source.getLinkedInId() != null) {
+			target.setLinkedInId(source.getLinkedInId());
+			changed = true;
+		}
+
+		if (target.getResearcherId() == null && source.getResearcherId() != null) {
+			target.setResearcherId(source.getResearcherId());
+			changed = true;
+		}
+
+		if (target.getScopusId() == null && source.getScopusId() != null) {
+			target.setScopusId(source.getScopusId());
+			changed = true;
+		}
+
+		if (target.getGoogleScholarId() == null && source.getGoogleScholarId() != null) {
+			target.setGoogleScholarId(source.getGoogleScholarId());
+			changed = true;
+		}
+
+		if (target.getGoogleScholarId() == null && source.getGoogleScholarId() != null) {
+			target.setGoogleScholarId(source.getGoogleScholarId());
+			changed = true;
+		}
+
+		if (target.getIdhal() == null && source.getIdhal() != null) {
+			target.setIdhal(source.getIdhal());
+			changed = true;
+		}
+
+		if (target.getResearchGateId() == null && source.getResearchGateId() != null) {
+			target.setResearchGateId(source.getResearchGateId());
+			changed = true;
+		}
+
+		if (target.getAdScientificIndexId() == null && source.getAdScientificIndexId() != null) {
+			target.setAdScientificIndexId(source.getAdScientificIndexId());
+			changed = true;
+		}
+
+		if (target.getGoogleScholarHindex() == 0 && source.getGoogleScholarHindex() != 0) {
+			target.setGoogleScholarHindex(source.getGoogleScholarHindex());
+			changed = true;
+		}
+
+		if (target.getWosHindex() == 0 && source.getWosHindex() != 0) {
+			target.setWosHindex(source.getWosHindex());
+			changed = true;
+		}
+
+		if (target.getScopusHindex() == 0 && source.getScopusHindex() != 0) {
+			target.setScopusHindex(source.getScopusHindex());
+			changed = true;
+		}
+
+		if (target.getGoogleScholarCitations() == 0 && source.getGoogleScholarCitations() != 0) {
+			target.setGoogleScholarCitations(source.getGoogleScholarCitations());
+			changed = true;
+		}
+
+		if (target.getWosCitations() == 0 && source.getWosCitations() != 0) {
+			target.setWosCitations(source.getWosCitations());
+			changed = true;
+		}
+
+		if (target.getScopusCitations() == 0 && source.getScopusCitations() != 0) {
+			target.setScopusCitations(source.getScopusCitations());
+			changed = true;
+		}
+
+		if (target.getGravatarId() == null && source.getGravatarId() != null) {
+			target.setGravatarId(source.getGravatarId());
+			changed = true;
+		}
+
+		if (target.getBiography() == null && source.getBiography() != null) {
+			target.setBiography(source.getBiography());
+			changed = true;
+		}
+
+		return changed;
+	}
+
 	/** Re-assign the publication attached to the source person to the target person.
 	 *
-	 * @param sources the person to remove and replace by the target person.
+	 * @param source the person to remove and replace by the target person.
 	 * @param target the target person who should replace the source persons.
 	 * @return {@code true} if publication has changed.
 	 * @throws Exception if the change cannot be completed.

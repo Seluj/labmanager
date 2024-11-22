@@ -148,7 +148,8 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
         for (final var source : sources) {
             if (source.getId() != target.getId()) {
 
-                var lchange = reassignConferencePublicationPapers(source, target);
+                var lchange = reassignConferenceProperties(source, target);
+                lchange = reassignConferencePublicationPapers(source, target);
                 lchange = reassignSuperConference(source, target) || lchange;
                 lchange = reassignConferenceQualityIndicators(source, target) || lchange;
 
@@ -159,6 +160,51 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
         if (changed) {
             this.conferenceRepository.save(target);
         }
+    }
+
+    /** Re-assign the properties attached to the source conference to the target conference. There are attached only if
+     * the target conference has null properties.
+     *
+     * @param source the journal to remove and replace by the target journal.
+     * @param target the target journal which should replace the source journals.
+     * @return {@code true} if journal publication papers has changed.
+     * @throws Exception if the change cannot be completed.
+     */
+    protected boolean reassignConferenceProperties(Conference source, Conference target){
+
+        boolean changed = false;
+
+        if (target.getAcronym() == null && source.getAcronym() != null) {
+            target.setAcronym(source.getAcronym());
+            changed = true;
+        }
+
+        if (target.getName() == null && source.getName() != null) {
+            target.setName(source.getName());
+            changed = true;
+        }
+
+        if (target.getPublisher() == null && source.getPublisher() != null) {
+            target.setPublisher(source.getPublisher());
+            changed = true;
+        }
+
+        if (target.getConferenceURL() == null && source.getConferenceURL() != null) {
+            target.setConferenceURL(source.getConferenceURL());
+            changed = true;
+        }
+
+        if (target.getCoreId() == null && source.getCoreId() != null) {
+            target.setCoreId(source.getCoreId());
+            changed = true;
+        }
+
+        if (target.getISBN() == null && source.getISBN() != null) {
+            target.setISBN(source.getISBN());
+            changed = true;
+        }
+
+        return changed;
     }
 
     /** Reassign the conference publication papers of the source to the target.

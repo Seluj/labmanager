@@ -72,7 +72,6 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
      */
     public void createGrids(double threshold) {
 
-
         grids.forEach(this::remove);
         try {
             List<Set<T>> similarityGroups = getDuplicates(threshold);

@@ -133,7 +133,8 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
         for (final var source : sources) {
             if (source.getId() != target.getId()) {
                 //getLogger().info("Reassign to " + target.getAcronymOrName() + " the elements of " + source.getAcronymOrName()); //$NON-NLS-1$ //$NON-NLS-2$
-                var lchange = reassignJournalPublicationPapers(source, target);
+                var lchange = reassignJournalProperties(source, target);
+                lchange = reassignJournalPublicationPapers(source, target);
                 lchange = reassignJournalQualityIndicators(source, target) || lchange;
                 this.journalService.removeJournal(source.getId());
                 changed = changed || lchange;
@@ -143,6 +144,72 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
             this.journalRepository.save(target);
         }
     }
+
+    /** Re-assign the properties attached to the source journal to the target journal. There are attached only if the
+     * target journal has null properties.
+     *
+     * @param source the journal to remove and replace by the target journal.
+     * @param target the target journal which should replace the source journals.
+     * @return {@code true} if journal publication papers has changed.
+     * @throws Exception if the change cannot be completed.
+     */
+    protected boolean reassignJournalProperties(Journal source, Journal target){
+
+        boolean changed = false;
+
+        if (target.getJournalName() == null && source.getJournalName() != null) {
+            target.setJournalName(source.getJournalName());
+            changed = true;
+        }
+
+        if (target.getPublisher() == null && source.getPublisher() != null) {
+            target.setPublisher(source.getPublisher());
+            changed = true;
+        }
+
+        if (target.getAddress() == null && source.getAddress() != null) {
+            target.setAddress(source.getAddress());
+            changed = true;
+        }
+
+        if (target.getJournalURL() == null && source.getJournalURL() != null) {
+            target.setJournalURL(source.getJournalURL());
+            changed = true;
+        }
+
+        if (target.getScimagoId() == null && source.getScimagoId() != null) {
+            target.setScimagoId(source.getScimagoId());
+            changed = true;
+        }
+
+        if (target.getScimagoCategory() == null && source.getScimagoCategory() != null) {
+            target.setScimagoCategory(source.getScimagoCategory());
+            changed = true;
+        }
+
+        if (target.getWosId() == null && source.getWosId() != null) {
+            target.setWosId(source.getWosId());
+            changed = true;
+        }
+
+        if (target.getWosCategory() == null && source.getWosCategory() != null) {
+            target.setWosCategory(source.getWosCategory());
+            changed = true;
+        }
+
+        if (target.getISBN() == null && source.getISBN() != null) {
+            target.setISBN(source.getISBN());
+            changed = true;
+        }
+
+        if (target.getISSN() == null && source.getISSN() != null) {
+            target.setISSN(source.getISSN());
+            changed = true;
+        }
+
+        return changed;
+    }
+
 
     /** Re-assign the publication papers attached to the source journal to the target journal.
      *

@@ -22,10 +22,12 @@ public abstract class AbstractConferenceNameComparator extends AbstractNormaliza
 		final var normedName2 = name1 != name2 ? normalizeString(name2) : normedName1;
 
 		final var similarityComputer = getStringSimilarityComputer();
-        final var s1 = similarityComputer.similarity(normedAcronym1, normedAcronym2);
         final var s2 = similarityComputer.similarity(normedName1, normedName2);
 
-        return Math.max(s1, s2);
+		if((acronym1.isEmpty() || acronym2.isEmpty()) || s2 > 0.8){
+			return similarityComputer.similarity(normedName1, normedName2);
+		}
+        return 0;
     }
 
 }

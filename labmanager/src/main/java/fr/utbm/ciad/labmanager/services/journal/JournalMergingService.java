@@ -150,7 +150,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
      *
      * @param source the journal to remove and replace by the target journal.
      * @param target the target journal which should replace the source journals.
-     * @return {@code true} if journal publication papers has changed.
+     * @return {@code true} if journal properties has changed.
      * @throws Exception if the change cannot be completed.
      */
     protected boolean reassignJournalProperties(Journal source, Journal target){

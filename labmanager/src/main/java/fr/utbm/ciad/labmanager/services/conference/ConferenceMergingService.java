@@ -6,16 +6,11 @@ import fr.utbm.ciad.labmanager.data.conference.Conference;
 import fr.utbm.ciad.labmanager.data.conference.ConferenceQualityAnnualIndicators;
 import fr.utbm.ciad.labmanager.data.conference.ConferenceRepository;
 import fr.utbm.ciad.labmanager.data.journal.*;
-import fr.utbm.ciad.labmanager.data.publication.AbstractConferenceBasedPublication;
-import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
 import fr.utbm.ciad.labmanager.data.publication.type.*;
 import fr.utbm.ciad.labmanager.services.AbstractEntityService;
-import fr.utbm.ciad.labmanager.services.AbstractService;
-import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
 import fr.utbm.ciad.labmanager.services.publication.type.ConferencePaperService;
 import fr.utbm.ciad.labmanager.services.publication.type.KeyNoteService;
 import fr.utbm.ciad.labmanager.utils.names.ConferenceNameComparator;
-import fr.utbm.ciad.labmanager.utils.names.JournalNameOrPublisherComparator;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -138,7 +133,7 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
     /** Merge the entities by replacing those with an old conference by those with the new conference.
      *
      * @param sources the list of conferences to remove and replace by the target conference.
-     * @param target the target conference who should replace the source conferences.
+     * @param target the target conference who should replace the source conference.
      * @throws Exception if the merging cannot be completed.
      */
     public void mergeConferences(Iterable<Conference> sources, Conference target) throws Exception {
@@ -165,9 +160,9 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
     /** Re-assign the properties attached to the source conference to the target conference. There are attached only if
      * the target conference has null properties.
      *
-     * @param source the journal to remove and replace by the target journal.
-     * @param target the target journal which should replace the source journals.
-     * @return {@code true} if journal publication papers has changed.
+     * @param source the conference to remove and replace by the target conference.
+     * @param target the target conference which should replace the source conferences.
+     * @return {@code true} if conference properties has changed.
      * @throws Exception if the change cannot be completed.
      */
     protected boolean reassignConferenceProperties(Conference source, Conference target){

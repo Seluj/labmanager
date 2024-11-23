@@ -30,6 +30,7 @@ import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
 import fr.utbm.ciad.labmanager.data.EntityUtils;
 import fr.utbm.ciad.labmanager.data.assostructure.AssociatedStructureHolderRepository;
 import fr.utbm.ciad.labmanager.data.assostructure.AssociatedStructureRepository;
+import fr.utbm.ciad.labmanager.data.conference.Conference;
 import fr.utbm.ciad.labmanager.data.member.MembershipRepository;
 import fr.utbm.ciad.labmanager.data.organization.ResearchOrganization;
 import fr.utbm.ciad.labmanager.data.organization.ResearchOrganizationComparator;
@@ -205,7 +206,8 @@ public class OrganizationMergingService extends AbstractEntityService<ResearchOr
 		for (final var source : sources) {
 			if (source.getId() != target.getId()) {
 				//getLogger().info("Reassign to " + target.getAcronymOrName() + " the elements of " + source.getAcronymOrName()); //$NON-NLS-1$ //$NON-NLS-2$
-				var lchange = reassignOrganizationMemberships(source, target);
+				var lchange = reassignOrganizationProperties(source, target);
+				lchange = reassignOrganizationMemberships(source, target);
 				lchange = reassignProjects(source, target) || lchange;
 				lchange = reassignAssociatedStructures(source, target) || lchange;
 				this.organizationService.removeResearchOrganization(source.getId());
@@ -217,9 +219,64 @@ public class OrganizationMergingService extends AbstractEntityService<ResearchOr
 		}
 	}
 
+	/** Re-assign the properties attached to the source organization to the target organization. There are attached only if
+	 * the target organization has null properties.
+	 *
+	 * @param source the organization to remove and replace by the target organization.
+	 * @param target the target organization which should replace the source organization.
+	 * @return {@code true} if organization properties has changed.
+	 * @throws Exception if the change cannot be completed.
+	 */
+	protected boolean reassignOrganizationProperties(ResearchOrganization source, ResearchOrganization target){
+
+		boolean changed = false;
+
+		if (target.getAcronym() == null && source.getAcronym() != null) {
+			target.setAcronym(source.getAcronym());
+			changed = true;
+		}
+
+		if (target.getName() == null && source.getName() != null) {
+			target.setName(source.getName());
+			changed = true;
+		}
+
+		if (target.getDescription() == null && source.getDescription() != null) {
+			target.setDescription(source.getDescription());
+			changed = true;
+		}
+
+		if (target.getRnsr() == null && source.getRnsr() != null) {
+			target.setRnsr(source.getRnsr());
+			changed = true;
+		}
+
+		if (target.getCountry() == null && source.getCountry() != null) {
+			target.setCountry(source.getCountry());
+			changed = true;
+		}
+
+		if (target.getType() == null && source.getType() != null) {
+			target.setType(source.getType());
+			changed = true;
+		}
+
+		if (target.getOrganizationURL() == null && source.getOrganizationURL() != null) {
+			target.setOrganizationURL(source.getOrganizationURL());
+			changed = true;
+		}
+
+		if (target.getPathToLogo() == null && source.getPathToLogo() != null) {
+			target.setPathToLogo(source.getPathToLogo());
+			changed = true;
+		}
+
+		return changed;
+	}
+
 	/** Re-assign the organization memberships attached to the source organization to the target organization.
 	 * 
-	 * @param sources the organization to remove and replace by the target organization.
+	 * @param source the organization to remove and replace by the target organization.
 	 * @param target the target organization which should replace the source organizations.
 	 * @return {@code true} if organization membership has changed.
 	 * @throws Exception if the change cannot be completed.
@@ -236,7 +293,7 @@ public class OrganizationMergingService extends AbstractEntityService<ResearchOr
 
 	/** Re-assign the project organizations attached to the source organization to the target organization.
 	 * 
-	 * @param sources the organization to remove and replace by the target organization.
+	 * @param source the organization to remove and replace by the target organization.
 	 * @param target the target organization who should replace the source organizations.
 	 * @return {@code true} if project has changed.
 	 * @throws Exception if the change cannot be completed.

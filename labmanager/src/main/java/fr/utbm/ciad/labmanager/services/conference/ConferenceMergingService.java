@@ -144,7 +144,7 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
             if (source.getId() != target.getId()) {
 
                 var lchange = reassignConferenceProperties(source, target);
-                lchange = reassignConferencePublicationPapers(source, target);
+                lchange = reassignConferencePublicationPapers(source, target) || lchange;
                 lchange = reassignSuperConference(source, target) || lchange;
                 lchange = reassignConferenceQualityIndicators(source, target) || lchange;
 

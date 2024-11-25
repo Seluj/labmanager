@@ -1,10 +1,36 @@
 .slider-container {
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* Conteneur pour le titre et la valeur */
+.slider-title-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Espacement entre le titre et la valeur */
+    margin-bottom: 10px;
+}
+
+.slider-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+}
+
+.slider-value {
+    font-size: 14px;
+    font-weight: bold;
+    color: dodgerblue;
+    transition: color 0.3s;
+}
+
+/* Slider */
 .slider {
     -webkit-appearance: none;
     appearance: none;
@@ -13,8 +39,8 @@
     border-radius: 5px;
     background: #ccc;
     outline: none;
+    margin: 5px 0;
     transition: background 0.3s;
-    margin: 10px 0;
 }
 
 .slider::-webkit-slider-thumb {
@@ -29,9 +55,10 @@
 }
 
 .slider::-webkit-slider-thumb:hover {
-    background: dodgerblue;
+    background: #0056b3;
 }
 
+/* Min et max */
 .slider-values {
     display: flex;
     justify-content: space-between;

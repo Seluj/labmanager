@@ -3,8 +3,15 @@ package fr.utbm.ciad.labmanager.views.components.addons.slider;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.ClientCallable;
-import io.reactivex.Single;
 
+/** Slider for the similarity level.
+ *
+ * @author $Author: sgalland$
+ * @author $Author: erenon$
+ * @version $Name$ $Revision$ $Date$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 @Tag("div")
 public class SingleSlider extends Div {
 
@@ -17,6 +24,8 @@ public class SingleSlider extends Div {
     private double currentValue = 0;
 
 
+    /** Constructor.
+     */
     public SingleSlider() {
         setWidth("100%");
 
@@ -66,26 +75,42 @@ public class SingleSlider extends Div {
         """);
     }
 
+    /** Update the value of the slider.
+     *
+     * @param value the new value.
+     */
     @ClientCallable
     public void updateValue(double value) {
         currentValue = value;
     }
 
+    /** Set the minimum value.
+     *
+     */
     public void setMinValue(int minValue) {
         this.minValue = minValue;
         updateSliderHtml();
     }
 
+    /** Set the maximum value.
+     *
+     */
     public void setMaxValue(int maxValue) {
         this.maxValue = maxValue;
         updateSliderHtml();
     }
 
+    /** Set the step.
+     *
+     */
     public void setStep(double step) {
         this.step = step;
         updateSliderHtml();
     }
 
+    /** Update the HTML of the slider.
+     *
+     */
     private void updateSliderHtml() {
         getElement().executeJs("""
             const slider = this.querySelector('#slider');
@@ -95,6 +120,10 @@ public class SingleSlider extends Div {
         """, minValue, maxValue, step);
     }
 
+    /** Replies the current value of the slider.
+     *
+     * @return the current value.
+     */
     public double getCurrentValue() {
         return currentValue;
     }

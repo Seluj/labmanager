@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @Deprecated no replacement.
  */
 @Service
 public class JournalMergingService extends AbstractEntityService<Journal> {

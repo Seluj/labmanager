@@ -19,6 +19,7 @@
 
 package fr.utbm.ciad.labmanager.data.member;
 
+import fr.utbm.ciad.labmanager.data.organization.ResearchOrganization;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,6 +35,7 @@ import java.util.Set;
  *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
+ * @author $Author: erenon$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -79,9 +81,16 @@ public interface MembershipRepository extends JpaRepository<Membership, Long>, J
 	 * @param organizationId the identifier of the organization.
 	 * @return the list of memberships.
 	 * @since 3.2
-	 * @deprecated no replacement
 	 */
-	List<Membership> findDistinctByResearchOrganizationId(long organizationId);
+	List<Membership> findDistinctByResearchOrganization(ResearchOrganization organization);
+
+	/** Replies the list of memberships for the given super research organization.
+	 *
+	 * @param organizationId the identifier of the organization.
+	 * @return the list of memberships.
+	 * @since 3.2
+	 */
+	List<Membership> findDistinctBySuperResearchOrganization(ResearchOrganization organizationId);
 
 	/** Replies the persons that have memberships fitting the given filter.
 	 *

@@ -60,6 +60,7 @@ import org.springframework.web.multipart.MultipartFile;
 /** Service for the teaching activities.
  * 
  * @author $Author: sgalland$
+ * @author $Author: erenon$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -94,15 +95,13 @@ public class TeachingService extends AbstractEntityService<TeachingActivity> {
 		this.fileManager = fileManager;
 	}
 
-	/** Replies the teaching activities for the person with the given identifier.
+	/** Replies the teaching activities for the person.
 	 *
-	 * @param id the identifier of the person.
+	 * @param person the identifier of the person.
 	 * @return the list of teaching activities.
-	 * @deprecated no replacement.
 	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	public List<TeachingActivity> getActivitiesByPersonId(long id) {
-		return this.teachingActivityRepository.findDistinctByPersonId(Long.valueOf(id));
+	public List<TeachingActivity> getActivitiesByPersonId(Person person) {
+		return this.teachingActivityRepository.findDistinctByPerson(person);
 	}
 
 	/** Replies all the known teaching activities.
@@ -396,6 +395,15 @@ public class TeachingService extends AbstractEntityService<TeachingActivity> {
 	public EntityDeletingContext<TeachingActivity> startDeletion(Set<TeachingActivity> entities, Logger logger) {
 		assert entities != null && !entities.isEmpty();
 		return new DeletingContext(entities, logger);
+	}
+
+	/** Replies the teaching activities for the organization.
+	 *
+	 * @param organization the organization.
+	 * @return the list of teaching activities.
+	 */
+	public List<TeachingActivity> getActivitiesByOrganizationId(ResearchOrganization organization) {
+		return this.teachingActivityRepository.findDistinctByUniversity(organization);
 	}
 
 	/** Context for editing a {@link TeachingActivity}.

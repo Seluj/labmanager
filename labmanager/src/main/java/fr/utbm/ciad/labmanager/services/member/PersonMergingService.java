@@ -41,10 +41,13 @@ import fr.utbm.ciad.labmanager.data.publication.Authorship;
 import fr.utbm.ciad.labmanager.data.publication.AuthorshipRepository;
 import fr.utbm.ciad.labmanager.data.publication.Publication;
 import fr.utbm.ciad.labmanager.data.publication.PublicationRepository;
+import fr.utbm.ciad.labmanager.data.teaching.TeachingActivity;
+import fr.utbm.ciad.labmanager.data.teaching.TeachingActivityRepository;
 import fr.utbm.ciad.labmanager.services.AbstractService;
 import fr.utbm.ciad.labmanager.services.invitation.PersonInvitationService;
 import fr.utbm.ciad.labmanager.services.jury.JuryMembershipService;
 import fr.utbm.ciad.labmanager.services.supervision.SupervisionService;
+import fr.utbm.ciad.labmanager.services.teaching.TeachingService;
 import fr.utbm.ciad.labmanager.utils.names.PersonNameComparator;
 import org.apache.commons.compress.harmony.archive.internal.nls.Messages;
 import org.hibernate.SessionFactory;
@@ -85,7 +88,11 @@ public class PersonMergingService extends AbstractService {
 
 	private final AuthorshipRepository authorshipRepository;
 
-	private PersonNameComparator nameComparator;
+    private final TeachingService teachingService;
+
+    private final TeachingActivityRepository teachingRepository;
+
+    private PersonNameComparator nameComparator;
 
 	/** Constructor for injector.
 	 * This constructor is defined for being invoked by the IOC injector.
@@ -118,7 +125,9 @@ public class PersonMergingService extends AbstractService {
 			@Autowired MessageSourceAccessor messages,
 			@Autowired ConfigurationConstants constants,
 			@Autowired SessionFactory sessionFactory,
-			@Autowired AuthorshipRepository publicationRepository) {
+			@Autowired AuthorshipRepository publicationRepository,
+			@Autowired TeachingService teachingService,
+			@Autowired TeachingActivityRepository teachingRepository) {
 		super(messages, constants, sessionFactory);
 		this.personRepository = personRepository;
 		this.personService = personService;
@@ -131,7 +140,9 @@ public class PersonMergingService extends AbstractService {
 		this.structureHolderRepository = structureHolderRepository;
 		this.nameComparator = nameComparator;
 		this.authorshipRepository = publicationRepository;
-	}
+        this.teachingService = teachingService;
+        this.teachingRepository = teachingRepository;
+    }
 
 
 	/** Replies the duplicate person names.
@@ -244,7 +255,8 @@ public class PersonMergingService extends AbstractService {
 				lchange = reassignInvitations(source, target) || lchange;
 				lchange = reassignProjects(source, target) || lchange;
 				lchange = reassignAssociatedStructures(source, target) || lchange;
-				//
+				lchange = reassignTeachingActivities(source, target) || lchange;
+
 				this.personService.removePerson(source.getId());
 				changed = changed || lchange;
 			}
@@ -253,6 +265,7 @@ public class PersonMergingService extends AbstractService {
 			this.personRepository.save(target);
 		}
 	}
+
 
 	/** Re-assign the publication attached to the source person to the target person.
 	 * 
@@ -641,6 +654,27 @@ public class PersonMergingService extends AbstractService {
 			this.structureHolderRepository.save(holder);
 		}
 		return true;
+	}
+
+	/** Re-assign the teaching activities attached to the source person to the target person.
+	 *
+	 * @param source the person to remove and replace by the target person.
+	 * @param target the target person who should replace the source persons.
+	 * @return {@code true} if associated structure has changed.
+	 * @throws Exception if the change cannot be completed.
+	 */
+	private boolean reassignTeachingActivities(Person source, Person target) {
+		boolean changed = false;
+
+		List<TeachingActivity> teachingActivities = teachingService.getActivitiesByPersonId(source);
+
+		for(TeachingActivity activity : teachingActivities) {
+			activity.setPerson(target);
+			teachingRepository.save(activity);
+			changed = true;
+		}
+
+		return changed;
 	}
 
 	/** Callback that is invoked when building the list of duplicate persons.

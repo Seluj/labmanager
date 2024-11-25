@@ -75,6 +75,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author $Author: sgalland$
  * @author $Author: tmartine$
+ * @author $Author: erenon$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -643,7 +644,26 @@ public class MembershipService extends AbstractEntityService<Membership> {
 				return membership.getMemberStatus().getLabel(getMessageSourceAccessor(), person.getGender(), false, LocaleUtil.getLocale(LocaleUtil::getI18NProvider));
 		}
 		return null;
-   }
+   	}
+
+	/** Replies the list of the membership in the organization.
+	 *
+	 * @param organization the person id.
+	 * @return the list of the person in the organization.
+	 */
+	public List<Membership> getByResearchOrganization(ResearchOrganization organization) {
+		return this.membershipRepository.findDistinctByResearchOrganization(organization);
+	}
+
+	/** Replies the list of the membership in the super organization.
+	 *
+	 * @param organization the person id.
+	 * @return the list of the person in the organization.
+	 */
+	public List<Membership> getBySuperResearchOrganization(ResearchOrganization organization) {
+		return this.membershipRepository.findDistinctBySuperResearchOrganization(organization);
+	}
+
 
 	@Override
 	public EntityEditingContext<Membership> startEditing(Membership membership, Logger logger) {

@@ -91,7 +91,6 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
             e.printStackTrace();
         }
 
-
     }
 
 }

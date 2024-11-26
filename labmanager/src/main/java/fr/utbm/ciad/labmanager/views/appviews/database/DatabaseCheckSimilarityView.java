@@ -95,7 +95,7 @@ public class DatabaseCheckSimilarityView extends VerticalLayout implements HasDy
 
         tabSheet.add(getTranslation("views.person"),
                 new Div(personSimilarityLayout));
-        tabSheet.add(getTranslation("views.associated_structure.holders.organization"),
+        tabSheet.add(getTranslation("views.organization"),
                 new Div(organizationSimilarityLayout));
         tabSheet.add(getTranslation("views.journal"),
                 new Div(journalSimilarityLayout));

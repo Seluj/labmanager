@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import com.vaadin.flow.server.VaadinServiceInitListener;
 import fr.utbm.ciad.labmanager.views.components.addons.localization.LanguageSelect;
 import org.springframework.stereotype.Component;
 
-/** Listener on the initialization of the Vaadin framework for initializing the language from the language cookie.
- * 
+/**
+ * Listener on the initialization of the Vaadin framework for initializing the language from the language cookie.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,11 +36,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class LanguageApplicationServiceInitListener implements VaadinServiceInitListener {
 
-	private static final long serialVersionUID = 4766834061660038882L;
+    private static final long serialVersionUID = 4766834061660038882L;
 
-	@Override
-	public void serviceInit(ServiceInitEvent event) {
-		LanguageSelect.readLanguageCookies(event);
-	}
+    @Override
+    public void serviceInit(ServiceInitEvent event) {
+        LanguageSelect.readLanguageCookies(event);
+    }
 
 }

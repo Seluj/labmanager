@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  * Copyright (c) 2019 Kaspar Scherrer
  *
@@ -22,11 +22,12 @@ package fr.utbm.ciad.labmanager.utils;
 
 import java.io.Serializable;
 
-/** Two parameter function that is serializable and may throw an exception.
+/**
+ * Two parameter function that is serializable and may throw an exception.
  *
  * @param <I0> the type of first input argument.
  * @param <I1> the type of second input argument.
- * @param <O> the type of returned value.
+ * @param <O>  the type of returned value.
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -36,13 +37,14 @@ import java.io.Serializable;
 @FunctionalInterface
 public interface SerializableExceptionBiFunction<I0, I1, O> extends Serializable {
 
-	/** Run the function.
-	 *
-	 * @param input0 the first input argument.
-	 * @param input1 the second input argument.
-	 * @return the output value.
-	 * @throws Exception if there is some error inside.
-	 */
-	O apply(I0 input0, I1 input1) throws Exception;
-	
+    /**
+     * Run the function.
+     *
+     * @param input0 the first input argument.
+     * @param input1 the second input argument.
+     * @return the output value.
+     * @throws Exception if there is some error inside.
+     */
+    O apply(I0 input0, I1 input1) throws Exception;
+
 }

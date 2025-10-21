@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,9 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.appviews.indicators;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -37,8 +34,12 @@ import fr.utbm.ciad.labmanager.views.components.addons.logger.ContextualLoggerFa
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/** Enable to show the indicators.
- * 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Enable to show the indicators.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -51,14 +52,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Uses(Icon.class)
 public class IndicatorsView extends AbstractLoggerComposite<VerticalLayout> {
 
-	private static final long serialVersionUID = 738063190104767506L;
+    private static final long serialVersionUID = 738063190104767506L;
 
-	/** Constructor.
-	 *
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 */
+    /**
+     * Constructor.
+     *
+     * @param loggerFactory the factory to be used for the composite logger.
+     */
     public IndicatorsView(@Autowired ContextualLoggerFactory loggerFactory) {
-    	super(loggerFactory);
+        super(loggerFactory);
         final TextField textField = new TextField();
         TextField textField2 = new TextField();
         final ComboBox<?> comboBox = new ComboBox<>();
@@ -81,9 +83,6 @@ public class IndicatorsView extends AbstractLoggerComposite<VerticalLayout> {
         getContent().add(buttonPrimary);
     }
 
-    record SampleItem(String value, String label, Boolean disabled) {
-    }
-
     private void setComboBoxSampleData(ComboBox comboBox) {
         final List<SampleItem> sampleItems = new ArrayList<>();
         sampleItems.add(new SampleItem("first", "First", null));
@@ -92,6 +91,9 @@ public class IndicatorsView extends AbstractLoggerComposite<VerticalLayout> {
         sampleItems.add(new SampleItem("fourth", "Fourth", null));
         comboBox.setItems(sampleItems);
         comboBox.setItemLabelGenerator(item -> ((SampleItem) item).label());
+    }
+
+    record SampleItem(String value, String label, Boolean disabled) {
     }
 
 }

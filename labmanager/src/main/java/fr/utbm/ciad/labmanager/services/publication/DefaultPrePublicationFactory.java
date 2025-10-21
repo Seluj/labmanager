@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,9 +28,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
-/** Factory of a publication that is temporary and defined for pre-initialization of a real publication.
+/**
+ * Factory of a publication that is temporary and defined for pre-initialization of a real publication.
  * This class is not supposed to be used intensively or stored into the database.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -40,25 +41,26 @@ import java.time.LocalDate;
 @Primary
 public class DefaultPrePublicationFactory implements PrePublicationFactory {
 
-	private final DoiTools doiTools;
-	
-	/** Constructor.
-	 *
-	 * @param doiTools the tools for manipulating the DOI.
-	 */
-	public DefaultPrePublicationFactory(DoiTools doiTools) {
-		this.doiTools = doiTools;
-	}
-	
-	@Override
-	public Publication createPrePublication(PublicationType type, String title, String abstractText, String keywords,
-			LocalDate date, int year, String isbn, String issn,
-			String doi, String halId, String extraUrl, String videoUrl, String dblpUrl, String pdfPath,
-			String awardPath, PublicationLanguage language) {
-		return new PrePublication(type, title, abstractText, keywords, date, year, isbn, issn,
-				this.doiTools.getDOINumberFromDOIUrlOrNull(doi),
-				halId, extraUrl, videoUrl, dblpUrl, pdfPath, awardPath,
-				language);
-	}
+    private final DoiTools doiTools;
+
+    /**
+     * Constructor.
+     *
+     * @param doiTools the tools for manipulating the DOI.
+     */
+    public DefaultPrePublicationFactory(DoiTools doiTools) {
+        this.doiTools = doiTools;
+    }
+
+    @Override
+    public Publication createPrePublication(PublicationType type, String title, String abstractText, String keywords,
+                                            LocalDate date, int year, String isbn, String issn,
+                                            String doi, String halId, String extraUrl, String videoUrl, String dblpUrl, String pdfPath,
+                                            String awardPath, PublicationLanguage language) {
+        return new PrePublication(type, title, abstractText, keywords, date, year, isbn, issn,
+                this.doiTools.getDOINumberFromDOIUrlOrNull(doi),
+                halId, extraUrl, videoUrl, dblpUrl, pdfPath, awardPath,
+                language);
+    }
 
 }

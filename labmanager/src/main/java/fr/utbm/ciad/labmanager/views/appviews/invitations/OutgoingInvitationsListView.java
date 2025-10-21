@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,8 +32,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Enable to list the outgoing invitations.
- * 
+/**
+ * Enable to list the outgoing invitations.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -44,28 +45,29 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class OutgoingInvitationsListView extends StandardOutgoingInvitationListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = 739540543538358993L;
+    private static final long serialVersionUID = 739540543538358993L;
 
-	/** Constructor.
-	 * 
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param invitationService the service for accessing the incoming invitations.
-	 * @param invitationEditorFactory the factory for creating the invitation editors.
-	 */
-	public OutgoingInvitationsListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired PersonInvitationService invitationService,
-			@Autowired InvitationEditorFactory invitationEditorFactory) {
-		super(authenticatedUser, messages, loggerFactory, invitationService, invitationEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser       the connected user.
+     * @param messages                the accessor to the localized messages (spring layer).
+     * @param loggerFactory           the factory to be used for the composite logger.
+     * @param invitationService       the service for accessing the incoming invitations.
+     * @param invitationEditorFactory the factory for creating the invitation editors.
+     */
+    public OutgoingInvitationsListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired PersonInvitationService invitationService,
+            @Autowired InvitationEditorFactory invitationEditorFactory) {
+        super(authenticatedUser, messages, loggerFactory, invitationService, invitationEditorFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.outgoing_invitation.invitations.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.outgoing_invitation.invitations.list"); //$NON-NLS-1$
+    }
 
 }

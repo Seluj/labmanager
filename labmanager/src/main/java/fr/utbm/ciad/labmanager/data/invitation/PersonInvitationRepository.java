@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,14 @@
 
 package fr.utbm.ciad.labmanager.data.invitation;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-/** JPA repository for person invitations.
- * 
+import java.util.List;
+
+/**
+ * JPA repository for person invitations.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,14 +35,15 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  */
 public interface PersonInvitationRepository extends JpaRepository<PersonInvitation, Long>, JpaSpecificationExecutor<PersonInvitation> {
 
-	/** Replies the invitations for the given person whatever if he/she is invitee or inviter.
-	 *
-	 * @param guestId the identifier of the guest.
-	 * @param inviterId the identifier of the inviter.
-	 * @return the invitations for the person.
-	 * @deprecated no replacement
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	List<PersonInvitation> findAllByGuestIdOrInviterId(long guestId, long inviterId);
+    /**
+     * Replies the invitations for the given person whatever if he/she is invitee or inviter.
+     *
+     * @param guestId   the identifier of the guest.
+     * @param inviterId the identifier of the inviter.
+     * @return the invitations for the person.
+     * @deprecated no replacement
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    List<PersonInvitation> findAllByGuestIdOrInviterId(long guestId, long inviterId);
 
 }

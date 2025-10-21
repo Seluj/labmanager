@@ -28,7 +28,7 @@ public abstract class AbstractDashboardComponentItem extends AbstractLocalStorag
      *
      * @param componentFactory the factory to create the component
      */
-    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory){
+    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory) {
         this(componentFactory, 0);
     }
 
@@ -36,9 +36,9 @@ public abstract class AbstractDashboardComponentItem extends AbstractLocalStorag
      * Constructor
      *
      * @param componentFactory the factory to create the component
-     * @param index the index of the component in the dashboard
+     * @param index            the index of the component in the dashboard
      */
-    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, int index){
+    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, int index) {
         super(index + "");
         this.componentFactory = componentFactory;
         this.index = index;
@@ -48,12 +48,12 @@ public abstract class AbstractDashboardComponentItem extends AbstractLocalStorag
      * Constructor
      *
      * @param componentFactory the factory to create the component
-     * @param index the index of the component
-     * @param componentType the type of the component
-     * @param width the width of the component
-     * @param height the height of the component
+     * @param index            the index of the component
+     * @param componentType    the type of the component
+     * @param width            the width of the component
+     * @param height           the height of the component
      */
-    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, int index, DashboardComponentType componentType, String width, String height){
+    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, int index, DashboardComponentType componentType, String width, String height) {
         this(componentFactory, index);
         this.componentType = componentType;
         this.width = width;
@@ -64,10 +64,10 @@ public abstract class AbstractDashboardComponentItem extends AbstractLocalStorag
      * Constructor
      *
      * @param componentFactory the factory to create the component
-     * @param index the index of the component
-     * @param component the existing component to extract size and type
+     * @param index            the index of the component
+     * @param component        the existing component to extract size and type
      */
-    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, int index, Component component){
+    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, int index, Component component) {
         this(componentFactory, index, DashboardComponentType.NONE, component.getStyle().get("width"), component.getStyle().get("height"));
     }
 
@@ -75,11 +75,11 @@ public abstract class AbstractDashboardComponentItem extends AbstractLocalStorag
      * Constructor
      *
      * @param componentFactory the factory to create the component
-     * @param index the index of the component
-     * @param component the existing component to extract size and type
-     * @param componentType the type of the component
+     * @param index            the index of the component
+     * @param component        the existing component to extract size and type
+     * @param componentType    the type of the component
      */
-    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, int index, Component component, DashboardComponentType componentType){
+    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, int index, Component component, DashboardComponentType componentType) {
         this(componentFactory, index, componentType, component.getStyle().get("width"), component.getStyle().get("height"));
     }
 
@@ -87,15 +87,20 @@ public abstract class AbstractDashboardComponentItem extends AbstractLocalStorag
      * Constructor to create a new component from an existing AbstractDashBoardComponentItem.
      *
      * @param componentFactory the factory to create the component
-     * @param item the existing component item to copy properties from
+     * @param item             the existing component item to copy properties from
      */
-    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, AbstractDashboardComponentItem item){
+    public AbstractDashboardComponentItem(DashboardComponentFactory<?, ?> componentFactory, AbstractDashboardComponentItem item) {
         this(componentFactory, item.getIndex(), item.getComponentType(), item.getWidth(), item.getHeight());
     }
 
     @Override
-    public DashboardComponentType getComponentType(){
+    public DashboardComponentType getComponentType() {
         return componentType;
+    }
+
+    @Override
+    public void setComponentType(DashboardComponentType componentType) {
+        this.componentType = componentType;
     }
 
     @Override
@@ -104,28 +109,23 @@ public abstract class AbstractDashboardComponentItem extends AbstractLocalStorag
     }
 
     @Override
-    public String getWidth() {
-        return width;
-    }
-
-    @Override
-    public String getHeight() {
-        return height;
-    }
-
-    @Override
-    public void setComponentType(DashboardComponentType componentType){
-        this.componentType = componentType;
-    }
-
-    @Override
     public void setIndex(int index) {
         this.index = index;
     }
 
     @Override
+    public String getWidth() {
+        return width;
+    }
+
+    @Override
     public void setWidth(String width) {
         this.width = width;
+    }
+
+    @Override
+    public String getHeight() {
+        return height;
     }
 
     @Override

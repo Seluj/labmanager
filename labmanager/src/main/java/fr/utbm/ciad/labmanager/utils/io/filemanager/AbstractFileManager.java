@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,15 @@
 
 package fr.utbm.ciad.labmanager.utils.io.filemanager;
 
-import java.io.File;
-
 import com.google.common.base.Strings;
 import org.arakhne.afc.vmutil.FileSystem;
 
-/** Utilities for managing the downloadable files. This implementation is dedicated to the WordPress service
+import java.io.File;
+
+/**
+ * Utilities for managing the downloadable files. This implementation is dedicated to the WordPress service
  * of the lab.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,37 +36,39 @@ import org.arakhne.afc.vmutil.FileSystem;
  */
 public abstract class AbstractFileManager implements FileManager {
 
-	private static final long serialVersionUID = -292074420511265866L;
+    private static final long serialVersionUID = -292074420511265866L;
 
-	/** Path to the upload folder.
-	 */
-	protected final File uploadFolder;
+    /**
+     * Path to the upload folder.
+     */
+    protected final File uploadFolder;
 
-	/** Constructor with the given stream factory.
-	 *
-	 * @param uploadFolder the path of the upload folder. It is defined by the property {@code labmanager.file.upload-directory}.
-	 */
-	public AbstractFileManager(String uploadFolder) {
-		final var f0 = Strings.emptyToNull(uploadFolder);
-		if (f0 == null) {
-			this.uploadFolder = null;
-		} else {
-			this.uploadFolder = FileSystem.convertStringToFile(f0).getAbsoluteFile();
-		}
-	}
+    /**
+     * Constructor with the given stream factory.
+     *
+     * @param uploadFolder the path of the upload folder. It is defined by the property {@code labmanager.file.upload-directory}.
+     */
+    public AbstractFileManager(String uploadFolder) {
+        final var f0 = Strings.emptyToNull(uploadFolder);
+        if (f0 == null) {
+            this.uploadFolder = null;
+        } else {
+            this.uploadFolder = FileSystem.convertStringToFile(f0).getAbsoluteFile();
+        }
+    }
 
-	@Override
-	public File normalizeForServerSide(File file) {
-		if (file == null) {
-			return null;
-		}
-		if (file.isAbsolute()) {
-			return file;
-		}
-		if (this.uploadFolder != null) {
-			return FileSystem.join(this.uploadFolder, file);
-		}
-		return file.getAbsoluteFile();
-	}
+    @Override
+    public File normalizeForServerSide(File file) {
+        if (file == null) {
+            return null;
+        }
+        if (file.isAbsolute()) {
+            return file;
+        }
+        if (this.uploadFolder != null) {
+            return FileSystem.join(this.uploadFolder, file);
+        }
+        return file.getAbsoluteFile();
+    }
 
 }

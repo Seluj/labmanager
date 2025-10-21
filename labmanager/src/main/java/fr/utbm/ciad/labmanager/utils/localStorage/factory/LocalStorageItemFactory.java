@@ -6,7 +6,6 @@ import fr.utbm.ciad.labmanager.utils.localStorage.LocalStorageItem;
  * Factory interface for creating LocalStorageItem instances from a string representation (e.g., JSON).
  *
  * @param <T> The type of the item to be created.
- *
  * @author $Author: sgalland$
  * @author $Author: pschneiderlin$
  * @version $Name$ $Revision$ $Date$

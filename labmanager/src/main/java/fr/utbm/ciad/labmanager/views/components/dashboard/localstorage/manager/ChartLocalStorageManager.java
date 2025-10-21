@@ -8,7 +8,6 @@ import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.factory.i
 /**
  * Class Managing the local storage for DashBoardChartItem objects.
  *
- *
  * @author $Author: sgalland$
  * @author $Author: pschneiderlin$
  * @version $Name$ $Revision$ $Date$
@@ -21,7 +20,7 @@ public class ChartLocalStorageManager extends ComponentLocalStorageManager<Dashb
     /**
      * Default Constructor
      */
-    public ChartLocalStorageManager(){
+    public ChartLocalStorageManager() {
         super(new DashboardChartItemFactory());
     }
 

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.projects.fields;
 
-import java.util.List;
-
 import com.google.common.base.Strings;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
@@ -38,7 +36,10 @@ import fr.utbm.ciad.labmanager.views.components.addons.converters.DoubleToFloatW
 import fr.utbm.ciad.labmanager.views.components.addons.entities.AbstractEntityListGridField;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Implementation of a Vaadin component for input a list of project budgets using values in a grid row.
+import java.util.List;
+
+/**
+ * Implementation of a Vaadin component for input a list of project budgets using values in a grid row.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -48,149 +49,152 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public class ProjectBudgetListGridField extends AbstractEntityListGridField<ProjectBudget> {
 
-	private static final long serialVersionUID = -184881234128681596L;
+    private static final long serialVersionUID = -184881234128681596L;
 
-	private Column<ProjectBudget> fundingSchemeColumn;
+    private Column<ProjectBudget> fundingSchemeColumn;
 
-	private Column<ProjectBudget> budgetColumn;
-	
-	private Column<ProjectBudget> grantColumn;
+    private Column<ProjectBudget> budgetColumn;
 
-	/** Constructor.
-	 *
-	 * @param messages accessor to the localized messages.
-	 */
-	public ProjectBudgetListGridField(MessageSourceAccessor messages) {
-		super(messages, "views.projects.budgets.edit"); //$NON-NLS-1$
-	}
+    private Column<ProjectBudget> grantColumn;
 
-	@Override
-	protected void createColumns(Grid<ProjectBudget> grid) {
-		this.fundingSchemeColumn = grid.addColumn(it -> getFundingSchemeValueLabel(it))
-				.setAutoWidth(true)
-				.setEditorComponent(this::createFundingSchemeEditor);
+    /**
+     * Constructor.
+     *
+     * @param messages accessor to the localized messages.
+     */
+    public ProjectBudgetListGridField(MessageSourceAccessor messages) {
+        super(messages, "views.projects.budgets.edit"); //$NON-NLS-1$
+    }
 
-		this.budgetColumn = grid.addColumn(it -> getBudgetValueLabel(it))
-			.setAutoWidth(true)
-			.setEditorComponent(this::createBudgetEditor);
+    @Override
+    protected void createColumns(Grid<ProjectBudget> grid) {
+        this.fundingSchemeColumn = grid.addColumn(it -> getFundingSchemeValueLabel(it))
+                .setAutoWidth(true)
+                .setEditorComponent(this::createFundingSchemeEditor);
 
-		this.grantColumn = grid.addColumn(it -> getGrantValueLabel(it))
-				.setAutoWidth(true)
-				.setEditorComponent(this::createGrantEditor);
-	}
+        this.budgetColumn = grid.addColumn(it -> getBudgetValueLabel(it))
+                .setAutoWidth(true)
+                .setEditorComponent(this::createBudgetEditor);
 
-	private String getFundingSchemeValueLabel(ProjectBudget budget) {
-		if (budget == null) {
-			return ""; //$NON-NLS-1$
-		}
-		final var scheme = budget.getFundingScheme();
-		if (scheme == null) {
-			return ""; //$NON-NLS-1$
-		}
-		return scheme.getLabel(this.messages, getLocale());
-	}
+        this.grantColumn = grid.addColumn(it -> getGrantValueLabel(it))
+                .setAutoWidth(true)
+                .setEditorComponent(this::createGrantEditor);
+    }
 
-	private String getBudgetValueLabel(ProjectBudget budget) {
-		if (budget == null) {
-			return ""; //$NON-NLS-1$
-		}
-		final var euros = budget.getBudget();
-		if (euros <= 0f) {
-			return ""; //$NON-NLS-1$
-		}
-		return getTranslation("views.projects.budgets.value", Float.valueOf(euros)); //$NON-NLS-1$
-	}
+    private String getFundingSchemeValueLabel(ProjectBudget budget) {
+        if (budget == null) {
+            return ""; //$NON-NLS-1$
+        }
+        final var scheme = budget.getFundingScheme();
+        if (scheme == null) {
+            return ""; //$NON-NLS-1$
+        }
+        return scheme.getLabel(this.messages, getLocale());
+    }
 
-	@SuppressWarnings("static-method")
-	private String getGrantValueLabel(ProjectBudget budget) {
-		if (budget == null) {
-			return ""; //$NON-NLS-1$
-		}
-		final var grant = budget.getFundingReference();
-		return Strings.nullToEmpty(grant);
-	}
+    private String getBudgetValueLabel(ProjectBudget budget) {
+        if (budget == null) {
+            return ""; //$NON-NLS-1$
+        }
+        final var euros = budget.getBudget();
+        if (euros <= 0f) {
+            return ""; //$NON-NLS-1$
+        }
+        return getTranslation("views.projects.budgets.value", Float.valueOf(euros)); //$NON-NLS-1$
+    }
 
-	private ComboBox<FundingScheme> createFundingSchemeEditor(ProjectBudget budget) {
-		final var field = createBaseEnumEditor(FundingScheme.class);
-		field.setItemLabelGenerator(it -> {
-			return it.getLabel(this.messages, getLocale());
-		});
-		final var binder = getGridEditor().getBinder();
-		binder.forField(field).bind(ProjectBudget::getFundingScheme, ProjectBudget::setFundingScheme);
-		return field;
-	}
+    @SuppressWarnings("static-method")
+    private String getGrantValueLabel(ProjectBudget budget) {
+        if (budget == null) {
+            return ""; //$NON-NLS-1$
+        }
+        final var grant = budget.getFundingReference();
+        return Strings.nullToEmpty(grant);
+    }
 
-	private NumberField createBudgetEditor(ProjectBudget budget) {
-		final var field = new NumberField();
-		final var binder = getGridEditor().getBinder();
-		binder.forField(field)
-			.withConverter(new DoubleToFloatWithPrecisionConverter(3))
-			.withValidator(new FloatRangeValidator(getTranslation("views.projects.budgets.budget.error"), Float.valueOf(0f), null)) //$NON-NLS-1$
-			.bind(ProjectBudget::getBudget, ProjectBudget::setBudget);
-		return field;
-	}
+    private ComboBox<FundingScheme> createFundingSchemeEditor(ProjectBudget budget) {
+        final var field = createBaseEnumEditor(FundingScheme.class);
+        field.setItemLabelGenerator(it -> {
+            return it.getLabel(this.messages, getLocale());
+        });
+        final var binder = getGridEditor().getBinder();
+        binder.forField(field).bind(ProjectBudget::getFundingScheme, ProjectBudget::setFundingScheme);
+        return field;
+    }
 
-	private TextField createGrantEditor(ProjectBudget budget) {
-		final var field = new TextField();
-		final var binder = getGridEditor().getBinder();
-		binder.forField(field).bind(ProjectBudget::getFundingReference, ProjectBudget::setFundingReference);
-		return field;
-	}
+    private NumberField createBudgetEditor(ProjectBudget budget) {
+        final var field = new NumberField();
+        final var binder = getGridEditor().getBinder();
+        binder.forField(field)
+                .withConverter(new DoubleToFloatWithPrecisionConverter(3))
+                .withValidator(new FloatRangeValidator(getTranslation("views.projects.budgets.budget.error"), Float.valueOf(0f), null)) //$NON-NLS-1$
+                .bind(ProjectBudget::getBudget, ProjectBudget::setBudget);
+        return field;
+    }
 
-	@Override
-	protected ProjectBudget createEntityInstance() {
-		return new ProjectBudget();
-	}
+    private TextField createGrantEditor(ProjectBudget budget) {
+        final var field = new TextField();
+        final var binder = getGridEditor().getBinder();
+        binder.forField(field).bind(ProjectBudget::getFundingReference, ProjectBudget::setFundingReference);
+        return field;
+    }
 
-	@Override
-	public Validator<List<ProjectBudget>> newStandardValidator() {
-		return new StandardValidator();
-	}
+    @Override
+    protected ProjectBudget createEntityInstance() {
+        return new ProjectBudget();
+    }
 
-	@Override
-	public void localeChange(LocaleChangeEvent event) {
-		super.localeChange(event);
-		this.fundingSchemeColumn.setHeader(getTranslation("views.projects.budgets.scheme")); //$NON-NLS-1$
-		this.budgetColumn.setHeader(getTranslation("views.projects.budgets.budget")); //$NON-NLS-1$
-		this.grantColumn.setHeader(getTranslation("views.projects.budgets.grant")); //$NON-NLS-1$
-	}
+    @Override
+    public Validator<List<ProjectBudget>> newStandardValidator() {
+        return new StandardValidator();
+    }
 
-	/** Implementation of a Vaadin component for input a list of project budgets using values in a grid row.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	protected class StandardValidator implements Validator<List<ProjectBudget>> {
+    @Override
+    public void localeChange(LocaleChangeEvent event) {
+        super.localeChange(event);
+        this.fundingSchemeColumn.setHeader(getTranslation("views.projects.budgets.scheme")); //$NON-NLS-1$
+        this.budgetColumn.setHeader(getTranslation("views.projects.budgets.budget")); //$NON-NLS-1$
+        this.grantColumn.setHeader(getTranslation("views.projects.budgets.grant")); //$NON-NLS-1$
+    }
 
-		private static final long serialVersionUID = -3222944273844477031L;
+    /**
+     * Implementation of a Vaadin component for input a list of project budgets using values in a grid row.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    protected class StandardValidator implements Validator<List<ProjectBudget>> {
 
-		/** Default Constructor.
-		 */
-		public StandardValidator() {
-			//
-		}
+        private static final long serialVersionUID = -3222944273844477031L;
 
-		@Override
-		public ValidationResult apply(List<ProjectBudget> value, ValueContext context) {
-			for (final var budget : value) {
-				// Check the funding scheme of member
-				final var scheme = budget.getFundingScheme();
-				if (scheme == null) {
-					return ValidationResult.error(getTranslation("views.projects.budgets.scheme.error.null")); //$NON-NLS-1$
-				}
-				// Check the member
-				final var euros = budget.getBudget();
-				if (euros < 0f) {
-					return ValidationResult.error(getTranslation("views.projects.budgets.value.error.null")); //$NON-NLS-1$
-				}
-			}
-			//
-			return ValidationResult.ok();
-		}
-		
-	}
+        /**
+         * Default Constructor.
+         */
+        public StandardValidator() {
+            //
+        }
+
+        @Override
+        public ValidationResult apply(List<ProjectBudget> value, ValueContext context) {
+            for (final var budget : value) {
+                // Check the funding scheme of member
+                final var scheme = budget.getFundingScheme();
+                if (scheme == null) {
+                    return ValidationResult.error(getTranslation("views.projects.budgets.scheme.error.null")); //$NON-NLS-1$
+                }
+                // Check the member
+                final var euros = budget.getBudget();
+                if (euros < 0f) {
+                    return ValidationResult.error(getTranslation("views.projects.budgets.value.error.null")); //$NON-NLS-1$
+                }
+            }
+            //
+            return ValidationResult.ok();
+        }
+
+    }
 
 }

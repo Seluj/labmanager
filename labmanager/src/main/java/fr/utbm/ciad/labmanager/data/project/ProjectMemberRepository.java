@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-/** JPA repository for project members.
- * 
+/**
+ * JPA repository for project members.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,13 +35,14 @@ import java.util.List;
  */
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long>, JpaSpecificationExecutor<ProjectMember> {
 
-	/** Replies the list of the project members that corresponds to the person with the given identifier.
-	 *
-	 * @param id the identifier of the person.
-	 * @return the list of the project members.
-	 * @since 3.2
-	 * @deprecated no replacement
-	 */
-	List<ProjectMember> findDistinctByPersonId(long id);
+    /**
+     * Replies the list of the project members that corresponds to the person with the given identifier.
+     *
+     * @param id the identifier of the person.
+     * @return the list of the project members.
+     * @since 3.2
+     * @deprecated no replacement
+     */
+    List<ProjectMember> findDistinctByPersonId(long id);
 
 }

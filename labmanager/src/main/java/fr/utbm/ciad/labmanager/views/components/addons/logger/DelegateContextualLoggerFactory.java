@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,8 @@ package fr.utbm.ciad.labmanager.views.components.addons.logger;
 
 import org.slf4j.Logger;
 
-/** Logger factory that replies the provided delegate logger.
+/**
+ * Logger factory that replies the provided delegate logger.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -31,21 +32,22 @@ import org.slf4j.Logger;
  */
 public final class DelegateContextualLoggerFactory extends ContextualLoggerFactory {
 
-	private static final long serialVersionUID = 774796031779483625L;
+    private static final long serialVersionUID = 774796031779483625L;
 
-	private final Logger delegate;
-	
-	/** Constructor.
-	 *
-	 * @param logger the logger to delegate to.
-	 */
-	public DelegateContextualLoggerFactory(Logger logger) {
-		this.delegate = logger;
-	}
+    private final Logger delegate;
 
-	@Override
-	public Logger getLogger(String name, String userName) {
-		return this.delegate;
-	}
+    /**
+     * Constructor.
+     *
+     * @param logger the logger to delegate to.
+     */
+    public DelegateContextualLoggerFactory(Logger logger) {
+        this.delegate = logger;
+    }
+
+    @Override
+    public Logger getLogger(String name, String userName) {
+        return this.delegate;
+    }
 
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,6 @@
 
 package fr.utbm.ciad.labmanager.services.publication.type;
 
-import java.time.LocalDate;
-import java.util.Base64;
-import java.util.List;
-
 import com.google.common.base.Strings;
 import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
 import fr.utbm.ciad.labmanager.data.publication.Publication;
@@ -39,8 +35,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
-/** Service for managing patents.
- * 
+import java.time.LocalDate;
+import java.util.Base64;
+import java.util.List;
+
+/**
+ * Service for managing patents.
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @version $Name$ $Revision$ $Date$
@@ -50,149 +51,156 @@ import org.springframework.stereotype.Service;
 @Service
 public class PatentService extends AbstractPublicationTypeService {
 
-	private static final long serialVersionUID = -5567507639202863109L;
+    private static final long serialVersionUID = -5567507639202863109L;
 
-	private PatentRepository repository;
+    private final PatentRepository repository;
 
-	/** Constructor for injector.
-	 * This constructor is defined for being invoked by the IOC injector.
-	 *
-	 * @param downloadableFileManager downloadable file manager.
-	 * @param doiTools the tools for manipulating the DOI.
-	 * @param halTools the tools for manipulating the HAL ids.
-	 * @param repository the repository for this service.
-	 * @param messages the provider of localized messages.
-	 * @param constants the accessor to the live constants.
-	 * @param sessionFactory the Hibernate session factory.
-	 */
-	public PatentService(
-			@Autowired DownloadableFileManager downloadableFileManager,
-			@Autowired DoiTools doiTools,
-			@Autowired HalTools halTools,
-			@Autowired PatentRepository repository,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ConfigurationConstants constants,
-			@Autowired SessionFactory sessionFactory) {
-		super(downloadableFileManager, doiTools, halTools, messages, constants, sessionFactory);
-		this.repository = repository;
-	}
+    /**
+     * Constructor for injector.
+     * This constructor is defined for being invoked by the IOC injector.
+     *
+     * @param downloadableFileManager downloadable file manager.
+     * @param doiTools                the tools for manipulating the DOI.
+     * @param halTools                the tools for manipulating the HAL ids.
+     * @param repository              the repository for this service.
+     * @param messages                the provider of localized messages.
+     * @param constants               the accessor to the live constants.
+     * @param sessionFactory          the Hibernate session factory.
+     */
+    public PatentService(
+            @Autowired DownloadableFileManager downloadableFileManager,
+            @Autowired DoiTools doiTools,
+            @Autowired HalTools halTools,
+            @Autowired PatentRepository repository,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ConfigurationConstants constants,
+            @Autowired SessionFactory sessionFactory) {
+        super(downloadableFileManager, doiTools, halTools, messages, constants, sessionFactory);
+        this.repository = repository;
+    }
 
-	/** Replies all the patents.
-	 *
-	 * @return the patents.
-	 * @Deprecated no replacement.
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	public List<Patent> getAllPatents() {
-		return this.repository.findAll();
-	}
+    /**
+     * Replies all the patents.
+     *
+     * @return the patents.
+     * @Deprecated no replacement.
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    public List<Patent> getAllPatents() {
+        return this.repository.findAll();
+    }
 
-	/** Replies the patent with the given identifier.
-	 *
-	 * @param identifier the identifier of the patent.
-	 * @return the patent or {@code null}.
-	 * @Deprecated no replacement.
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	public Patent getPatent(long identifier) {
-		return this.repository.findById(Long.valueOf(identifier)).orElse(null);
-	}
+    /**
+     * Replies the patent with the given identifier.
+     *
+     * @param identifier the identifier of the patent.
+     * @return the patent or {@code null}.
+     * @Deprecated no replacement.
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    public Patent getPatent(long identifier) {
+        return this.repository.findById(Long.valueOf(identifier)).orElse(null);
+    }
 
-	/** Create a patent.
-	 *
-	 * @param publication the publication to copy.
-	 * @param number the number of the patent.
-	 * @param type the type of patent.
-	 * @param institution the name of the institution in which the patent was published.
-	 * @param address the geographical address of the institution. Usually a city and a country.
-	 * @return the created patent.
-	 * @Deprecated no replacement.
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	public Patent createPatent(Publication publication,
-			String number, String type, String institution, String address) {
-		return createPatent(publication, number, type, institution, address, true);
-	}
+    /**
+     * Create a patent.
+     *
+     * @param publication the publication to copy.
+     * @param number      the number of the patent.
+     * @param type        the type of patent.
+     * @param institution the name of the institution in which the patent was published.
+     * @param address     the geographical address of the institution. Usually a city and a country.
+     * @return the created patent.
+     * @Deprecated no replacement.
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    public Patent createPatent(Publication publication,
+                               String number, String type, String institution, String address) {
+        return createPatent(publication, number, type, institution, address, true);
+    }
 
-	/** Create a patent.
-	 *
-	 * @param publication the publication to copy.
-	 * @param number the number of the patent.
-	 * @param type the type of patent.
-	 * @param institution the name of the institution in which the patent was published.
-	 * @param address the geographical address of the institution. Usually a city and a country.
-	 * @param saveInDb indicates if the entity must be saved inthe JPA database.
-	 * @return the created patent.
-	 * @since 4.0
-	 */
-	public Patent createPatent(Publication publication,
-			String number, String type, String institution, String address, boolean saveInDb) {
-		final var res = new Patent(publication, institution, address, type, number);
-		if (saveInDb) {
-			this.repository.save(res);
-		}
-		return res;
-	}
+    /**
+     * Create a patent.
+     *
+     * @param publication the publication to copy.
+     * @param number      the number of the patent.
+     * @param type        the type of patent.
+     * @param institution the name of the institution in which the patent was published.
+     * @param address     the geographical address of the institution. Usually a city and a country.
+     * @param saveInDb    indicates if the entity must be saved inthe JPA database.
+     * @return the created patent.
+     * @since 4.0
+     */
+    public Patent createPatent(Publication publication,
+                               String number, String type, String institution, String address, boolean saveInDb) {
+        final var res = new Patent(publication, institution, address, type, number);
+        if (saveInDb) {
+            this.repository.save(res);
+        }
+        return res;
+    }
 
-	/** Update the patent with the given identifier.
-	 *
-	 * @param pubId identifier of the patent to change.
-	 * @param title the new title of the publication, never {@code null} or empty.
-	 * @param type the new type of publication, never {@code null}.
-	 * @param date the new date of publication. It may be {@code null}. In this case only the year should be considered.
-	 * @param year the new year of the publication. 
-	 * @param abstractText the new text of the abstract.
-	 * @param keywords the new list of keywords.
-	 * @param doi the new DOI number.
-	 * @param halId the new HAL id.
-	 * @param isbn the new ISBN number.
-	 * @param issn the new ISSN number.
-	 * @param dblpUrl the new URL to the DBLP page of the publication.
-	 * @param extraUrl the new URL to the page of the publication.
-	 * @param language the new major language of the publication.
-	 * @param pdfContent the content of the publication PDF that is encoded in {@link Base64}. The content will be saved into
-	 *     the dedicated folder for PDF files.
-	 * @param awardContent the content of the publication award certificate that is encoded in {@link Base64}. The content will be saved into
-	 *     the dedicated folder for PDF files.
-	 * @param pathToVideo the path that allows to download the video of the publication.
-	 * @param number the number of the patent.
-	 * @param patentType the type of patent.
-	 * @param institution the name of the institution in which the patent was published.
-	 * @param address the geographical address of the institution. Usually a city and a country.
-	 * @Deprecated no replacement.
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	public void updatePatent(long pubId,
-			String title, PublicationType type, LocalDate date, int year, String abstractText, String keywords,
-			String doi, String halId, String isbn, String issn, String dblpUrl, String extraUrl,
-			PublicationLanguage language, String pdfContent, String awardContent, String pathToVideo,
-			String number, String patentType, String institution, String address) {
-		final var res = this.repository.findById(Long.valueOf(pubId));
-		if (res.isPresent()) {
-			final var patent = res.get();
+    /**
+     * Update the patent with the given identifier.
+     *
+     * @param pubId        identifier of the patent to change.
+     * @param title        the new title of the publication, never {@code null} or empty.
+     * @param type         the new type of publication, never {@code null}.
+     * @param date         the new date of publication. It may be {@code null}. In this case only the year should be considered.
+     * @param year         the new year of the publication.
+     * @param abstractText the new text of the abstract.
+     * @param keywords     the new list of keywords.
+     * @param doi          the new DOI number.
+     * @param halId        the new HAL id.
+     * @param isbn         the new ISBN number.
+     * @param issn         the new ISSN number.
+     * @param dblpUrl      the new URL to the DBLP page of the publication.
+     * @param extraUrl     the new URL to the page of the publication.
+     * @param language     the new major language of the publication.
+     * @param pdfContent   the content of the publication PDF that is encoded in {@link Base64}. The content will be saved into
+     *                     the dedicated folder for PDF files.
+     * @param awardContent the content of the publication award certificate that is encoded in {@link Base64}. The content will be saved into
+     *                     the dedicated folder for PDF files.
+     * @param pathToVideo  the path that allows to download the video of the publication.
+     * @param number       the number of the patent.
+     * @param patentType   the type of patent.
+     * @param institution  the name of the institution in which the patent was published.
+     * @param address      the geographical address of the institution. Usually a city and a country.
+     * @Deprecated no replacement.
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    public void updatePatent(long pubId,
+                             String title, PublicationType type, LocalDate date, int year, String abstractText, String keywords,
+                             String doi, String halId, String isbn, String issn, String dblpUrl, String extraUrl,
+                             PublicationLanguage language, String pdfContent, String awardContent, String pathToVideo,
+                             String number, String patentType, String institution, String address) {
+        final var res = this.repository.findById(Long.valueOf(pubId));
+        if (res.isPresent()) {
+            final var patent = res.get();
 
-			updatePublicationNoSave(patent, title, type, date, year,
-					abstractText, keywords, doi, halId, isbn, issn, dblpUrl,
-					extraUrl, language, pdfContent, awardContent,
-					pathToVideo);
+            updatePublicationNoSave(patent, title, type, date, year,
+                    abstractText, keywords, doi, halId, isbn, issn, dblpUrl,
+                    extraUrl, language, pdfContent, awardContent,
+                    pathToVideo);
 
-			patent.setPatentNumber(Strings.emptyToNull(number));
-			patent.setPatentType(Strings.emptyToNull(patentType));
-			patent.setInstitution(Strings.emptyToNull(institution));
-			patent.setAddress(Strings.emptyToNull(address));
+            patent.setPatentNumber(Strings.emptyToNull(number));
+            patent.setPatentType(Strings.emptyToNull(patentType));
+            patent.setInstitution(Strings.emptyToNull(institution));
+            patent.setAddress(Strings.emptyToNull(address));
 
-			this.repository.save(res.get());
-		}
-	}
+            this.repository.save(res.get());
+        }
+    }
 
-	/** Remove the patent from the database.
-	 *
-	 * @param identifier the identifier of the patent to be removed.
-	 * @Deprecated no replacement.
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	public void removePatent(long identifier) {
-		this.repository.deleteById(Long.valueOf(identifier));
-	}
+    /**
+     * Remove the patent from the database.
+     *
+     * @param identifier the identifier of the patent to be removed.
+     * @Deprecated no replacement.
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    public void removePatent(long identifier) {
+        this.repository.deleteById(Long.valueOf(identifier));
+    }
 
 }

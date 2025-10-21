@@ -17,7 +17,7 @@ public abstract class AbstractLocalStorageItem implements LocalStorageItem {
     /**
      * Default Constructor
      */
-    public AbstractLocalStorageItem(){
+    public AbstractLocalStorageItem() {
         this("");
     }
 
@@ -26,12 +26,12 @@ public abstract class AbstractLocalStorageItem implements LocalStorageItem {
      *
      * @param id the unique identifier to assign to the item
      */
-    public AbstractLocalStorageItem(String id){
+    public AbstractLocalStorageItem(String id) {
         createId(id);
     }
 
     @Override
-    public String getId(){
+    public String getId() {
         return id;
     }
 

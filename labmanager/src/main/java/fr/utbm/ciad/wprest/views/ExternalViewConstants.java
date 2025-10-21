@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.wprest.views;
 
-/** Definition of global constants for external views.
- * 
+/**
+ * Definition of global constants for external views.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -29,24 +30,28 @@ package fr.utbm.ciad.wprest.views;
  */
 public final class ExternalViewConstants {
 
-	/** Name of the endpoint parameter "dbId".
-	 */
-	public static final String DBID_ENDPOINT_PARAMETER = "dbId"; //$NON-NLS-1$
+    /**
+     * Name of the endpoint parameter "dbId".
+     */
+    public static final String DBID_ENDPOINT_PARAMETER = "dbId"; //$NON-NLS-1$
 
-	/** Name of the endpoint for obtaining the Vcard of a person.
-	 */
-	public static final String PERSON_VCARD_ENDPOINT = "personVcard"; //$NON-NLS-1$
+    /**
+     * Name of the endpoint for obtaining the Vcard of a person.
+     */
+    public static final String PERSON_VCARD_ENDPOINT = "personVcard"; //$NON-NLS-1$
 
-	/** Name of the endpoint parameter "inAttachment".
-	 */
-	public static final String INATTACHMENT_ENDPOINT_PARAMETER = "inAttachment"; //$NON-NLS-1$
+    /**
+     * Name of the endpoint parameter "inAttachment".
+     */
+    public static final String INATTACHMENT_ENDPOINT_PARAMETER = "inAttachment"; //$NON-NLS-1$
 
-	/** Name of the endpoint parameter "organization".
-	 */
-	public static final String ORGANIZATION_ENDPOINT_PARAMETER = "organization"; //$NON-NLS-1$
+    /**
+     * Name of the endpoint parameter "organization".
+     */
+    public static final String ORGANIZATION_ENDPOINT_PARAMETER = "organization"; //$NON-NLS-1$
 
-	private ExternalViewConstants() {
-		//
-	}
-	
+    private ExternalViewConstants() {
+        //
+    }
+
 }

@@ -19,12 +19,13 @@
 
 package fr.utbm.ciad.labmanager.security.cas;
 
-import java.io.Serializable;
-
 import org.springframework.stereotype.Component;
 
-/** Configuration description for a CAS.
- * 
+import java.io.Serializable;
+
+/**
+ * Configuration description for a CAS.
+ *
  * @author $Author: sgalland$
  * @author $Author: jferlin$
  * @version $Name$ $Revision$ $Date$
@@ -35,96 +36,106 @@ import org.springframework.stereotype.Component;
 @Component
 public class CasServerConfiguration implements Serializable {
 
-	private static final long serialVersionUID = -6309929457086811382L;
+    private static final long serialVersionUID = -6309929457086811382L;
 
-	private String base;
+    private String base;
 
-	private String login;
+    private String login;
 
-	private String logout;
+    private String logout;
 
-	private String service;
+    private String service;
 
-	private String key;
+    private String key;
 
-	/** Replies the base URL for the CAS server.
-	 *
-	 * @return the base URL.
-	 */
-	public String getBase() {
-		return this.base;
-	}
+    /**
+     * Replies the base URL for the CAS server.
+     *
+     * @return the base URL.
+     */
+    public String getBase() {
+        return this.base;
+    }
 
-	/** Change the base URL for the CAS server.
-	 *
-	 * @param baseUrl the base URL.
-	 */
-	public void setBase(String baseUrl) {
-		this.base = baseUrl;
-	}
-	
-	/** Replies the login URL for the CAS server.
-	 *
-	 * @return the login URL.
-	 */
-	public String getLogin() {
-		return this.login;
-	}
+    /**
+     * Change the base URL for the CAS server.
+     *
+     * @param baseUrl the base URL.
+     */
+    public void setBase(String baseUrl) {
+        this.base = baseUrl;
+    }
 
-	/** Change the login URL for the CAS server.
-	 *
-	 * @param loginUrl the login URL.
-	 */
-	public void setLogin(String loginUrl) {
-		this.login = loginUrl;
-	}
-	
-	/** Replies the logout URL for the CAS server.
-	 *
-	 * @return the logout URL.
-	 */
-	public String getLogout() {
-		return this.logout;
-	}
+    /**
+     * Replies the login URL for the CAS server.
+     *
+     * @return the login URL.
+     */
+    public String getLogin() {
+        return this.login;
+    }
 
-	/** Change the logout URL for the CAS server.
-	 *
-	 * @param logoutUrl the logout URL.
-	 */
-	public void setLogout(String logoutUrl) {
-		this.logout = logoutUrl;
-	}
+    /**
+     * Change the login URL for the CAS server.
+     *
+     * @param loginUrl the login URL.
+     */
+    public void setLogin(String loginUrl) {
+        this.login = loginUrl;
+    }
 
-	/** Replies the URL for the application's login service.
-	 *
-	 * @return the login URL.
-	 */
-	public String getService() {
-		return this.service;
-	}
+    /**
+     * Replies the logout URL for the CAS server.
+     *
+     * @return the logout URL.
+     */
+    public String getLogout() {
+        return this.logout;
+    }
 
-	/** Change the URL for the application's login service.
-	 *
-	 * @param serviceUrl the URL of the application login service.
-	 */
-	public void setService(String serviceUrl) {
-		this.service = serviceUrl;
-	}
-	
-	/** Replies the authentication public key for the CAS server.
-	 *
-	 * @return the key.
-	 */
-	public String getKey() {
-		return this.key;
-	}
+    /**
+     * Change the logout URL for the CAS server.
+     *
+     * @param logoutUrl the logout URL.
+     */
+    public void setLogout(String logoutUrl) {
+        this.logout = logoutUrl;
+    }
 
-	/** Change the authentication public key for the CAS server.
-	 *
-	 * @param key the CAS public key.
-	 */
-	public void setKey(String key) {
-		this.key = key;
-	}
+    /**
+     * Replies the URL for the application's login service.
+     *
+     * @return the login URL.
+     */
+    public String getService() {
+        return this.service;
+    }
+
+    /**
+     * Change the URL for the application's login service.
+     *
+     * @param serviceUrl the URL of the application login service.
+     */
+    public void setService(String serviceUrl) {
+        this.service = serviceUrl;
+    }
+
+    /**
+     * Replies the authentication public key for the CAS server.
+     *
+     * @return the key.
+     */
+    public String getKey() {
+        return this.key;
+    }
+
+    /**
+     * Change the authentication public key for the CAS server.
+     *
+     * @param key the CAS public key.
+     */
+    public void setKey(String key) {
+        this.key = key;
+    }
 
 }

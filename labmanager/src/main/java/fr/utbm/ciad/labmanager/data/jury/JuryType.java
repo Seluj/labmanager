@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import java.util.Locale;
 
-/** Type of jury.
- * 
+/**
+ * Type of jury.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,51 +35,57 @@ import java.util.Locale;
  */
 public enum JuryType {
 
-	/** HDR jury.
-	 */
-	HDR,
+    /**
+     * HDR jury.
+     */
+    HDR,
 
-	/** PhD jury.
-	 */
-	PHD,
+    /**
+     * PhD jury.
+     */
+    PHD,
 
-	/** Master jury.
-	 */
-	MASTER,
+    /**
+     * Master jury.
+     */
+    MASTER,
 
-	/** Bac jury.
-	 */
-	BAC;
+    /**
+     * Bac jury.
+     */
+    BAC;
 
-	private static final String MESSAGE_PREFIX = "juryType."; //$NON-NLS-1$
+    private static final String MESSAGE_PREFIX = "juryType."; //$NON-NLS-1$
 
-	/** Replies the label of the type.
-	 *
-	 * @param messages the accessors to the localized names.
-	 * @param locale the locale to use.
-	 * @return the label of the type.
-	 */
-	public String getLabel(MessageSourceAccessor messages, Locale locale) {
-		final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
-		return Strings.nullToEmpty(label);
-	}
+    /**
+     * Replies the jury membership that corresponds to the given name, with a case-insensitive
+     * test of the name.
+     *
+     * @param name the name of the membership, to search for.
+     * @return the status.
+     * @throws IllegalArgumentException if the given name does not corresponds to a membership.
+     */
+    public static JuryType valueOfCaseInsensitive(String name) {
+        if (!Strings.isNullOrEmpty(name)) {
+            for (final var status : values()) {
+                if (name.equalsIgnoreCase(status.name())) {
+                    return status;
+                }
+            }
+        }
+        throw new IllegalArgumentException("Invalid jury type: " + name); //$NON-NLS-1$
+    }
 
-	/** Replies the jury membership that corresponds to the given name, with a case-insensitive
-	 * test of the name.
-	 *
-	 * @param name the name of the membership, to search for.
-	 * @return the status.
-	 * @throws IllegalArgumentException if the given name does not corresponds to a membership.
-	 */
-	public static JuryType valueOfCaseInsensitive(String name) {
-		if (!Strings.isNullOrEmpty(name)) {
-			for (final var status : values()) {
-				if (name.equalsIgnoreCase(status.name())) {
-					return status;
-				}
-			}
-		}
-		throw new IllegalArgumentException("Invalid jury type: " + name); //$NON-NLS-1$
-	}
+    /**
+     * Replies the label of the type.
+     *
+     * @param messages the accessors to the localized names.
+     * @param locale   the locale to use.
+     * @return the label of the type.
+     */
+    public String getLabel(MessageSourceAccessor messages, Locale locale) {
+        final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
+        return Strings.nullToEmpty(label);
+    }
 
 }

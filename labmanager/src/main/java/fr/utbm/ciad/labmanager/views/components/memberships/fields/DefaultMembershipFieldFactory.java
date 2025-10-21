@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.memberships.fields;
 
-import java.util.Locale;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import com.vaadin.flow.function.SerializableBiConsumer;
 import fr.utbm.ciad.labmanager.data.member.Membership;
 import fr.utbm.ciad.labmanager.security.AuthenticatedUser;
@@ -32,8 +28,13 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/** Factory for building the fields related to the person memberships.
- * 
+import java.util.Locale;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+/**
+ * Factory for building the fields related to the person memberships.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -43,40 +44,41 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultMembershipFieldFactory implements MembershipFieldFactory {
 
-	private final MembershipService membershipService;
+    private final MembershipService membershipService;
 
-	private final MembershipEditorFactory membershipEditorFactory;
+    private final MembershipEditorFactory membershipEditorFactory;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructor.
-	 *
-	 * @param membershipService the service for accessing the membership JPA entities.
-	 * @param membershipEditorFactory the factory for creating the person membership editors.
-	 * @param authenticatedUser the user that is currently authenticated.
-	 */
-	public DefaultMembershipFieldFactory(
-			@Autowired MembershipService membershipService,
-			@Autowired MembershipEditorFactory membershipEditorFactory,
-			@Autowired AuthenticatedUser authenticatedUser) {
-		this.membershipService = membershipService;
-		this.membershipEditorFactory = membershipEditorFactory;
-		this.authenticatedUser = authenticatedUser;
-	}
+    /**
+     * Constructor.
+     *
+     * @param membershipService       the service for accessing the membership JPA entities.
+     * @param membershipEditorFactory the factory for creating the person membership editors.
+     * @param authenticatedUser       the user that is currently authenticated.
+     */
+    public DefaultMembershipFieldFactory(
+            @Autowired MembershipService membershipService,
+            @Autowired MembershipEditorFactory membershipEditorFactory,
+            @Autowired AuthenticatedUser authenticatedUser) {
+        this.membershipService = membershipService;
+        this.membershipEditorFactory = membershipEditorFactory;
+        this.authenticatedUser = authenticatedUser;
+    }
 
-	@Override
-	public SingleMembershipNameField createSingleNameField(Supplier<Locale> locale,
-			SerializableBiConsumer<Membership, Consumer<Membership>> creationWithUiCallback,
-			SerializableBiConsumer<Membership, Consumer<Membership>> creationWithoutUiCallback,
-			Consumer<Membership> entityInitializer) {
-		return new SingleMembershipNameField(this.membershipService, locale, creationWithUiCallback, creationWithoutUiCallback, entityInitializer);
-	}
+    @Override
+    public SingleMembershipNameField createSingleNameField(Supplier<Locale> locale,
+                                                           SerializableBiConsumer<Membership, Consumer<Membership>> creationWithUiCallback,
+                                                           SerializableBiConsumer<Membership, Consumer<Membership>> creationWithoutUiCallback,
+                                                           Consumer<Membership> entityInitializer) {
+        return new SingleMembershipNameField(this.membershipService, locale, creationWithUiCallback, creationWithoutUiCallback, entityInitializer);
+    }
 
-	@Override
-	public SingleMembershipNameField createSingleNameField(String creationTitle, Logger logger, Supplier<Locale> locale,
-			Consumer<Membership> entityInitializer) {
-		return new SingleMembershipNameField(this.membershipService, this.membershipEditorFactory, this.authenticatedUser,
-				creationTitle, logger, locale, entityInitializer);
-	}
+    @Override
+    public SingleMembershipNameField createSingleNameField(String creationTitle, Logger logger, Supplier<Locale> locale,
+                                                           Consumer<Membership> entityInitializer) {
+        return new SingleMembershipNameField(this.membershipService, this.membershipEditorFactory, this.authenticatedUser,
+                creationTitle, logger, locale, entityInitializer);
+    }
 
 }

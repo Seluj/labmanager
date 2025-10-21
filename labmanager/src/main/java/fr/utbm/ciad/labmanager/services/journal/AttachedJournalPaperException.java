@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager.services.journal;
 
-/** Exception indicates than an operation if forbidden because a journal has attached papers.
- * 
+/**
+ * Exception indicates than an operation if forbidden because a journal has attached papers.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -28,6 +29,6 @@ package fr.utbm.ciad.labmanager.services.journal;
  */
 public class AttachedJournalPaperException extends Exception {
 
-	private static final long serialVersionUID = -8103665914216560656L;
+    private static final long serialVersionUID = -8103665914216560656L;
 
 }

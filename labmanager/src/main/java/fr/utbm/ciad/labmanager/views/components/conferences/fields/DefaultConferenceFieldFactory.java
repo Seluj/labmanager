@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.conferences.fields;
 
-import java.util.function.Consumer;
-
 import com.vaadin.flow.function.SerializableBiConsumer;
 import fr.utbm.ciad.labmanager.data.conference.Conference;
 import fr.utbm.ciad.labmanager.security.AuthenticatedUser;
@@ -30,8 +28,11 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/** Factory for building the fields related to the conferences.
- * 
+import java.util.function.Consumer;
+
+/**
+ * Factory for building the fields related to the conferences.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -41,38 +42,39 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultConferenceFieldFactory implements ConferenceFieldFactory {
 
-	private final ConferenceService conferenceService;
+    private final ConferenceService conferenceService;
 
-	private final ConferenceEditorFactory conferenceEditorFactory;
+    private final ConferenceEditorFactory conferenceEditorFactory;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructor.
-	 *
-	 * @param conferenceService the service for accessing the conference JPA entities.
-	 * @param conferenceEditorFactory factory for creating the conference editors.
-	 * @param authenticatedUser the user that is currently authenticated.
-	 */
-	public DefaultConferenceFieldFactory(
-			@Autowired ConferenceService conferenceService,
-			@Autowired ConferenceEditorFactory conferenceEditorFactory,
-			@Autowired AuthenticatedUser authenticatedUser) {
-		this.conferenceService = conferenceService;
-		this.conferenceEditorFactory = conferenceEditorFactory;
-		this.authenticatedUser = authenticatedUser;
-	}
+    /**
+     * Constructor.
+     *
+     * @param conferenceService       the service for accessing the conference JPA entities.
+     * @param conferenceEditorFactory factory for creating the conference editors.
+     * @param authenticatedUser       the user that is currently authenticated.
+     */
+    public DefaultConferenceFieldFactory(
+            @Autowired ConferenceService conferenceService,
+            @Autowired ConferenceEditorFactory conferenceEditorFactory,
+            @Autowired AuthenticatedUser authenticatedUser) {
+        this.conferenceService = conferenceService;
+        this.conferenceEditorFactory = conferenceEditorFactory;
+        this.authenticatedUser = authenticatedUser;
+    }
 
-	@Override
-	public SingleConferenceNameField createSingleNameField(
-			SerializableBiConsumer<Conference, Consumer<Conference>> creationWithUiCallback,
-			SerializableBiConsumer<Conference, Consumer<Conference>> creationWithoutUiCallback) {
-		return new SingleConferenceNameField(this.conferenceService, creationWithUiCallback, creationWithoutUiCallback);
-	}
+    @Override
+    public SingleConferenceNameField createSingleNameField(
+            SerializableBiConsumer<Conference, Consumer<Conference>> creationWithUiCallback,
+            SerializableBiConsumer<Conference, Consumer<Conference>> creationWithoutUiCallback) {
+        return new SingleConferenceNameField(this.conferenceService, creationWithUiCallback, creationWithoutUiCallback);
+    }
 
-	@Override
-	public SingleConferenceNameField createSingleNameField(String creationTitle, Logger logger) {
-		return new SingleConferenceNameField(this.conferenceService, this.conferenceEditorFactory, this.authenticatedUser,
-				creationTitle, logger);
-	}
+    @Override
+    public SingleConferenceNameField createSingleNameField(String creationTitle, Logger logger) {
+        return new SingleConferenceNameField(this.conferenceService, this.conferenceEditorFactory, this.authenticatedUser,
+                creationTitle, logger);
+    }
 
 }

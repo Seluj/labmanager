@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,8 @@ import com.vaadin.flow.component.login.LoginOverlay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** An abstract login overlay that has an attached logger.
+/**
+ * An abstract login overlay that has an attached logger.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -33,14 +34,15 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractLoggerLoginOverlay extends LoginOverlay {
 
-	private static final long serialVersionUID = 5543122807947052110L;
+    private static final long serialVersionUID = 5543122807947052110L;
 
-	/** Replies the logger than should be used by this component.
-	 *
-	 * @return the logger, never {@code null}.
-	 */
-	public synchronized Logger getLogger() {
-		return LoggerFactory.getLogger(getClass().getName());
-	}
+    /**
+     * Replies the logger than should be used by this component.
+     *
+     * @return the logger, never {@code null}.
+     */
+    public synchronized Logger getLogger() {
+        return LoggerFactory.getLogger(getClass().getName());
+    }
 
 }

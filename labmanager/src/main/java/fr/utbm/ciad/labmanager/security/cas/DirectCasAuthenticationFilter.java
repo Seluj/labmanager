@@ -15,29 +15,32 @@ import org.springframework.security.cas.web.CasAuthenticationFilter;
  */
 public class DirectCasAuthenticationFilter extends CasAuthenticationFilter {
 
-	/** Default URL for processing the login.
-	 */
-	static final String DEFAULT_PROCESS_URL = "/login/cas"; //$NON-NLS-1$
+    /**
+     * Default URL for processing the login.
+     */
+    static final String DEFAULT_PROCESS_URL = "/login/cas"; //$NON-NLS-1$
 
-	private final String organizationName;
+    private final String organizationName;
 
-	/** Construct a filter with the provider authentication manager.
-	 *
-	 * @param organizationName the name of the organization to which this filter is associated to.
-	 * @param authenticationManager the manager to use.
-	 */
-	public DirectCasAuthenticationFilter(String organizationName, AuthenticationManager authenticationManager) {
-		this.organizationName = organizationName;
-		setFilterProcessesUrl(DEFAULT_PROCESS_URL);
-		setAuthenticationManager(authenticationManager);
-	}
+    /**
+     * Construct a filter with the provider authentication manager.
+     *
+     * @param organizationName      the name of the organization to which this filter is associated to.
+     * @param authenticationManager the manager to use.
+     */
+    public DirectCasAuthenticationFilter(String organizationName, AuthenticationManager authenticationManager) {
+        this.organizationName = organizationName;
+        setFilterProcessesUrl(DEFAULT_PROCESS_URL);
+        setAuthenticationManager(authenticationManager);
+    }
 
-	/** Replies the name of the organization to which this filter is associated to.
-	 *
-	 * @return the name, never {@code null}.
-	 */
-	public String getOrganizationName() {
-		return this.organizationName;
-	}
+    /**
+     * Replies the name of the organization to which this filter is associated to.
+     *
+     * @return the name, never {@code null}.
+     */
+    public String getOrganizationName() {
+        return this.organizationName;
+    }
 
 }

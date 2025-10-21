@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,6 @@
 
 package fr.utbm.ciad.labmanager.components.indicators.members.fte;
 
-import java.time.LocalDate;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import fr.utbm.ciad.labmanager.components.indicators.AbstractAnnualIndicator;
 import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
 import fr.utbm.ciad.labmanager.data.member.MemberStatus;
@@ -34,8 +29,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Count the number of Postdocs per year.
- * 
+import java.time.LocalDate;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * Count the number of Postdocs per year.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,72 +46,74 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostdocFteIndicator extends AbstractAnnualIndicator {
 
-	private static final long serialVersionUID = -642739848210413891L;
+    private static final long serialVersionUID = -642739848210413891L;
 
-	/** Constructor.
-	 *
-	 * @param messages the provider of messages.
-	 * @param constants the accessor to the constants.
-	 */
-	public PostdocFteIndicator(
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ConfigurationConstants constants) {
-		super(messages, constants, AbstractAnnualIndicator::average);
-	}
+    /**
+     * Constructor.
+     *
+     * @param messages  the provider of messages.
+     * @param constants the accessor to the constants.
+     */
+    public PostdocFteIndicator(
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ConfigurationConstants constants) {
+        super(messages, constants, AbstractAnnualIndicator::average);
+    }
 
-	@Override
-	public String getName(Locale locale) {
-		return getMessage(locale, "postdocFteIndicator.name"); //$NON-NLS-1$
-	}
+    /**
+     * Replies if the given membership is for a postdoc.
+     *
+     * @param membership the membership to test.
+     * @param startDate  the start date of the active period.
+     * @param endDate    the end date of the active period.
+     * @return {@code true} if the membership is for a postdoc.
+     */
+    public static boolean isPostdoc(Membership membership, LocalDate startDate, LocalDate endDate) {
+        if (membership != null && membership.isActiveIn(startDate, endDate)) {
+            final var status = membership.getMemberStatus();
+            return !status.isExternalPosition() && status == MemberStatus.POSTDOC;
+        }
+        return false;
+    }
 
-	@Override
-	public String getLabel(Unit unit, Locale locale) {
-		return getLabelWithoutYears(locale, "postdocFteIndicator.label"); //$NON-NLS-1$
-	}
+    private static void updateValues(Map<Integer, Number> values, Membership membership, int startYear, int endYear) {
+        final var fte = membership.getMemberStatus().getUsualResearchFullTimeEquivalent();
+        for (int year = startYear; year <= endYear; ++year) {
+            final var dayCount = membership.daysInYear(year);
+            float annualFte = dayCount / LocalDate.of(year, 1, 1).lengthOfYear();
+            annualFte *= fte;
+            values.merge(Integer.valueOf(year), Float.valueOf(annualFte),
+                    (k0, k1) -> {
+                        final var sum = k0.floatValue() + k1.floatValue();
+                        return Float.valueOf(sum);
+                    });
+        }
+    }
 
-	/** Replies if the given membership is for a postdoc.
-	 *
-	 * @param membership the membership to test.
-	 * @param startDate the start date of the active period.
-	 * @param endDate the end date of the active period.
-	 * @return {@code true} if the membership is for a postdoc.
-	 */
-	public static boolean isPostdoc(Membership membership, LocalDate startDate, LocalDate endDate) {
-		if (membership != null && membership.isActiveIn(startDate, endDate)) {
-			final var status = membership.getMemberStatus();
-			return !status.isExternalPosition() && status == MemberStatus.POSTDOC;
-		}
-		return false;
-	}
+    @Override
+    public String getName(Locale locale) {
+        return getMessage(locale, "postdocFteIndicator.name"); //$NON-NLS-1$
+    }
 
-	@Override
-	public Map<Integer, Number> getValuesPerYear(ResearchOrganization organization, int startYear, int endYear) {
-		final var startDate = LocalDate.of(startYear, 1, 1);
-		final var endDate = LocalDate.of(endYear, 12, 31);
-		final var values = new ConcurrentHashMap<Integer, Number>();
-		organization.getDirectOrganizationMemberships()
-			.parallelStream()
-			.filter(it -> isPostdoc(it, startDate, endDate))
-			.forEach(it -> {
-				updateValues(values, it, startYear, endYear);
-			});
-		//
-		setComputationDetails(values);
-		return values;
-	}
+    @Override
+    public String getLabel(Unit unit, Locale locale) {
+        return getLabelWithoutYears(locale, "postdocFteIndicator.label"); //$NON-NLS-1$
+    }
 
-	private static void updateValues(Map<Integer, Number> values, Membership membership, int startYear, int endYear) {
-		final var fte = membership.getMemberStatus().getUsualResearchFullTimeEquivalent();
-		for (int year = startYear; year <= endYear; ++year) {
-			final var dayCount = membership.daysInYear(year);
-			float annualFte = dayCount / LocalDate.of(year, 1, 1).lengthOfYear();
-			annualFte *= fte;
-			values.merge(Integer.valueOf(year), Float.valueOf(annualFte), 
-					(k0, k1) -> {
-						final var sum = k0.floatValue() + k1.floatValue();
-						return Float.valueOf(sum);
-					});
-		}
-	}
+    @Override
+    public Map<Integer, Number> getValuesPerYear(ResearchOrganization organization, int startYear, int endYear) {
+        final var startDate = LocalDate.of(startYear, 1, 1);
+        final var endDate = LocalDate.of(endYear, 12, 31);
+        final var values = new ConcurrentHashMap<Integer, Number>();
+        organization.getDirectOrganizationMemberships()
+                .parallelStream()
+                .filter(it -> isPostdoc(it, startDate, endDate))
+                .forEach(it -> {
+                    updateValues(values, it, startYear, endYear);
+                });
+        //
+        setComputationDetails(values);
+        return values;
+    }
 
 }

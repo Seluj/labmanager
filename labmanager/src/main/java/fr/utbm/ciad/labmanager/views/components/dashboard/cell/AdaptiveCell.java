@@ -19,7 +19,7 @@ public class AdaptiveCell extends AbstractCell {
     /**
      * Default Constructor
      */
-    public AdaptiveCell(){
+    public AdaptiveCell() {
         super();
     }
 
@@ -28,7 +28,7 @@ public class AdaptiveCell extends AbstractCell {
      *
      * @param index the index of the cell.
      */
-    public AdaptiveCell(int index){
+    public AdaptiveCell(int index) {
         super(index);
     }
 
@@ -38,7 +38,7 @@ public class AdaptiveCell extends AbstractCell {
      * @param index       the index of the cell.
      * @param borderColor the color of the cell's border.
      */
-    public AdaptiveCell(int index, String borderColor){
+    public AdaptiveCell(int index, String borderColor) {
         super(index, borderColor);
     }
 

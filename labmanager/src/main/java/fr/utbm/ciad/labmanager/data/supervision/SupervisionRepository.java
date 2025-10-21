@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-/** JPA repository for surpervision declaration.
- * 
+/**
+ * JPA repository for surpervision declaration.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,35 +35,39 @@ import java.util.List;
  */
 public interface SupervisionRepository extends JpaRepository<Supervision, Long>, JpaSpecificationExecutor<Supervision> {
 
-	/** Replies all the supervisions associated to the person with the given identifier, when he/she is the supervised person.
-	 *
-	 * @param supervisedPersonId the identifier of the supervised person.
-	 * @return the list of the supervisions for the supervised person.
-	 * @deprecated no replacement
-	 */
-	List<Supervision> findAllBySupervisedPersonPersonId(Long supervisedPersonId);
+    /**
+     * Replies all the supervisions associated to the person with the given identifier, when he/she is the supervised person.
+     *
+     * @param supervisedPersonId the identifier of the supervised person.
+     * @return the list of the supervisions for the supervised person.
+     * @deprecated no replacement
+     */
+    List<Supervision> findAllBySupervisedPersonPersonId(Long supervisedPersonId);
 
-	/** Replies all the supervisions associated to the membership with the given identifier.
-	 *
-	 * @param membershipId the identifier of the membership.
-	 * @return the list of the supervisions for the membership.
-	 * @since 3.6
-	 */
-	List<Supervision> findAllBySupervisedPersonId(Long membershipId);
+    /**
+     * Replies all the supervisions associated to the membership with the given identifier.
+     *
+     * @param membershipId the identifier of the membership.
+     * @return the list of the supervisions for the membership.
+     * @since 3.6
+     */
+    List<Supervision> findAllBySupervisedPersonId(Long membershipId);
 
-	/** Replies all the supervisions associated to the person with the given identifier, when he/she is one of the supervisors.
-	 *
-	 * @param supervisorId the identifier of the supervisor.
-	 * @return the list of the supervisions for the supervisor.
-	 */
-	List<Supervision> findAllDisctinctBySupervisorsSupervisorId(Long supervisorId);
+    /**
+     * Replies all the supervisions associated to the person with the given identifier, when he/she is one of the supervisors.
+     *
+     * @param supervisorId the identifier of the supervisor.
+     * @return the list of the supervisions for the supervisor.
+     */
+    List<Supervision> findAllDisctinctBySupervisorsSupervisorId(Long supervisorId);
 
-	/** Count the number of supervisions for the supervisor with the given id.
-	 *
-	 * @param id the identifier of the supervisor.
-	 * @return the count of supervisions.
-	 * @deprecated no replacement
-	 */
-	int countDistinctBySupervisedPersonPersonId(long id);
+    /**
+     * Count the number of supervisions for the supervisor with the given id.
+     *
+     * @param id the identifier of the supervisor.
+     * @return the count of supervisions.
+     * @deprecated no replacement
+     */
+    int countDistinctBySupervisedPersonPersonId(long id);
 
 }

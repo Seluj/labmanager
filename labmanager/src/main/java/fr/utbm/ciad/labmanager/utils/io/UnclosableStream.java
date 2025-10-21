@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,9 @@ package fr.utbm.ciad.labmanager.utils.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/** An output stream that ignore the closing requests.
- * 
+/**
+ * An output stream that ignore the closing requests.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -32,39 +33,40 @@ import java.io.OutputStream;
  */
 public class UnclosableStream extends OutputStream {
 
-	private final OutputStream source;
+    private final OutputStream source;
 
-	/** Constructor.
-	 * 
-	 * @param source the source stream.
-	 */
-	public UnclosableStream(OutputStream source) {
-		this.source = source;
-	}
+    /**
+     * Constructor.
+     *
+     * @param source the source stream.
+     */
+    public UnclosableStream(OutputStream source) {
+        this.source = source;
+    }
 
-	@Override
-	public void close() throws IOException {
-		//
-	}
+    @Override
+    public void close() throws IOException {
+        //
+    }
 
-	@Override
-	public void flush() throws IOException {
-		this.source.flush();
-	}
+    @Override
+    public void flush() throws IOException {
+        this.source.flush();
+    }
 
-	@Override
-	public void write(int b) throws IOException {
-		this.source.write(b);
-	}
+    @Override
+    public void write(int b) throws IOException {
+        this.source.write(b);
+    }
 
-	@Override
-	public void write(byte[] b) throws IOException {
-		this.source.write(b);
-	}
+    @Override
+    public void write(byte[] b) throws IOException {
+        this.source.write(b);
+    }
 
-	@Override
-	public void write(byte[] b, int off, int len) throws IOException {
-		this.source.write(b, off, len);
-	}
-	
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+        this.source.write(b, off, len);
+    }
+
 }

@@ -20,8 +20,8 @@ import java.util.*;
 public class PublicationCategoryPieChart extends AbstractPublicationCategoryChart {
 
     private final PublicationService publicationService;
-    private CategoryData categoryData;
     private final Map<String, Integer> publicationCategories;
+    private CategoryData categoryData;
     private PieChart pieChart;
     private List<Integer> years;
     private Integer totalPublication;

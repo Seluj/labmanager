@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,13 +23,14 @@ import fr.utbm.ciad.labmanager.data.member.Person;
 import fr.utbm.ciad.labmanager.data.organization.ResearchOrganization;
 import org.springframework.http.MediaType;
 
-/** A builder of a Virtual Card File (VCF).
+/**
+ * A builder of a Virtual Card File (VCF).
  * <p>Virtual Card Format (VCF) or vCard is a digital file format for storing contact information.
  * The format is widely used for data interchange among popular information exchange applications.
  * A single VCF file can contain contact information for one or multiple contacts.
  * A VCF file usually contains information such as contact’s name, address, phone number, email,
  * birthday, photographs and audio in addition to a number of other fields.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -38,25 +39,28 @@ import org.springframework.http.MediaType;
  */
 public interface VcardBuilder {
 
-	/** Mime type for a Vcard.
-	 *
-	 * @see #VCARD_MIME_TYPE
-	 */
-	String VCARD_MIME_TYPE_VALUE = "text/vcard"; //$NON-NLS-1$
-	
-	/** Mime type for a Vcard.
-	 *
-	 * @see #VCARD_MIME_TYPE_VALUE
-	 */
-	MediaType VCARD_MIME_TYPE = MediaType.parseMediaType(VCARD_MIME_TYPE_VALUE + ";charset=utf-8"); //$NON-NLS-1$
+    /**
+     * Mime type for a Vcard.
+     *
+     * @see #VCARD_MIME_TYPE
+     */
+    String VCARD_MIME_TYPE_VALUE = "text/vcard"; //$NON-NLS-1$
 
-	/** Build the Vcard for the given person.
-	 *
-	 * @param person the person for who the Vcard should be built.
-	 * @param organization the organization to consider for generating the card. If it not provided, the first available organization
-	 *     will be used from the active memberships.
-	 * @return the content of the Vcard.
-	 */
-	String build(Person person, ResearchOrganization organization);
+    /**
+     * Mime type for a Vcard.
+     *
+     * @see #VCARD_MIME_TYPE_VALUE
+     */
+    MediaType VCARD_MIME_TYPE = MediaType.parseMediaType(VCARD_MIME_TYPE_VALUE + ";charset=utf-8"); //$NON-NLS-1$
+
+    /**
+     * Build the Vcard for the given person.
+     *
+     * @param person       the person for who the Vcard should be built.
+     * @param organization the organization to consider for generating the card. If it not provided, the first available organization
+     *                     will be used from the active memberships.
+     * @return the content of the Vcard.
+     */
+    String build(Person person, ResearchOrganization organization);
 
 }

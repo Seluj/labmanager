@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,8 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.uploads.image;
 
-/** Constants for the components to upload images.
+/**
+ * Constants for the components to upload images.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -29,16 +30,17 @@ package fr.utbm.ciad.labmanager.views.components.addons.uploads.image;
  */
 public interface ServerSideUploadableImageConstants {
 
-	/** Default accepted MIME types.
-	 */
-	public static final String[] DEFAULT_ACCEPTED_MIME_TYPES = new String[] {
-			".png", //$NON-NLS-1$
-			"image/png", //$NON-NLS-1$
-			".jpg", //$NON-NLS-1$
-			".jpeg", //$NON-NLS-1$
-			"image/jpeg", //$NON-NLS-1$
-			".svg", //$NON-NLS-1$
-			"image/svg+xml" //$NON-NLS-1$
-	};
+    /**
+     * Default accepted MIME types.
+     */
+    String[] DEFAULT_ACCEPTED_MIME_TYPES = new String[]{
+            ".png", //$NON-NLS-1$
+            "image/png", //$NON-NLS-1$
+            ".jpg", //$NON-NLS-1$
+            ".jpeg", //$NON-NLS-1$
+            "image/jpeg", //$NON-NLS-1$
+            ".svg", //$NON-NLS-1$
+            "image/svg+xml" //$NON-NLS-1$
+    };
 
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import fr.utbm.ciad.labmanager.services.AbstractEntityService.EntityEditingConte
 import fr.utbm.ciad.labmanager.views.components.addons.entities.AbstractEntityEditor;
 import org.slf4j.Logger;
 
-/** Factory that is providing a associated-structure editor according to the editing context.
- * 
+/**
+ * Factory that is providing a associated-structure editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,48 +35,53 @@ import org.slf4j.Logger;
  */
 public interface AssociatedStructureEditorFactory {
 
-	/** Replies the editing context for the given structure.
-	 *
-	 * @param structure the structure to be edited.
-	 * @param logger the logger to be used.
-	 * @return the editing context.
-	 */
-	EntityEditingContext<AssociatedStructure> createContextFor(AssociatedStructure structure, Logger logger);
+    /**
+     * Replies the editing context for the given structure.
+     *
+     * @param structure the structure to be edited.
+     * @param logger    the logger to be used.
+     * @return the editing context.
+     */
+    EntityEditingContext<AssociatedStructure> createContextFor(AssociatedStructure structure, Logger logger);
 
-	/** Create an editor that may be used for creating a new associated structure.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<AssociatedStructure> createAdditionEditor(EntityEditingContext<AssociatedStructure> context);
+    /**
+     * Create an editor that may be used for creating a new associated structure.
+     *
+     * @param context the context for editing the entity.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<AssociatedStructure> createAdditionEditor(EntityEditingContext<AssociatedStructure> context);
 
-	/** Create an editor that may be used for creating a new associated structure.
-	 * 
-	 * @param structure the structure to be edited.
-	 * @param logger the logger to be used.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<AssociatedStructure> createAdditionEditor(AssociatedStructure structure, Logger logger) {
-		final var context = createContextFor(structure, logger);
-		return createAdditionEditor(context);
-	}
+    /**
+     * Create an editor that may be used for creating a new associated structure.
+     *
+     * @param structure the structure to be edited.
+     * @param logger    the logger to be used.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<AssociatedStructure> createAdditionEditor(AssociatedStructure structure, Logger logger) {
+        final var context = createContextFor(structure, logger);
+        return createAdditionEditor(context);
+    }
 
-	/** Create an editor that may be used for updating an existing associated structure.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<AssociatedStructure> createUpdateEditor(EntityEditingContext<AssociatedStructure> context);
+    /**
+     * Create an editor that may be used for updating an existing associated structure.
+     *
+     * @param context the context for editing the entity.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<AssociatedStructure> createUpdateEditor(EntityEditingContext<AssociatedStructure> context);
 
-	/** Create an editor that may be used for updating an existing associated structure.
-	 * 
-	 * @param structure the structure to be edited.
-	 * @param logger the logger to be used.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<AssociatedStructure> createUpdateEditor(AssociatedStructure structure, Logger logger) {
-		final var context = createContextFor(structure, logger);
-		return createUpdateEditor(context);
-	}
+    /**
+     * Create an editor that may be used for updating an existing associated structure.
+     *
+     * @param structure the structure to be edited.
+     * @param logger    the logger to be used.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<AssociatedStructure> createUpdateEditor(AssociatedStructure structure, Logger logger) {
+        final var context = createContextFor(structure, logger);
+        return createUpdateEditor(context);
+    }
 
 }

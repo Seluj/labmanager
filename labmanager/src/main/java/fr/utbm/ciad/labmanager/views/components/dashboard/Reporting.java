@@ -26,22 +26,17 @@ import java.util.List;
 @StyleSheet("themes/labmanager/addons/badge/css/notify-badge.css")
 public class Reporting extends HorizontalLayout {
 
+    public static final String TEST_TARGET_ELEMENT_ID = "show-notification-popup";
     @Serial
     private static final long serialVersionUID = 1L;
-
-    public static final String TEST_TARGET_ELEMENT_ID = "show-notification-popup";
-
     private final AuthorshipRepository authorshipRepository;
     private final AuthenticatedUser authenticatedUser;
-
-    VerticalLayout orcidLayout = null;
-    VerticalLayout publicationLayout = null;
-
     private final Div orcidDiv = new Div();
     private final Span badge = new Span();
     private final Icon icon = new Icon(LumoIcon.BELL.create().getIcon());
     private final Popup popup = new Popup();
-
+    VerticalLayout orcidLayout = null;
+    VerticalLayout publicationLayout = null;
     private Text orcidText;
     private Text doiText;
 

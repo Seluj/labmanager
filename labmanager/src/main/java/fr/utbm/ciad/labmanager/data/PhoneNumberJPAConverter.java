@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,9 +22,10 @@ package fr.utbm.ciad.labmanager.data;
 import fr.utbm.ciad.labmanager.utils.phone.PhoneNumber;
 import jakarta.persistence.AttributeConverter;
 
-/** JPA converter for attributes of type {@link PhoneNumber}.
+/**
+ * JPA converter for attributes of type {@link PhoneNumber}.
  * This converter uses a "fast" method for serializing the phone number (not JSON).
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -32,23 +33,23 @@ import jakarta.persistence.AttributeConverter;
  * @since 4.0
  */
 public class PhoneNumberJPAConverter implements AttributeConverter<PhoneNumber, String> {
-	
-	@Override
-	public String convertToDatabaseColumn(PhoneNumber attribute) {
-		if (attribute != null) {
-			return attribute.serialize();
-		}
-		return null;
-	}
 
-	@Override
-	public PhoneNumber convertToEntityAttribute(String dbData) {
-		try {
-			return PhoneNumber.unserialize(dbData); 
-		} catch (IllegalArgumentException ex) {
-			//
-		}
-		return null;
-	}
+    @Override
+    public String convertToDatabaseColumn(PhoneNumber attribute) {
+        if (attribute != null) {
+            return attribute.serialize();
+        }
+        return null;
+    }
+
+    @Override
+    public PhoneNumber convertToEntityAttribute(String dbData) {
+        try {
+            return PhoneNumber.unserialize(dbData);
+        } catch (IllegalArgumentException ex) {
+            //
+        }
+        return null;
+    }
 
 }

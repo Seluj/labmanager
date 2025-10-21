@@ -1,11 +1,5 @@
 package fr.utbm.ciad.labmanager.views.components.journals.editors.wizard;
 
-import static fr.utbm.ciad.labmanager.views.ViewConstants.SCIMAGO_BASE_URL;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.SCIMAGO_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.WOS_ICON;
-
-import java.util.function.Consumer;
-
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -32,7 +26,12 @@ import fr.utbm.ciad.labmanager.views.components.addons.validators.UrlValidator;
 import fr.utbm.ciad.labmanager.views.components.journals.editors.regular.AbstractJournalEditor;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Implementation for the editor of the information related to a journal. It is directly linked for
+import java.util.function.Consumer;
+
+import static fr.utbm.ciad.labmanager.views.ViewConstants.*;
+
+/**
+ * Implementation for the editor of the information related to a journal. It is directly linked for
  * using it with a wizard.
  *
  * @author $Author: sgalland$
@@ -49,27 +48,29 @@ public abstract class AbstractJournalEditorWizard extends AbstractJournalEditor 
     private JournalEditorComponentWizard journalEditorComponentWizard;
 
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param context the editing context for the conference.
-	 * @param journalCreationStatusComputer the tool for computer the creation status for the journals.
-     * @param relinkEntityWhenSaving indicates if the editor must be relink to the edited entity when it is saved. This new link may
-     *     be required if the editor is not closed after saving in order to obtain a correct editing of the entity.
-     * @param authenticatedUser the connected user.
-     * @param messages the accessor to the localized messages (Spring layer).
-	 * @param properties specification of properties that may be passed to the construction function {@code #create*}.
-	 * @since 4.0
+     * @param context                       the editing context for the conference.
+     * @param journalCreationStatusComputer the tool for computer the creation status for the journals.
+     * @param relinkEntityWhenSaving        indicates if the editor must be relink to the edited entity when it is saved. This new link may
+     *                                      be required if the editor is not closed after saving in order to obtain a correct editing of the entity.
+     * @param authenticatedUser             the connected user.
+     * @param messages                      the accessor to the localized messages (Spring layer).
+     * @param properties                    specification of properties that may be passed to the construction function {@code #create*}.
+     * @since 4.0
      */
     public AbstractJournalEditorWizard(AbstractEntityService.EntityEditingContext<Journal> context,
-			EntityCreationStatusComputer<Journal> journalCreationStatusComputer, boolean relinkEntityWhenSaving,
-			AuthenticatedUser authenticatedUser, JournalService journalService, MessageSourceAccessor messages,
-			ConstructionPropertiesBuilder properties) {
+                                       EntityCreationStatusComputer<Journal> journalCreationStatusComputer, boolean relinkEntityWhenSaving,
+                                       AuthenticatedUser authenticatedUser, JournalService journalService, MessageSourceAccessor messages,
+                                       ConstructionPropertiesBuilder properties) {
 
-        super(context, journalCreationStatusComputer, relinkEntityWhenSaving, journalService ,authenticatedUser, messages, properties);
+        super(context, journalCreationStatusComputer, relinkEntityWhenSaving, journalService, authenticatedUser, messages, properties);
 
     }
 
-    /** Create the content of the editor.
+    /**
+     * Create the content of the editor.
      * This function should invoke {@link #createAdministrationComponents(VerticalLayout, Consumer, Consumer)}.
      *
      * @param rootContainer the container.
@@ -79,18 +80,19 @@ public abstract class AbstractJournalEditorWizard extends AbstractJournalEditor 
     protected void createEditorContent(VerticalLayout rootContainer) {
         if (isBaseAdmin()) {
             journalEditorComponentWizard = new JournalEditorComponentWizard(
-            		new DelegateContextualLoggerFactory(getLogger()),
-            		createDescriptionDetails(), createRankingDetails(), createPublisherDetails(),
-            		createAdministrationComponents((Consumer<FormLayout>) null, it -> it.bind(Journal::isValidated, Journal::setValidated)));
+                    new DelegateContextualLoggerFactory(getLogger()),
+                    createDescriptionDetails(), createRankingDetails(), createPublisherDetails(),
+                    createAdministrationComponents((Consumer<FormLayout>) null, it -> it.bind(Journal::isValidated, Journal::setValidated)));
         }
         journalEditorComponentWizard = new JournalEditorComponentWizard(
-        		new DelegateContextualLoggerFactory(getLogger()),
-        		createDescriptionDetails(), createRankingDetails(), createPublisherDetails());
+                new DelegateContextualLoggerFactory(getLogger()),
+                createDescriptionDetails(), createRankingDetails(), createPublisherDetails());
 
         rootContainer.add(journalEditorComponentWizard);
     }
 
-    /** Create the section for editing the description of the journal.
+    /**
+     * Create the section for editing the description of the journal.
      *
      * @return The content.
      */
@@ -139,7 +141,7 @@ public abstract class AbstractJournalEditorWizard extends AbstractJournalEditor 
             final Span span = new Span();
             if (it == null) {
                 span.setText(getTranslation("views.journals.open_access.indeterminate")); //$NON-NLS-1$
-            } else if (it == Boolean.TRUE) {
+            } else if (it) {
                 span.setText(getTranslation("views.journals.open_access.yes")); //$NON-NLS-1$
             } else {
                 span.setText(getTranslation("views.journals.open_access.no")); //$NON-NLS-1$
@@ -148,7 +150,8 @@ public abstract class AbstractJournalEditorWizard extends AbstractJournalEditor 
         }));
     }
 
-    /** Create the section for editing the publishing information of the journal.
+    /**
+     * Create the section for editing the publishing information of the journal.
      *
      * @return The content.
      */
@@ -199,7 +202,8 @@ public abstract class AbstractJournalEditorWizard extends AbstractJournalEditor 
         return verticalLayout;
     }
 
-    /** Create the section for editing the ranking information of the journal.
+    /**
+     * Create the section for editing the ranking information of the journal.
      *
      * @return The content.
      */

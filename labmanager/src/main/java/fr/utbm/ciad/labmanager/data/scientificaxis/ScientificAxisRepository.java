@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,9 @@ package fr.utbm.ciad.labmanager.data.scientificaxis;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-/** JPA Repository for the scientific axis.
- * 
+/**
+ * JPA Repository for the scientific axis.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,5 +32,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @since 3.5
  */
 public interface ScientificAxisRepository extends JpaRepository<ScientificAxis, Long>, JpaSpecificationExecutor<ScientificAxis> {
-	//
+    //
 }

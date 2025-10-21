@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,15 +19,15 @@
 
 package fr.utbm.ciad.labmanager.data.journal;
 
-import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 import java.util.Set;
 
-/** JPA repository for journals.
- * 
+/**
+ * JPA repository for journals.
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @version $Name$ $Revision$ $Date$
@@ -36,21 +36,23 @@ import java.util.Set;
  */
 public interface JournalRepository extends JpaRepository<Journal, Long>, JpaSpecificationExecutor<Journal> {
 
-	/** Find the journals by their name.
-	 *
-	 * @param name the name of the journal to search for.
-	 * @return the journals with the given name.
-	 */
-	Set<Journal> findDistinctByJournalName(String name);
+    /**
+     * Find the journals by their name.
+     *
+     * @param name the name of the journal to search for.
+     * @return the journals with the given name.
+     */
+    Set<Journal> findDistinctByJournalName(String name);
 
-	/** Find a journal by their name.
-	 *
-	 * @param name the name of the journal to search for.
-	 * @return the journal with the given name.
-	 * @deprecated no replacement
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	Optional<Journal> findByJournalName(String name);
+    /**
+     * Find a journal by their name.
+     *
+     * @param name the name of the journal to search for.
+     * @return the journal with the given name.
+     * @deprecated no replacement
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    Optional<Journal> findByJournalName(String name);
 
 
 }

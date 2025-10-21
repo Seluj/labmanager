@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,15 @@
 
 package fr.utbm.ciad.labmanager.utils.io;
 
-import java.util.Collection;
-
 import fr.utbm.ciad.labmanager.data.publication.Publication;
 import org.arakhne.afc.progress.Progression;
 import org.slf4j.Logger;
 
-/** Exporter of publications.
- * 
+import java.util.Collection;
+
+/**
+ * Exporter of publications.
+ *
  * @param <T> the type of the replied value after exporting.
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -36,16 +37,17 @@ import org.slf4j.Logger;
  */
 public interface PublicationExporter<T> {
 
-	/** Export publications. The content of the exported flow depends on the sub-interfaces.
-	 *
-	 * @param publications the publications to export.
-	 * @param configurator the configurator for the export, never {@code null}.
-	 * @param progression the progression indicator to be used.
-	 * @param logger the logger to be used.
-	 * @return the representation of the publications.
-	 * @throws Exception if the publication cannot be converted.
-	 */
-	T exportPublications(Collection<? extends Publication> publications, ExporterConfigurator configurator, Progression progression,
-			Logger logger) throws Exception;
+    /**
+     * Export publications. The content of the exported flow depends on the sub-interfaces.
+     *
+     * @param publications the publications to export.
+     * @param configurator the configurator for the export, never {@code null}.
+     * @param progression  the progression indicator to be used.
+     * @param logger       the logger to be used.
+     * @return the representation of the publications.
+     * @throws Exception if the publication cannot be converted.
+     */
+    T exportPublications(Collection<? extends Publication> publications, ExporterConfigurator configurator, Progression progression,
+                         Logger logger) throws Exception;
 
 }

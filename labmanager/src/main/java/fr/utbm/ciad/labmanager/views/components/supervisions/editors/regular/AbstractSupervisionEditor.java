@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,8 +50,9 @@ import fr.utbm.ciad.labmanager.views.components.supervisions.fields.SupervisionF
 import fr.utbm.ciad.labmanager.views.components.supervisions.fields.SupervisorListGridField;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Abstract implementation for the editor of the information related to a supervision.
- * 
+/**
+ * Abstract implementation for the editor of the information related to a supervision.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -61,296 +62,302 @@ import org.springframework.context.support.MessageSourceAccessor;
 @Uses(Icon.class)
 public abstract class AbstractSupervisionEditor extends AbstractEntityEditor<Supervision> {
 
-	private static final long serialVersionUID = 7189628237085364285L;
+    private static final long serialVersionUID = 7189628237085364285L;
 
-	private final SupervisionFieldFactory supervisionFieldFactory;
+    private final SupervisionFieldFactory supervisionFieldFactory;
 
-	private final MembershipFieldFactory membershipFieldFactory;
+    private final MembershipFieldFactory membershipFieldFactory;
 
-	private DetailsWithErrorMark supervisedWorkDetails;
+    private DetailsWithErrorMark supervisedWorkDetails;
 
-	private SingleMembershipNameField supervisedPerson;
+    private SingleMembershipNameField supervisedPerson;
 
-	private TextField title;
+    private TextField title;
 
-	private DetailsWithErrorMark supervisorsDetails;
+    private DetailsWithErrorMark supervisorsDetails;
 
-	private SupervisorListGridField supervisors;
+    private SupervisorListGridField supervisors;
 
-	private DetailsWithErrorMark fundDetails;
+    private DetailsWithErrorMark fundDetails;
 
-	private ComboBox<FundingScheme> funding;
+    private ComboBox<FundingScheme> funding;
 
-	private TextField fundingDetails;
+    private TextField fundingDetails;
 
-	private ToggleButton jointPosition;
+    private ToggleButton jointPosition;
 
-	private ToggleButton entrepreneur;
+    private ToggleButton entrepreneur;
 
-	private DetailsWithErrorMark defenseDetails;
+    private DetailsWithErrorMark defenseDetails;
 
-	private DatePicker defenseDate;
-	
-	private DetailsWithErrorMark afterDefenseDetails;
+    private DatePicker defenseDate;
 
-	private ToggleButton abandonment;
+    private DetailsWithErrorMark afterDefenseDetails;
 
-	private TextField positionAfterSupervision;
+    private ToggleButton abandonment;
 
-	private IntegerField numberOfAterPositions;
+    private TextField positionAfterSupervision;
 
-	/** Constructor.
-	 *
-	 * @param context the editing context for the supervisison.
-	 * @param relinkEntityWhenSaving indicates if the editor must be relink to the edited entity when it is saved. This new link may
-	 *     be required if the editor is not closed after saving in order to obtain a correct editing of the entity.
-	 * @param supervisionCreationStatusComputer the tool for computer the creation status for the person supervisions.
-	 * @param membershipFieldFactory the factory for creating the person membership fields.
-	 * @param supervisionFieldFactory the factory for creating the supervision fields.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 * @param properties specification of properties that may be passed to the construction function {@code #create*}.
-	 * @since 4.0
-	 */
-	public AbstractSupervisionEditor(EntityEditingContext<Supervision> context, boolean relinkEntityWhenSaving,
-			EntityCreationStatusComputer<Supervision> supervisionCreationStatusComputer,
-			MembershipFieldFactory membershipFieldFactory, SupervisionFieldFactory supervisionFieldFactory,
-			AuthenticatedUser authenticatedUser, MessageSourceAccessor messages,
-			ConstructionPropertiesBuilder properties) {
-		super(Supervision.class, authenticatedUser, messages,
-				supervisionCreationStatusComputer, context, null, relinkEntityWhenSaving,
-				properties
-				.mapToNull(PROP_ADMIN_SECTION)
-				.mapToNull(PROP_ADMIN_VALIDATION_BOX));
-		this.membershipFieldFactory = membershipFieldFactory;
-		this.supervisionFieldFactory = supervisionFieldFactory;
-	}
+    private IntegerField numberOfAterPositions;
 
-	@Override
-	protected void createEditorContent(VerticalLayout rootContainer) {
-		createSupervisedWorkDetails(rootContainer);
-		createSupervisorDetails(rootContainer);
-		createFundDetails(rootContainer);
-		createDefenseDetails(rootContainer);
-		createAfterDefenseDetails(rootContainer);
-	}
+    /**
+     * Constructor.
+     *
+     * @param context                           the editing context for the supervisison.
+     * @param relinkEntityWhenSaving            indicates if the editor must be relink to the edited entity when it is saved. This new link may
+     *                                          be required if the editor is not closed after saving in order to obtain a correct editing of the entity.
+     * @param supervisionCreationStatusComputer the tool for computer the creation status for the person supervisions.
+     * @param membershipFieldFactory            the factory for creating the person membership fields.
+     * @param supervisionFieldFactory           the factory for creating the supervision fields.
+     * @param authenticatedUser                 the connected user.
+     * @param messages                          the accessor to the localized messages (Spring layer).
+     * @param properties                        specification of properties that may be passed to the construction function {@code #create*}.
+     * @since 4.0
+     */
+    public AbstractSupervisionEditor(EntityEditingContext<Supervision> context, boolean relinkEntityWhenSaving,
+                                     EntityCreationStatusComputer<Supervision> supervisionCreationStatusComputer,
+                                     MembershipFieldFactory membershipFieldFactory, SupervisionFieldFactory supervisionFieldFactory,
+                                     AuthenticatedUser authenticatedUser, MessageSourceAccessor messages,
+                                     ConstructionPropertiesBuilder properties) {
+        super(Supervision.class, authenticatedUser, messages,
+                supervisionCreationStatusComputer, context, null, relinkEntityWhenSaving,
+                properties
+                        .mapToNull(PROP_ADMIN_SECTION)
+                        .mapToNull(PROP_ADMIN_VALIDATION_BOX));
+        this.membershipFieldFactory = membershipFieldFactory;
+        this.supervisionFieldFactory = supervisionFieldFactory;
+    }
 
-	/** Create the section for editing the description of the supervised work.
-	 *
-	 * @param rootContainer the container.
-	 */
-	protected void createSupervisedWorkDetails(VerticalLayout rootContainer) {
-		final var content = ComponentFactory.newColumnForm(2);
-		
-		this.supervisedPerson = this.membershipFieldFactory.createSingleNameField(
-				getTranslation("views.supervision.new_membership"), getLogger(), () -> getLocale(), //$NON-NLS-1$
-				null);
-		this.supervisedPerson.setPrefixComponent(VaadinIcon.USER.create());
-		this.supervisedPerson.setRequiredIndicatorVisible(true);
-		content.add(this.supervisedPerson, 2);
-		
-		this.title = new TextField();
-		this.title.setPrefixComponent(VaadinIcon.HASH.create());
-		this.title.setRequired(true);
-		this.title.setClearButtonVisible(true);
-		content.add(this.title, 2);
+    @Override
+    protected void createEditorContent(VerticalLayout rootContainer) {
+        createSupervisedWorkDetails(rootContainer);
+        createSupervisorDetails(rootContainer);
+        createFundDetails(rootContainer);
+        createDefenseDetails(rootContainer);
+        createAfterDefenseDetails(rootContainer);
+    }
 
-		this.supervisedWorkDetails = createDetailsWithErrorMark(rootContainer, content, "supervisedWork", true); //$NON-NLS-1$
+    /**
+     * Create the section for editing the description of the supervised work.
+     *
+     * @param rootContainer the container.
+     */
+    protected void createSupervisedWorkDetails(VerticalLayout rootContainer) {
+        final var content = ComponentFactory.newColumnForm(2);
 
-		getEntityDataBinder().forField(this.supervisedPerson)
-			.withValidator(new NotNullEntityValidator<>(getTranslation("views.supervision.supervised_person.error"))) //$NON-NLS-1$
-			.withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.supervisedPerson, this.supervisedWorkDetails))
-			.bind(Supervision::getSupervisedPerson, Supervision::setSupervisedPerson);
-		getEntityDataBinder().forField(this.title)
-			.withConverter(new StringTrimer())
-			.withValidator(new NotEmptyStringValidator(getTranslation("views.supervision.title.error"))) //$NON-NLS-1$
-			.withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.title, this.supervisedWorkDetails))
-			.bind(Supervision::getTitle, Supervision::setTitle);
-	}
+        this.supervisedPerson = this.membershipFieldFactory.createSingleNameField(
+                getTranslation("views.supervision.new_membership"), getLogger(), () -> getLocale(), //$NON-NLS-1$
+                null);
+        this.supervisedPerson.setPrefixComponent(VaadinIcon.USER.create());
+        this.supervisedPerson.setRequiredIndicatorVisible(true);
+        content.add(this.supervisedPerson, 2);
 
-	/** Create the section for editing the description of the supervisors.
-	 *
-	 * @param rootContainer the container.
-	 */
-	protected void createSupervisorDetails(VerticalLayout rootContainer) {
-		final var content = ComponentFactory.newColumnForm(2);
+        this.title = new TextField();
+        this.title.setPrefixComponent(VaadinIcon.HASH.create());
+        this.title.setRequired(true);
+        this.title.setClearButtonVisible(true);
+        content.add(this.title, 2);
 
-		this.supervisors = this.supervisionFieldFactory.createSupervisorField(getLogger());
-		content.add(this.supervisors, 2);
+        this.supervisedWorkDetails = createDetailsWithErrorMark(rootContainer, content, "supervisedWork", true); //$NON-NLS-1$
 
-		this.supervisorsDetails = createDetailsWithErrorMark(rootContainer, content, "supervisors"); //$NON-NLS-1$
+        getEntityDataBinder().forField(this.supervisedPerson)
+                .withValidator(new NotNullEntityValidator<>(getTranslation("views.supervision.supervised_person.error"))) //$NON-NLS-1$
+                .withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.supervisedPerson, this.supervisedWorkDetails))
+                .bind(Supervision::getSupervisedPerson, Supervision::setSupervisedPerson);
+        getEntityDataBinder().forField(this.title)
+                .withConverter(new StringTrimer())
+                .withValidator(new NotEmptyStringValidator(getTranslation("views.supervision.title.error"))) //$NON-NLS-1$
+                .withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.title, this.supervisedWorkDetails))
+                .bind(Supervision::getTitle, Supervision::setTitle);
+    }
 
-		getEntityDataBinder().forField(this.supervisors)
-			.withValidator(this.supervisors.newStandardValidator())
-			.withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.supervisors, this.supervisorsDetails))
-			.bind(Supervision::getSupervisors, Supervision::setSupervisors);
-	}
+    /**
+     * Create the section for editing the description of the supervisors.
+     *
+     * @param rootContainer the container.
+     */
+    protected void createSupervisorDetails(VerticalLayout rootContainer) {
+        final var content = ComponentFactory.newColumnForm(2);
 
-	/** Create the section for editing the description of the funding.
-	 *
-	 * @param rootContainer the container.
-	 */
-	protected void createFundDetails(VerticalLayout rootContainer) {
-		final var content = ComponentFactory.newColumnForm(2);
-		
-		this.funding = new ComboBox<>();
-		this.funding.setRequired(true);
-		this.funding.setItems(FundingScheme.values());
-		this.funding.setItemLabelGenerator(this::getFundingSchemeLabel);
-		this.funding.setPrefixComponent(VaadinIcon.EURO.create());
-		this.funding.setClearButtonVisible(true);
-		content.add(this.funding, 1);
+        this.supervisors = this.supervisionFieldFactory.createSupervisorField(getLogger());
+        content.add(this.supervisors, 2);
 
-		this.fundingDetails = new TextField();
-		this.fundingDetails.setPrefixComponent(VaadinIcon.INFO.create());
-		content.add(this.fundingDetails, 1);
+        this.supervisorsDetails = createDetailsWithErrorMark(rootContainer, content, "supervisors"); //$NON-NLS-1$
 
-		this.jointPosition = new ToggleButton();
-		content.add(this.jointPosition, 1);
+        getEntityDataBinder().forField(this.supervisors)
+                .withValidator(this.supervisors.newStandardValidator())
+                .withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.supervisors, this.supervisorsDetails))
+                .bind(Supervision::getSupervisors, Supervision::setSupervisors);
+    }
 
-		this.entrepreneur = new ToggleButton();
-		content.add(this.entrepreneur, 1);
+    /**
+     * Create the section for editing the description of the funding.
+     *
+     * @param rootContainer the container.
+     */
+    protected void createFundDetails(VerticalLayout rootContainer) {
+        final var content = ComponentFactory.newColumnForm(2);
 
-		this.fundDetails = createDetailsWithErrorMark(rootContainer, content, "fund"); //$NON-NLS-1$
+        this.funding = new ComboBox<>();
+        this.funding.setRequired(true);
+        this.funding.setItems(FundingScheme.values());
+        this.funding.setItemLabelGenerator(this::getFundingSchemeLabel);
+        this.funding.setPrefixComponent(VaadinIcon.EURO.create());
+        this.funding.setClearButtonVisible(true);
+        content.add(this.funding, 1);
 
-		getEntityDataBinder().forField(this.title)
-			.withConverter(new StringTrimer())
-			.withValidator(new NotEmptyStringValidator(getTranslation("views.supervision.title.error"))) //$NON-NLS-1$
-			.withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.title, this.supervisedWorkDetails))
-			.bind(Supervision::getTitle, Supervision::setTitle);
-		getEntityDataBinder().forField(this.funding)
-			.withValidator(new NotNullEnumerationValidator<>(getTranslation("views.supervision.funding_scheme.error"))) //$NON-NLS-1$
-			.withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.funding, this.fundDetails))
-			.bind(Supervision::getFunding, Supervision::setFunding);
-		getEntityDataBinder().forField(this.fundingDetails)
-			.withConverter(new StringTrimer())
-			.bind(Supervision::getFundingDetails, Supervision::setFundingDetails);
-		getEntityDataBinder().forField(this.jointPosition)
-			.bind(Supervision::isJointPosition, Supervision::setJointPosition);
-		getEntityDataBinder().forField(this.entrepreneur)
-			.bind(Supervision::isEntrepreneur, Supervision::setEntrepreneur);
-	}
+        this.fundingDetails = new TextField();
+        this.fundingDetails.setPrefixComponent(VaadinIcon.INFO.create());
+        content.add(this.fundingDetails, 1);
 
-	private String getFundingSchemeLabel(FundingScheme scheme) {
-		return scheme.getLabel(getMessageSourceAccessor(), getLocale());
-	}
+        this.jointPosition = new ToggleButton();
+        content.add(this.jointPosition, 1);
 
-	/** Create the section for editing the description of the defense.
-	 *
-	 * @param rootContainer the container.
-	 */
-	protected void createDefenseDetails(VerticalLayout rootContainer) {
-		final var content = ComponentFactory.newColumnForm(2);
-		
-		this.defenseDate = new DatePicker();
-		this.defenseDate.setPrefixComponent(VaadinIcon.CALENDAR_O.create());
-		this.defenseDate.setClearButtonVisible(true);
-		content.add(this.defenseDate, 2);
+        this.entrepreneur = new ToggleButton();
+        content.add(this.entrepreneur, 1);
 
-		this.defenseDetails = createDetailsWithErrorMark(rootContainer, content, "defense"); //$NON-NLS-1$
+        this.fundDetails = createDetailsWithErrorMark(rootContainer, content, "fund"); //$NON-NLS-1$
 
-		getEntityDataBinder().forField(this.defenseDate)
-			.bind(Supervision::getDefenseDate, Supervision::setDefenseDate);
-	}
+        getEntityDataBinder().forField(this.title)
+                .withConverter(new StringTrimer())
+                .withValidator(new NotEmptyStringValidator(getTranslation("views.supervision.title.error"))) //$NON-NLS-1$
+                .withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.title, this.supervisedWorkDetails))
+                .bind(Supervision::getTitle, Supervision::setTitle);
+        getEntityDataBinder().forField(this.funding)
+                .withValidator(new NotNullEnumerationValidator<>(getTranslation("views.supervision.funding_scheme.error"))) //$NON-NLS-1$
+                .withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.funding, this.fundDetails))
+                .bind(Supervision::getFunding, Supervision::setFunding);
+        getEntityDataBinder().forField(this.fundingDetails)
+                .withConverter(new StringTrimer())
+                .bind(Supervision::getFundingDetails, Supervision::setFundingDetails);
+        getEntityDataBinder().forField(this.jointPosition)
+                .bind(Supervision::isJointPosition, Supervision::setJointPosition);
+        getEntityDataBinder().forField(this.entrepreneur)
+                .bind(Supervision::isEntrepreneur, Supervision::setEntrepreneur);
+    }
 
-	/** Create the section for editing the description of the period after the defense.
-	 *
-	 * @param rootContainer the container.
-	 */
-	protected void createAfterDefenseDetails(VerticalLayout rootContainer) {
-		final var content = ComponentFactory.newColumnForm(2);
-		
-		this.abandonment = new ToggleButton();
-		content.add(this.abandonment, 2);
+    private String getFundingSchemeLabel(FundingScheme scheme) {
+        return scheme.getLabel(getMessageSourceAccessor(), getLocale());
+    }
 
-		this.positionAfterSupervision = new TextField();
-		this.positionAfterSupervision.setPrefixComponent(VaadinIcon.LAPTOP.create());
-		this.positionAfterSupervision.setClearButtonVisible(true);
-		content.add(this.positionAfterSupervision, 2);
+    /**
+     * Create the section for editing the description of the defense.
+     *
+     * @param rootContainer the container.
+     */
+    protected void createDefenseDetails(VerticalLayout rootContainer) {
+        final var content = ComponentFactory.newColumnForm(2);
 
-		this.numberOfAterPositions = new IntegerField();
-		this.numberOfAterPositions.setMin(0);
-		this.numberOfAterPositions.setPrefixComponent(VaadinIcon.ACADEMY_CAP.create());
-		this.numberOfAterPositions.setClearButtonVisible(true);
-		content.add(this.numberOfAterPositions, 2);
+        this.defenseDate = new DatePicker();
+        this.defenseDate.setPrefixComponent(VaadinIcon.CALENDAR_O.create());
+        this.defenseDate.setClearButtonVisible(true);
+        content.add(this.defenseDate, 2);
 
-		this.afterDefenseDetails = createDetailsWithErrorMark(rootContainer, content, "future"); //$NON-NLS-1$
+        this.defenseDetails = createDetailsWithErrorMark(rootContainer, content, "defense"); //$NON-NLS-1$
 
-		getEntityDataBinder().forField(this.abandonment)
-			.bind(Supervision::isAbandonment, Supervision::setAbandonment);
-		getEntityDataBinder().forField(this.positionAfterSupervision)
-			.withConverter(new StringTrimer())
-			.bind(Supervision::getPositionAfterSupervision, Supervision::setPositionAfterSupervision);
-		getEntityDataBinder().forField(this.numberOfAterPositions)
-			.withValidator(new IntegerRangeValidator(getTranslation("views.supervision.ater_count.error"), Integer.valueOf(0), null)) //$NON-NLS-1$
-			.withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.numberOfAterPositions, this.afterDefenseDetails))
-			.bind(Supervision::getNumberOfAterPositions, Supervision::setNumberOfAterPositions);
-	}
+        getEntityDataBinder().forField(this.defenseDate)
+                .bind(Supervision::getDefenseDate, Supervision::setDefenseDate);
+    }
 
-	@Override
-	protected String computeSavingSuccessMessage() {
-		return getTranslation("views.supervision.save_success", //$NON-NLS-1$
-				getEditedEntity().getTitle());
-	}
+    /**
+     * Create the section for editing the description of the period after the defense.
+     *
+     * @param rootContainer the container.
+     */
+    protected void createAfterDefenseDetails(VerticalLayout rootContainer) {
+        final var content = ComponentFactory.newColumnForm(2);
 
-	@Override
-	protected String computeValidationSuccessMessage() {
-		return getTranslation("views.supervision.validation_success", //$NON-NLS-1$
-				getEditedEntity().getTitle());
-	}
+        this.abandonment = new ToggleButton();
+        content.add(this.abandonment, 2);
 
-	@Override
-	protected String computeDeletionSuccessMessage() {
-		return getTranslation("views.supervision.delete_success2", //$NON-NLS-1$
-				getEditedEntity().getTitle());
-	}
+        this.positionAfterSupervision = new TextField();
+        this.positionAfterSupervision.setPrefixComponent(VaadinIcon.LAPTOP.create());
+        this.positionAfterSupervision.setClearButtonVisible(true);
+        content.add(this.positionAfterSupervision, 2);
 
-	@Override
-	protected String computeSavingErrorMessage(Throwable error) {
-		return getTranslation("views.supervision.save_error", //$NON-NLS-1$ 
-				getEditedEntity().getTitle(), error.getLocalizedMessage());
-	}
+        this.numberOfAterPositions = new IntegerField();
+        this.numberOfAterPositions.setMin(0);
+        this.numberOfAterPositions.setPrefixComponent(VaadinIcon.ACADEMY_CAP.create());
+        this.numberOfAterPositions.setClearButtonVisible(true);
+        content.add(this.numberOfAterPositions, 2);
 
-	@Override
-	protected String computeValidationErrorMessage(Throwable error) {
-		return getTranslation("views.supervision.validation_error", //$NON-NLS-1$ 
-				getEditedEntity().getTitle(), error.getLocalizedMessage());
-	}
+        this.afterDefenseDetails = createDetailsWithErrorMark(rootContainer, content, "future"); //$NON-NLS-1$
 
-	@Override
-	protected String computeDeletionErrorMessage(Throwable error) {
-		return getTranslation("views.supervision.delete_error2", //$NON-NLS-1$ 
-				getEditedEntity().getTitle(), error.getLocalizedMessage());
-	}
+        getEntityDataBinder().forField(this.abandonment)
+                .bind(Supervision::isAbandonment, Supervision::setAbandonment);
+        getEntityDataBinder().forField(this.positionAfterSupervision)
+                .withConverter(new StringTrimer())
+                .bind(Supervision::getPositionAfterSupervision, Supervision::setPositionAfterSupervision);
+        getEntityDataBinder().forField(this.numberOfAterPositions)
+                .withValidator(new IntegerRangeValidator(getTranslation("views.supervision.ater_count.error"), Integer.valueOf(0), null)) //$NON-NLS-1$
+                .withValidationStatusHandler(new DetailsWithErrorMarkStatusHandler(this.numberOfAterPositions, this.afterDefenseDetails))
+                .bind(Supervision::getNumberOfAterPositions, Supervision::setNumberOfAterPositions);
+    }
 
-	@Override
-	public void localeChange(LocaleChangeEvent event) {
-		super.localeChange(event);
-		this.supervisedWorkDetails.setSummaryText(getTranslation("views.supervision.supervised_work_details")); //$NON-NLS-1$
-		this.supervisedPerson.setLabel(getTranslation("views.supervision.supervised_person")); //$NON-NLS-1$
-		this.supervisedPerson.setHelperText(getTranslation("views.supervision.supervised_person.help")); //$NON-NLS-1$
-		this.title.setLabel(getTranslation("views.supervision.title")); //$NON-NLS-1$
+    @Override
+    protected String computeSavingSuccessMessage() {
+        return getTranslation("views.supervision.save_success", //$NON-NLS-1$
+                getEditedEntity().getTitle());
+    }
 
-		this.supervisorsDetails.setSummaryText(getTranslation("views.supervision.supervisor_details")); //$NON-NLS-1$
-		this.supervisors.setLabel(getTranslation("views.supervision.supervisors")); //$NON-NLS-1$
-		this.supervisors.setHelperText(getTranslation("views.supervision.supervisors.help")); //$NON-NLS-1$
+    @Override
+    protected String computeValidationSuccessMessage() {
+        return getTranslation("views.supervision.validation_success", //$NON-NLS-1$
+                getEditedEntity().getTitle());
+    }
 
-		this.fundDetails.setSummaryText(getTranslation("views.supervision.fund_details")); //$NON-NLS-1$
-		this.funding.setLabel(getTranslation("views.supervision.funding_scheme")); //$NON-NLS-1$
-		this.fundingDetails.setLabel(getTranslation("views.supervision.funding_details")); //$NON-NLS-1$
-		this.fundingDetails.setHelperText(getTranslation("views.supervision.funding_details.help")); //$NON-NLS-1$
-		this.jointPosition.setLabel(getTranslation("views.supervision.joint_position")); //$NON-NLS-1$
-		this.entrepreneur.setLabel(getTranslation("views.supervision.entrepreneur")); //$NON-NLS-1$
+    @Override
+    protected String computeDeletionSuccessMessage() {
+        return getTranslation("views.supervision.delete_success2", //$NON-NLS-1$
+                getEditedEntity().getTitle());
+    }
 
-		this.defenseDetails.setSummaryText(getTranslation("views.supervision.defense_details")); //$NON-NLS-1$
-		this.defenseDate.setLabel(getTranslation("views.supervision.defense_date")); //$NON-NLS-1$
+    @Override
+    protected String computeSavingErrorMessage(Throwable error) {
+        return getTranslation("views.supervision.save_error", //$NON-NLS-1$
+                getEditedEntity().getTitle(), error.getLocalizedMessage());
+    }
 
-		this.afterDefenseDetails.setSummaryText(getTranslation("views.supervision.after_defense_details")); //$NON-NLS-1$
-		this.abandonment.setLabel(getTranslation("views.supervision.abandonment")); //$NON-NLS-1$
-		this.positionAfterSupervision.setLabel(getTranslation("views.supervision.position_after_supervision")); //$NON-NLS-1$
-		this.positionAfterSupervision.setHelperText(getTranslation("views.supervision.position_after_supervision.help")); //$NON-NLS-1$
-		this.numberOfAterPositions.setLabel(getTranslation("views.supervision.ater_count")); //$NON-NLS-1$
-		this.numberOfAterPositions.setHelperText(getTranslation("views.supervision.ater_count.help")); //$NON-NLS-1$
-	}
+    @Override
+    protected String computeValidationErrorMessage(Throwable error) {
+        return getTranslation("views.supervision.validation_error", //$NON-NLS-1$
+                getEditedEntity().getTitle(), error.getLocalizedMessage());
+    }
+
+    @Override
+    protected String computeDeletionErrorMessage(Throwable error) {
+        return getTranslation("views.supervision.delete_error2", //$NON-NLS-1$
+                getEditedEntity().getTitle(), error.getLocalizedMessage());
+    }
+
+    @Override
+    public void localeChange(LocaleChangeEvent event) {
+        super.localeChange(event);
+        this.supervisedWorkDetails.setSummaryText(getTranslation("views.supervision.supervised_work_details")); //$NON-NLS-1$
+        this.supervisedPerson.setLabel(getTranslation("views.supervision.supervised_person")); //$NON-NLS-1$
+        this.supervisedPerson.setHelperText(getTranslation("views.supervision.supervised_person.help")); //$NON-NLS-1$
+        this.title.setLabel(getTranslation("views.supervision.title")); //$NON-NLS-1$
+
+        this.supervisorsDetails.setSummaryText(getTranslation("views.supervision.supervisor_details")); //$NON-NLS-1$
+        this.supervisors.setLabel(getTranslation("views.supervision.supervisors")); //$NON-NLS-1$
+        this.supervisors.setHelperText(getTranslation("views.supervision.supervisors.help")); //$NON-NLS-1$
+
+        this.fundDetails.setSummaryText(getTranslation("views.supervision.fund_details")); //$NON-NLS-1$
+        this.funding.setLabel(getTranslation("views.supervision.funding_scheme")); //$NON-NLS-1$
+        this.fundingDetails.setLabel(getTranslation("views.supervision.funding_details")); //$NON-NLS-1$
+        this.fundingDetails.setHelperText(getTranslation("views.supervision.funding_details.help")); //$NON-NLS-1$
+        this.jointPosition.setLabel(getTranslation("views.supervision.joint_position")); //$NON-NLS-1$
+        this.entrepreneur.setLabel(getTranslation("views.supervision.entrepreneur")); //$NON-NLS-1$
+
+        this.defenseDetails.setSummaryText(getTranslation("views.supervision.defense_details")); //$NON-NLS-1$
+        this.defenseDate.setLabel(getTranslation("views.supervision.defense_date")); //$NON-NLS-1$
+
+        this.afterDefenseDetails.setSummaryText(getTranslation("views.supervision.after_defense_details")); //$NON-NLS-1$
+        this.abandonment.setLabel(getTranslation("views.supervision.abandonment")); //$NON-NLS-1$
+        this.positionAfterSupervision.setLabel(getTranslation("views.supervision.position_after_supervision")); //$NON-NLS-1$
+        this.positionAfterSupervision.setHelperText(getTranslation("views.supervision.position_after_supervision.help")); //$NON-NLS-1$
+        this.numberOfAterPositions.setLabel(getTranslation("views.supervision.ater_count")); //$NON-NLS-1$
+        this.numberOfAterPositions.setHelperText(getTranslation("views.supervision.ater_count.help")); //$NON-NLS-1$
+    }
 
 }

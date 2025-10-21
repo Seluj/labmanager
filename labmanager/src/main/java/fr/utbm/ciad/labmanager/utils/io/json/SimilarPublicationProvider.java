@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import fr.utbm.ciad.labmanager.data.publication.Publication;
 
 import java.util.List;
 
-/** Provider of publication that could be used for completing a given publication.
- * 
+/**
+ * Provider of publication that could be used for completing a given publication.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,13 +34,14 @@ import java.util.List;
  */
 public interface SimilarPublicationProvider {
 
-	/** Replies the publications that corresponds to the given source. The replied publication is
-	 * assumed to be different than the source. The similarity between the source publication and
-	 * the replied publication depends on the implementation of the {@code SimilarPublicationProvider}.
-	 *
-	 * @param source the publication source.
-	 * @return the similar publications.
-	 */
-	List<Publication> get(Publication source);
+    /**
+     * Replies the publications that corresponds to the given source. The replied publication is
+     * assumed to be different than the source. The similarity between the source publication and
+     * the replied publication depends on the implementation of the {@code SimilarPublicationProvider}.
+     *
+     * @param source the publication source.
+     * @return the similar publications.
+     */
+    List<Publication> get(Publication source);
 
 }

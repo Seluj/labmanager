@@ -1,7 +1,8 @@
 package fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component;
+
 import com.vaadin.flow.component.Component;
-import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.factory.component.DashboardChartFactory;
 import fr.utbm.ciad.labmanager.views.components.charts.layout.PublicationCategoryLayout;
+import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.factory.component.DashboardChartFactory;
 
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class DashboardChartItem extends AbstractDashboardComponentItem {
     /**
      * Default Constructor
      */
-    public DashboardChartItem(){
+    public DashboardChartItem() {
         super(new DashboardChartFactory());
     }
 
@@ -34,31 +35,31 @@ public class DashboardChartItem extends AbstractDashboardComponentItem {
      *
      * @param index the index of the component in the dashboard
      */
-    public DashboardChartItem(int index){
+    public DashboardChartItem(int index) {
         super(new DashboardChartFactory(), index);
     }
 
     /**
      * Constructor
      *
-     * @param index the index of the component
+     * @param index         the index of the component
      * @param componentType the type of the component
-     * @param width the width of the component
-     * @param height the height of the component
+     * @param width         the width of the component
+     * @param height        the height of the component
      */
-    public DashboardChartItem(int index, DashboardComponentType componentType, String width, String height){
+    public DashboardChartItem(int index, DashboardComponentType componentType, String width, String height) {
         super(new DashboardChartFactory(), index, componentType, width, height);
     }
 
     /**
      * Constructor to initialize the item from attributes of a component.
      *
-     * @param index the index of the component
+     * @param index     the index of the component
      * @param component the existing component to extract properties from
      */
-    public DashboardChartItem(int index, Component component, DashboardComponentType componentType){
+    public DashboardChartItem(int index, Component component, DashboardComponentType componentType) {
         super(new DashboardChartFactory(), index, component, componentType);
-        if(component instanceof PublicationCategoryLayout<?> publicationCategoryLayout) {
+        if (component instanceof PublicationCategoryLayout<?> publicationCategoryLayout) {
             multiSelectComboBoxItems = publicationCategoryLayout.getMultiSelectComboBoxItems();
             yearRangeStartValue = publicationCategoryLayout.getYearRangeStartValue();
             yearRangeEndValue = publicationCategoryLayout.getYearRangeEndValue();
@@ -71,7 +72,7 @@ public class DashboardChartItem extends AbstractDashboardComponentItem {
      *
      * @param item the existing DashBoardComponentItem to copy properties from
      */
-    public DashboardChartItem(DashboardChartItem item){
+    public DashboardChartItem(DashboardChartItem item) {
         super(new DashboardChartFactory(), item);
         this.multiSelectComboBoxItems = item.getMultiSelectComboBoxItems();
         this.yearRangeStartValue = item.getYearRangeStartValue();
@@ -80,7 +81,7 @@ public class DashboardChartItem extends AbstractDashboardComponentItem {
     }
 
     @Override
-    public void createId(String idPart){
+    public void createId(String idPart) {
         super.setId("DashBoardChart_" + idPart);
     }
 

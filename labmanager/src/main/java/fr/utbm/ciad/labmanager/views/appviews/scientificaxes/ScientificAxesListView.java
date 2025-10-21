@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,8 +32,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** List all the scientific axes.
- * 
+/**
+ * List all the scientific axes.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -44,28 +45,29 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class ScientificAxesListView extends StandardScientificAxisListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = 4918450030888881030L;
+    private static final long serialVersionUID = 4918450030888881030L;
 
-	/** Constructor.
-	 * 
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param axisService the service for accessing the scientific axes.
-	 * @param axisEditorFactory the factory for creating the scientific axis editors.
-	 */
-	public ScientificAxesListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired ScientificAxisService axisService,
-			@Autowired ScientificAxisEditorFactory axisEditorFactory) {
-		super(authenticatedUser, messages, loggerFactory, axisService, axisEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser the connected user.
+     * @param messages          the accessor to the localized messages (spring layer).
+     * @param loggerFactory     the factory to be used for the composite logger.
+     * @param axisService       the service for accessing the scientific axes.
+     * @param axisEditorFactory the factory for creating the scientific axis editors.
+     */
+    public ScientificAxesListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired ScientificAxisService axisService,
+            @Autowired ScientificAxisEditorFactory axisEditorFactory) {
+        super(authenticatedUser, messages, loggerFactory, axisService, axisEditorFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.scientific_axes.axes.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.scientific_axes.axes.list"); //$NON-NLS-1$
+    }
 
 }

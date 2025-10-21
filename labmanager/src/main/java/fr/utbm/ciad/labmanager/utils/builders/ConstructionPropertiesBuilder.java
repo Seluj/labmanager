@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.utils.builders;
 import java.io.Serializable;
 import java.util.Objects;
 
-/** Builder for tool for constructing the view.
- * 
+/**
+ * Builder for tool for constructing the view.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,87 +32,80 @@ import java.util.Objects;
  */
 public final class ConstructionPropertiesBuilder implements Serializable {
 
-	private static final long serialVersionUID = 3427758339522693365L;
+    private static final long serialVersionUID = 3427758339522693365L;
 
-	private ConstructionProperties properties = new ConstructionPropertiesImpl0();
-	
-	private ConstructionPropertiesBuilder() {
-		//
-	}
+    private ConstructionProperties properties = new ConstructionPropertiesImpl0();
 
-	/** Create a builder.
-	 *
-	 * @return the builder.
-	 */
-	public static ConstructionPropertiesBuilder create() {
-		return new ConstructionPropertiesBuilder();
-	}
+    private ConstructionPropertiesBuilder() {
+        //
+    }
 
-	/** Build the properties.
-	 *
-	 * @return the properties.
-	 */
-	public ConstructionProperties build() {
-		return this.properties;
-	}
+    /**
+     * Create a builder.
+     *
+     * @return the builder.
+     */
+    public static ConstructionPropertiesBuilder create() {
+        return new ConstructionPropertiesBuilder();
+    }
 
-	/** Add the property with the given name and value.
-	 *
-	 * @param name the name of the property.
-	 * @param value the value.
-	 * @return {@code this}.
-	 */
-	public ConstructionPropertiesBuilder map(String name, Object value) {
-		this.properties = new ConstructionPropertiesImpl1(name, value, this.properties);
-		return this;
-	}
+    /**
+     * Build the properties.
+     *
+     * @return the properties.
+     */
+    public ConstructionProperties build() {
+        return this.properties;
+    }
 
-	/** Add the property with the given name and a {@code null} value.
-	 *
-	 * @param name the name of the property.
-	 * @return {@code this}.
-	 */
-	public ConstructionPropertiesBuilder mapToNull(String name) {
-		this.properties = new ConstructionPropertiesImpl1(name, null, this.properties);
-		return this;
-	}
+    /**
+     * Add the property with the given name and value.
+     *
+     * @param name  the name of the property.
+     * @param value the value.
+     * @return {@code this}.
+     */
+    public ConstructionPropertiesBuilder map(String name, Object value) {
+        this.properties = new ConstructionPropertiesImpl1(name, value, this.properties);
+        return this;
+    }
 
-	private static class ConstructionPropertiesImpl0 implements ConstructionProperties {
+    /**
+     * Add the property with the given name and a {@code null} value.
+     *
+     * @param name the name of the property.
+     * @return {@code this}.
+     */
+    public ConstructionPropertiesBuilder mapToNull(String name) {
+        this.properties = new ConstructionPropertiesImpl1(name, null, this.properties);
+        return this;
+    }
 
-		private static final long serialVersionUID = 1760663354339672305L;
+    private static class ConstructionPropertiesImpl0 implements ConstructionProperties {
 
-		@Override
-		public <PT> PT get(String name) {
-			throw new IllegalArgumentException();
-		}
-		
-	}
+        private static final long serialVersionUID = 1760663354339672305L;
 
-	private static class ConstructionPropertiesImpl1 implements ConstructionProperties {
+        @Override
+        public <PT> PT get(String name) {
+            throw new IllegalArgumentException();
+        }
 
-		private static final long serialVersionUID = -4418631141943849767L;
+    }
 
-		private final String name;
+    private record ConstructionPropertiesImpl1(String name, Object value,
+                                               ConstructionProperties parent) implements ConstructionProperties {
 
-		private final Object value;
-		
-		private final ConstructionProperties parent;
+            private static final long serialVersionUID = -4418631141943849767L;
 
-		private ConstructionPropertiesImpl1(String name, Object value, ConstructionProperties parent) {
-			this.name = name;
-			this.value = value;
-			this.parent = parent;
-		}
-		
-		@SuppressWarnings("unchecked")
-		@Override
-		public <PT> PT get(String name) {
-			if (Objects.equals(this.name, name)) {
-				return (PT) this.value;
-			}
-			return this.parent.get(name);
-		}
-		
-	}
+        @SuppressWarnings("unchecked")
+            @Override
+            public <PT> PT get(String name) {
+                if (Objects.equals(this.name, name)) {
+                    return (PT) this.value;
+                }
+                return this.parent.get(name);
+            }
+
+        }
 
 }

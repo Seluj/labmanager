@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.data;
 
 import java.io.Serializable;
 
-/** Interface that represents a set of ranking indicators.
- * 
+/**
+ * Interface that represents a set of ranking indicators.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,37 +32,41 @@ import java.io.Serializable;
  */
 public interface QualityAnnualIndicators extends Serializable, IdentifiableEntity {
 
-	/** Replies the year for this history entry.
-	 *
-	 * @return the year.
-	 */
-	int getReferenceYear();
+    /**
+     * Replies the year for this history entry.
+     *
+     * @return the year.
+     */
+    int getReferenceYear();
 
-	/** Change the year for this history entry.
-	 *
-	 * @param year the year.
-	 */
-	void setReferenceYear(int year);
+    /**
+     * Change the year for this history entry.
+     *
+     * @param year the year.
+     */
+    void setReferenceYear(int year);
 
-	/** Change the year for this history entry.
-	 *
-	 * @param year the year.
-	 */
-	default void setReferenceYear(Number year) {
-		if (year == null) {
-			setReferenceYear(0);
-		} else {
-			setReferenceYear(year.intValue());
-		}
-	}
+    /**
+     * Change the year for this history entry.
+     *
+     * @param year the year.
+     */
+    default void setReferenceYear(Number year) {
+        if (year == null) {
+            setReferenceYear(0);
+        } else {
+            setReferenceYear(year.intValue());
+        }
+    }
 
-	/** Replies at least one quality indicator is defined inside this object.
-	 * The indicators may be quartile, impact factor or CORE index depending on
-	 * the implementation of this collection of indicators.
-	 *
-	 * @return {@code true} if one indicator is provided. Otherwise {@code false}.
-	 * @since 4.0
-	 */
-	boolean isSignificant();
+    /**
+     * Replies at least one quality indicator is defined inside this object.
+     * The indicators may be quartile, impact factor or CORE index depending on
+     * the implementation of this collection of indicators.
+     *
+     * @return {@code true} if one indicator is provided. Otherwise {@code false}.
+     * @since 4.0
+     */
+    boolean isSignificant();
 
 }

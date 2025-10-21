@@ -67,14 +67,13 @@ public class PublicationRestService {
      * <p>This endpoint allows clients to filter the publications based on the specified parameters. If the optional parameters
      * are not provided, all publications for the specified person will be returned.</p>
      *
-     * @param id the ID of the user or either
-     * @param pageId the webpage_id of the user
+     * @param id       the ID of the user or either
+     * @param pageId   the webpage_id of the user
      * @param year     (optional) the year of publication to filter results. If not provided, all years will be included
      * @param language (optional) the language of publication to filter results. If not provided, all languages will be included
      * @param keywords (optional) a comma-separated list of keywords to filter results. If not provided, all keywords will be included
      * @return a ResponseEntity containing a list of PublicationsDTO objects that match the specified filters, or an appropriate error response
      * if the person is not found or no publications match the criteria.
-     *
      * @see Publication
      * @see PublicationLanguage
      * @see PublicationType
@@ -87,7 +86,7 @@ public class PublicationRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no person is found with the provided ID or pageId.")
     })
     @GetMapping("/persons")
-    
+
     public ResponseEntity<List<PublicationsDTO>> getPersonPublications(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String pageId,
@@ -116,9 +115,9 @@ public class PublicationRestService {
      * <p>This endpoint allows clients to filter the publications based on the specified parameters. If the optional parameters
      * are not provided, all publications for the specified organization will be returned.</p>
      *
-     * @param id the ID of the organization (optional)
-     * @param acronym the acronym of the organization (optional)
-     * @param year (optional) the year of publication to filter results. If not provided, all years will be included
+     * @param id       the ID of the organization (optional)
+     * @param acronym  the acronym of the organization (optional)
+     * @param year     (optional) the year of publication to filter results. If not provided, all years will be included
      * @param language (optional) the language of publication to filter results. If not provided, all languages will be included
      * @param keywords (optional) a comma-separated list of keywords to filter results. If not provided, all keywords will be included
      * @return a ResponseEntity containing a list of PublicationsDTO objects that match the specified filters, or an appropriate error response
@@ -131,7 +130,7 @@ public class PublicationRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no organization is found with the provided ID or acronym.")
     })
     @GetMapping("/organizations")
-    
+
     public ResponseEntity<List<PublicationsDTO>> getOrganizationsPublications(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String acronym,
@@ -163,12 +162,12 @@ public class PublicationRestService {
      * Filters a list of publications with the provided filters
      *
      * @param publicationList - the list of publication to filter
-     * @param year - the year to filter
-     * @param language - the language to filter
-     * @param keywords - the list of keywords to filter
+     * @param year            - the year to filter
+     * @param language        - the language to filter
+     * @param keywords        - the list of keywords to filter
      * @return The filtered publications
      */
-    
+
     public List<PublicationsDTO> getAndfilterPublicationsDataFrom(Collection<Publication> publicationList,
                                                                   Long year,
                                                                   String language,
@@ -222,8 +221,7 @@ public class PublicationRestService {
         Person person = null;
         if (id != null) {
             person = personService.getPersonById(id);
-        }
-        else if (pageId != null) {
+        } else if (pageId != null) {
             person = personService.getPersonByWebPageId(pageId);
         }
 
@@ -234,7 +232,7 @@ public class PublicationRestService {
      * Returns a research organization entity based on either a research organization ID or acronym.
      * If both are absent, returns null.
      *
-     * @param id     an optional parameter for the research organization ID
+     * @param id      an optional parameter for the research organization ID
      * @param acronym an optional parameter for the research organization acronym
      * @return the ResearchOrganization entity or null if not found
      * @see ResearchOrganization
@@ -245,7 +243,7 @@ public class PublicationRestService {
         if (id != null) {
             optionalResearchOrganization = researchOrganizationService.getResearchOrganizationById(id);
         } else if (acronym != null) {
-            optionalResearchOrganization =  researchOrganizationService.getResearchOrganizationByAcronym(acronym);
+            optionalResearchOrganization = researchOrganizationService.getResearchOrganizationByAcronym(acronym);
         }
 
         return optionalResearchOrganization.orElse(null);

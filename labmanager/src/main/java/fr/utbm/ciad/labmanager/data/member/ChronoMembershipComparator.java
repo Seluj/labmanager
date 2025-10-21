@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,9 +27,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 
-/** Comparator of memberships. Memberships are sorted by termination status, organization,
+/**
+ * Comparator of memberships. Memberships are sorted by termination status, organization,
  * date (from future to past), person and CNU section.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -39,76 +40,77 @@ import java.util.Comparator;
 @Primary
 public class ChronoMembershipComparator implements Comparator<Membership> {
 
-	private PersonComparator personComparator;
+    private final PersonComparator personComparator;
 
-	private ResearchOrganizationComparator organizationComparator;
+    private final ResearchOrganizationComparator organizationComparator;
 
-	/** Constructor.
-	 *
-	 * @param personComparator the comparator of persons names.
-	 * @param organizationComparator the comparator of research organizations.
-	 */
-	public ChronoMembershipComparator(@Autowired PersonComparator personComparator, @Autowired ResearchOrganizationComparator organizationComparator) {
-		this.personComparator = personComparator;
-		this.organizationComparator = organizationComparator;
-	}
+    /**
+     * Constructor.
+     *
+     * @param personComparator       the comparator of persons names.
+     * @param organizationComparator the comparator of research organizations.
+     */
+    public ChronoMembershipComparator(@Autowired PersonComparator personComparator, @Autowired ResearchOrganizationComparator organizationComparator) {
+        this.personComparator = personComparator;
+        this.organizationComparator = organizationComparator;
+    }
 
-	@Override
-	public int compare(Membership o1, Membership o2) {
-		if (o1 == o2) {
-			return 0;
-		}
-		if (o1 == null) {
-			return Integer.MIN_VALUE;
-		}
-		if (o2 == null) {
-			return Integer.MAX_VALUE;
-		}
-		var n = Integer.compare(period(o1), period(o2));
-		if (n != 0) {
-			return n;
-		}
-		n = this.organizationComparator.compare(o1.getDirectResearchOrganization(), o2.getDirectResearchOrganization());
-		if (n != 0) {
-			return n;
-		}
-		n = Comparators.compareDateRange(o1.getMemberSinceWhen(), o1.getMemberToWhen(), o2.getMemberSinceWhen(), o2.getMemberToWhen());
-		if (n != 0) {
-			// Negate the result for sorting from future to past
-			return -n;
-		}
-		n = o1.getMemberStatus().compareTo(o2.getMemberStatus());
-		if (n != 0) {
-			return n;
-		}
-		n = this.personComparator.compare(o1.getPerson(), o2.getPerson());
-		if (n != 0) {
-			return n;
-		}
-		n = Comparators.compare(o1.getResponsibility(), o2.getResponsibility());
-		if (n != 0) {
-			return n;
-		}
-		n = Comparators.compare(o1.getCnuSection(), o2.getCnuSection());
-		if (n != 0) {
-			return n;
-		}
-		n = Comparators.compare(o1.getConrsSection(), o2.getConrsSection());
-		if (n != 0) {
-			return n;
-		}
-		return Comparators.compare(o1.getFrenchBap(), o2.getFrenchBap());
-	}
+    private static int period(Membership d) {
+        if (d.isFormer()) {
+            return 2;
+        }
+        if (d.isFuture()) {
+            return 0;
+        }
+        return 1;
+    }
 
-	private static int period(Membership d) {
-		if (d.isFormer()) {
-			return 2;
-		}
-		if (d.isFuture()) {
-			return 0;
-		}
-		return 1;
-	}
+    @Override
+    public int compare(Membership o1, Membership o2) {
+        if (o1 == o2) {
+            return 0;
+        }
+        if (o1 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (o2 == null) {
+            return Integer.MAX_VALUE;
+        }
+        var n = Integer.compare(period(o1), period(o2));
+        if (n != 0) {
+            return n;
+        }
+        n = this.organizationComparator.compare(o1.getDirectResearchOrganization(), o2.getDirectResearchOrganization());
+        if (n != 0) {
+            return n;
+        }
+        n = Comparators.compareDateRange(o1.getMemberSinceWhen(), o1.getMemberToWhen(), o2.getMemberSinceWhen(), o2.getMemberToWhen());
+        if (n != 0) {
+            // Negate the result for sorting from future to past
+            return -n;
+        }
+        n = o1.getMemberStatus().compareTo(o2.getMemberStatus());
+        if (n != 0) {
+            return n;
+        }
+        n = this.personComparator.compare(o1.getPerson(), o2.getPerson());
+        if (n != 0) {
+            return n;
+        }
+        n = Comparators.compare(o1.getResponsibility(), o2.getResponsibility());
+        if (n != 0) {
+            return n;
+        }
+        n = Comparators.compare(o1.getCnuSection(), o2.getCnuSection());
+        if (n != 0) {
+            return n;
+        }
+        n = Comparators.compare(o1.getConrsSection(), o2.getConrsSection());
+        if (n != 0) {
+            return n;
+        }
+        return Comparators.compare(o1.getFrenchBap(), o2.getFrenchBap());
+    }
 
 }
 

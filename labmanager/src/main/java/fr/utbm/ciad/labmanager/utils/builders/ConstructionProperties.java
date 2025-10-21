@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,9 @@ package fr.utbm.ciad.labmanager.utils.builders;
 
 import java.io.Serializable;
 
-/** Tool for constructing an object with dynamic values.
- * 
+/**
+ * Tool for constructing an object with dynamic values.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,12 +32,13 @@ import java.io.Serializable;
 @FunctionalInterface
 public interface ConstructionProperties extends Serializable {
 
-	/** Replies the value associated to the given key in the properties.
-	 *
-	 * @param <PT> the type of the property value.
-	 * @param name the property name.
-	 * @return the property value, never {@code null}.
-	 */
-	<PT> PT get(String name);
+    /**
+     * Replies the value associated to the given key in the properties.
+     *
+     * @param <PT> the type of the property value.
+     * @param name the property name.
+     * @return the property value, never {@code null}.
+     */
+    <PT> PT get(String name);
 
 }

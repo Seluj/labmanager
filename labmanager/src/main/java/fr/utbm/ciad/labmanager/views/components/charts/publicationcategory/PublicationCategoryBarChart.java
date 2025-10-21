@@ -24,26 +24,16 @@ import static com.storedobject.chart.Color.TRANSPARENT;
 public class PublicationCategoryBarChart extends AbstractPublicationCategoryChart {
 
     private final PublicationService publicationService;
-
-    private Data xValues;
-
-    private List<BarChart> barChartList;
-
-    private CategoryData categoryData;
-
     private final CoordinateSystem rectangularCoordinate;
-
     private final XAxis xAxis;
-
     private final YAxis yAxis;
-
-    private LineChart lineChart;
-
     private final List<Integer> totalPublication;
-
     private final List<PublicationType> publicationTypes;
-
     private final Legend legend;
+    private Data xValues;
+    private List<BarChart> barChartList;
+    private CategoryData categoryData;
+    private LineChart lineChart;
 
     /**
      * Constructor.

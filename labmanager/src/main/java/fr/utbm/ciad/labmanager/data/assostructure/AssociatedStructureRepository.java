@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/** JPA repository for associated structure declaration.
- * 
+/**
+ * JPA repository for associated structure declaration.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -36,28 +37,30 @@ import java.util.List;
  */
 public interface AssociatedStructureRepository extends JpaRepository<AssociatedStructure, Long>, JpaSpecificationExecutor<AssociatedStructure> {
 
-	/** Replies all the associated structures that match the organization identifier, and the confidential
-	 * flag.
-	 *
-	 * @param id the identifier for the organization.
-	 * @param confidential indicates the expected confidentiality flag for the associated structures.
-	 * @return the list of associated structures.
-	 */
-	@Query("SELECT DISTINCT s FROM AssociatedStructure s, AssociatedStructureHolder h WHERE s.fundingOrganization.id = :id OR ((h.organization.id = :id OR h.superOrganization.id = :id) AND h MEMBER OF s.holders) AND s.confidential = :confidential")
-	List<AssociatedStructure> findDistinctOrganizationAssociatedStructures(
-			@Param("confidential") Boolean confidential, @Param("id") Long id);
+    /**
+     * Replies all the associated structures that match the organization identifier, and the confidential
+     * flag.
+     *
+     * @param id           the identifier for the organization.
+     * @param confidential indicates the expected confidentiality flag for the associated structures.
+     * @return the list of associated structures.
+     */
+    @Query("SELECT DISTINCT s FROM AssociatedStructure s, AssociatedStructureHolder h WHERE s.fundingOrganization.id = :id OR ((h.organization.id = :id OR h.superOrganization.id = :id) AND h MEMBER OF s.holders) AND s.confidential = :confidential")
+    List<AssociatedStructure> findDistinctOrganizationAssociatedStructures(
+            @Param("confidential") Boolean confidential, @Param("id") Long id);
 
-	/** Replies all the associated structures that match the person identifier, and the confidential
-	 * flag.
-	 *
-	 * @param confidential indicates the expected confidentiality flag for the associated structures.
-	 * @param id the identifier for the person.
-	 * @return the list of associated structures.
-	 * @deprecated no replacement
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	@Query("SELECT DISTINCT s FROM AssociatedStructure s, AssociatedStructureHolder h WHERE h.person.id = :id AND h MEMBER OF s.holders AND s.confidential = :confidential")
-	List<AssociatedStructure> findDistinctPersonAssociatedStructures(
-			@Param("confidential") Boolean confidential, @Param("id") Long id);
+    /**
+     * Replies all the associated structures that match the person identifier, and the confidential
+     * flag.
+     *
+     * @param confidential indicates the expected confidentiality flag for the associated structures.
+     * @param id           the identifier for the person.
+     * @return the list of associated structures.
+     * @deprecated no replacement
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    @Query("SELECT DISTINCT s FROM AssociatedStructure s, AssociatedStructureHolder h WHERE h.person.id = :id AND h MEMBER OF s.holders AND s.confidential = :confidential")
+    List<AssociatedStructure> findDistinctPersonAssociatedStructures(
+            @Param("confidential") Boolean confidential, @Param("id") Long id);
 
 }

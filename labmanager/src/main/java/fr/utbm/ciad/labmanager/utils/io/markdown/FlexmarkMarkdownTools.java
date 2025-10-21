@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,8 +29,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-/** Utilities for manupilating markdown with the Flexmark API.
- * 
+/**
+ * Utilities for manupilating markdown with the Flexmark API.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -41,29 +42,30 @@ import java.util.Arrays;
 @Primary
 public class FlexmarkMarkdownTools implements MarkdownTools {
 
-	private final MutableDataSet options = new MutableDataSet();
+    private final MutableDataSet options = new MutableDataSet();
 
-	private final Parser parser;
+    private final Parser parser;
 
-	private final HtmlRenderer renderer;
+    private final HtmlRenderer renderer;
 
-	/** Constructor.
-	 */
-	public FlexmarkMarkdownTools() {
-		// uncomment to set optional extensions
+    /**
+     * Constructor.
+     */
+    public FlexmarkMarkdownTools() {
+        // uncomment to set optional extensions
         this.options.set(Parser.EXTENSIONS, Arrays.asList(TablesExtension.create(), StrikethroughExtension.create()));
-		// uncomment to convert soft-breaks to hard breaks
+        // uncomment to convert soft-breaks to hard breaks
         //options.set(HtmlRenderer.SOFT_BREAK, "<br />\n");
 
         this.parser = Parser.builder(this.options).build();
         this.renderer = HtmlRenderer.builder(this.options).build();
-	}
-	
-	@Override
-	public String markdownToHTML(String markdown) {
+    }
+
+    @Override
+    public String markdownToHTML(String markdown) {
         final var document = this.parser.parse(markdown);
         final var html = this.renderer.render(document);
-		return html;
-	}
+        return html;
+    }
 
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,12 +19,13 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.logger;
 
-import java.lang.ref.SoftReference;
-
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.slf4j.Logger;
 
-/** An abstract vertical layout that has an attached logger.
+import java.lang.ref.SoftReference;
+
+/**
+ * An abstract vertical layout that has an attached logger.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -32,33 +33,35 @@ import org.slf4j.Logger;
  * @mavenartifactid $ArtifactId$
  * @since 4.0
  */
-public abstract class AbstractLoggerVerticalLayout extends VerticalLayout  {
+public abstract class AbstractLoggerVerticalLayout extends VerticalLayout {
 
-	private static final long serialVersionUID = 8762944329088364763L;
+    private static final long serialVersionUID = 8762944329088364763L;
 
-	private final ContextualLoggerFactory loggerFactory;
+    private final ContextualLoggerFactory loggerFactory;
 
-	private SoftReference<Logger> logger;
+    private SoftReference<Logger> logger;
 
-	/** Constructor.
-	 *
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 */
-	public AbstractLoggerVerticalLayout(ContextualLoggerFactory loggerFactory) {
-		this.loggerFactory = loggerFactory;
-	}
-	
-	/** Replies the logger than should be used by this component.
-	 *
-	 * @return the logger, never {@code null}.
-	 */
-	public synchronized Logger getLogger() {
-		var log = this.logger == null ? null : this.logger.get();
-		if (log == null) {
-			log = this.loggerFactory.getLogger(getClass().getName(), AbstractLoggerComposite.getAuthenticatedUserName());
-			this.logger = new SoftReference<>(log);
-		}
-		return log;
-	}
+    /**
+     * Constructor.
+     *
+     * @param loggerFactory the factory to be used for the composite logger.
+     */
+    public AbstractLoggerVerticalLayout(ContextualLoggerFactory loggerFactory) {
+        this.loggerFactory = loggerFactory;
+    }
+
+    /**
+     * Replies the logger than should be used by this component.
+     *
+     * @return the logger, never {@code null}.
+     */
+    public synchronized Logger getLogger() {
+        var log = this.logger == null ? null : this.logger.get();
+        if (log == null) {
+            log = this.loggerFactory.getLogger(getClass().getName(), AbstractLoggerComposite.getAuthenticatedUserName());
+            this.logger = new SoftReference<>(log);
+        }
+        return log;
+    }
 
 }

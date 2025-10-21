@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory for building the fields related to the associated structures.
- * 
+/**
+ * Factory for building the fields related to the associated structures.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -37,31 +38,32 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultAssociatedStructureFieldFactory implements AssociatedStructureFieldFactory {
 
-	private final PersonFieldFactory personFieldFactory;
+    private final PersonFieldFactory personFieldFactory;
 
-	private final OrganizationFieldFactory organizationFieldFactory;
+    private final OrganizationFieldFactory organizationFieldFactory;
 
-	private final MessageSourceAccessor messages;
+    private final MessageSourceAccessor messages;
 
-	/** Constructor.
-	 *
-	 * @param personFieldFactory the factory for creating the person fields.
-	 * @param organizationFieldFactory the factory for creating the organization fields.
-	 * @param messages accessor to the localized messages.
-	 */
-	public DefaultAssociatedStructureFieldFactory(
-			@Autowired PersonFieldFactory personFieldFactory,
-			@Autowired OrganizationFieldFactory organizationFieldFactory,
-			@Autowired MessageSourceAccessor messages) {
-		this.personFieldFactory = personFieldFactory;
-		this.organizationFieldFactory = organizationFieldFactory;
-		this.messages = messages;
-	}
+    /**
+     * Constructor.
+     *
+     * @param personFieldFactory       the factory for creating the person fields.
+     * @param organizationFieldFactory the factory for creating the organization fields.
+     * @param messages                 accessor to the localized messages.
+     */
+    public DefaultAssociatedStructureFieldFactory(
+            @Autowired PersonFieldFactory personFieldFactory,
+            @Autowired OrganizationFieldFactory organizationFieldFactory,
+            @Autowired MessageSourceAccessor messages) {
+        this.personFieldFactory = personFieldFactory;
+        this.organizationFieldFactory = organizationFieldFactory;
+        this.messages = messages;
+    }
 
-	@Override
-	public AssociatedStructureHolderListGridField createHolderField(Logger logger) {
-		return new AssociatedStructureHolderListGridField(this.personFieldFactory, this.organizationFieldFactory, this.messages,
-				logger);
-	}
+    @Override
+    public AssociatedStructureHolderListGridField createHolderField(Logger logger) {
+        return new AssociatedStructureHolderListGridField(this.personFieldFactory, this.organizationFieldFactory, this.messages,
+                logger);
+    }
 
 }

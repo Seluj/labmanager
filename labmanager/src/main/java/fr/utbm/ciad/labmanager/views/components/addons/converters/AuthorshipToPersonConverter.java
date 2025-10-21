@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.converters;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
@@ -32,8 +27,14 @@ import fr.utbm.ciad.labmanager.data.publication.Authorship;
 import fr.utbm.ciad.labmanager.data.publication.Publication;
 import fr.utbm.ciad.labmanager.data.publication.comparators.AuthorshipComparator;
 
-/** A converter that is removing the spaces at the ends of the input string.
- * 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * A converter that is removing the spaces at the ends of the input string.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -42,39 +43,40 @@ import fr.utbm.ciad.labmanager.data.publication.comparators.AuthorshipComparator
  */
 public class AuthorshipToPersonConverter implements Converter<List<Person>, Set<Authorship>> {
 
-	private static final long serialVersionUID = 5344005355126348062L;
+    private static final long serialVersionUID = 5344005355126348062L;
 
-	private final Publication publication;
-	
-	/** Constructor.
-	 * 
-	 * @param publication the publication to associate to the authorships.
-	 */
-	public AuthorshipToPersonConverter(Publication publication) {
-		this.publication = publication;
-	}
-	
-	@Override
-	public Result<Set<Authorship>> convertToModel(List<Person> value, ValueContext context) {
-		final var list = new HashSet<Authorship>();
-		if (value != null) {
-			int order = 0;
-			for (final var person : value) {
-				final var authorship = new Authorship(this.publication, person, order);
-				list.add(authorship);
-				++order;
-			}
-		}
-		return Result.ok(list);
-	}
+    private final Publication publication;
 
-	@Override
-	public List<Person> convertToPresentation(Set<Authorship> value, ValueContext context) {
-		final var list = new ArrayList<Person>();
-		if (value != null) {
-			value.stream().sorted(AuthorshipComparator.DEFAULT).forEachOrdered(it -> list.add(it.getPerson()));
-		}
-		return list;
-	}
+    /**
+     * Constructor.
+     *
+     * @param publication the publication to associate to the authorships.
+     */
+    public AuthorshipToPersonConverter(Publication publication) {
+        this.publication = publication;
+    }
+
+    @Override
+    public Result<Set<Authorship>> convertToModel(List<Person> value, ValueContext context) {
+        final var list = new HashSet<Authorship>();
+        if (value != null) {
+            int order = 0;
+            for (final var person : value) {
+                final var authorship = new Authorship(this.publication, person, order);
+                list.add(authorship);
+                ++order;
+            }
+        }
+        return Result.ok(list);
+    }
+
+    @Override
+    public List<Person> convertToPresentation(Set<Authorship> value, ValueContext context) {
+        final var list = new ArrayList<Person>();
+        if (value != null) {
+            value.stream().sorted(AuthorshipComparator.DEFAULT).forEachOrdered(it -> list.add(it.getPerson()));
+        }
+        return list;
+    }
 
 }

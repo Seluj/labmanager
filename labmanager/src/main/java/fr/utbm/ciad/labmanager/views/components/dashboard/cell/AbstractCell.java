@@ -52,9 +52,27 @@ public abstract class AbstractCell extends FlexLayout implements Cell {
         setCellStyle();
     }
 
+    /**
+     * Retrieves the border color shared by all instances of AbstractCell.
+     *
+     * @return the static border color.
+     */
+    public static String getBorderColor() {
+        return borderColor;
+    }
+
+    /**
+     * Sets the border color shared by all instances of AbstractCell.
+     *
+     * @param borderColor the border color to set
+     */
+    public static void setBorderColor(String borderColor) {
+        AbstractCell.borderColor = borderColor;
+    }
+
     @Override
     public void addComponent(Component component) {
-        if(!isEmpty()){
+        if (!isEmpty()) {
             emptyCell();
         }
         add(component);
@@ -110,6 +128,7 @@ public abstract class AbstractCell extends FlexLayout implements Cell {
 
     /**
      * Get the component contained in the cell
+     *
      * @return the component
      */
     public Component getComponent() {
@@ -123,23 +142,5 @@ public abstract class AbstractCell extends FlexLayout implements Cell {
      */
     public int getIndex() {
         return index;
-    }
-
-    /**
-     * Sets the border color shared by all instances of AbstractCell.
-     *
-     * @param borderColor the border color to set
-     */
-    public static void setBorderColor(String borderColor) {
-        AbstractCell.borderColor = borderColor;
-    }
-
-    /**
-     * Retrieves the border color shared by all instances of AbstractCell.
-     *
-     * @return the static border color.
-     */
-    public static String getBorderColor() {
-        return borderColor;
     }
 }

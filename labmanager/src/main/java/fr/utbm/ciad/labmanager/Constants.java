@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager;
 
-/** Constant definitions.
- * 
+/**
+ * Constant definitions.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -29,34 +30,39 @@ package fr.utbm.ciad.labmanager;
  */
 public final class Constants {
 
-	/** Major version number of the Lab Manager API.
-	 *
-	 * @since 4.0
-	 */
-	public static final String MANAGER_MAJOR_VERSION = "4"; //$NON-NLS-1$
-	
-	/** Minor version number of the Lab Manager API.
-	 *
-	 * @since 4.0
-	 */
-	public static final String MANAGER_MINOR_VERSION = "0"; //$NON-NLS-1$
+    /**
+     * Major version number of the Lab Manager API.
+     *
+     * @since 4.0
+     */
+    public static final String MANAGER_MAJOR_VERSION = "4"; //$NON-NLS-1$
 
-	/** Micro version number of the Lab Manager API.
-	 *
-	 * @since 4.0
-	 */
-	public static final String MANAGER_MICRO_VERSION = "0"; //$NON-NLS-1$
+    /**
+     * Minor version number of the Lab Manager API.
+     *
+     * @since 4.0
+     */
+    public static final String MANAGER_MINOR_VERSION = "0"; //$NON-NLS-1$
 
-	/** Version number of the Lab Manager API.
-	 */
-	public static final String MANAGER_VERSION = MANAGER_MAJOR_VERSION + "." + MANAGER_MINOR_VERSION + "." + MANAGER_MICRO_VERSION; //$NON-NLS-1$ //$NON-NLS-2$
+    /**
+     * Micro version number of the Lab Manager API.
+     *
+     * @since 4.0
+     */
+    public static final String MANAGER_MICRO_VERSION = "0"; //$NON-NLS-1$
 
-	/** Build id that is also the date of the release.
-	 */
-	public static final String MANAGER_BUILD_ID = "~"; //$NON-NLS-1$
+    /**
+     * Version number of the Lab Manager API.
+     */
+    public static final String MANAGER_VERSION = MANAGER_MAJOR_VERSION + "." + MANAGER_MINOR_VERSION + "." + MANAGER_MICRO_VERSION; //$NON-NLS-1$ //$NON-NLS-2$
 
-	private Constants() {
-		//
-	}
-	
+    /**
+     * Build id that is also the date of the release.
+     */
+    public static final String MANAGER_BUILD_ID = "~"; //$NON-NLS-1$
+
+    private Constants() {
+        //
+    }
+
 }

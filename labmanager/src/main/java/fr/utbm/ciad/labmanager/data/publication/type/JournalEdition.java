@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,6 @@
 
 package fr.utbm.ciad.labmanager.data.publication.type;
 
-import java.io.IOException;
-import java.util.Locale;
-import java.util.Objects;
-
 import com.google.common.base.Strings;
 import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
 import fr.utbm.ciad.labmanager.data.publication.Publication;
@@ -32,10 +28,15 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Edition of a journal or a special issue of a journal.
+import java.io.IOException;
+import java.util.Locale;
+import java.util.Objects;
+
+/**
+ * Edition of a journal or a special issue of a journal.
  *
  * <p>This type has no equivalent in the BibTeX types. It is inspired from {@code article}.
- * 
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @version $Name$ $Revision$ $Date$
@@ -46,165 +47,176 @@ import org.springframework.context.support.MessageSourceAccessor;
 @DiscriminatorValue("JournalEdition")
 public class JournalEdition extends AbstractJournalBasedPublication {
 
-	private static final long serialVersionUID = -1849832728913103105L;
+    private static final long serialVersionUID = -1849832728913103105L;
 
-	/** Number that represent the volume of the journal.
-	 */
-	@Column
-	private String volume;
+    /**
+     * Number that represent the volume of the journal.
+     */
+    @Column
+    private String volume;
 
-	/** Number of the journal.
-	 */
-	@Column
-	private String number;
+    /**
+     * Number of the journal.
+     */
+    @Column
+    private String number;
 
-	/** Range of pages that corresponds to the paper in the journal.
-	 */
-	@Column
-	private String pages;
+    /**
+     * Range of pages that corresponds to the paper in the journal.
+     */
+    @Column
+    private String pages;
 
-	/** Construct a journal edition with the given values.
-	 *
-	 * @param publication the publication to copy.
-	 * @param volume the volume of the journal.
-	 * @param number the number of the journal.
-	 * @param pages the pages in the journal.
-	 */
-	public JournalEdition(Publication publication, String volume, String number, String pages) {
-		super(publication);
-		this.volume = volume;
-		this.number = number;
-		this.pages = pages;
-	}
+    /**
+     * Construct a journal edition with the given values.
+     *
+     * @param publication the publication to copy.
+     * @param volume      the volume of the journal.
+     * @param number      the number of the journal.
+     * @param pages       the pages in the journal.
+     */
+    public JournalEdition(Publication publication, String volume, String number, String pages) {
+        super(publication);
+        this.volume = volume;
+        this.number = number;
+        this.pages = pages;
+    }
 
-	/** Construct an empty journal edition.
-	 */
-	public JournalEdition() {
-		//
-	}
+    /**
+     * Construct an empty journal edition.
+     */
+    public JournalEdition() {
+        //
+    }
 
-	@Override
-	public int hashCode() {
-		if (getId() != 0) {
-			return Long.hashCode(getId());
-		}
-		var h = super.hashCode();
-		h = HashCodeUtils.add(h, this.volume);
-		h = HashCodeUtils.add(h, this.number);
-		return h;
-	}
+    @Override
+    public int hashCode() {
+        if (getId() != 0) {
+            return Long.hashCode(getId());
+        }
+        var h = super.hashCode();
+        h = HashCodeUtils.add(h, this.volume);
+        h = HashCodeUtils.add(h, this.number);
+        return h;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final var other = (JournalEdition) obj;
-		if (getId() != 0 && other.getId() != 0) {
-			return getId() == other.getId();
-		}
-		return super.equals(other)
-				&& Objects.equals(this.volume, other.volume)
-				&& Objects.equals(this.number, other.number);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final var other = (JournalEdition) obj;
+        if (getId() != 0 && other.getId() != 0) {
+            return getId() == other.getId();
+        }
+        return super.equals(other)
+                && Objects.equals(this.volume, other.volume)
+                && Objects.equals(this.number, other.number);
+    }
 
-	@Override
-	public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
-		super.forEachAttribute(messages, locale, consumer);
-		if (!Strings.isNullOrEmpty(getVolume())) {
-			consumer.accept("volume", getVolume()); //$NON-NLS-1$
-		}
-		if (!Strings.isNullOrEmpty(getNumber())) {
-			consumer.accept("number", getNumber()); //$NON-NLS-1$
-		}
-		if (!Strings.isNullOrEmpty(getPages())) {
-			consumer.accept("pages", getPages()); //$NON-NLS-1$
-		}		
-	}
+    @Override
+    public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
+        super.forEachAttribute(messages, locale, consumer);
+        if (!Strings.isNullOrEmpty(getVolume())) {
+            consumer.accept("volume", getVolume()); //$NON-NLS-1$
+        }
+        if (!Strings.isNullOrEmpty(getNumber())) {
+            consumer.accept("number", getNumber()); //$NON-NLS-1$
+        }
+        if (!Strings.isNullOrEmpty(getPages())) {
+            consumer.accept("pages", getPages()); //$NON-NLS-1$
+        }
+    }
 
-	@Override
-	public String getWherePublishedShortDescription() {
-		final var buf = new StringBuilder();
-		buf.append(getJournal().getJournalName());
-		if (!Strings.isNullOrEmpty(getVolume())) {
-			buf.append(", vol. "); //$NON-NLS-1$
-			buf.append(getVolume());
-		}
-		if (!Strings.isNullOrEmpty(getNumber())) {
-			buf.append(", n. "); //$NON-NLS-1$
-			buf.append(getNumber());
-		}
-		if (!Strings.isNullOrEmpty(getPages())) {
-			buf.append(", pp. "); //$NON-NLS-1$
-			buf.append(getPages());
-		}
-		if (!Strings.isNullOrEmpty(getJournal().getPublisher())) {
-			buf.append(", "); //$NON-NLS-1$
-			buf.append(getJournal().getPublisher());
-		}
-		if (!Strings.isNullOrEmpty(getJournal().getISBN())) {
-			buf.append(", ISBN "); //$NON-NLS-1$
-			buf.append(getJournal().getISBN());
-		}
-		if (!Strings.isNullOrEmpty(getJournal().getISSN())) {
-			buf.append(", ISSN "); //$NON-NLS-1$
-			buf.append(getJournal().getISSN());
-		}
-		return buf.toString();
-	}
+    @Override
+    public String getWherePublishedShortDescription() {
+        final var buf = new StringBuilder();
+        buf.append(getJournal().getJournalName());
+        if (!Strings.isNullOrEmpty(getVolume())) {
+            buf.append(", vol. "); //$NON-NLS-1$
+            buf.append(getVolume());
+        }
+        if (!Strings.isNullOrEmpty(getNumber())) {
+            buf.append(", n. "); //$NON-NLS-1$
+            buf.append(getNumber());
+        }
+        if (!Strings.isNullOrEmpty(getPages())) {
+            buf.append(", pp. "); //$NON-NLS-1$
+            buf.append(getPages());
+        }
+        if (!Strings.isNullOrEmpty(getJournal().getPublisher())) {
+            buf.append(", "); //$NON-NLS-1$
+            buf.append(getJournal().getPublisher());
+        }
+        if (!Strings.isNullOrEmpty(getJournal().getISBN())) {
+            buf.append(", ISBN "); //$NON-NLS-1$
+            buf.append(getJournal().getISBN());
+        }
+        if (!Strings.isNullOrEmpty(getJournal().getISSN())) {
+            buf.append(", ISSN "); //$NON-NLS-1$
+            buf.append(getJournal().getISSN());
+        }
+        return buf.toString();
+    }
 
-	/** Replies the volume number of the journal in which the publication was published.
-	 * 
-	 * @return the volume number.
-	 */
-	public String getVolume() {
-		return this.volume;
-	}
+    /**
+     * Replies the volume number of the journal in which the publication was published.
+     *
+     * @return the volume number.
+     */
+    public String getVolume() {
+        return this.volume;
+    }
 
-	/** Change the volume number of the journal in which the publication was published.
-	 * 
-	 * @param volume the volume number.
-	 */
-	public void setVolume(String volume) {
-		this.volume = Strings.emptyToNull(volume);
-	}
+    /**
+     * Change the volume number of the journal in which the publication was published.
+     *
+     * @param volume the volume number.
+     */
+    public void setVolume(String volume) {
+        this.volume = Strings.emptyToNull(volume);
+    }
 
-	/** Replies the number of the journal in which the publication was published.
-	 * 
-	 * @return the number.
-	 */
-	public String getNumber() {
-		return this.number;
-	}
+    /**
+     * Replies the number of the journal in which the publication was published.
+     *
+     * @return the number.
+     */
+    public String getNumber() {
+        return this.number;
+    }
 
-	/** Change the number of the journal in which the publication was published.
-	 * 
-	 * @param number the number.
-	 */
-	public void setNumber(String number) {
-		this.number = Strings.emptyToNull(number);
-	}
+    /**
+     * Change the number of the journal in which the publication was published.
+     *
+     * @param number the number.
+     */
+    public void setNumber(String number) {
+        this.number = Strings.emptyToNull(number);
+    }
 
-	/** Replies the page range in the journal in which the publication was published.
-	 * 
-	 * @return the number.
-	 */
-	public String getPages() {
-		return this.pages;
-	}
+    /**
+     * Replies the page range in the journal in which the publication was published.
+     *
+     * @return the number.
+     */
+    public String getPages() {
+        return this.pages;
+    }
 
-	/** Change the page range in the journal in which the publication was published.
-	 * 
-	 * @param range the page range.
-	 */
-	public void setPages(String range) {
-		this.pages = Strings.emptyToNull(range);
-	}
+    /**
+     * Change the page range in the journal in which the publication was published.
+     *
+     * @param range the page range.
+     */
+    public void setPages(String range) {
+        this.pages = Strings.emptyToNull(range);
+    }
 
 }

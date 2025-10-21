@@ -25,7 +25,7 @@ public class ConditionalManagedContextMenu extends ManagedContextMenu {
     /**
      * Default Constructor
      */
-    public ConditionalManagedContextMenu(){
+    public ConditionalManagedContextMenu() {
         super();
         addOpenedChangeListener();
     }
@@ -56,9 +56,9 @@ public class ConditionalManagedContextMenu extends ManagedContextMenu {
     /**
      * Adds a menu item with a visibility condition.
      *
-     * @param name          the unique name of the menu item.
-     * @param text          the display text of the menu item.
-     * @param listener      the click listener for the menu item.
+     * @param name                the unique name of the menu item.
+     * @param text                the display text of the menu item.
+     * @param listener            the click listener for the menu item.
      * @param visibilityCondition a Supplier that returns true if the item should be visible.
      * @return the MenuItem created
      */
@@ -72,8 +72,8 @@ public class ConditionalManagedContextMenu extends ManagedContextMenu {
      * Adds an item to the context menu with a visibility condition and associates it with a name that
      * will be the text used when displayed.
      *
-     * @param text     the unique name for the menu item, which will be displayed.
-     * @param listener      the click listener for the menu item.
+     * @param text                the unique name for the menu item, which will be displayed.
+     * @param listener            the click listener for the menu item.
      * @param visibilityCondition a Supplier that returns true if the item should be visible.
      * @return the MenuItem created
      */

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import info.debatty.java.stringsimilarity.Jaccard;
 import info.debatty.java.stringsimilarity.interfaces.NormalizedStringSimilarity;
 import org.springframework.stereotype.Component;
 
-/** Utilities for comparing organization names using the Jaccar algorithm.
- * 
+/**
+ * Utilities for comparing organization names using the Jaccar algorithm.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,17 +36,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class JaccarOrganizationNameComparator extends AbstractOrganizationNameComparator {
 
-	private static final double SIMILARITY_LEVEL = 0.65;
+    private static final double SIMILARITY_LEVEL = 0.65;
 
-	/** Constructor.
-	 */
-	public JaccarOrganizationNameComparator() {
-		setSimilarityLevel(SIMILARITY_LEVEL);
-	}
+    /**
+     * Constructor.
+     */
+    public JaccarOrganizationNameComparator() {
+        setSimilarityLevel(SIMILARITY_LEVEL);
+    }
 
-	@Override
-	protected NormalizedStringSimilarity createStringSimilarityComputer() {
-		return new Jaccard();
-	}
+    @Override
+    protected NormalizedStringSimilarity createStringSimilarityComputer() {
+        return new Jaccard();
+    }
 
 }

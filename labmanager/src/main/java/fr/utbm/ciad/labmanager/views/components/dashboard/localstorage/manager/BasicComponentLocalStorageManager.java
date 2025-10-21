@@ -20,7 +20,7 @@ public class BasicComponentLocalStorageManager extends ComponentLocalStorageMana
     /**
      * Default Constructor
      */
-    public BasicComponentLocalStorageManager(){
+    public BasicComponentLocalStorageManager() {
         super(new DashboardBasicComponentItemFactory());
     }
 

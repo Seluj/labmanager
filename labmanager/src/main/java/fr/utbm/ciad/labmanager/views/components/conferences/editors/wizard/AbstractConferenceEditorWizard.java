@@ -1,10 +1,5 @@
 package fr.utbm.ciad.labmanager.views.components.conferences.editors.wizard;
 
-import static fr.utbm.ciad.labmanager.views.ViewConstants.CORE_PORTAL_BASE_URL;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.CORE_PORTAL_ICON;
-
-import java.util.function.Consumer;
-
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -30,7 +25,13 @@ import fr.utbm.ciad.labmanager.views.components.addons.validators.UrlValidator;
 import fr.utbm.ciad.labmanager.views.components.conferences.editors.regular.AbstractConferenceEditor;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Implementation for the editor of the information related to a scientific conference. It is directly linked for
+import java.util.function.Consumer;
+
+import static fr.utbm.ciad.labmanager.views.ViewConstants.CORE_PORTAL_BASE_URL;
+import static fr.utbm.ciad.labmanager.views.ViewConstants.CORE_PORTAL_ICON;
+
+/**
+ * Implementation for the editor of the information related to a scientific conference. It is directly linked for
  * using it with a wizard.
  *
  * @author $Author: sgalland$
@@ -46,26 +47,28 @@ public abstract class AbstractConferenceEditorWizard extends AbstractConferenceE
 
     private ConferenceEditorComponentWizard conferenceEditorComponentWizard;
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param context the editing context for the conference.
-	 * @param conferenceCreationStatusComputer the tool for computer the creation status for the conferences.
-     * @param relinkEntityWhenSaving indicates if the editor must be relink to the edited entity when it is saved. This new link may
-     *     be required if the editor is not closed after saving in order to obtain a correct editing of the entity.
-     * @param authenticatedUser the connected user.
-     * @param messages the accessor to the localized messages (Spring layer).
-	 * @param properties specification of properties that may be passed to the construction function {@code #create*}.
-	 * @since 4.0
+     * @param context                          the editing context for the conference.
+     * @param conferenceCreationStatusComputer the tool for computer the creation status for the conferences.
+     * @param relinkEntityWhenSaving           indicates if the editor must be relink to the edited entity when it is saved. This new link may
+     *                                         be required if the editor is not closed after saving in order to obtain a correct editing of the entity.
+     * @param authenticatedUser                the connected user.
+     * @param messages                         the accessor to the localized messages (Spring layer).
+     * @param properties                       specification of properties that may be passed to the construction function {@code #create*}.
+     * @since 4.0
      */
     public AbstractConferenceEditorWizard(AbstractEntityService.EntityEditingContext<Conference> context,
-			EntityCreationStatusComputer<Conference> conferenceCreationStatusComputer,
-    		boolean relinkEntityWhenSaving, ConferenceService conferenceService,
-    		AuthenticatedUser authenticatedUser, MessageSourceAccessor messages,
-    		ConstructionPropertiesBuilder properties) {
+                                          EntityCreationStatusComputer<Conference> conferenceCreationStatusComputer,
+                                          boolean relinkEntityWhenSaving, ConferenceService conferenceService,
+                                          AuthenticatedUser authenticatedUser, MessageSourceAccessor messages,
+                                          ConstructionPropertiesBuilder properties) {
         super(context, conferenceCreationStatusComputer, relinkEntityWhenSaving, conferenceService, authenticatedUser, messages, properties);
     }
 
-    /** Create the content of the editor.
+    /**
+     * Create the content of the editor.
      * This function should invoke {@link #createAdministrationComponents(VerticalLayout, Consumer, Consumer)}.
      *
      * @param rootContainer the container.
@@ -75,14 +78,14 @@ public abstract class AbstractConferenceEditorWizard extends AbstractConferenceE
     protected void createEditorContent(VerticalLayout rootContainer) {
         if (isBaseAdmin()) {
             conferenceEditorComponentWizard = new ConferenceEditorComponentWizard(
-            		new DelegateContextualLoggerFactory(getLogger()),
+                    new DelegateContextualLoggerFactory(getLogger()),
                     createDescriptionDetails(),
                     createRankingDetails(),
                     createPublisherDetails(),
                     createAdministrationComponents((Consumer<FormLayout>) null, it -> it.bind(Conference::isValidated, Conference::setValidated)));
-        }else{
+        } else {
             conferenceEditorComponentWizard = new ConferenceEditorComponentWizard(
-            		new DelegateContextualLoggerFactory(getLogger()),
+                    new DelegateContextualLoggerFactory(getLogger()),
                     createDescriptionDetails(),
                     createRankingDetails(),
                     createPublisherDetails());
@@ -90,7 +93,8 @@ public abstract class AbstractConferenceEditorWizard extends AbstractConferenceE
         rootContainer.add(conferenceEditorComponentWizard);
     }
 
-    /** Create the section for editing the description of the conference.
+    /**
+     * Create the section for editing the description of the conference.
      *
      * @return The content.
      */
@@ -148,7 +152,7 @@ public abstract class AbstractConferenceEditorWizard extends AbstractConferenceE
             final var span = new Span();
             if (it == null) {
                 span.setText(getTranslation("views.conferences.open_access.indeterminate")); //$NON-NLS-1$
-            } else if (it == Boolean.TRUE) {
+            } else if (it) {
                 span.setText(getTranslation("views.conferences.open_access.yes")); //$NON-NLS-1$
             } else {
                 span.setText(getTranslation("views.conferences.open_access.no")); //$NON-NLS-1$
@@ -157,7 +161,8 @@ public abstract class AbstractConferenceEditorWizard extends AbstractConferenceE
         }));
     }
 
-    /** Create the section for editing the ranking information of the conference.
+    /**
+     * Create the section for editing the ranking information of the conference.
      *
      * @return The content.
      */
@@ -185,7 +190,8 @@ public abstract class AbstractConferenceEditorWizard extends AbstractConferenceE
         return verticalLayout;
     }
 
-    /** Create the section for editing the publishing information of the conference.
+    /**
+     * Create the section for editing the publishing information of the conference.
      *
      * @return The content.
      */

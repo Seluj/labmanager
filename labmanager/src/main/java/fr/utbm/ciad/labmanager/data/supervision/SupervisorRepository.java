@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,9 @@ package fr.utbm.ciad.labmanager.data.supervision;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-/** JPA repository for surpervisor declaration.
- * 
+/**
+ * JPA repository for surpervisor declaration.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,5 +32,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @since 2.1
  */
 public interface SupervisorRepository extends JpaRepository<Supervisor, Long>, JpaSpecificationExecutor<Supervisor> {
-	//
+    //
 }

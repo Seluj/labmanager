@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,8 +32,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Enable to edit the supervisions for all the persons.
- * 
+/**
+ * Enable to edit the supervisions for all the persons.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -44,28 +45,29 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class SupervisionsListView extends StandardSupervisionListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = 7290371153524168134L;
+    private static final long serialVersionUID = 7290371153524168134L;
 
-	/** Constructor.
-	 * 
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param supervisionService the service for accessing the supervisions.
-	 * @param supervisionEditorFactory the factory for creating the person supervision editors.
-	 */
-	public SupervisionsListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired SupervisionService supervisionService,
-			@Autowired SupervisionEditorFactory supervisionEditorFactory) {
-		super(authenticatedUser, messages, loggerFactory, supervisionService, supervisionEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser        the connected user.
+     * @param messages                 the accessor to the localized messages (spring layer).
+     * @param loggerFactory            the factory to be used for the composite logger.
+     * @param supervisionService       the service for accessing the supervisions.
+     * @param supervisionEditorFactory the factory for creating the person supervision editors.
+     */
+    public SupervisionsListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired SupervisionService supervisionService,
+            @Autowired SupervisionEditorFactory supervisionEditorFactory) {
+        super(authenticatedUser, messages, loggerFactory, supervisionService, supervisionEditorFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.supervision.supervisions.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.supervision.supervisions.list"); //$NON-NLS-1$
+    }
 
 }

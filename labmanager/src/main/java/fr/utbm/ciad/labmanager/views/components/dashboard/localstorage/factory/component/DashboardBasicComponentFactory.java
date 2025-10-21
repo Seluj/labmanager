@@ -29,7 +29,7 @@ public class DashboardBasicComponentFactory implements DashboardComponentFactory
             component = null;
         }
 
-        if(component != null){
+        if (component != null) {
             component.getStyle()
                     .setWidth(dashBoardBasicComponentItem.getWidth())
                     .setHeight(dashBoardBasicComponentItem.getHeight());

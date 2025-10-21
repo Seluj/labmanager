@@ -18,7 +18,7 @@ public class DashboardBasicComponentItem extends AbstractDashboardComponentItem 
     /**
      * Default Constructor
      */
-    public DashboardBasicComponentItem(){
+    public DashboardBasicComponentItem() {
         super(new DashboardBasicComponentFactory());
     }
 
@@ -27,29 +27,29 @@ public class DashboardBasicComponentItem extends AbstractDashboardComponentItem 
      *
      * @param index the index of the component in the dashboard
      */
-    public DashboardBasicComponentItem(int index){
+    public DashboardBasicComponentItem(int index) {
         super(new DashboardBasicComponentFactory(), index);
     }
 
     /**
      * Constructor
      *
-     * @param index the index of the component
+     * @param index         the index of the component
      * @param componentType the type of the component
-     * @param width the width of the component
-     * @param height the height of the component
+     * @param width         the width of the component
+     * @param height        the height of the component
      */
-    public DashboardBasicComponentItem(int index, DashboardComponentType componentType, String width, String height){
+    public DashboardBasicComponentItem(int index, DashboardComponentType componentType, String width, String height) {
         super(new DashboardBasicComponentFactory(), index, componentType, width, height);
     }
 
     /**
      * Constructor to initialize the item from attributes of a component.
      *
-     * @param index the index of the component
+     * @param index     the index of the component
      * @param component the existing component to extract attributes
      */
-    public DashboardBasicComponentItem(int index, Component component, DashboardComponentType componentType){
+    public DashboardBasicComponentItem(int index, Component component, DashboardComponentType componentType) {
         super(new DashboardBasicComponentFactory(), index, component, componentType);
     }
 
@@ -58,12 +58,12 @@ public class DashboardBasicComponentItem extends AbstractDashboardComponentItem 
      *
      * @param item the existing DashBoardComponentItem to copy properties from
      */
-    public DashboardBasicComponentItem(DashboardBasicComponentItem item){
+    public DashboardBasicComponentItem(DashboardBasicComponentItem item) {
         super(new DashboardBasicComponentFactory(), item);
     }
 
     @Override
-    public void createId(String idPart){
+    public void createId(String idPart) {
         setId("DashBoardComponent_" + idPart);
     }
 }

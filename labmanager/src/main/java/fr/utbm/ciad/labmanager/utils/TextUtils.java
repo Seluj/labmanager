@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,8 +28,9 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
-/** Utilities for text.
- * 
+/**
+ * Utilities for text.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -40,65 +41,68 @@ import java.util.TreeSet;
 @Deprecated(since = "4.0", forRemoval = true)
 public final class TextUtils {
 
-	private final static Set<Character> APOSTROPHE = new TreeSet<>(Arrays.asList(
-			Character.valueOf('a'), Character.valueOf('e'), Character.valueOf('i'),
-			Character.valueOf('o'), Character.valueOf('u'), Character.valueOf('y'),
-			Character.valueOf('h')));
-	
-	private TextUtils() {
-		//
-	}
+    private final static Set<Character> APOSTROPHE = new TreeSet<>(Arrays.asList(
+            Character.valueOf('a'), Character.valueOf('e'), Character.valueOf('i'),
+            Character.valueOf('o'), Character.valueOf('u'), Character.valueOf('y'),
+            Character.valueOf('h')));
 
-	/** Replies if the given string should be prefixed by a string with the {@code '}
-	 * character is some language.
-	 *
-	 * @param text the text to check.
-	 * @return {@code true} if the given string should be prefixed by the {@code '} character.
-	 */
-	public static boolean isApostrophable(String text) {
-		if (Strings.isNullOrEmpty(text)) {
-			return false;
-		}
-		final var c = Character.toLowerCase(text.charAt(0));
-		return APOSTROPHE.contains(Character.valueOf(c));
-	}
+    private TextUtils() {
+        //
+    }
 
-	/** Replies the preferred string representation of the given number.
-	 *
-	 * @param number the number to format.
-	 * @param unit the unit to user for formatting.
-	 * @param locale the locale to use.
-	 * @return the string representation of the number.
-	 */
-	public static String formatNumber(Number number, Unit unit, Locale locale) {
-		if (number != null) {
-			final var cvalue = unit == null ? number : unit.convertFromUnit(number);
-			final var symbols = new DecimalFormatSymbols(locale == null ? Locale.US : locale);
-			final var format = new DecimalFormat("#0.#", symbols); //$NON-NLS-1$
-			return format.format(cvalue);
-		}
-		return ""; //$NON-NLS-1$
-	}
+    /**
+     * Replies if the given string should be prefixed by a string with the {@code '}
+     * character is some language.
+     *
+     * @param text the text to check.
+     * @return {@code true} if the given string should be prefixed by the {@code '} character.
+     */
+    public static boolean isApostrophable(String text) {
+        if (Strings.isNullOrEmpty(text)) {
+            return false;
+        }
+        final var c = Character.toLowerCase(text.charAt(0));
+        return APOSTROPHE.contains(Character.valueOf(c));
+    }
 
-	/** Safe case-insensitive comparison of strings.
-	 *
-	 * @param a the first string.
-	 * @param b the second string.
-	 * @return negative if {@code a} is lower than {@code b}; position if {@code a} is greater than {@code b};
-	 *     otherwise {@code 0}.
-	 * @since 3.6
-	 */
-	public static int compareIgnoreCase(String a, String b) {
-		if (a == b) {
-			return 0;
-		}
-		if (a == null) {
-			return -1;
-		}
-		if (b == null) {
-			return 1;
-		}
-		return a.compareToIgnoreCase(b);
-	}
+    /**
+     * Replies the preferred string representation of the given number.
+     *
+     * @param number the number to format.
+     * @param unit   the unit to user for formatting.
+     * @param locale the locale to use.
+     * @return the string representation of the number.
+     */
+    public static String formatNumber(Number number, Unit unit, Locale locale) {
+        if (number != null) {
+            final var cvalue = unit == null ? number : unit.convertFromUnit(number);
+            final var symbols = new DecimalFormatSymbols(locale == null ? Locale.US : locale);
+            final var format = new DecimalFormat("#0.#", symbols); //$NON-NLS-1$
+            return format.format(cvalue);
+        }
+        return ""; //$NON-NLS-1$
+    }
+
+    /**
+     * Safe case-insensitive comparison of strings.
+     *
+     * @param a the first string.
+     * @param b the second string.
+     * @return negative if {@code a} is lower than {@code b}; position if {@code a} is greater than {@code b};
+     * otherwise {@code 0}.
+     * @since 3.6
+     */
+    public static int compareIgnoreCase(String a, String b) {
+        if (a == b) {
+            return 0;
+        }
+        if (a == null) {
+            return -1;
+        }
+        if (b == null) {
+            return 1;
+        }
+        return a.compareToIgnoreCase(b);
+    }
 
 }

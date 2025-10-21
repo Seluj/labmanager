@@ -24,18 +24,18 @@ public class GridLogger implements GridObserver {
     /**
      * Default Constructor
      */
-    public GridLogger(){
+    public GridLogger() {
     }
 
     /**
      * Constructor
      *
-     * @param addCallback  the action to perform when a component is added
+     * @param addCallback     the action to perform when a component is added
      * @param addNewCallback  the action to perform when a component is added
-     * @param changesCallback  the action to perform when changes occur to component
+     * @param changesCallback the action to perform when changes occur to component
      * @param removeCallback  the action to perform when a component is removed
      */
-    public GridLogger(Consumer<Component> addCallback, Consumer<Component> addNewCallback, Consumer<Component> changesCallback, Consumer<Component> removeCallback){
+    public GridLogger(Consumer<Component> addCallback, Consumer<Component> addNewCallback, Consumer<Component> changesCallback, Consumer<Component> removeCallback) {
         this.addCallback = addCallback;
         this.addNewCallback = addNewCallback;
         this.changesCallback = changesCallback;

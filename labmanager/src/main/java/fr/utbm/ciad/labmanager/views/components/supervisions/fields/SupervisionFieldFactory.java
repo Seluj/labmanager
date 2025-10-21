@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.views.components.supervisions.fields;
 
 import org.slf4j.Logger;
 
-/** Factory for building the fields related to the projects.
- * 
+/**
+ * Factory for building the fields related to the projects.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,11 +32,12 @@ import org.slf4j.Logger;
  */
 public interface SupervisionFieldFactory {
 
-	/** Create a field for input supervisor to be used in the list grids.
-	 * 
-	 * @param logger the logger to be used by the component.
-	 * @return the field, never {@code null}.
-	 */
-	SupervisorListGridField createSupervisorField(Logger logger);
+    /**
+     * Create a field for input supervisor to be used in the list grids.
+     *
+     * @param logger the logger to be used by the component.
+     * @return the field, never {@code null}.
+     */
+    SupervisorListGridField createSupervisorField(Logger logger);
 
 }

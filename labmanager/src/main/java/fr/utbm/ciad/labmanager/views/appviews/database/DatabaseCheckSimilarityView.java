@@ -19,46 +19,34 @@ package fr.utbm.ciad.labmanager.views.appviews.database;
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.i18n.LocaleChangeEvent;
 import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.Route;
-import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
-import fr.utbm.ciad.labmanager.data.member.PersonRepository;
-import fr.utbm.ciad.labmanager.data.project.ProjectMemberRepository;
 import fr.utbm.ciad.labmanager.data.user.UserRole;
 import fr.utbm.ciad.labmanager.services.conference.ConferenceMergingService;
 import fr.utbm.ciad.labmanager.services.journal.JournalMergingService;
-import fr.utbm.ciad.labmanager.services.jury.JuryMembershipService;
 import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
-import fr.utbm.ciad.labmanager.services.member.PersonService;
 import fr.utbm.ciad.labmanager.services.organization.OrganizationMergingService;
-import fr.utbm.ciad.labmanager.services.supervision.SupervisionService;
 import fr.utbm.ciad.labmanager.utils.names.ConferenceNameComparator;
 import fr.utbm.ciad.labmanager.utils.names.JournalNameOrPublisherComparator;
 import fr.utbm.ciad.labmanager.utils.names.OrganizationNameComparator;
 import fr.utbm.ciad.labmanager.utils.names.PersonNameComparator;
 import fr.utbm.ciad.labmanager.views.appviews.MainLayout;
-import fr.utbm.ciad.labmanager.views.components.addons.slider.SingleSlider;
 import fr.utbm.ciad.labmanager.views.components.similarity.ConferenceSimilarityLayout;
 import fr.utbm.ciad.labmanager.views.components.similarity.JournalSimilarityLayout;
 import fr.utbm.ciad.labmanager.views.components.similarity.OrganizationSimilarityLayout;
 import fr.utbm.ciad.labmanager.views.components.similarity.PersonSimilarityLayout;
 import jakarta.annotation.security.RolesAllowed;
-import org.apache.commons.compress.harmony.archive.internal.nls.Messages;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory.getTranslation;
-
-/** Enable to manage the database.
+/**
+ * Enable to manage the database.
  *
  * @author $Author: erenon$
  * @version $Name$ $Revision$ $Date$
@@ -73,9 +61,10 @@ public class DatabaseCheckSimilarityView extends VerticalLayout implements HasDy
 
     private static final long serialVersionUID = -1583805930880620625L;
 
-    private TabSheet tabSheet;
+    private final TabSheet tabSheet;
 
-    /** Constructor.
+    /**
+     * Constructor.
      */
     public DatabaseCheckSimilarityView(@Autowired PersonNameComparator personNameComparator,
                                        @Autowired PersonMergingService personMergingService,

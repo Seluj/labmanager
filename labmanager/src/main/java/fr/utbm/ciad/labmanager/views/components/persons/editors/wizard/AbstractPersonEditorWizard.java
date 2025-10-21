@@ -1,24 +1,5 @@
 package fr.utbm.ciad.labmanager.views.components.persons.editors.wizard;
 
-import static fr.utbm.ciad.labmanager.views.ViewConstants.ACADEMIA_EDU_BASE_URL;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.ACADEMIA_EDU_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.ADSCIENTIFICINDEX_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.DBLP_BASE_URL;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.DBLP_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.EU_CORDIS_BASE_URL;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.EU_CORDIS_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.FACEBOOK_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.GITHUB_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.GRAVATAR_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.GSCHOLAR_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.LINKEDIN_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.ORCID_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.RESEARCHGATE_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.SCOPUS_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.WOS_ICON;
-
-import java.util.function.Consumer;
-
 import com.vaadin.componentfactory.ToggleButton;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
@@ -57,6 +38,10 @@ import fr.utbm.ciad.labmanager.views.components.addons.validators.UrlValidator;
 import fr.utbm.ciad.labmanager.views.components.persons.editors.regular.AbstractPersonEditor;
 import org.springframework.context.support.MessageSourceAccessor;
 
+import java.util.function.Consumer;
+
+import static fr.utbm.ciad.labmanager.views.ViewConstants.*;
+
 /**
  * Implementation for the editor of the information related to a person. It is directly linked for
  * using it with a wizard.
@@ -76,18 +61,18 @@ public abstract class AbstractPersonEditorWizard extends AbstractPersonEditor {
     /**
      * Constructor.
      *
-     * @param userContext            the editing context for the user.
-	 * @param personCreationStatusComputer the tool for computer the creation status for the persons.
-     * @param relinkEntityWhenSaving indicates if the editor must be relink to the edited entity when it is saved. This new link may
-     *                               be required if the editor is not closed after saving in order to obtain a correct editing of the entity.
-     * @param authenticatedUser      the connected user.
-     * @param messages               the accessor to the localized messages (Spring layer).
-	 * @param properties specification of properties that may be passed to the construction function {@code #create*}.
-	 * @since 4.0
+     * @param userContext                  the editing context for the user.
+     * @param personCreationStatusComputer the tool for computer the creation status for the persons.
+     * @param relinkEntityWhenSaving       indicates if the editor must be relink to the edited entity when it is saved. This new link may
+     *                                     be required if the editor is not closed after saving in order to obtain a correct editing of the entity.
+     * @param authenticatedUser            the connected user.
+     * @param messages                     the accessor to the localized messages (Spring layer).
+     * @param properties                   specification of properties that may be passed to the construction function {@code #create*}.
+     * @since 4.0
      */
     public AbstractPersonEditorWizard(UserService.UserEditingContext userContext, EntityCreationStatusComputer<Person> personCreationStatusComputer,
-    		boolean relinkEntityWhenSaving, AuthenticatedUser authenticatedUser, MessageSourceAccessor messages, PersonService personService,
-    		ConstructionPropertiesBuilder properties) {
+                                      boolean relinkEntityWhenSaving, AuthenticatedUser authenticatedUser, MessageSourceAccessor messages, PersonService personService,
+                                      ConstructionPropertiesBuilder properties) {
         super(userContext, personCreationStatusComputer, personService, relinkEntityWhenSaving, authenticatedUser, messages, properties);
     }
 
@@ -127,18 +112,18 @@ public abstract class AbstractPersonEditorWizard extends AbstractPersonEditor {
                 };
             }
             personAdditionWizard = new PersonEditorComponentWizard(
-            		new DelegateContextualLoggerFactory(getLogger()),
-            		createPersonalInformationComponents(), createContactInformationComponents(),
-            		createResearcherIdsComponents(), createBiographyComponents(),
-            		createIndexesComponents(), createSocialLinksComponents(),
-            		createAdministrationComponents(builderCallback, it -> it.bind(Person::isValidated, Person::setValidated)));
+                    new DelegateContextualLoggerFactory(getLogger()),
+                    createPersonalInformationComponents(), createContactInformationComponents(),
+                    createResearcherIdsComponents(), createBiographyComponents(),
+                    createIndexesComponents(), createSocialLinksComponents(),
+                    createAdministrationComponents(builderCallback, it -> it.bind(Person::isValidated, Person::setValidated)));
 
         } else {
             personAdditionWizard = new PersonEditorComponentWizard(
-            		new DelegateContextualLoggerFactory(getLogger()),
-            		createPersonalInformationComponents(), createContactInformationComponents(),
-            		createResearcherIdsComponents(), createBiographyComponents(),
-            		createIndexesComponents(), createSocialLinksComponents());
+                    new DelegateContextualLoggerFactory(getLogger()),
+                    createPersonalInformationComponents(), createContactInformationComponents(),
+                    createResearcherIdsComponents(), createBiographyComponents(),
+                    createIndexesComponents(), createSocialLinksComponents());
         }
         rootContainer.add(personAdditionWizard);
     }
@@ -363,11 +348,10 @@ public abstract class AbstractPersonEditorWizard extends AbstractPersonEditor {
             this.photo.add(image);
         } else {
             this.photo = new VerticalLayout();
-            final var size = new StringBuilder();
-            size.append(ViewConstants.PHOTO_SIZE);
-            size.append(Unit.PIXELS.getSymbol());
+            String size = ViewConstants.PHOTO_SIZE +
+                    Unit.PIXELS.getSymbol();
             final var image = LumoIcon.USER.create();
-            image.setSize(size.toString());
+            image.setSize(size);
             this.photo.add(image);
         }
     }

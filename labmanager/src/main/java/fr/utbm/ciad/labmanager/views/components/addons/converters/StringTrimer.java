@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
-/** A converter that is removing the spaces at the ends of the input string.
- * 
+/**
+ * A converter that is removing the spaces at the ends of the input string.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,22 +34,22 @@ import com.vaadin.flow.data.converter.Converter;
  */
 public class StringTrimer implements Converter<String, String> {
 
-	private static final long serialVersionUID = 5344005355126348062L;
+    private static final long serialVersionUID = 5344005355126348062L;
 
-	@Override
-	public Result<String> convertToModel(String value, ValueContext context) {
-		if (value == null) {
-			return Result.ok(""); //$NON-NLS-1$
-		}
-		return Result.ok(value.trim());
-	}
+    @Override
+    public Result<String> convertToModel(String value, ValueContext context) {
+        if (value == null) {
+            return Result.ok(""); //$NON-NLS-1$
+        }
+        return Result.ok(value.trim());
+    }
 
-	@Override
-	public String convertToPresentation(String value, ValueContext context) {
-		if (value == null) {
-			return ""; //$NON-NLS-1$
-		}
-		return value.trim();
-	}
+    @Override
+    public String convertToPresentation(String value, ValueContext context) {
+        if (value == null) {
+            return ""; //$NON-NLS-1$
+        }
+        return value.trim();
+    }
 
 }

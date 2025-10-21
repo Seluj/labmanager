@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,8 +34,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a person membership editor according to the editing context.
- * 
+/**
+ * Factory that is providing a person membership editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -44,65 +45,80 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DefaultMembershipEditorFactory implements MembershipEditorFactory {
-	
-	private final MembershipService membershipService;
 
-	private final PersonFieldFactory personFieldFactory;
+    private final MembershipService membershipService;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final PersonFieldFactory personFieldFactory;
 
-	private final MessageSourceAccessor messages;
+    private final AuthenticatedUser authenticatedUser;
 
-	private final OrganizationFieldFactory organizationFieldFactory;
+    private final MessageSourceAccessor messages;
 
-	private final ScientificAxisService axisService;
+    private final OrganizationFieldFactory organizationFieldFactory;
 
-	private final ScientificAxisEditorFactory axisEditorFactory;
-	
-	/** Constructors.
-	 * 
-	 * @param membershipService the service for accessing the JPA entities for person memberships.
-	 * @param personFieldFactory the factory for creating the person fields.
-	 * @param organizationFieldFactory the factory for creating the organization fields.
-	 * @param axisService the service for accessing the JPA entities for scientific axes.
-	 * @param axisEditorFactory the factory for creating the scientific axis editors.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public DefaultMembershipEditorFactory(
-			@Autowired MembershipService membershipService,
-			@Autowired PersonFieldFactory personFieldFactory,
-			@Autowired OrganizationFieldFactory organizationFieldFactory,
-			@Autowired ScientificAxisService axisService,
-			@Autowired ScientificAxisEditorFactory axisEditorFactory,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.membershipService = membershipService;
-		this.personFieldFactory = personFieldFactory;
-		this.organizationFieldFactory = organizationFieldFactory;
-		this.axisService = axisService;
-		this.axisEditorFactory = axisEditorFactory;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-	}
+    private final ScientificAxisService axisService;
 
-	@Override
-	public EntityEditingContext<Membership> createContextFor(Membership membership, Logger logger) {
-		return this.membershipService.startEditing(membership, logger);
-	}
+    private final ScientificAxisEditorFactory axisEditorFactory;
 
-	@Override
-	public AbstractEntityEditor<Membership> createAdditionEditor(EntityEditingContext<Membership> context, boolean editAssociatedPerson) {
-		return new EmbeddedMembershipEditor(context, null, editAssociatedPerson, this.personFieldFactory,
-				this.organizationFieldFactory, this.axisService,
-				this.axisEditorFactory, this.authenticatedUser, this.messages);
-	}
+    /**
+     * Constructors.
+     *
+     * @param membershipService        the service for accessing the JPA entities for person memberships.
+     * @param personFieldFactory       the factory for creating the person fields.
+     * @param organizationFieldFactory the factory for creating the organization fields.
+     * @param axisService              the service for accessing the JPA entities for scientific axes.
+     * @param axisEditorFactory        the factory for creating the scientific axis editors.
+     * @param authenticatedUser        the connected user.
+     * @param messages                 the accessor to the localized messages (Spring layer).
+     */
+    public DefaultMembershipEditorFactory(
+            @Autowired MembershipService membershipService,
+            @Autowired PersonFieldFactory personFieldFactory,
+            @Autowired OrganizationFieldFactory organizationFieldFactory,
+            @Autowired ScientificAxisService axisService,
+            @Autowired ScientificAxisEditorFactory axisEditorFactory,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.membershipService = membershipService;
+        this.personFieldFactory = personFieldFactory;
+        this.organizationFieldFactory = organizationFieldFactory;
+        this.axisService = axisService;
+        this.axisEditorFactory = axisEditorFactory;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+    }
 
-	@Override
-	public AbstractEntityEditor<Membership> createUpdateEditor(EntityEditingContext<Membership> context, boolean editAssociatedPerson) {
-		return new EmbeddedMembershipEditor(context, null, editAssociatedPerson, this.personFieldFactory,
-				this.organizationFieldFactory, this.axisService,
-				this.axisEditorFactory, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public EntityEditingContext<Membership> createContextFor(Membership membership, Logger logger) {
+        return this.membershipService.startEditing(membership, logger);
+    }
+
+    @Override
+    public AbstractEntityEditor<Membership> createAdditionEditor(EntityEditingContext<Membership> context, boolean editAssociatedPerson) {
+        return new EmbeddedMembershipEditor(
+                context,
+                null,
+                editAssociatedPerson,
+                this.personFieldFactory,
+                this.organizationFieldFactory,
+                this.axisService,
+                this.axisEditorFactory,
+                this.authenticatedUser,
+                this.messages);
+    }
+
+    @Override
+    public AbstractEntityEditor<Membership> createUpdateEditor(EntityEditingContext<Membership> context, boolean editAssociatedPerson) {
+        return new EmbeddedMembershipEditor(
+                context,
+                null,
+                editAssociatedPerson,
+                this.personFieldFactory,
+                this.organizationFieldFactory,
+                this.axisService,
+                this.axisEditorFactory,
+                this.authenticatedUser,
+                this.messages);
+    }
 
 }

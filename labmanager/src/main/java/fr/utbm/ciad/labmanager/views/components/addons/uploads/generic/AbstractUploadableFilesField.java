@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,18 +19,14 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.uploads.generic;
 
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import com.vaadin.flow.function.SerializableSupplier;
 import org.slf4j.Logger;
 
-/** Abstract implementation of a field that enables to upload files.
+import java.io.OutputStream;
+import java.util.*;
+
+/**
+ * Abstract implementation of a field that enables to upload files.
  * This field does not assume that the field's data is of a specific type.
  * Subclasses must implement function to handle the upload file data.
  *
@@ -43,124 +39,130 @@ import org.slf4j.Logger;
  */
 public abstract class AbstractUploadableFilesField<T> extends AbstractBaseUploadableFilesField<List<T>> {
 
-	private static final long serialVersionUID = -8898340570308261699L;
+    /**
+     * Maximum number of files to be uploaded.
+     */
+    public static final int MAX_NUMBER_OF_FILES = 20;
+    private static final long serialVersionUID = -8898340570308261699L;
+    private final Map<String, ResetableMemoryBuffer> uploadReceivers = new TreeMap<>();
 
-	/** Maximum number of files to be uploaded.
-	 */
-	public static final int MAX_NUMBER_OF_FILES = 20;
-	
-	private final Map<String, ResetableMemoryBuffer> uploadReceivers = new TreeMap<>();
+    /**
+     * Default constructor.
+     *
+     * @param loggerSupplier the dynamic supplier of the loggers.
+     */
+    public AbstractUploadableFilesField(SerializableSupplier<Logger> loggerSupplier) {
+        super(MAX_NUMBER_OF_FILES, loggerSupplier);
+    }
 
-	/** Default constructor.
-	 *
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 */
-	public AbstractUploadableFilesField(SerializableSupplier<Logger> loggerSupplier) {
-		super(MAX_NUMBER_OF_FILES, loggerSupplier);
-	}
+    @Override
+    public boolean hasUploadedData() {
+        synchronized (this.uploadReceivers) {
+            return this.uploadReceivers.values().stream().anyMatch(it -> it.hasFileData());
+        }
+    }
 
-	@Override
-	public boolean hasUploadedData() {
-		synchronized (this.uploadReceivers) {
-			return this.uploadReceivers.values().stream().anyMatch(it -> it.hasFileData());
-		}
-	}
+    /**
+     * Replies the filenames of all the uploaded files.
+     *
+     * @return the filenames.
+     */
+    protected Collection<String> getUploadedFilenames() {
+        synchronized (this.uploadReceivers) {
+            return Collections.unmodifiableCollection(this.uploadReceivers.keySet());
+        }
+    }
 
-	/** Replies the filenames of all the uploaded files.
-	 *
-	 * @return the filenames.
-	 */
-	protected Collection<String> getUploadedFilenames() {
-		synchronized (this.uploadReceivers) {
-			return Collections.unmodifiableCollection(this.uploadReceivers.keySet());
-		}
-	}
+    /**
+     * Replies the buffers of all the uploaded files.
+     *
+     * @return the buffers.
+     */
+    protected List<UploadBuffer> getUploadBuffers() {
+        synchronized (this.uploadReceivers) {
+            final var list = new ArrayList<UploadBuffer>();
+            list.addAll(this.uploadReceivers.values());
+            return list;
+        }
+    }
 
-	/** Replies the buffers of all the uploaded files.
-	 *
-	 * @return the buffers.
-	 */
-	protected List<UploadBuffer> getUploadBuffers() {
-		synchronized (this.uploadReceivers) {
-			final var list = new ArrayList<UploadBuffer>();
-			list.addAll(this.uploadReceivers.values());
-			return list;
-		}
-	}
+    /**
+     * Change the buffers of all the uploaded files. This function considers only the instances of {@link ResetableMemoryBuffer}.
+     *
+     * @param buffers the buffers.
+     */
+    protected void setUploadBuffers(List<? extends UploadBuffer> buffers) {
+        synchronized (this.uploadReceivers) {
+            this.uploadReceivers.clear();
+            if (buffers != null && !buffers.isEmpty()) {
+                buffers.forEach(it -> {
+                    if (it instanceof ResetableMemoryBuffer buffer) {
+                        this.uploadReceivers.put(buffer.getFileName(), buffer);
+                    }
+                });
+            }
+        }
+    }
 
-	/** Change the buffers of all the uploaded files. This function considers only the instances of {@link ResetableMemoryBuffer}.
-	 *
-	 * @param buffers the buffers.
-	 */
-	protected void setUploadBuffers(List<? extends UploadBuffer> buffers) {
-		synchronized (this.uploadReceivers) {
-			this.uploadReceivers.clear();
-			if (buffers != null && !buffers.isEmpty()) {
-				buffers.forEach(it -> {
-					if (it instanceof ResetableMemoryBuffer buffer) {
-						this.uploadReceivers.put(buffer.getFileName(), buffer);
-					}
-				});
-			}
-		}
-	}
+    /**
+     * Replies the buffer that is used for the uploaded.
+     *
+     * @param filename the filename of the buffer.
+     * @return the buffer.
+     */
+    protected ResetableMemoryBuffer getUploadMemoryBufferFor(String filename) {
+        synchronized (this.uploadReceivers) {
+            return this.uploadReceivers.get(filename);
+        }
+    }
 
-	/** Replies the buffer that is used for the uploaded.
-	 *
-	 * @param filename the filename of the buffer.
-	 * @return the buffer.
-	 */
-	protected ResetableMemoryBuffer getUploadMemoryBufferFor(String filename) {
-		synchronized (this.uploadReceivers) {
-			return this.uploadReceivers.get(filename);
-		}
-	}
+    /**
+     * Reset the buffer that is used for the uploaded.
+     *
+     * @param filename            the filename for the buffer.
+     * @param resetInternalBuffer indicates if data in the buffer is also cleared ({@code true}).
+     */
+    protected void resetUploadMemoryBuffer(String filename, boolean resetInternalBuffer) {
+        synchronized (this.uploadReceivers) {
+            final var buffer = this.uploadReceivers.remove(filename);
+            if (buffer != null && resetInternalBuffer) {
+                buffer.reset();
+            }
+        }
+    }
 
-	/** Reset the buffer that is used for the uploaded.
-	 *
-	 * @param filename the filename for the buffer.
-	 * @param resetInternalBuffer indicates if data in the buffer is also cleared ({@code true}).
-	 */
-	protected void resetUploadMemoryBuffer(String filename, boolean resetInternalBuffer) {
-		synchronized (this.uploadReceivers) {
-			final var buffer = this.uploadReceivers.remove(filename);
-			if (buffer != null && resetInternalBuffer) {
-				buffer.reset();
-			}
-		}
-	}
+    /**
+     * Reset all the buffers that is used for the uploaded.
+     */
+    protected void resetAllUploadMemoryBuffers() {
+        synchronized (this.uploadReceivers) {
+            for (final var buffer : this.uploadReceivers.values()) {
+                buffer.reset();
+            }
+            this.uploadReceivers.clear();
+        }
+    }
 
-	/** Reset all the buffers that is used for the uploaded.
-	 */
-	protected void resetAllUploadMemoryBuffers() {
-		synchronized (this.uploadReceivers) {
-			for (final var buffer : this.uploadReceivers.values()) {
-				buffer.reset();
-			}
-			this.uploadReceivers.clear();
-		}
-	}
+    @Override
+    protected synchronized void uploadFailed(String filename, Throwable error) {
+        resetUploadMemoryBuffer(filename, true);
+        super.uploadFailed(filename, error);
+    }
 
-	@Override
-	protected synchronized void uploadFailed(String filename, Throwable error) {
-		resetUploadMemoryBuffer(filename, true);
-		super.uploadFailed(filename, error);
-	}
+    @SuppressWarnings("resource")
+    @Override
+    protected OutputStream receiveUpload(String filename, String mime) {
+        final var uploadReceiver = new ResetableMemoryBuffer();
+        synchronized (this.uploadReceivers) {
+            this.uploadReceivers.put(filename, uploadReceiver);
+        }
+        return uploadStreamOpen(uploadReceiver.receiveUpload(filename, mime), filename, mime);
+    }
 
-	@SuppressWarnings("resource")
-	@Override
-	protected OutputStream receiveUpload(String filename, String mime) {
-		final var uploadReceiver = new ResetableMemoryBuffer();
-		synchronized (this.uploadReceivers) {
-			this.uploadReceivers.put(filename, uploadReceiver);
-		}
-		return uploadStreamOpen(uploadReceiver.receiveUpload(filename, mime), filename, mime);
-	}
-	
-	@Override
-	protected void resetUploader() {
-		super.resetUploader();
-		resetAllUploadMemoryBuffers();
-	}
+    @Override
+    protected void resetUploader() {
+        super.resetUploader();
+        resetAllUploadMemoryBuffers();
+    }
 
 }

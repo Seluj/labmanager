@@ -9,4 +9,5 @@ import java.time.LocalDate;
  * @param endDate   the end date of the range
  */
 public record DateRange(LocalDate startDate,
-                        LocalDate endDate) {}
+                        LocalDate endDate) {
+}

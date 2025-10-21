@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager.utils.io.bibtex;
 
-/** Exception that indicates a journal is missed.
- * 
+/**
+ * Exception that indicates a journal is missed.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -29,15 +30,16 @@ package fr.utbm.ciad.labmanager.utils.io.bibtex;
  */
 public class MissedJournalException extends RuntimeException {
 
-	private static final long serialVersionUID = 8332179639940537811L;
+    private static final long serialVersionUID = 8332179639940537811L;
 
-	/** Constructor.
-	 *
-	 * @param entryKey the BibTeX key.
-	 * @param journalName the name of the missed journal.
-	 */
-	public MissedJournalException(String entryKey, String journalName) {
-		super("Unknown journal for entry " + entryKey + ": " + journalName); //$NON-NLS-1$ //$NON-NLS-2$);
-	}
+    /**
+     * Constructor.
+     *
+     * @param entryKey    the BibTeX key.
+     * @param journalName the name of the missed journal.
+     */
+    public MissedJournalException(String entryKey, String journalName) {
+        super("Unknown journal for entry " + entryKey + ": " + journalName); //$NON-NLS-1$ //$NON-NLS-2$);
+    }
 
 }

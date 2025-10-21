@@ -2,21 +2,17 @@ package fr.utbm.ciad.labmanager.views.components.similarity;
 
 import com.vaadin.flow.component.grid.Grid;
 import fr.utbm.ciad.labmanager.data.conference.Conference;
-import fr.utbm.ciad.labmanager.data.conference.ConferenceComparator;
-import fr.utbm.ciad.labmanager.data.organization.ResearchOrganization;
 import fr.utbm.ciad.labmanager.services.conference.ConferenceMergingService;
-import fr.utbm.ciad.labmanager.services.organization.OrganizationMergingService;
 import fr.utbm.ciad.labmanager.utils.names.ConferenceNameComparator;
-import fr.utbm.ciad.labmanager.utils.names.OrganizationNameComparator;
 import fr.utbm.ciad.labmanager.views.components.similarity.buttons.AbstractSimilarityNativeButtonRenderer;
 import fr.utbm.ciad.labmanager.views.components.similarity.buttons.ConferenceSimilarityNativeButtonRenderer;
-import fr.utbm.ciad.labmanager.views.components.similarity.buttons.OrganizationSimilarityNativeButtonRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/** Represent a layout for the Conference similarity options.
+/**
+ * Represent a layout for the Conference similarity options.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -26,15 +22,15 @@ import java.util.Set;
  */
 public class ConferenceSimilarityLayout extends AbstractSimilarityLayout<Conference> {
 
-    private ConferenceMergingService conferenceMergingService;
+    private final ConferenceMergingService conferenceMergingService;
 
-    private ConferenceNameComparator nameComparator;
+    private final ConferenceNameComparator nameComparator;
 
     /**
      * Constructor.
      *
      * @param conferenceMergingService the person merging service
-     * @param nameComparator             the person name comparator
+     * @param nameComparator           the person name comparator
      */
     public ConferenceSimilarityLayout(ConferenceMergingService conferenceMergingService, ConferenceNameComparator nameComparator) {
         super();
@@ -43,7 +39,8 @@ public class ConferenceSimilarityLayout extends AbstractSimilarityLayout<Confere
 
     }
 
-    /** Get the entity duplicates.
+    /**
+     * Get the entity duplicates.
      */
     @Override
     public List<Set<Conference>> getDuplicates(double threshold) {
@@ -56,7 +53,8 @@ public class ConferenceSimilarityLayout extends AbstractSimilarityLayout<Confere
         return conferences;
     }
 
-    /** Set the grid headers.
+    /**
+     * Set the grid headers.
      */
     @Override
     public void setGridHeaders(Grid<Conference> grid) {
@@ -64,7 +62,8 @@ public class ConferenceSimilarityLayout extends AbstractSimilarityLayout<Confere
         grid.addColumn(Conference::getAcronym).setHeader("Acronym");
     }
 
-    /** Create new button
+    /**
+     * Create new button
      */
     @Override
     public AbstractSimilarityNativeButtonRenderer<Conference> createButton(Grid<Conference> grid, List<Grid<Conference>> grids) {

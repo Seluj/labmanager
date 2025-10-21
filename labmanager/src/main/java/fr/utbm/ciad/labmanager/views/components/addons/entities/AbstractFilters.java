@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,8 +18,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.entities;
 
-import java.util.List;
-
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -36,8 +34,11 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
-/** UI and JPA filters for {@link AbstractFilters}.
- * 
+import java.util.List;
+
+/**
+ * UI and JPA filters for {@link AbstractFilters}.
+ *
  * @param <T> the type of the entities to be filtered.
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -47,85 +48,89 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public abstract class AbstractFilters<T> extends Div implements Specification<T>, LocaleChangeObserver {
 
-	private static final long serialVersionUID = 1052687254355760397L;
+    private static final long serialVersionUID = 1052687254355760397L;
 
-	private final TextField keywords;
+    private final TextField keywords;
 
-	private final Button resetButton;
+    private final Button resetButton;
 
-	private final Button searchButton;
+    private final Button searchButton;
 
-	/** Constructor.
-	 *
-	 * @param onSearch the callback function for running the filtering.
-	 */
-	public AbstractFilters(Runnable onSearch) {
-		setWidthFull();
-		addClassName("filter-layout"); //$NON-NLS-1$
-		addClassNames(LumoUtility.Padding.Horizontal.LARGE, LumoUtility.Padding.Vertical.MEDIUM, LumoUtility.BoxSizing.BORDER);
+    /**
+     * Constructor.
+     *
+     * @param onSearch the callback function for running the filtering.
+     */
+    public AbstractFilters(Runnable onSearch) {
+        setWidthFull();
+        addClassName("filter-layout"); //$NON-NLS-1$
+        addClassNames(LumoUtility.Padding.Horizontal.LARGE, LumoUtility.Padding.Vertical.MEDIUM, LumoUtility.BoxSizing.BORDER);
 
-		this.keywords = new TextField();
-		
-		this.resetButton = new Button();
-		this.resetButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-		this.resetButton.addClickListener(event -> {
-			this.keywords.clear();
-			resetFilters();
-			onSearch.run();
-		});
-		this.resetButton.addClickShortcut(Key.ESCAPE);
-		this.resetButton.addClickShortcut(Key.CANCEL);
-		this.resetButton.addClickShortcut(Key.CLEAR);
+        this.keywords = new TextField();
 
-		this.searchButton = new Button();
-		this.searchButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		this.searchButton.addClickListener(event -> onSearch.run());
-		this.searchButton.addClickShortcut(Key.ENTER);
-		this.searchButton.addClickShortcut(Key.FIND);
-		this.searchButton.addClickShortcut(Key.EXECUTE);
+        this.resetButton = new Button();
+        this.resetButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        this.resetButton.addClickListener(event -> {
+            this.keywords.clear();
+            resetFilters();
+            onSearch.run();
+        });
+        this.resetButton.addClickShortcut(Key.ESCAPE);
+        this.resetButton.addClickShortcut(Key.CANCEL);
+        this.resetButton.addClickShortcut(Key.CLEAR);
 
-		final var actions = new Div(this.resetButton, this.searchButton);
-		actions.addClassName(LumoUtility.Gap.SMALL);
-		actions.addClassName("actions"); //$NON-NLS-1$
+        this.searchButton = new Button();
+        this.searchButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        this.searchButton.addClickListener(event -> onSearch.run());
+        this.searchButton.addClickShortcut(Key.ENTER);
+        this.searchButton.addClickShortcut(Key.FIND);
+        this.searchButton.addClickShortcut(Key.EXECUTE);
 
-		final var options = new HorizontalLayout();
-		options.setSpacing(false);
-		buildOptionsComponent(options);
+        final var actions = new Div(this.resetButton, this.searchButton);
+        actions.addClassName(LumoUtility.Gap.SMALL);
+        actions.addClassName("actions"); //$NON-NLS-1$
 
-		add(this.keywords, options, actions);
-	}
+        final var options = new HorizontalLayout();
+        options.setSpacing(false);
+        buildOptionsComponent(options);
 
-	/** Build the component for filtering options.
-	 *
-	 * @param options the component that should receive the options, never {@code null}.
-	 */
-	protected abstract void buildOptionsComponent(HorizontalLayout options);
-	
-	/** Reset the filters.
-	 */
-	protected abstract void resetFilters();
+        add(this.keywords, options, actions);
+    }
 
-	/** Build the HQL query for the filtering.
-	 * 
-	 * @param keywords the keywords to search for.
-	 * @param predicates the list of filtering criteria with "or" semantic, being filled by this function.
-	 * @param root the root not for the search.
-	 * @param criteriaBuilder the criteria builder. It is the Hibernate version in order to
-	 *     have access to extra functions, e.g. {@code collate}.
-	 */
-	protected abstract void buildQueryFor(String keywords, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder);
+    /**
+     * Build the component for filtering options.
+     *
+     * @param options the component that should receive the options, never {@code null}.
+     */
+    protected abstract void buildOptionsComponent(HorizontalLayout options);
 
-	@Override
-	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-		return ComponentFactory.newPredicateContainsOneOf(this.keywords.getValue(), root, query,
-				criteriaBuilder, this::buildQueryFor);
-	}
+    /**
+     * Reset the filters.
+     */
+    protected abstract void resetFilters();
 
-	@Override
-	public void localeChange(LocaleChangeEvent event) {
-		this.keywords.setLabel(getTranslation("views.filters.keywords")); //$NON-NLS-1$
-		this.resetButton.setText(getTranslation("views.filters.reset")); //$NON-NLS-1$
-		this.searchButton.setText(getTranslation("views.filters.apply")); //$NON-NLS-1$
-	}
+    /**
+     * Build the HQL query for the filtering.
+     *
+     * @param keywords        the keywords to search for.
+     * @param predicates      the list of filtering criteria with "or" semantic, being filled by this function.
+     * @param root            the root not for the search.
+     * @param criteriaBuilder the criteria builder. It is the Hibernate version in order to
+     *                        have access to extra functions, e.g. {@code collate}.
+     */
+    protected abstract void buildQueryFor(String keywords, List<Predicate> predicates, Root<T> root, CriteriaBuilder criteriaBuilder);
+
+    @Override
+    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        return ComponentFactory.newPredicateContainsOneOf(this.keywords.getValue(), root, query,
+                criteriaBuilder, this::buildQueryFor);
+    }
+
+    @Override
+    public void localeChange(LocaleChangeEvent event) {
+        this.keywords.setLabel(getTranslation("views.filters.keywords")); //$NON-NLS-1$
+        this.resetButton.setText(getTranslation("views.filters.reset")); //$NON-NLS-1$
+        this.searchButton.setText(getTranslation("views.filters.apply")); //$NON-NLS-1$
+    }
 
 }

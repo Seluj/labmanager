@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,10 +24,11 @@ import info.debatty.java.stringsimilarity.interfaces.NormalizedStringSimilarity;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-/** Comparator of publications. For comparison, the order of the publication is based on the
+/**
+ * Comparator of publications. For comparison, the order of the publication is based on the
  * type of publication, the year, the authors, the identifier.
  * For similarity, the Sorensen Dice algorithm is used.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -37,17 +38,18 @@ import org.springframework.stereotype.Component;
 @Primary
 public class SorensenDicePublicationComparator extends AbstractPublicationComparator {
 
-	private static final double SIMILARITY_LEVEL = 0.75;
+    private static final double SIMILARITY_LEVEL = 0.75;
 
-	/** Constructor.
-	 */
-	public SorensenDicePublicationComparator() {
-		super(SIMILARITY_LEVEL);
-	}
+    /**
+     * Constructor.
+     */
+    public SorensenDicePublicationComparator() {
+        super(SIMILARITY_LEVEL);
+    }
 
-	@Override
-	protected NormalizedStringSimilarity createStringSimilarityComputer() {
-		return new SorensenDice();
-	}
+    @Override
+    protected NormalizedStringSimilarity createStringSimilarityComputer() {
+        return new SorensenDice();
+    }
 
 }

@@ -2,15 +2,14 @@ package fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.manager;
 
 import com.vaadin.flow.component.Component;
 import fr.utbm.ciad.labmanager.utils.localStorage.AbstractLocalStorageManager;
-import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.AbstractDashboardComponentItem;
 import fr.utbm.ciad.labmanager.utils.localStorage.factory.LocalStorageItemFactory;
+import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.AbstractDashboardComponentItem;
 import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardComponentType;
 
 /**
  * Abstract class for managing items representing components that can be store locally.
  *
  * @param <T> The DashBoardComponentItem storing the component data
- *
  * @author $Author: sgalland$
  * @author $Author: pschneiderlin$
  * @version $Name$ $Revision$ $Date$
@@ -25,7 +24,7 @@ public abstract class ComponentLocalStorageManager<T extends AbstractDashboardCo
      *
      * @param factory the factory used to create items of type T
      */
-    public ComponentLocalStorageManager(LocalStorageItemFactory<T> factory){
+    public ComponentLocalStorageManager(LocalStorageItemFactory<T> factory) {
         super(factory);
     }
 
@@ -33,8 +32,8 @@ public abstract class ComponentLocalStorageManager<T extends AbstractDashboardCo
     /**
      * Adds a component item to the local storage.
      *
-     * @param index the index used to create the item
-     * @param component the component used to create the item
+     * @param index         the index used to create the item
+     * @param component     the component used to create the item
      * @param componentType the type of the component
      */
     public void add(int index, Component component, DashboardComponentType componentType) {
@@ -53,8 +52,8 @@ public abstract class ComponentLocalStorageManager<T extends AbstractDashboardCo
     /**
      * Method to create an instance of T based on index and component.
      *
-     * @param index the index of the item
-     * @param component the component of the item
+     * @param index         the index of the item
+     * @param component     the component of the item
      * @param componentType the type of the component
      * @return an instance of T
      */

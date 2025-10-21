@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/** Represent a layout for the Organization similarity options.
+/**
+ * Represent a layout for the Organization similarity options.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -21,9 +22,9 @@ import java.util.Set;
  */
 public class OrganizationSimilarityLayout extends AbstractSimilarityLayout<ResearchOrganization> {
 
-    private OrganizationMergingService organizationMergingService;
+    private final OrganizationMergingService organizationMergingService;
 
-    private OrganizationNameComparator nameComparator;
+    private final OrganizationNameComparator nameComparator;
 
     /**
      * Constructor.
@@ -38,7 +39,8 @@ public class OrganizationSimilarityLayout extends AbstractSimilarityLayout<Resea
 
     }
 
-    /** Get the entity duplicates.
+    /**
+     * Get the entity duplicates.
      */
     @Override
     public List<Set<ResearchOrganization>> getDuplicates(double threshold) {
@@ -51,7 +53,8 @@ public class OrganizationSimilarityLayout extends AbstractSimilarityLayout<Resea
         return researchOrganizations;
     }
 
-    /** Set the grid headers.
+    /**
+     * Set the grid headers.
      */
     @Override
     public void setGridHeaders(Grid<ResearchOrganization> grid) {
@@ -60,7 +63,8 @@ public class OrganizationSimilarityLayout extends AbstractSimilarityLayout<Resea
         grid.addColumn(ResearchOrganization::getCountry).setHeader("Country");
     }
 
-    /** Create new button
+    /**
+     * Create new button
      */
     @Override
     public AbstractSimilarityNativeButtonRenderer<ResearchOrganization> createButton(Grid<ResearchOrganization> grid, List<Grid<ResearchOrganization>> grids) {

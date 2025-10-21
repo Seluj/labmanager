@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager.utils.io;
 
-/** Type of status for an author.
- * 
+/**
+ * Type of status for an author.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -28,19 +29,24 @@ package fr.utbm.ciad.labmanager.utils.io;
  * @since 2.0.0
  */
 public enum ExportedAuthorStatus {
-	/** The person is active and explicitly selected.
-	 */
-	SELECTED_PERSON,
-	/** The person is an active researcher.
-	 */
-	RESEARCHER,
-	/** The person is an active PhD student.
-	 */
-	PHD_STUDENT,
-	/** The person is an active Postdoc or engineer.
-	 */
-	POSTDOC_ENGINEER,
-	/** The person is in a case that is not supported by the other enum constants.
-	 */
-	OTHER;
+    /**
+     * The person is active and explicitly selected.
+     */
+    SELECTED_PERSON,
+    /**
+     * The person is an active researcher.
+     */
+    RESEARCHER,
+    /**
+     * The person is an active PhD student.
+     */
+    PHD_STUDENT,
+    /**
+     * The person is an active Postdoc or engineer.
+     */
+    POSTDOC_ENGINEER,
+    /**
+     * The person is in a case that is not supported by the other enum constants.
+     */
+    OTHER
 }

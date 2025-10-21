@@ -19,13 +19,14 @@
 
 package fr.utbm.ciad.labmanager.security.cas;
 
-import java.util.HashMap;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-/** Configuration descriptions for CAS servers.
- * 
+import java.util.HashMap;
+
+/**
+ * Configuration descriptions for CAS servers.
+ *
  * @author $Author: sgalland$
  * @author $Author: jferlin$
  * @version $Name$ $Revision$ $Date$
@@ -37,6 +38,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "labmanager.cas-servers")
 public class CasServerConfigurations extends HashMap<String, CasServerConfiguration> {
 
-	private static final long serialVersionUID = -4712407623092130955L;
+    private static final long serialVersionUID = -4712407623092130955L;
 
 }

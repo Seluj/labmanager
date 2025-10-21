@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,13 +27,15 @@ import fr.utbm.ciad.labmanager.services.user.UserService.UserEditingContext;
 import fr.utbm.ciad.labmanager.views.components.addons.entities.AbstractEntityEditor;
 import fr.utbm.ciad.labmanager.views.components.persons.editors.regular.EmbeddedPersonEditor;
 import fr.utbm.ciad.labmanager.views.components.persons.editors.regular.PersonCreationStatusComputer;
+import fr.utbm.ciad.labmanager.views.components.persons.editors.wizard.EmbeddedPersonEditorWizard;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a person editor according to the editing context.
- * 
+/**
+ * Factory that is providing a person editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -43,53 +45,54 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultPersonEditorFactory implements PersonEditorFactory {
 
-	private final PersonCreationStatusComputer personCreationStatusComputer;
-	
-	private final PersonService personService;
+    private final PersonCreationStatusComputer personCreationStatusComputer;
 
-	private final UserService userService;
+    private final PersonService personService;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final UserService userService;
 
-	private final MessageSourceAccessor messages;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructor.
-	 *
-	 * @param personCreationStatusComputer the tool for computer the creation status for the persons.
-	 * @param personService the service for accessing to the person entities.
-	 * @param userService the service for accessing to the user entities.
-     * @param authenticatedUser the connected user.
-     * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public DefaultPersonEditorFactory(
-			@Autowired PersonCreationStatusComputer personCreationStatusComputer,
-			@Autowired PersonService personService,
-			@Autowired UserService userService,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.personCreationStatusComputer = personCreationStatusComputer;
-		this.personService = personService;
-		this.userService = userService;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-	}
+    private final MessageSourceAccessor messages;
 
-	@Override
-	public UserEditingContext createUserContextFor(Person person, Logger logger) {
+    /**
+     * Constructor.
+     *
+     * @param personCreationStatusComputer the tool for computer the creation status for the persons.
+     * @param personService                the service for accessing to the person entities.
+     * @param userService                  the service for accessing to the user entities.
+     * @param authenticatedUser            the connected user.
+     * @param messages                     the accessor to the localized messages (Spring layer).
+     */
+    public DefaultPersonEditorFactory(
+            @Autowired PersonCreationStatusComputer personCreationStatusComputer,
+            @Autowired PersonService personService,
+            @Autowired UserService userService,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.personCreationStatusComputer = personCreationStatusComputer;
+        this.personService = personService;
+        this.userService = userService;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+    }
+
+    @Override
+    public UserEditingContext createUserContextFor(Person person, Logger logger) {
         final var personContext = this.personService.startEditing(person, logger);
         final var user = this.userService.getUserFor(person);
         final var userContext = this.userService.startEditing(user, personContext);
         return userContext;
-	}
+    }
 
-	@Override
-	public AbstractEntityEditor<Person> createAdditionEditor(UserEditingContext userContext) {
-		return new EmbeddedPersonEditor(userContext, this.personCreationStatusComputer, this.personService, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public AbstractEntityEditor<Person> createAdditionEditor(UserEditingContext userContext) {
+        return new EmbeddedPersonEditorWizard(userContext, this.personCreationStatusComputer, this.authenticatedUser, this.messages, this.personService);
+    }
 
-	@Override
-	public AbstractEntityEditor<Person> createUpdateEditor(UserEditingContext userContext) {
-		return new EmbeddedPersonEditor(userContext, this.personCreationStatusComputer, this.personService, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public AbstractEntityEditor<Person> createUpdateEditor(UserEditingContext userContext) {
+        return new EmbeddedPersonEditor(userContext, this.personCreationStatusComputer, this.personService, this.authenticatedUser, this.messages);
+    }
 
 }

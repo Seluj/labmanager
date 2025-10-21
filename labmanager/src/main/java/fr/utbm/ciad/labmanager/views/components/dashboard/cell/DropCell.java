@@ -17,9 +17,8 @@ public class DropCell extends AdaptiveCell {
     private static String borderColorWhenDrag = "#bfbfbf";
     private static String backgroundColorWhenEmpty = "#d2ffc4";
     private static String backgroundColorWhenFull = "#ffc4c4";
-
+    private final DropTarget<DropCell> dropTarget;
     private boolean isRecover = true;
-    private DropTarget<DropCell> dropTarget;
 
     /**
      * Default Constructor
@@ -44,7 +43,7 @@ public class DropCell extends AdaptiveCell {
      * @param index       the index of the cell.
      * @param borderColor the color of the cell's border.
      */
-    public DropCell(int index, String borderColor){
+    public DropCell(int index, String borderColor) {
         this(index);
         setBorderColor(borderColor);
     }
@@ -52,11 +51,11 @@ public class DropCell extends AdaptiveCell {
     /**
      * Constructor
      *
-     * @param index                   the index of the cell.
-     * @param borderColor             the default border color.
-     * @param borderColorWhenDrag     the border color during drag events.
+     * @param index                    the index of the cell.
+     * @param borderColor              the default border color.
+     * @param borderColorWhenDrag      the border color during drag events.
      * @param backgroundColorWhenEmpty the background color when the cell is empty.
-     * @param backgroundColorWhenFull the background color when the cell is full.
+     * @param backgroundColorWhenFull  the background color when the cell is full.
      */
     public DropCell(Integer index,
                     String borderColor,

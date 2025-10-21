@@ -10,23 +10,23 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.dom.Style;
 import fr.utbm.ciad.labmanager.services.publication.PublicationService;
 import fr.utbm.ciad.labmanager.utils.toggleComponent.ToggleIconComponent;
-import fr.utbm.ciad.labmanager.views.components.dashboard.component.DraggableComponent;
-import fr.utbm.ciad.labmanager.views.components.dashboard.component.SelectComponent;
-import fr.utbm.ciad.labmanager.views.components.dashboard.grid.observer.GridLogger;
-import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardChartItem;
-import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.manager.ChartLocalStorageManager;
-import fr.utbm.ciad.labmanager.views.components.dashboard.cell.DropCell;
-import fr.utbm.ciad.labmanager.views.components.charts.observer.ChartHandler;
-import fr.utbm.ciad.labmanager.views.components.dashboard.grid.DropGrid;
-import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardComponentType;
 import fr.utbm.ciad.labmanager.views.components.charts.factory.PublicationCategoryBarChartFactory;
 import fr.utbm.ciad.labmanager.views.components.charts.factory.PublicationCategoryChartFactory;
 import fr.utbm.ciad.labmanager.views.components.charts.factory.PublicationCategoryNightingaleRoseChartFactory;
 import fr.utbm.ciad.labmanager.views.components.charts.factory.PublicationCategoryPieChartFactory;
 import fr.utbm.ciad.labmanager.views.components.charts.layout.PublicationCategoryLayout;
+import fr.utbm.ciad.labmanager.views.components.charts.observer.ChartHandler;
 import fr.utbm.ciad.labmanager.views.components.charts.publicationcategory.PublicationCategoryBarChart;
 import fr.utbm.ciad.labmanager.views.components.charts.publicationcategory.PublicationCategoryNightingaleRoseChart;
 import fr.utbm.ciad.labmanager.views.components.charts.publicationcategory.PublicationCategoryPieChart;
+import fr.utbm.ciad.labmanager.views.components.dashboard.cell.DropCell;
+import fr.utbm.ciad.labmanager.views.components.dashboard.component.DraggableComponent;
+import fr.utbm.ciad.labmanager.views.components.dashboard.component.SelectComponent;
+import fr.utbm.ciad.labmanager.views.components.dashboard.grid.DropGrid;
+import fr.utbm.ciad.labmanager.views.components.dashboard.grid.observer.GridLogger;
+import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardChartItem;
+import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardComponentType;
+import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.manager.ChartLocalStorageManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.InvocationTargetException;
@@ -109,7 +109,7 @@ public class DashboardLayout extends VerticalLayout {
      *
      * @param editionMode boolean indicating whether the editing mode should be enabled (true) or disabled (false)
      */
-    private void changeEditionMode(boolean editionMode){
+    private void changeEditionMode(boolean editionMode) {
         dropGrid.changeEditionMode(editionMode);
         componentSelect.setVisible(editionMode);
         clearAllButton.setVisible(!dropGrid.isEmpty() && editionMode);
@@ -157,8 +157,8 @@ public class DashboardLayout extends VerticalLayout {
      *
      * @param chart the chart (PublicationCategoryLayout) to initialize
      */
-    private void initializeChart(PublicationCategoryLayout<?> chart){
-        if(chart != null){
+    private void initializeChart(PublicationCategoryLayout<?> chart) {
+        if (chart != null) {
             chart.setSize("500px", "200px");
             chart.setChartSize("450px", "180px");
             chart.setFormHidden(true);
@@ -170,8 +170,8 @@ public class DashboardLayout extends VerticalLayout {
      *
      * @param component the draggableComponent containing the chart (PublicationCategoryLayout) to initialize
      */
-    private void initializeChart(DraggableComponent component){
-        if(component.getComponent() instanceof PublicationCategoryLayout<?> chart){
+    private void initializeChart(DraggableComponent component) {
+        if (component.getComponent() instanceof PublicationCategoryLayout<?> chart) {
             initializeChart(chart);
         }
     }
@@ -202,7 +202,7 @@ public class DashboardLayout extends VerticalLayout {
                 .setColor("#ba1d16");
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.add(clearAllButton ,editionButton);
+        horizontalLayout.add(clearAllButton, editionButton);
         horizontalLayout.getStyle()
                 .setPosition(Style.Position.ABSOLUTE)
                 .setRight("0")
@@ -238,7 +238,7 @@ public class DashboardLayout extends VerticalLayout {
      *
      * @param component the DraggableComponent to be set up
      */
-    private void setupComponent(DraggableComponent component){
+    private void setupComponent(DraggableComponent component) {
         component.getStyle().setBackgroundColor("#f2f2f2");
         component.getStyle().setBorder("#bfbfbf");
         addObservertoChartComponent(component);
@@ -247,10 +247,11 @@ public class DashboardLayout extends VerticalLayout {
 
     /**
      * Called when a component has been added to the grid.
+     *
      * @param component the component that was added
      */
-    private void onComponentAdded(Component component){
-        if(editionButton.getMode()){
+    private void onComponentAdded(Component component) {
+        if (editionButton.getMode()) {
             clearAllButton.setVisible(true);
         }
         saveComponent(component);
@@ -258,12 +259,13 @@ public class DashboardLayout extends VerticalLayout {
 
     /**
      * Called when a new component has been added to the grid.
+     *
      * @param component the new component that was added
      */
-    private void onNewComponentAdded(Component component){
-        if(component instanceof DraggableComponent draggableComponent){
+    private void onNewComponentAdded(Component component) {
+        if (component instanceof DraggableComponent draggableComponent) {
             setupComponent(draggableComponent);
-            if(!editionButton.getMode()){
+            if (!editionButton.getMode()) {
                 draggableComponent.setDraggable(false);
             }
         }
@@ -271,15 +273,16 @@ public class DashboardLayout extends VerticalLayout {
 
     /**
      * Called when a component has been removed from the grid.
+     *
      * @param component the component that was removed
      */
-    private void onComponentRemoved(Component component){
-        if(dropGrid.getComponents().size() <= 1){
+    private void onComponentRemoved(Component component) {
+        if (dropGrid.getComponents().size() <= 1) {
             clearAllButton.setVisible(false);
         }
-        if(component instanceof DraggableComponent draggableComponent){
+        if (component instanceof DraggableComponent draggableComponent) {
             draggableComponent.getParent().ifPresent(parent -> {
-                if(parent instanceof DropCell cell){
+                if (parent instanceof DropCell cell) {
                     chartLocalStorageManager.remove(cell.getIndex());
                 }
             });
@@ -292,8 +295,8 @@ public class DashboardLayout extends VerticalLayout {
      *
      * @param component the DraggableComponent to which the observer will be added
      */
-    private void addObservertoChartComponent(DraggableComponent component){
-        if(component.getComponent() instanceof PublicationCategoryLayout<?> publicationCategoryLayout){
+    private void addObservertoChartComponent(DraggableComponent component) {
+        if (component.getComponent() instanceof PublicationCategoryLayout<?> publicationCategoryLayout) {
             ChartHandler chartHandler = new ChartHandler(this::saveComponent, component);
             publicationCategoryLayout.addObserver(chartHandler);
         }
@@ -304,10 +307,10 @@ public class DashboardLayout extends VerticalLayout {
      *
      * @param component the DraggableComponent to be saved
      */
-    private void saveComponent(Component component){
-        if(component instanceof DraggableComponent draggableComponent){
+    private void saveComponent(Component component) {
+        if (component instanceof DraggableComponent draggableComponent) {
             component.getParent().ifPresent(parent -> {
-                if(parent instanceof DropCell dropCell){
+                if (parent instanceof DropCell dropCell) {
                     chartLocalStorageManager.add(dropCell.getIndex(), draggableComponent.getComponent(), draggableComponent.getComponentType());
                 }
             });

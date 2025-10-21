@@ -5,7 +5,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import java.util.List;
 
-/** Represent an Interface for a specific native button renderer for similarity.
+/**
+ * Represent an Interface for a specific native button renderer for similarity.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$

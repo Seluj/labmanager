@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.uploads.image;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import com.vaadin.flow.function.SerializableBiFunction;
 import com.vaadin.flow.function.SerializableSupplier;
 import fr.utbm.ciad.labmanager.utils.HasAsynchronousUploadService;
@@ -30,7 +26,12 @@ import fr.utbm.ciad.labmanager.utils.io.filemanager.FileManager;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.slf4j.Logger;
 
-/** A field that enables to upload and show images, and to write the images in a
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * A field that enables to upload and show images, and to write the images in a
  * folder of the server.
  * This field assumes that the data linked to the backend JPA is the relative server-side filenames.
  *
@@ -44,85 +45,86 @@ import org.slf4j.Logger;
  */
 public class ServerSideUploadableImagesField extends AbstractServerSideUploadableImagesField<String> implements HasAsynchronousUploadService {
 
-	private static final long serialVersionUID = -3231549542016073846L;
+    private static final long serialVersionUID = -3231549542016073846L;
 
-	private final FileManager fileManager;
+    private final FileManager fileManager;
 
-	/** Constructor.
-	 *
-	 * @param fileManager the manager of the server-side files.
-	 * @param filenameSupplier provides the client-side name that should be considered as
-	 *     the field's value for the uploaded file. The argument of the lambda is the filename extension.
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 */
-	public ServerSideUploadableImagesField(FileManager fileManager, SerializableBiFunction<Integer, String, File> filenameSupplier,
-			SerializableSupplier<Logger> loggerSupplier) {
-		super((index, file) -> {
-			final String ext;
-			if (file != null) {
-				ext = FileSystem.extension(file);
-			} else {
-				ext = FileManager.JPEG_FILE_EXTENSION;
-			}
-			return filenameSupplier.apply(index, ext);
-		}, loggerSupplier);
-		this.fileManager = fileManager;
-	}
-	
-	@Override
-	protected void uploadSucceeded(String filename) {
-		super.uploadSucceeded(filename);
-		updateValue();
-	}
+    /**
+     * Constructor.
+     *
+     * @param fileManager      the manager of the server-side files.
+     * @param filenameSupplier provides the client-side name that should be considered as
+     *                         the field's value for the uploaded file. The argument of the lambda is the filename extension.
+     * @param loggerSupplier   the dynamic supplier of the loggers.
+     */
+    public ServerSideUploadableImagesField(FileManager fileManager, SerializableBiFunction<Integer, String, File> filenameSupplier,
+                                           SerializableSupplier<Logger> loggerSupplier) {
+        super((index, file) -> {
+            final String ext;
+            if (file != null) {
+                ext = FileSystem.extension(file);
+            } else {
+                ext = FileManager.JPEG_FILE_EXTENSION;
+            }
+            return filenameSupplier.apply(index, ext);
+        }, loggerSupplier);
+        this.fileManager = fileManager;
+    }
 
-	@Override
-	protected void thumbnailRemoved() {
-		super.thumbnailRemoved();
-		updateValue();
-	}
+    @Override
+    protected void uploadSucceeded(String filename) {
+        super.uploadSucceeded(filename);
+        updateValue();
+    }
 
-	@Override
-	public void updateValue() {
-		// Overridden for increasing the visibility of this function 
-		super.updateValue();
-	}
+    @Override
+    protected void thumbnailRemoved() {
+        super.thumbnailRemoved();
+        updateValue();
+    }
 
-	@Override
-	public void saveUploadedFileOnServer() throws IOException {
-		for (final var thumbnail : getThumbnails().toList()) {
-			final var buffer = thumbnail.getMemoryBuffer();
-			if (buffer != null) {
-				final var publicFilename = new File(thumbnail.getName());
-				final var serverFilename = this.fileManager.normalizeForServerSide(publicFilename);
-				saveUploadedFileOnServer(serverFilename, buffer);
-				thumbnail.setImageFromServerFilename(serverFilename);
-			}
-		}
-	}
+    @Override
+    public void updateValue() {
+        // Overridden for increasing the visibility of this function
+        super.updateValue();
+    }
 
-	@Override
-	protected List<String> generateModelValue() {
-		final var list = getThumbnails().map(it -> it.getName()).toList();
-		return list;
-	}
+    @Override
+    public void saveUploadedFileOnServer() throws IOException {
+        for (final var thumbnail : getThumbnails().toList()) {
+            final var buffer = thumbnail.getMemoryBuffer();
+            if (buffer != null) {
+                final var publicFilename = new File(thumbnail.getName());
+                final var serverFilename = this.fileManager.normalizeForServerSide(publicFilename);
+                saveUploadedFileOnServer(serverFilename, buffer);
+                thumbnail.setImageFromServerFilename(serverFilename);
+            }
+        }
+    }
 
-	private Thumbnail createThumbnail(String filename) {
-		final var file = FileSystem.convertStringToFile(filename);
-		final var targetFile = this.fileManager.normalizeForServerSide(file);
-		if (targetFile != null) {
-			return new Thumbnail(file, targetFile);
-		}
-		return null;
-	}
+    @Override
+    protected List<String> generateModelValue() {
+        final var list = getThumbnails().map(it -> it.getName()).toList();
+        return list;
+    }
 
-	@Override
-	protected void setPresentationValue(List<String> newPresentationValue) {
-		removeAllThumbnails();
-		if (!newPresentationValue.isEmpty()) {
-			for (final var thumbnail : newPresentationValue.stream().map(this::createThumbnail).filter(it -> it != null).toList()) {
-				addThumbnail(thumbnail);
-			}
-		}
-	}
+    private Thumbnail createThumbnail(String filename) {
+        final var file = FileSystem.convertStringToFile(filename);
+        final var targetFile = this.fileManager.normalizeForServerSide(file);
+        if (targetFile != null) {
+            return new Thumbnail(file, targetFile);
+        }
+        return null;
+    }
+
+    @Override
+    protected void setPresentationValue(List<String> newPresentationValue) {
+        removeAllThumbnails();
+        if (!newPresentationValue.isEmpty()) {
+            for (final var thumbnail : newPresentationValue.stream().map(this::createThumbnail).filter(it -> it != null).toList()) {
+                addThumbnail(thumbnail);
+            }
+        }
+    }
 
 }

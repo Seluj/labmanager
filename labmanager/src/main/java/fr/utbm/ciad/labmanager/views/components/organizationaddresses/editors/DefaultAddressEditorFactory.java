@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,8 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing an address editor according to the editing context.
- * 
+/**
+ * Factory that is providing an address editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -41,46 +42,47 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DefaultAddressEditorFactory implements AddressEditorFactory {
-	
-	private final OrganizationAddressService addressService;
 
-	private final DownloadableFileManager fileManager;
+    private final OrganizationAddressService addressService;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final DownloadableFileManager fileManager;
 
-	private final MessageSourceAccessor messages;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructors.
-	 *
-	 * @param addressService the service for accessing the JPA entities of the organization addresses.
-	 * @param fileManager the manager of files at the server-side.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public DefaultAddressEditorFactory(
-			@Autowired OrganizationAddressService addressService,
-			@Autowired DownloadableFileManager fileManager,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.addressService = addressService;
-		this.fileManager = fileManager;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-	}
+    private final MessageSourceAccessor messages;
 
-	@Override
-	public EntityEditingContext<OrganizationAddress> createContextFor(OrganizationAddress address, Logger logger) {
-		return this.addressService.startEditing(address, logger);
-	}
+    /**
+     * Constructors.
+     *
+     * @param addressService    the service for accessing the JPA entities of the organization addresses.
+     * @param fileManager       the manager of files at the server-side.
+     * @param authenticatedUser the connected user.
+     * @param messages          the accessor to the localized messages (Spring layer).
+     */
+    public DefaultAddressEditorFactory(
+            @Autowired OrganizationAddressService addressService,
+            @Autowired DownloadableFileManager fileManager,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.addressService = addressService;
+        this.fileManager = fileManager;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+    }
 
-	@Override
-	public AbstractEntityEditor<OrganizationAddress> createAdditionEditor(EntityEditingContext<OrganizationAddress> context) {
-		return new EmbeddedAddressEditor(context, null, this.fileManager, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public EntityEditingContext<OrganizationAddress> createContextFor(OrganizationAddress address, Logger logger) {
+        return this.addressService.startEditing(address, logger);
+    }
 
-	@Override
-	public AbstractEntityEditor<OrganizationAddress> createUpdateEditor(EntityEditingContext<OrganizationAddress> context) {
-		return new EmbeddedAddressEditor(context, null, this.fileManager, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public AbstractEntityEditor<OrganizationAddress> createAdditionEditor(EntityEditingContext<OrganizationAddress> context) {
+        return new EmbeddedAddressEditor(context, null, this.fileManager, this.authenticatedUser, this.messages);
+    }
+
+    @Override
+    public AbstractEntityEditor<OrganizationAddress> createUpdateEditor(EntityEditingContext<OrganizationAddress> context) {
+        return new EmbeddedAddressEditor(context, null, this.fileManager, this.authenticatedUser, this.messages);
+    }
 
 }

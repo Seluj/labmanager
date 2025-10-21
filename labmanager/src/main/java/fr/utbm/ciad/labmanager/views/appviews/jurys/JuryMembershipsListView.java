@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,8 +32,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Enable to edit all the jurys in which the persons are involved.
- * 
+/**
+ * Enable to edit all the jurys in which the persons are involved.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -44,28 +45,29 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class JuryMembershipsListView extends StandardJuryMembershipListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = -3613659589555069224L;
+    private static final long serialVersionUID = -3613659589555069224L;
 
-	/** Constructor.
-	 * 
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param membershipService the service for accessing the jury memberships.
-	 * @param juryMembershipEditorFactory the factory for creating the jury membership editors.
-	 */
-	public JuryMembershipsListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired JuryMembershipService membershipService,
-			@Autowired JuryMembershipEditorFactory juryMembershipEditorFactory) {
-		super(authenticatedUser, messages, loggerFactory, membershipService, juryMembershipEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser           the connected user.
+     * @param messages                    the accessor to the localized messages (spring layer).
+     * @param loggerFactory               the factory to be used for the composite logger.
+     * @param membershipService           the service for accessing the jury memberships.
+     * @param juryMembershipEditorFactory the factory for creating the jury membership editors.
+     */
+    public JuryMembershipsListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired JuryMembershipService membershipService,
+            @Autowired JuryMembershipEditorFactory juryMembershipEditorFactory) {
+        super(authenticatedUser, messages, loggerFactory, membershipService, juryMembershipEditorFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.jury_membership.memberships.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.jury_membership.memberships.list"); //$NON-NLS-1$
+    }
 
 }

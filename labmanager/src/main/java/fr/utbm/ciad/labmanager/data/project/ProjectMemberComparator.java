@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 
-/** Comparator of project members.
- * 
+/**
+ * Comparator of project members.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -38,46 +39,47 @@ import java.util.Comparator;
 @Primary
 public class ProjectMemberComparator implements Comparator<ProjectMember> {
 
-	private PersonComparator personComparator;
+    private final PersonComparator personComparator;
 
-	/** Constructor.
-	 *
-	 * @param personComparator the comparator of persons names.
-	 */
-	public ProjectMemberComparator(@Autowired PersonComparator personComparator) {
-		this.personComparator = personComparator;
-	}
+    /**
+     * Constructor.
+     *
+     * @param personComparator the comparator of persons names.
+     */
+    public ProjectMemberComparator(@Autowired PersonComparator personComparator) {
+        this.personComparator = personComparator;
+    }
 
-	@Override
-	public int compare(ProjectMember o1, ProjectMember o2) {
-		if (o1 == o2) {
-			return 0;
-		}
-		if (o1 == null) {
-			return Integer.MIN_VALUE;
-		}
-		if (o2 == null) {
-			return Integer.MAX_VALUE;
-		}
-		var n = compareRoles(o1.getRole(), o2.getRole());
-		if (n != 0) {
-			return n;
-		}
-		return this.personComparator.compare(o1.getPerson(), o2.getPerson());
-	}
+    private static int compareRoles(Role r1, Role r2) {
+        if (r1 == r2) {
+            return 0;
+        }
+        if (r1 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (r2 == null) {
+            return Integer.MAX_VALUE;
+        }
+        return r1.compareTo(r2);
+    }
 
-	private static int compareRoles(Role r1, Role r2) {
-		if (r1 == r2) {
-			return 0;
-		}
-		if (r1 == null) {
-			return Integer.MIN_VALUE;
-		}
-		if (r2 == null) {
-			return Integer.MAX_VALUE;
-		}
-		return r1.compareTo(r2);
-	}
+    @Override
+    public int compare(ProjectMember o1, ProjectMember o2) {
+        if (o1 == o2) {
+            return 0;
+        }
+        if (o1 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (o2 == null) {
+            return Integer.MAX_VALUE;
+        }
+        var n = compareRoles(o1.getRole(), o2.getRole());
+        if (n != 0) {
+            return n;
+        }
+        return this.personComparator.compare(o1.getPerson(), o2.getPerson());
+    }
 
 }
 

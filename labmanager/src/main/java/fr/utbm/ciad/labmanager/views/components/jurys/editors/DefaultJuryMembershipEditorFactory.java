@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,8 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a jury membership editor according to the editing context.
- * 
+/**
+ * Factory that is providing a jury membership editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -41,48 +42,49 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DefaultJuryMembershipEditorFactory implements JuryMembershipEditorFactory {
-	
-	private final JuryMembershipService juryMembershipService;
 
-	private final PersonFieldFactory personFieldFactory;
+    private final JuryMembershipService juryMembershipService;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final PersonFieldFactory personFieldFactory;
 
-	private final MessageSourceAccessor messages;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructors.
-	 * 
-	 * @param juryCreationStatusComputer the tool for computer the creation status for the jury memberships.
-	 * @param juryMembershipService the service for accessing the JPA entities for jury memberships.
-	 * @param personFieldFactory the factory for creating the person fields.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 */
-	public DefaultJuryMembershipEditorFactory(
-			@Autowired JuryMembershipService juryMembershipService,
-			@Autowired PersonFieldFactory personFieldFactory,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.juryMembershipService = juryMembershipService;
-		this.personFieldFactory = personFieldFactory;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-	}
+    private final MessageSourceAccessor messages;
 
-	@Override
-	public EntityEditingContext<JuryMembership> createContextFor(JuryMembership membership, Logger logger) {
-		return this.juryMembershipService.startEditing(membership, logger);
-	}
-	
-	@Override
-	public AbstractEntityEditor<JuryMembership> createAdditionEditor(EntityEditingContext<JuryMembership> context) {
-		return new EmbeddedJuryMembershipEditor(context, null, this.personFieldFactory, this.authenticatedUser, this.messages);
-	}
+    /**
+     * Constructors.
+     *
+     * @param juryCreationStatusComputer the tool for computer the creation status for the jury memberships.
+     * @param juryMembershipService      the service for accessing the JPA entities for jury memberships.
+     * @param personFieldFactory         the factory for creating the person fields.
+     * @param authenticatedUser          the connected user.
+     * @param messages                   the accessor to the localized messages (Spring layer).
+     * @param loggerFactory              the factory to be used for the composite logger.
+     */
+    public DefaultJuryMembershipEditorFactory(
+            @Autowired JuryMembershipService juryMembershipService,
+            @Autowired PersonFieldFactory personFieldFactory,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.juryMembershipService = juryMembershipService;
+        this.personFieldFactory = personFieldFactory;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+    }
 
-	@Override
-	public AbstractEntityEditor<JuryMembership> createUpdateEditor(EntityEditingContext<JuryMembership> context) {
-		return new EmbeddedJuryMembershipEditor(context, null, this.personFieldFactory, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public EntityEditingContext<JuryMembership> createContextFor(JuryMembership membership, Logger logger) {
+        return this.juryMembershipService.startEditing(membership, logger);
+    }
+
+    @Override
+    public AbstractEntityEditor<JuryMembership> createAdditionEditor(EntityEditingContext<JuryMembership> context) {
+        return new EmbeddedJuryMembershipEditor(context, null, this.personFieldFactory, this.authenticatedUser, this.messages);
+    }
+
+    @Override
+    public AbstractEntityEditor<JuryMembership> createUpdateEditor(EntityEditingContext<JuryMembership> context) {
+        return new EmbeddedJuryMembershipEditor(context, null, this.personFieldFactory, this.authenticatedUser, this.messages);
+    }
 
 }

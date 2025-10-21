@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,9 +28,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Bugfix of {@link LaTeXPrinter}. This class should be removed as soon as the JBibtex library is fixed
+/**
+ * Bugfix of {@link LaTeXPrinter}. This class should be removed as soon as the JBibtex library is fixed
  * (see {@link "https://github.com/jbibtex/jbibtex/pull/28"}.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -40,509 +41,509 @@ import java.util.Map;
 @SuppressWarnings("all")
 public class BugfixLaTeXPrinter extends LaTeXPrinter {
 
-	private final boolean replaceSingleQuote;
+    private static final DateFormat LATEX_TODAY = new SimpleDateFormat("MMMM dd, yyyy");
+    private static final Map<String, String> COMMAND_SYMBOLS = new LinkedHashMap<>();
 
-	/** Constructor.
-	 * 
-	 * @param replaceSingleQuote indicates if the single quotes must be replaced by their
-	 *    Unicode equivalent.
-	 */
-	public BugfixLaTeXPrinter(boolean replaceSingleQuote) {
-		this.replaceSingleQuote = replaceSingleQuote;
-	}
+    static {
+        // Special symbols
+        setSymbol("#", "#");
+        setSymbol("$", "$");
+        setSymbol("%", "%");
+        setSymbol("&", "&");
+        setSymbol("\\", "\\");
+        // START BUG FIX (PR #28)
+        setSymbol("i", "i");
+        setSymbol("I", "I");
+        // END BUG FIX
+        setSymbol("_", "_");
+        setSymbol("{", "{");
+        setSymbol("}", "}");
+        setSymbol("~", "~");
 
-	public String print(List<LaTeXObject> objects){
-		var builder = new TextBuilder();
-		print(objects, builder);
-		return builder.buildString();
-	}
+        // Non-ASCII letters
+        setSymbol("AA", "\u00c5");
+        setSymbol("AE", "\u00c6");
+        setSymbol("O", "\u00d8");
+        setSymbol("SS", "SS");
+        setSymbol("aa", "\u00e5");
+        setSymbol("ae", "\u00e6");
+        setSymbol("o", "\u00f8");
+        setSymbol("ss", "\u00df");
 
-	protected void print(List<LaTeXObject> objects, TextBuilder builder){
-		for(final var object : objects){
-			if(object instanceof LaTeXCommand cobject){
-				print(cobject, builder);
-			} else if(object instanceof LaTeXGroup cobject){
-				print(cobject, builder);
-			} else if(object instanceof LaTeXString cobject){
-				print(cobject, builder);
-			} else {
-				throw new IllegalArgumentException();
-			}
-		}
-	}
+        // Text-mode commands
+        // START BUG FIX (PR #28)
+        setSymbol("string", "");
+        // END BUG FIX
+        setSymbol("textasciicircum", "^");
+        setSymbol("textasciitilde", "~");
+        setSymbol("textbackslash", "\\");
+        setSymbol("textbar", "|");
+        setSymbol("textbraceleft", "{");
+        setSymbol("textbraceright", "}");
+        setSymbol("textcopyrigh", "\u00a9");
+        setSymbol("textdollar", "$");
+        setSymbol("textellipsis", "\u2026");
+        setSymbol("textemdash", "\u2014");
+        setSymbol("textendash", "\u2013");
+        setSymbol("textgreater", ">");
+        setSymbol("textless", "<");
+        setSymbol("textquotedblleft", "\u201c");
+        setSymbol("textquotedblright", "\u201d");
+        setSymbol("textquoteleft", "\u2018");
+        setSymbol("textquoteright", "\u2019");
+        setSymbol("textregistered", "\u00ae");
+        setSymbol("texttrademark", "\u2122");
+        setSymbol("textunderscore", "_");
 
-	protected void print(LaTeXCommand command, TextBuilder builder){
-		var accent = getAccent(command.getName());
-		if(accent > 0){
-			builder.setAccent(accent);
-			return;
-		}
-		var symbol = getSymbol(command.getName());
-		if(symbol != null){
-			builder.append(symbol);
-		}
-	}
+        // Math- and text-mode commands
+        setSymbol("slash", "/");
+        setSymbol("backslash", "\\");
+        setSymbol("endash", "\u2013");
+        setSymbol("emdash", "\u2014");
+        setSymbol("ldots", "\u2026");
 
-	protected void print(LaTeXGroup group, TextBuilder builder){
-		builder.append(print(group.getObjects()));
-	}
+        // Greek alphabet
+        setSymbol("alpha", "\u03b1");
+        setSymbol("beta", "\u03b2");
+        setSymbol("gamma", "\u03b3");
+        setSymbol("delta", "\u03b4");
+        setSymbol("epsilon", "\u03b5");
+        setSymbol("zeta", "\u03b6");
+        setSymbol("eta", "\u03b7");
+        setSymbol("theta", "\u03b8");
+        setSymbol("iota", "\u03b9");
+        setSymbol("kappa", "\u03ba");
+        setSymbol("lambda", "\u03bb");
+        setSymbol("mu", "\u03bc");
+        setSymbol("nu", "\u03bd");
+        setSymbol("xi", "\u03be");
+        setSymbol("omicron", "\u03bf");
+        setSymbol("pi", "\u03c0");
+        setSymbol("rho", "\u03c1");
+        setSymbol("sigma", "\u03c2");
+        setSymbol("tau", "\u03c3");
+        setSymbol("upsilon", "\u03c4");
+        setSymbol("phi", "\u03c5");
+        setSymbol("chi", "\u03c6");
+        setSymbol("psi", "\u03c7");
+        setSymbol("omega", "\u03c8");
 
-	protected void print(LaTeXString string, TextBuilder builder){
-		var value = string.getValue();
+        // Ready-made strings
+        setSymbol("today", today());
+        setSymbol("TeX", "TeX");
+        setSymbol("LaTeX", "LaTeX");
+        setSymbol("LaTeXe", "LaTeX\u03b5");
+    }
 
-		if(value.contains("--")){
-			value = value.replace("---", "\u2014");
-			value = value.replace("--", "\u2013");
-		} // End if
+    private final boolean replaceSingleQuote;
 
-		if(value.contains("`")){
-			value = value.replace("``", "\u201c");
-			value = value.replace("`", "\u2018");
-		} // End if
+    /**
+     * Constructor.
+     *
+     * @param replaceSingleQuote indicates if the single quotes must be replaced by their
+     *                           Unicode equivalent.
+     */
+    public BugfixLaTeXPrinter(boolean replaceSingleQuote) {
+        this.replaceSingleQuote = replaceSingleQuote;
+    }
 
-		if(value.contains("'")){
-			value = value.replace("''", "\u201d");
-			if (this.replaceSingleQuote) {
-				value = value.replace("'", "\u2019");
-			}
-		}
+    static public String today() {
+        var now = Calendar.getInstance();
+        return LATEX_TODAY.format(now.getTime());
+    }
 
-		builder.append(value);
-	}
+    static protected char getAccent(String name) {
+        char c = (name.length() == 1 ? name.charAt(0) : 0);
 
-	static public String today(){
-		var now = Calendar.getInstance();
-		return LATEX_TODAY.format(now.getTime());
-	}
+        switch (c) {
+            case '`':
+            case '\'':
+            case '^':
+            case '\"':
+            case 'H':
+            case '~':
+            case 'c':
+            case 'k':
+            case '=':
+            case 'b':
+            case '.':
+            case 'd':
+            case 'r':
+            case 'u':
+            case 'v':
+            case 't':
+                return c;
+            default:
+                break;
+        }
 
-	private static final DateFormat LATEX_TODAY = new SimpleDateFormat("MMMM dd, yyyy");
+        return 0;
+    }
 
-	static protected char getAccent(String name){
-		char c = (name.length() == 1 ? name.charAt(0) : 0);
+    static
+    protected char applyAccent(char accent, char c) {
 
-		switch(c){
-		case '`':
-		case '\'':
-		case '^':
-		case '\"':
-		case 'H':
-		case '~':
-		case 'c':
-		case 'k':
-		case '=':
-		case 'b':
-		case '.':
-		case 'd':
-		case 'r':
-		case 'u':
-		case 'v':
-		case 't':
-			return c;
-		default:
-			break;
-		}
+        switch (accent) {
+            // Grave
+            case '`':
+                switch (c) {
+                    case 'A':
+                        return '\u00c0';
+                    case 'E':
+                        return '\u00c8';
+                    case 'I':
+                        return '\u00cc';
+                    case 'O':
+                        return '\u00d2';
+                    case 'U':
+                        return '\u00d9';
+                    case 'a':
+                        return '\u00e0';
+                    case 'e':
+                        return '\u00e8';
+                    case 'i':
+                        return '\u00ec';
+                    case 'o':
+                        return '\u00f2';
+                    case 'u':
+                        return '\u00f9';
+                    default:
+                        break;
+                }
+                break;
+            // Acute
+            case '\'':
+                switch (c) {
+                    case 'A':
+                        return '\u00c1';
+                    case 'E':
+                        return '\u00c9';
+                    case 'I':
+                        return '\u00cd';
+                    case 'O':
+                        return '\u00d3';
+                    case 'U':
+                        return '\u00da';
+                    case 'Y':
+                        return '\u00dd';
+                    case 'a':
+                        return '\u00e1';
+                    case 'e':
+                        return '\u00e9';
+                    case 'i':
+                        return '\u00ed';
+                    case 'o':
+                        return '\u00f3';
+                    case 'u':
+                        return '\u00fa';
+                    case 'y':
+                        return '\u00fd';
+                    default:
+                        break;
+                }
+                break;
+            // START BUG FIX (PR #28)
+            // Circumflex
+            case '^':
+                switch (c) {
+                    case 'A':
+                        return '\u00c2';
+                    case 'C':
+                        return '\u0108';
+                    case 'E':
+                        return '\u00cA';
+                    case 'I':
+                        return '\u00ce';
+                    case 'G':
+                        return '\u011c';
+                    case 'H':
+                        return '\u0124';
+                    case 'O':
+                        return '\u00d4';
+                    case 'U':
+                        return '\u00db';
+                    case 'S':
+                        return '\u015c';
+                    case 'W':
+                        return '\u0174';
+                    case 'Y':
+                        return '\u0176';
+                    case 'a':
+                        return '\u00e2';
+                    case 'c':
+                        return '\u0109';
+                    case 'e':
+                        return '\u00ea';
+                    case 'i':
+                        return '\u00ee';
+                    case 'g':
+                        return '\u011d';
+                    case 'h':
+                        return '\u0125';
+                    case 'o':
+                        return '\u00f4';
+                    case 'u':
+                        return '\u00fb';
+                    case 's':
+                        return '\u015d';
+                    case 'w':
+                        return '\u0175';
+                    case 'y':
+                        return '\u0177';
+                    default:
+                        break;
+                }
+                break;
+            // Cedil
+            case 'c':
+                switch (c) {
+                    case 'C':
+                        return '\u00c7';
+                    case 'E':
+                        return '\u0228';
+                    case 'G':
+                        return '\u0122';
+                    case 'K':
+                        return '\u0136';
+                    case 'L':
+                        return '\u013b';
+                    case 'N':
+                        return '\u0145';
+                    case 'R':
+                        return '\u0156';
+                    case 'S':
+                        return '\u015e';
+                    case 'T':
+                        return '\u0162';
+                    case 'c':
+                        return '\u00e7';
+                    case 'e':
+                        return '\u0229';
+                    case 'g':
+                        return '\u0123';
+                    case 'k':
+                        return '\u0137';
+                    case 'l':
+                        return '\u013c';
+                    case 'n':
+                        return '\u0146';
+                    case 'r':
+                        return '\u0157';
+                    case 's':
+                        return '\u015f';
+                    case 't':
+                        return '\u0163';
+                    default:
+                        break;
+                }
+                break;
+            // END BUG FIX
+            // Diaeresis
+            case '\"':
+                switch (c) {
+                    case 'A':
+                        return '\u00c4';
+                    case 'E':
+                        return '\u00cb';
+                    case 'I':
+                        return '\u00cf';
+                    case 'O':
+                        return '\u00d6';
+                    case 'U':
+                        return '\u00dc';
+                    case 'a':
+                        return '\u00e4';
+                    case 'e':
+                        return '\u00eb';
+                    case 'i':
+                        return '\u00ef';
+                    case 'o':
+                        return '\u00f6';
+                    case 'u':
+                        return '\u00fc';
+                    default:
+                        break;
+                }
+                break;
+            // Tilde
+            case '~':
+                switch (c) {
+                    case 'A':
+                        return '\u00c3';
+                    case 'N':
+                        return '\u00d1';
+                    case 'O':
+                        return '\u00d5';
+                    case 'a':
+                        return '\u00e3';
+                    case 'n':
+                        return '\u00f1';
+                    case 'o':
+                        return '\u00f5';
+                    default:
+                        break;
+                }
+                break;
+            // Ring above
+            case 'r':
+                switch (c) {
+                    case 'U':
+                        return '\u016e';
+                    case 'u':
+                        return '\u016f';
+                    default:
+                        break;
+                }
+                break;
+            // Caron
+            case 'v':
+                switch (c) {
+                    case 'C':
+                        return '\u010c';
+                    case 'D':
+                        return '\u010e';
+                    case 'E':
+                        return '\u011a';
+                    case 'N':
+                        return '\u0147';
+                    case 'R':
+                        return '\u0158';
+                    case 'S':
+                        return '\u0160';
+                    case 'T':
+                        return '\u0164';
+                    case 'Z':
+                        return '\u017d';
+                    case 'c':
+                        return '\u010d';
+                    case 'd':
+                        return '\u010f';
+                    case 'e':
+                        return '\u011b';
+                    case 'n':
+                        return '\u0148';
+                    case 'r':
+                        return '\u0159';
+                    case 's':
+                        return '\u0161';
+                    case 't':
+                        return '\u0165';
+                    case 'z':
+                        return '\u017e';
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
 
-		return 0;
-	}
+        return c;
+    }
 
-	static
-	protected char applyAccent(char accent, char c){
+    static
+    public String getSymbol(String name) {
+        return COMMAND_SYMBOLS.get(name);
+    }
 
-		switch(accent){
-		// Grave
-		case '`':
-			switch(c){
-			case 'A':
-				return '\u00c0';
-			case 'E':
-				return '\u00c8';
-			case 'I':
-				return '\u00cc';
-			case 'O':
-				return '\u00d2';
-			case 'U':
-				return '\u00d9';
-			case 'a':
-				return '\u00e0';
-			case 'e':
-				return '\u00e8';
-			case 'i':
-				return '\u00ec';
-			case 'o':
-				return '\u00f2';
-			case 'u':
-				return '\u00f9';
-			default:
-				break;
-			}
-			break;
-			// Acute
-		case '\'':
-			switch(c){
-			case 'A':
-				return '\u00c1';
-			case 'E':
-				return '\u00c9';
-			case 'I':
-				return '\u00cd';
-			case 'O':
-				return '\u00d3';
-			case 'U':
-				return '\u00da';
-			case 'Y':
-				return '\u00dd';
-			case 'a':
-				return '\u00e1';
-			case 'e':
-				return '\u00e9';
-			case 'i':
-				return '\u00ed';
-			case 'o':
-				return '\u00f3';
-			case 'u':
-				return '\u00fa';
-			case 'y':
-				return '\u00fd';
-			default:
-				break;
-			}
-			break;
-			// START BUG FIX (PR #28)
-			// Circumflex
-		case '^':
-			switch(c){
-			case 'A':
-				return '\u00c2';
-			case 'C':
-				return '\u0108';
-			case 'E':
-				return '\u00cA';
-			case 'I':
-				return '\u00ce';
-			case 'G':
-				return '\u011c';
-			case 'H':
-				return '\u0124';
-			case 'O':
-				return '\u00d4';
-			case 'U':
-				return '\u00db';
-			case 'S':
-				return '\u015c';
-			case 'W':
-				return '\u0174';
-			case 'Y':
-				return '\u0176';
-			case 'a':
-				return '\u00e2';
-			case 'c':
-				return '\u0109';
-			case 'e':
-				return '\u00ea';
-			case 'i':
-				return '\u00ee';
-			case 'g':
-				return '\u011d';
-			case 'h':
-				return '\u0125';
-			case 'o':
-				return '\u00f4';
-			case 'u':
-				return '\u00fb';
-			case 's':
-				return '\u015d';
-			case 'w':
-				return '\u0175';
-			case 'y':
-				return '\u0177';
-			default:
-				break;
-			}
-			break;
-			// Cedil
-		case 'c':
-			switch(c){
-			case 'C':
-				return '\u00c7';
-			case 'E':
-				return '\u0228';
-			case 'G':
-				return '\u0122';
-			case 'K':
-				return '\u0136';
-			case 'L':
-				return '\u013b';
-			case 'N':
-				return '\u0145';
-			case 'R':
-				return '\u0156';
-			case 'S':
-				return '\u015e';
-			case 'T':
-				return '\u0162';
-			case 'c':
-				return '\u00e7';
-			case 'e':
-				return '\u0229';
-			case 'g':
-				return '\u0123';
-			case 'k':
-				return '\u0137';
-			case 'l':
-				return '\u013c';
-			case 'n':
-				return '\u0146';
-			case 'r':
-				return '\u0157';
-			case 's':
-				return '\u015f';
-			case 't':
-				return '\u0163';
-			default:
-				break;
-			}
-			break;
-			// END BUG FIX
-			// Diaeresis
-		case '\"':
-			switch(c){
-			case 'A':
-				return '\u00c4';
-			case 'E':
-				return '\u00cb';
-			case 'I':
-				return '\u00cf';
-			case 'O':
-				return '\u00d6';
-			case 'U':
-				return '\u00dc';
-			case 'a':
-				return '\u00e4';
-			case 'e':
-				return '\u00eb';
-			case 'i':
-				return '\u00ef';
-			case 'o':
-				return '\u00f6';
-			case 'u':
-				return '\u00fc';
-			default:
-				break;
-			}
-			break;
-			// Tilde
-		case '~':
-			switch(c){
-			case 'A':
-				return '\u00c3';
-			case 'N':
-				return '\u00d1';
-			case 'O':
-				return '\u00d5';
-			case 'a':
-				return '\u00e3';
-			case 'n':
-				return '\u00f1';
-			case 'o':
-				return '\u00f5';
-			default:
-				break;
-			}
-			break;
-			// Ring above
-		case 'r':
-			switch(c){
-			case 'U':
-				return '\u016e';
-			case 'u':
-				return '\u016f';
-			default:
-				break;
-			}
-			break;
-			// Caron
-		case 'v':
-			switch(c){
-			case 'C':
-				return '\u010c';
-			case 'D':
-				return '\u010e';
-			case 'E':
-				return '\u011a';
-			case 'N':
-				return '\u0147';
-			case 'R':
-				return '\u0158';
-			case 'S':
-				return '\u0160';
-			case 'T':
-				return '\u0164';
-			case 'Z':
-				return '\u017d';
-			case 'c':
-				return '\u010d';
-			case 'd':
-				return '\u010f';
-			case 'e':
-				return '\u011b';
-			case 'n':
-				return '\u0148';
-			case 'r':
-				return '\u0159';
-			case 's':
-				return '\u0161';
-			case 't':
-				return '\u0165';
-			case 'z':
-				return '\u017e';
-			default:
-				break;
-			}
-			break;
-		default:
-			break;
-		}
+    static
+    public void setSymbol(String name, String symbol) {
+        COMMAND_SYMBOLS.put(name, symbol);
+    }
 
-		return c;
-	}
+    public String print(List<LaTeXObject> objects) {
+        var builder = new TextBuilder();
+        print(objects, builder);
+        return builder.buildString();
+    }
 
-	static
-	public String getSymbol(String name){
-		return COMMAND_SYMBOLS.get(name);
-	}
+    protected void print(List<LaTeXObject> objects, TextBuilder builder) {
+        for (final var object : objects) {
+            if (object instanceof LaTeXCommand cobject) {
+                print(cobject, builder);
+            } else if (object instanceof LaTeXGroup cobject) {
+                print(cobject, builder);
+            } else if (object instanceof LaTeXString cobject) {
+                print(cobject, builder);
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
+    }
 
-	static
-	public void setSymbol(String name, String symbol){
-		COMMAND_SYMBOLS.put(name, symbol);
-	}
+    protected void print(LaTeXCommand command, TextBuilder builder) {
+        var accent = getAccent(command.getName());
+        if (accent > 0) {
+            builder.setAccent(accent);
+            return;
+        }
+        var symbol = getSymbol(command.getName());
+        if (symbol != null) {
+            builder.append(symbol);
+        }
+    }
 
-	private static final Map<String, String> COMMAND_SYMBOLS = new LinkedHashMap<>();
+    protected void print(LaTeXGroup group, TextBuilder builder) {
+        builder.append(print(group.getObjects()));
+    }
 
-	static {
-		// Special symbols
-		setSymbol("#", "#");
-		setSymbol("$", "$");
-		setSymbol("%", "%");
-		setSymbol("&", "&");
-		setSymbol("\\", "\\");
-		// START BUG FIX (PR #28)
-		setSymbol("i", "i");
-		setSymbol("I", "I");
-		// END BUG FIX
-		setSymbol("_", "_");
-		setSymbol("{", "{");
-		setSymbol("}", "}");
-		setSymbol("~", "~");
+    protected void print(LaTeXString string, TextBuilder builder) {
+        var value = string.getValue();
 
-		// Non-ASCII letters
-		setSymbol("AA", "\u00c5");
-		setSymbol("AE", "\u00c6");
-		setSymbol("O", "\u00d8");
-		setSymbol("SS", "SS");
-		setSymbol("aa", "\u00e5");
-		setSymbol("ae", "\u00e6");
-		setSymbol("o", "\u00f8");
-		setSymbol("ss", "\u00df");
+        if (value.contains("--")) {
+            value = value.replace("---", "\u2014");
+            value = value.replace("--", "\u2013");
+        } // End if
 
-		// Text-mode commands
-		// START BUG FIX (PR #28)
-		setSymbol("string", "");
-		// END BUG FIX
-		setSymbol("textasciicircum", "^");
-		setSymbol("textasciitilde", "~");
-		setSymbol("textbackslash", "\\");
-		setSymbol("textbar", "|");
-		setSymbol("textbraceleft", "{");
-		setSymbol("textbraceright", "}");
-		setSymbol("textcopyrigh", "\u00a9");
-		setSymbol("textdollar", "$");
-		setSymbol("textellipsis", "\u2026");
-		setSymbol("textemdash", "\u2014");
-		setSymbol("textendash", "\u2013");
-		setSymbol("textgreater", ">");
-		setSymbol("textless", "<");
-		setSymbol("textquotedblleft", "\u201c");
-		setSymbol("textquotedblright", "\u201d");
-		setSymbol("textquoteleft", "\u2018");
-		setSymbol("textquoteright", "\u2019");
-		setSymbol("textregistered", "\u00ae");
-		setSymbol("texttrademark", "\u2122");
-		setSymbol("textunderscore", "_");
+        if (value.contains("`")) {
+            value = value.replace("``", "\u201c");
+            value = value.replace("`", "\u2018");
+        } // End if
 
-		// Math- and text-mode commands
-		setSymbol("slash", "/");
-		setSymbol("backslash", "\\");
-		setSymbol("endash", "\u2013");
-		setSymbol("emdash", "\u2014");
-		setSymbol("ldots", "\u2026");
+        if (value.contains("'")) {
+            value = value.replace("''", "\u201d");
+            if (this.replaceSingleQuote) {
+                value = value.replace("'", "\u2019");
+            }
+        }
 
-		// Greek alphabet
-		setSymbol("alpha", "\u03b1");
-		setSymbol("beta", "\u03b2");
-		setSymbol("gamma", "\u03b3");
-		setSymbol("delta", "\u03b4");
-		setSymbol("epsilon", "\u03b5");
-		setSymbol("zeta", "\u03b6");
-		setSymbol("eta", "\u03b7");
-		setSymbol("theta", "\u03b8");
-		setSymbol("iota", "\u03b9");
-		setSymbol("kappa", "\u03ba");
-		setSymbol("lambda", "\u03bb");
-		setSymbol("mu", "\u03bc");
-		setSymbol("nu", "\u03bd");
-		setSymbol("xi", "\u03be");
-		setSymbol("omicron", "\u03bf");
-		setSymbol("pi", "\u03c0");
-		setSymbol("rho", "\u03c1");
-		setSymbol("sigma", "\u03c2");
-		setSymbol("tau", "\u03c3");
-		setSymbol("upsilon", "\u03c4");
-		setSymbol("phi", "\u03c5");
-		setSymbol("chi", "\u03c6");
-		setSymbol("psi", "\u03c7");
-		setSymbol("omega", "\u03c8");
+        builder.append(value);
+    }
 
-		// Ready-made strings
-		setSymbol("today", today());
-		setSymbol("TeX", "TeX");
-		setSymbol("LaTeX", "LaTeX");
-		setSymbol("LaTeXe", "LaTeX\u03b5");
-	}
+    static
+    protected class TextBuilder {
 
-	static
-	protected class TextBuilder {
+        private StringBuilder sb = new StringBuilder();
 
-		private StringBuilder sb = new StringBuilder();
-
-		private char accent = 0;
+        private char accent = 0;
 
 
-		public void append(String string){
-			char accent = getAccent();
+        public void append(String string) {
+            char accent = getAccent();
 
-			if(accent > 0){
+            if (accent > 0) {
 
-				if(string.length() > 0){
-					string = applyAccent(accent, string.charAt(0)) + string.substring(1);
-				}
+                if (string.length() > 0) {
+                    string = applyAccent(accent, string.charAt(0)) + string.substring(1);
+                }
 
-				setAccent((char)0);
-			}
+                setAccent((char) 0);
+            }
 
-			this.sb.append(string);
-		}
+            this.sb.append(string);
+        }
 
-		public char getAccent(){
-			return this.accent;
-		}
+        public char getAccent() {
+            return this.accent;
+        }
 
-		private void setAccent(char accent){
-			this.accent = accent;
-		}
+        private void setAccent(char accent) {
+            this.accent = accent;
+        }
 
-		public String buildString(){
-			return this.sb.toString();
-		}
-	}
+        public String buildString() {
+            return this.sb.toString();
+        }
+    }
 
 }

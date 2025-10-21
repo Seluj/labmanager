@@ -19,7 +19,7 @@ public class ToggleButton extends Button {
     /**
      * Default Constructor
      */
-    public ToggleButton(){
+    public ToggleButton() {
         this("Mode 1", null, "Mode 2", null);
     }
 

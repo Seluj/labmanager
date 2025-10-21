@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.utils.io.ris;
 
 import org.springframework.http.MediaType;
 
-/** Constants for RIS.
- * 
+/**
+ * Constants for RIS.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,26 +32,28 @@ import org.springframework.http.MediaType;
  */
 public interface RISConstants {
 
-	/** Mime type for RIS.
-	 */
-	String MIME_TYPE_VALUE = "text/x-research-info-systems"; //$NON-NLS-1$
+    /**
+     * Mime type for RIS.
+     */
+    String MIME_TYPE_VALUE = "text/x-research-info-systems"; //$NON-NLS-1$
 
-	/** Mime type and charset (UTF-8) for RIS.
-	 */
-	String MIME_TYPE_UTF8_VALUE = MIME_TYPE_VALUE + ";charset=utf-8"; //$NON-NLS-1$
-
-	/** Mime type for RIS.
-	 */
-	MediaType MIME_TYPE = MediaType.parseMediaType(MIME_TYPE_VALUE);
-
-	/** Mime type and charset (UTF-8) for RIS.
-	 */
-	MediaType MIME_TYPE_UTF8 = MediaType.parseMediaType(MIME_TYPE_UTF8_VALUE);
-
-	/** Standard filename extension for RIS files.
-	 *
-	 * @since 4.0
-	 */
-	String FILENAME_EXTENSION = ".ris"; //$NON-NLS-1$
+    /**
+     * Mime type and charset (UTF-8) for RIS.
+     */
+    String MIME_TYPE_UTF8_VALUE = MIME_TYPE_VALUE + ";charset=utf-8"; //$NON-NLS-1$
+    /**
+     * Mime type and charset (UTF-8) for RIS.
+     */
+    MediaType MIME_TYPE_UTF8 = MediaType.parseMediaType(MIME_TYPE_UTF8_VALUE);
+    /**
+     * Mime type for RIS.
+     */
+    MediaType MIME_TYPE = MediaType.parseMediaType(MIME_TYPE_VALUE);
+    /**
+     * Standard filename extension for RIS files.
+     *
+     * @since 4.0
+     */
+    String FILENAME_EXTENSION = ".ris"; //$NON-NLS-1$
 
 }

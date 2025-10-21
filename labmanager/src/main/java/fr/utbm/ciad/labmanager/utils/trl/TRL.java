@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,10 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import java.util.Locale;
 
-/** Technology readiness levels (TRLs) are a method for estimating the maturity of technologies during the acquisition phase
+/**
+ * Technology readiness levels (TRLs) are a method for estimating the maturity of technologies during the acquisition phase
  * of a program. TRLs enable consistent and uniform discussions of technical maturity across different types of technology.
- * 
+ *
  * @author $Author: sgalland$
  * @author $Author: anoubli$
  * @author $Author: bpdj$
@@ -34,91 +35,95 @@ import java.util.Locale;
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 3.0
  * @see "https://en.wikipedia.org/wiki/Technology_readiness_level"
+ * @since 3.0
  */
 public enum TRL {
 
-	/**
-	 * Basic principles observed.
-	 */
-	TRL1,
+    /**
+     * Basic principles observed.
+     */
+    TRL1,
 
-	/**
-	 * Technology concept formulated.
-	 */
-	TRL2,
+    /**
+     * Technology concept formulated.
+     */
+    TRL2,
 
-	/**
-	 * Experimental proof of concept.
-	 */
-	TRL3,
+    /**
+     * Experimental proof of concept.
+     */
+    TRL3,
 
-	/**
-	 * Technology validated in lab.
-	 */
-	TRL4,
+    /**
+     * Technology validated in lab.
+     */
+    TRL4,
 
-	/**
-	 * Technology validated in relevant environment (industrially relevant environment in the case of key enabling technologies).
-	 */
-	TRL5,
+    /**
+     * Technology validated in relevant environment (industrially relevant environment in the case of key enabling technologies).
+     */
+    TRL5,
 
-	/**
-	 * Technology demonstrated in relevant environment (industrially relevant environment in the case of key enabling technologies).
-	 */
-	TRL6,
-	
-	/**
-	 * System prototype demonstration in operational environment.
-	 */
-	TRL7,
+    /**
+     * Technology demonstrated in relevant environment (industrially relevant environment in the case of key enabling technologies).
+     */
+    TRL6,
 
-	/**
-	 * System complete and qualified.
-	 */
-	TRL8,
+    /**
+     * System prototype demonstration in operational environment.
+     */
+    TRL7,
 
-	/** Actual system proven in operational environment (competitive manufacturing in the case of key enabling technologies; or in space).
-	 */
-	TRL9;
-	
-	private static final String MESSAGE_PREFIX = "trl."; //$NON-NLS-1$
+    /**
+     * System complete and qualified.
+     */
+    TRL8,
 
-	/** Replies the label of the project status in the given language.
-	 *
-	 * @param messages the accessor to the localized labels.
-	 * @param locale the locale to use.
-	 * @return the label of the project status in the given  language.
-	 */
-	public String getLabel(MessageSourceAccessor messages, Locale locale) {
-		final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
-		return Strings.nullToEmpty(label);
-	}
+    /**
+     * Actual system proven in operational environment (competitive manufacturing in the case of key enabling technologies; or in space).
+     */
+    TRL9;
 
-	/** Replies the TRL level. It is the ordinal number plus one.
-	 *
-	 * @return the TRL level.
-	 */
-	public int getLevel() {
-		return ordinal() + 1;
-	}
+    private static final String MESSAGE_PREFIX = "trl."; //$NON-NLS-1$
 
-	/** Parse the given string for obtaining the TRL.
-	 * 
-	 * @param stringTrl the string representation of the TRL.
-	 * @return the TRL or {@code null} if the given string cannot match.
-	 */
+    /**
+     * Parse the given string for obtaining the TRL.
+     *
+     * @param stringTrl the string representation of the TRL.
+     * @return the TRL or {@code null} if the given string cannot match.
+     */
     public static TRL valueOfCaseInsensitive(String stringTrl) {
-    	if (!Strings.isNullOrEmpty(stringTrl)) {
-	    	for (final var candidate : values()) {
-	    		if (candidate.toString().equalsIgnoreCase(stringTrl)
-	    				|| Integer.toString(candidate.getLevel()).equals(stringTrl)) {
-	    			return candidate;
-	    		}
-	    	}
-    	}
-    	return null;
+        if (!Strings.isNullOrEmpty(stringTrl)) {
+            for (final var candidate : values()) {
+                if (candidate.toString().equalsIgnoreCase(stringTrl)
+                        || Integer.toString(candidate.getLevel()).equals(stringTrl)) {
+                    return candidate;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Replies the label of the project status in the given language.
+     *
+     * @param messages the accessor to the localized labels.
+     * @param locale   the locale to use.
+     * @return the label of the project status in the given  language.
+     */
+    public String getLabel(MessageSourceAccessor messages, Locale locale) {
+        final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
+        return Strings.nullToEmpty(label);
+    }
+
+    /**
+     * Replies the TRL level. It is the ordinal number plus one.
+     *
+     * @return the TRL level.
+     */
+    public int getLevel() {
+        return ordinal() + 1;
     }
 
 }

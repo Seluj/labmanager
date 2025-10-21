@@ -1,9 +1,5 @@
 package fr.utbm.ciad.labmanager.views.components.publications.fields;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox.AutoExpandMode;
 import com.vaadin.flow.component.customfield.CustomField;
@@ -15,6 +11,10 @@ import com.vaadin.flow.component.shared.HasPrefix;
 import com.vaadin.flow.function.SerializableConsumer;
 import fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory;
 import org.vaadin.lineawesome.LineAwesomeIcon;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class AbstractMultiPublicationTypeField extends CustomField<List<String>> implements HasPrefix {
 
@@ -105,17 +105,12 @@ public abstract class AbstractMultiPublicationTypeField extends CustomField<List
         }
     }
 
-    public void setPlaceholder(String placeholder) {
-        this.combo.setPlaceholder(placeholder);
-    }
-
     public String getPlaceholder() {
         return this.combo.getPlaceholder();
     }
 
-    @Override
-    public void setHelperText(String text) {
-        this.combo.setHelperText(text);
+    public void setPlaceholder(String placeholder) {
+        this.combo.setPlaceholder(placeholder);
     }
 
     @Override
@@ -124,8 +119,8 @@ public abstract class AbstractMultiPublicationTypeField extends CustomField<List
     }
 
     @Override
-    public void setErrorMessage(String errorMessage) {
-        this.combo.setErrorMessage(errorMessage);
+    public void setHelperText(String text) {
+        this.combo.setHelperText(text);
     }
 
     @Override
@@ -134,8 +129,8 @@ public abstract class AbstractMultiPublicationTypeField extends CustomField<List
     }
 
     @Override
-    public void setInvalid(boolean invalid) {
-        this.combo.setInvalid(invalid);
+    public void setErrorMessage(String errorMessage) {
+        this.combo.setErrorMessage(errorMessage);
     }
 
     @Override
@@ -144,13 +139,18 @@ public abstract class AbstractMultiPublicationTypeField extends CustomField<List
     }
 
     @Override
-    public void setReadOnly(boolean readOnly) {
-        this.combo.setReadOnly(readOnly);
+    public void setInvalid(boolean invalid) {
+        this.combo.setInvalid(invalid);
     }
 
     @Override
     public boolean isReadOnly() {
         return this.combo.isReadOnly();
+    }
+
+    @Override
+    public void setReadOnly(boolean readOnly) {
+        this.combo.setReadOnly(readOnly);
     }
 
     public void setCreateButtonTitle(String title) {

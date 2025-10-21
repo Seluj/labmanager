@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,8 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a conference editor according to the editing context.
- * 
+/**
+ * Factory that is providing a conference editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -42,45 +43,46 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultConferenceEditorFactory implements ConferenceEditorFactory {
 
-	private final ConferenceCreationStatusComputer conferenceCreationStatusComputer;
-	
-	private final ConferenceService conferenceService;
+    private final ConferenceCreationStatusComputer conferenceCreationStatusComputer;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final ConferenceService conferenceService;
 
-	private final MessageSourceAccessor messages;
-	
-	/** Constructor.
-	 *
-	 * @param conferenceCreationStatusComputer the tool for computer the creation status for the conferences.
-	 * @param conferenceService the service for accessing to the conference entities.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public DefaultConferenceEditorFactory(
-			@Autowired ConferenceCreationStatusComputer conferenceCreationStatusComputer,
-			@Autowired ConferenceService conferenceService,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.conferenceCreationStatusComputer = conferenceCreationStatusComputer;
-		this.conferenceService = conferenceService;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-	}
-	
-	@Override
-	public EntityEditingContext<Conference> createContextFor(Conference conference, Logger logger) {
-		return this.conferenceService.startEditing(conference, logger);
-	}
+    private final AuthenticatedUser authenticatedUser;
 
-	@Override
-	public AbstractEntityEditor<Conference> createAdditionEditor(EntityEditingContext<Conference> context) {
-		return new EmbeddedConferenceEditor(context, this.conferenceCreationStatusComputer, this.conferenceService, this.authenticatedUser, this.messages);
-	}
+    private final MessageSourceAccessor messages;
 
-	@Override
-	public AbstractEntityEditor<Conference> createUpdateEditor(EntityEditingContext<Conference> context) {
-		return new EmbeddedConferenceEditor(context, this.conferenceCreationStatusComputer, this.conferenceService, this.authenticatedUser, this.messages);
-	}
+    /**
+     * Constructor.
+     *
+     * @param conferenceCreationStatusComputer the tool for computer the creation status for the conferences.
+     * @param conferenceService                the service for accessing to the conference entities.
+     * @param authenticatedUser                the connected user.
+     * @param messages                         the accessor to the localized messages (Spring layer).
+     */
+    public DefaultConferenceEditorFactory(
+            @Autowired ConferenceCreationStatusComputer conferenceCreationStatusComputer,
+            @Autowired ConferenceService conferenceService,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.conferenceCreationStatusComputer = conferenceCreationStatusComputer;
+        this.conferenceService = conferenceService;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+    }
+
+    @Override
+    public EntityEditingContext<Conference> createContextFor(Conference conference, Logger logger) {
+        return this.conferenceService.startEditing(conference, logger);
+    }
+
+    @Override
+    public AbstractEntityEditor<Conference> createAdditionEditor(EntityEditingContext<Conference> context) {
+        return new EmbeddedConferenceEditor(context, this.conferenceCreationStatusComputer, this.conferenceService, this.authenticatedUser, this.messages);
+    }
+
+    @Override
+    public AbstractEntityEditor<Conference> createUpdateEditor(EntityEditingContext<Conference> context) {
+        return new EmbeddedConferenceEditor(context, this.conferenceCreationStatusComputer, this.conferenceService, this.authenticatedUser, this.messages);
+    }
 
 }

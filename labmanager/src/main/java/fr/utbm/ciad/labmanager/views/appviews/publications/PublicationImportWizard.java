@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,8 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Wizard for importing publications.
+/**
+ * Wizard for importing publications.
  *
  * @author $Author: sgalland$
  * @author $Author: pschneiderlin$
@@ -46,28 +47,29 @@ import org.springframework.context.support.MessageSourceAccessor;
 @JsModule("@vaadin/vaadin-lumo-styles/badge.js")
 public class PublicationImportWizard extends DefaultPublicationImportWizard implements HasDynamicTitle {
 
-	private static final long serialVersionUID = 5587493252838946400L;
+    private static final long serialVersionUID = 5587493252838946400L;
 
-	/** Constructor.
-	 *
-	 * @param loggerFactory the factory of the loggers.
-	 * @param publicationService the service for accessing the JPA entities of publications.
-	 * @param editorFactory the factory for the publication editors.
-	 * @param statusComputer the computer of the publication status.
-	 * @param messages the accessor to the localized messages.
-	 */
-	public PublicationImportWizard(
-			@Autowired PublicationService publicationService,
-			@Autowired PublicationEditorFactory editorFactory,
-			@Autowired PublicationCreationStatusComputer statusComputer,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory) {
-		super(publicationService, editorFactory, statusComputer, messages, loggerFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param loggerFactory      the factory of the loggers.
+     * @param publicationService the service for accessing the JPA entities of publications.
+     * @param editorFactory      the factory for the publication editors.
+     * @param statusComputer     the computer of the publication status.
+     * @param messages           the accessor to the localized messages.
+     */
+    public PublicationImportWizard(
+            @Autowired PublicationService publicationService,
+            @Autowired PublicationEditorFactory editorFactory,
+            @Autowired PublicationCreationStatusComputer statusComputer,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory) {
+        super(publicationService, editorFactory, statusComputer, messages, loggerFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.publication.import.title"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.publication.import.title"); //$NON-NLS-1$
+    }
 
 }

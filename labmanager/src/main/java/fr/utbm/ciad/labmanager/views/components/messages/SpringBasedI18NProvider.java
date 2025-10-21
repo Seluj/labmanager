@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,8 +30,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-/** Provider of I18N messages for Vaadin. This providers is linked to the {@link BaseMessageSource Spring message source}.
- * 
+/**
+ * Provider of I18N messages for Vaadin. This providers is linked to the {@link BaseMessageSource Spring message source}.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -41,34 +42,35 @@ import java.util.Locale;
 @Component
 public class SpringBasedI18NProvider extends DefaultI18NProvider {
 
-	private static final long serialVersionUID = 7109279618234895282L;
+    private static final long serialVersionUID = 7109279618234895282L;
 
-	private static final List<Locale> LOCALES;
-		
-	private final BaseMessageSource springMessageSource;
-	
-	static {
-		LOCALES = Arrays.asList(Locale.US, Locale.FRANCE);
-	}
+    private static final List<Locale> LOCALES;
 
-	/** Constructor.
-	 *
-	 * @param springMessageSource the spring message source.
-	 */
-	public SpringBasedI18NProvider(@Autowired BaseMessageSource springMessageSource) {
-		super(LOCALES);
-		this.springMessageSource = springMessageSource;
-	}
+    static {
+        LOCALES = Arrays.asList(Locale.US, Locale.FRANCE);
+    }
 
-	@Override
-	public String getTranslation(String key, Locale locale, Object... params) {
-		assert !Strings.isNullOrEmpty(key);
-		final var concreteLocale = locale == null ? Locale.getDefault() : locale;
-		try {
-			return this.springMessageSource.getMessageSource().getMessage(key, params, concreteLocale);
-		} catch (NoSuchMessageException ex) {
-			return super.getTranslation(key, locale, params);
-		}
-	}
-	
+    private final BaseMessageSource springMessageSource;
+
+    /**
+     * Constructor.
+     *
+     * @param springMessageSource the spring message source.
+     */
+    public SpringBasedI18NProvider(@Autowired BaseMessageSource springMessageSource) {
+        super(LOCALES);
+        this.springMessageSource = springMessageSource;
+    }
+
+    @Override
+    public String getTranslation(String key, Locale locale, Object... params) {
+        assert !Strings.isNullOrEmpty(key);
+        final var concreteLocale = locale == null ? Locale.getDefault() : locale;
+        try {
+            return this.springMessageSource.getMessageSource().getMessage(key, params, concreteLocale);
+        } catch (NoSuchMessageException ex) {
+            return super.getTranslation(key, locale, params);
+        }
+    }
+
 }

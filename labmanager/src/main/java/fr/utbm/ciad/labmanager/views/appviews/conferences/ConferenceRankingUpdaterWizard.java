@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,14 +18,6 @@
  */
 
 package fr.utbm.ciad.labmanager.views.appviews.conferences;
-
-import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
@@ -70,8 +62,17 @@ import org.arakhne.afc.progress.Progression;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/** Wizard for updating the conference rankings.
- * 
+import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+
+/**
+ * Wizard for updating the conference rankings.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -82,384 +83,394 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class ConferenceRankingUpdaterWizard extends AbstractLabManagerWizard<ConferenceRankingUpdate> {
 
-	private static final long serialVersionUID = 5701942600437345213L;
+    private static final long serialVersionUID = 5701942600437345213L;
 
-	/** Constructor.
-	 *
-	 * @param loggerFactory the factory for creating the loggers.
-	 * @param conferenceService the service for accessing the conference entities.
-	 */
-	public ConferenceRankingUpdaterWizard(
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired ConferenceService conferenceService) {
-		this(	loggerFactory, conferenceService,
-				defaultWizardConfiguration(null, false),
-				new ConferenceRankingUpdate());
-	}
+    /**
+     * Constructor.
+     *
+     * @param loggerFactory     the factory for creating the loggers.
+     * @param conferenceService the service for accessing the conference entities.
+     */
+    public ConferenceRankingUpdaterWizard(
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired ConferenceService conferenceService) {
+        this(loggerFactory, conferenceService,
+                defaultWizardConfiguration(null, false),
+                new ConferenceRankingUpdate());
+    }
 
-	/** Constructor.
-	 *
-	 * @param conferenceService the service for accessing the conference entities.
-	 * @param properties the properties of the wizard.
-	 * @param context the data context.
-	 */
-	protected ConferenceRankingUpdaterWizard(
-			ContextualLoggerFactory loggerFactory, ConferenceService conferenceService,
-			WizardConfigurationProperties properties, ConferenceRankingUpdate context) {
-		this(properties, loggerFactory, context, Arrays.asList(
-				new ConferenceInputWizardStep(context),
-				new ConferenceRankLoadingWizardStep(context, conferenceService),
-				new ConferenceRankDownloadWizardStep(context, conferenceService),
-				new ConferenceRankingSummaryWizardStep(context),
-				new ConferenceRankSavingWizardStep(context, conferenceService)));
-	}
+    /**
+     * Constructor.
+     *
+     * @param conferenceService the service for accessing the conference entities.
+     * @param properties        the properties of the wizard.
+     * @param context           the data context.
+     */
+    protected ConferenceRankingUpdaterWizard(
+            ContextualLoggerFactory loggerFactory, ConferenceService conferenceService,
+            WizardConfigurationProperties properties, ConferenceRankingUpdate context) {
+        this(properties, loggerFactory, context, Arrays.asList(
+                new ConferenceInputWizardStep(context),
+                new ConferenceRankLoadingWizardStep(context, conferenceService),
+                new ConferenceRankDownloadWizardStep(context, conferenceService),
+                new ConferenceRankingSummaryWizardStep(context),
+                new ConferenceRankSavingWizardStep(context, conferenceService)));
+    }
 
-	private ConferenceRankingUpdaterWizard(WizardConfigurationProperties properties,
-			ContextualLoggerFactory loggerFactory,
-			ConferenceRankingUpdate context, List<WizardStep<ConferenceRankingUpdate>> steps) {
-		super(properties, loggerFactory, context, steps);
-	}
+    private ConferenceRankingUpdaterWizard(WizardConfigurationProperties properties,
+                                           ContextualLoggerFactory loggerFactory,
+                                           ConferenceRankingUpdate context, List<WizardStep<ConferenceRankingUpdate>> steps) {
+        super(properties, loggerFactory, context, steps);
+    }
 
-	/** Wizard step to input configuration parameters.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	protected static class ConferenceInputWizardStep extends AbstractLabManagerFormWizardStep<ConferenceRankingUpdate> {
+    /**
+     * Wizard step to input configuration parameters.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    protected static class ConferenceInputWizardStep extends AbstractLabManagerFormWizardStep<ConferenceRankingUpdate> {
 
-		private static final long serialVersionUID = -1563783404374252866L;
+        private static final long serialVersionUID = -1563783404374252866L;
 
-		private ComboBox<Integer> yearPicker;
+        private ComboBox<Integer> yearPicker;
 
-		/** Constructor.
-		 *
-		 * @param context the data context.
-		 */
-		public ConferenceInputWizardStep(ConferenceRankingUpdate context) {
-			super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step1.title"), 1); //$NON-NLS-1$
-		}
+        /**
+         * Constructor.
+         *
+         * @param context the data context.
+         */
+        public ConferenceInputWizardStep(ConferenceRankingUpdate context) {
+            super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step1.title"), 1); //$NON-NLS-1$
+        }
 
-		@Override
-		protected Html getInformationMessage() {
-			return null;
-		}
+        @Override
+        protected Html getInformationMessage() {
+            return null;
+        }
 
-		@Override
-		protected boolean commitAfterContextUpdated() {
-			return true;
-		}
+        @Override
+        protected boolean commitAfterContextUpdated() {
+            return true;
+        }
 
-		@Override
-		protected void createForm(FormLayout form) {
-			final var now = LocalDate.now();
-			final var firstYear = now.getYear() - 10;
-			final var lastYear = now.getYear() - 1;
-			final var selectableYears = new ArrayList<Integer>();
-			for (var i = lastYear; i >= firstYear; --i) {
-				selectableYears.add(Integer.valueOf(i));
-			}
-			this.yearPicker = new ComboBox<>("", selectableYears); //$NON-NLS-1$
-			this.yearPicker.setRequired(true);
-			this.yearPicker.setWidth(6, Unit.EM);
-			form.add(this.yearPicker, 1);
+        @Override
+        protected void createForm(FormLayout form) {
+            final var now = LocalDate.now();
+            final var firstYear = now.getYear() - 10;
+            final var lastYear = now.getYear() - 1;
+            final var selectableYears = new ArrayList<Integer>();
+            for (var i = lastYear; i >= firstYear; --i) {
+                selectableYears.add(Integer.valueOf(i));
+            }
+            this.yearPicker = new ComboBox<>("", selectableYears); //$NON-NLS-1$
+            this.yearPicker.setRequired(true);
+            this.yearPicker.setWidth(6, Unit.EM);
+            form.add(this.yearPicker, 1);
 
-			this.binder.forField(this.yearPicker)
-				.withValidator(new NotNullValueValidator<>(ComponentFactory.getTranslation("views.conferences.updateRankings.step1.year.error"))) //$NON-NLS-1$
-				.bind(ConferenceRankingUpdate::getYear, ConferenceRankingUpdate::setYear);
-		}
+            this.binder.forField(this.yearPicker)
+                    .withValidator(new NotNullValueValidator<>(ComponentFactory.getTranslation("views.conferences.updateRankings.step1.year.error"))) //$NON-NLS-1$
+                    .bind(ConferenceRankingUpdate::getYear, ConferenceRankingUpdate::setYear);
+        }
 
-		@Override
-		public void localeChange(LocaleChangeEvent event) {
-			super.localeChange(event);
-			if (this.yearPicker != null) {
-				this.yearPicker.setLabel(ComponentFactory.getTranslation(event.getLocale(), "views.conferences.updateRankings.step1.year")); //$NON-NLS-1$
-				this.yearPicker.setHelperText(ComponentFactory.getTranslation(event.getLocale(), "views.conferences.updateRankings.step1.year.help")); //$NON-NLS-1$
-			}
-		}
+        @Override
+        public void localeChange(LocaleChangeEvent event) {
+            super.localeChange(event);
+            if (this.yearPicker != null) {
+                this.yearPicker.setLabel(ComponentFactory.getTranslation(event.getLocale(), "views.conferences.updateRankings.step1.year")); //$NON-NLS-1$
+                this.yearPicker.setHelperText(ComponentFactory.getTranslation(event.getLocale(), "views.conferences.updateRankings.step1.year.help")); //$NON-NLS-1$
+            }
+        }
 
-	}
+    }
 
-	/** Wizard step for conference rank loading from the database.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	protected static class ConferenceRankLoadingWizardStep extends AbstractLabManagerProgressionWizardStep<ConferenceRankingUpdate> {
+    /**
+     * Wizard step for conference rank loading from the database.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    protected static class ConferenceRankLoadingWizardStep extends AbstractLabManagerProgressionWizardStep<ConferenceRankingUpdate> {
 
-		private static final long serialVersionUID = -7192963760929837830L;
+        private static final long serialVersionUID = -7192963760929837830L;
 
-		private final ConferenceService conferenceService;
-		
-		/** Constructor.
-		 *
-		 * @param context the data to be shared between the wizard steps.
-		 * @param conferenceService the service for accessing to the conferences' JPA entities.
-		 */
-		public ConferenceRankLoadingWizardStep(ConferenceRankingUpdate context, ConferenceService conferenceService) {
-			super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step2.title"), 2, 1, true, false);//$NON-NLS-1$
-			this.conferenceService = conferenceService;
-		}
+        private final ConferenceService conferenceService;
 
-		@Override
-		public BiFunction<Component, String, String> getBackActionMessageSupplier() {
-			return (cmp, tlt) -> ComponentFactory.getTranslation("views.conferences.updateRankings.step2.back.message", tlt); //$NON-NLS-1$
-		}
+        /**
+         * Constructor.
+         *
+         * @param context           the data to be shared between the wizard steps.
+         * @param conferenceService the service for accessing to the conferences' JPA entities.
+         */
+        public ConferenceRankLoadingWizardStep(ConferenceRankingUpdate context, ConferenceService conferenceService) {
+            super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step2.title"), 2, 1, true, false);//$NON-NLS-1$
+            this.conferenceService = conferenceService;
+        }
 
-		@Override
-		public void localeChange(LocaleChangeEvent event) {
-			super.localeChange(event);
-			getMajorText().ifPresent(it -> it.setText(ComponentFactory.getTranslation("views.conferences.updateRankings.step2.comment"))); //$NON-NLS-1$
-		}
+        @Override
+        public BiFunction<Component, String, String> getBackActionMessageSupplier() {
+            return (cmp, tlt) -> ComponentFactory.getTranslation("views.conferences.updateRankings.step2.back.message", tlt); //$NON-NLS-1$
+        }
 
-		@Override
-		protected SerializableExceptionProvider<String> createAsynchronousTask(int taskNo, Progression progression) {
-			final var terminationMessage = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step2.conference_read"); //$NON-NLS-1$
-			return () -> {
-				final var identifiers = getContext().getEntityIdentifiers();
-				progression.increment(5);
-				final Consumer<Conference> callback = it -> {
-					// Force loading of quality indicators for the conferences
-					Hibernate.initialize(it.getQualityIndicators());
-				};
-				final List<Conference> conferences;
-				if (identifiers == null || identifiers.isEmpty()) {
-					conferences = this.conferenceService.getAllConferences(callback);
-				} else {
-					conferences = this.conferenceService.getAllConferences((root, query, criteriaBuilder) -> {
-						Predicate pred = null;
-						for (final var id : identifiers) {
-							final var p = criteriaBuilder.equal(root.get("id"), id); //$NON-NLS-1$
-							if (pred == null) {
-								pred = p;
-							} else {
-								pred = criteriaBuilder.or(pred, p);
-							}
-						}
-						return pred;
-					}, callback);
-				}
-				progression.increment(90);
-				getContext().setConferences(conferences);
-				return terminationMessage;
-			};
-		}
+        @Override
+        public void localeChange(LocaleChangeEvent event) {
+            super.localeChange(event);
+            getMajorText().ifPresent(it -> it.setText(ComponentFactory.getTranslation("views.conferences.updateRankings.step2.comment"))); //$NON-NLS-1$
+        }
 
-	}
+        @Override
+        protected SerializableExceptionProvider<String> createAsynchronousTask(int taskNo, Progression progression) {
+            final var terminationMessage = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step2.conference_read"); //$NON-NLS-1$
+            return () -> {
+                final var identifiers = getContext().getEntityIdentifiers();
+                progression.increment(5);
+                final Consumer<Conference> callback = it -> {
+                    // Force loading of quality indicators for the conferences
+                    Hibernate.initialize(it.getQualityIndicators());
+                };
+                final List<Conference> conferences;
+                if (identifiers == null || identifiers.isEmpty()) {
+                    conferences = this.conferenceService.getAllConferences(callback);
+                } else {
+                    conferences = this.conferenceService.getAllConferences((root, query, criteriaBuilder) -> {
+                        Predicate pred = null;
+                        for (final var id : identifiers) {
+                            final var p = criteriaBuilder.equal(root.get("id"), id); //$NON-NLS-1$
+                            if (pred == null) {
+                                pred = p;
+                            } else {
+                                pred = criteriaBuilder.or(pred, p);
+                            }
+                        }
+                        return pred;
+                    }, callback);
+                }
+                progression.increment(90);
+                getContext().setConferences(conferences);
+                return terminationMessage;
+            };
+        }
 
-	/** Wizard step for downloading the ranking updates.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	protected static class ConferenceRankDownloadWizardStep extends AbstractLabManagerProgressionWizardStep<ConferenceRankingUpdate> {
+    }
 
-		private static final long serialVersionUID = 6901698283852123579L;
+    /**
+     * Wizard step for downloading the ranking updates.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    protected static class ConferenceRankDownloadWizardStep extends AbstractLabManagerProgressionWizardStep<ConferenceRankingUpdate> {
 
-		private final ConferenceService conferenceService;
+        private static final long serialVersionUID = 6901698283852123579L;
 
-		/** Constructor.
-		 *
-		 * @param context the data to be shared between the wizard steps.
-		 * @param conferenceService the service for accessing to the conferences' JPA entities.
-		 */
-		public ConferenceRankDownloadWizardStep(ConferenceRankingUpdate context, ConferenceService conferenceService) {
-			super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step3.title"), 3, 1, true, false);//$NON-NLS-1$
-			this.conferenceService = conferenceService;
-		}
+        private final ConferenceService conferenceService;
 
-		@Override
-		public BiFunction<Component, String, String> getBackActionMessageSupplier() {
-			return (cmp, tlt) -> ComponentFactory.getTranslation("views.conferences.updateRankings.step3.back.message", tlt); //$NON-NLS-1$
-		}
+        /**
+         * Constructor.
+         *
+         * @param context           the data to be shared between the wizard steps.
+         * @param conferenceService the service for accessing to the conferences' JPA entities.
+         */
+        public ConferenceRankDownloadWizardStep(ConferenceRankingUpdate context, ConferenceService conferenceService) {
+            super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step3.title"), 3, 1, true, false);//$NON-NLS-1$
+            this.conferenceService = conferenceService;
+        }
 
-		@Override
-		public void localeChange(LocaleChangeEvent event) {
-			super.localeChange(event);
-			getMajorText().ifPresent(it -> it.setText(ComponentFactory.getTranslation("views.conferences.updateRankings.step3.comment"))); //$NON-NLS-1$
-		}
+        @Override
+        public BiFunction<Component, String, String> getBackActionMessageSupplier() {
+            return (cmp, tlt) -> ComponentFactory.getTranslation("views.conferences.updateRankings.step3.back.message", tlt); //$NON-NLS-1$
+        }
 
-		@Override
-		protected Component getProgressIcon(int taskNo) {
-			final var image = new Image(ComponentFactory.newStreamImage(ViewConstants.CORE_PORTAL_ICON), ViewConstants.CORE_PORTAL_BASE_URL);
-			image.setMinHeight(ViewConstants.ICON_SIZE, Unit.POINTS);
-			image.setMaxHeight(ViewConstants.MAX_ICON_SIZE, Unit.POINTS);
-			image.setMinWidth(ViewConstants.ICON_SIZE, Unit.POINTS);
-			image.setMaxWidth(ViewConstants.MAX_ICON_SIZE, Unit.POINTS);
-			final var style = image.getStyle();
-			style.setAlignSelf(AlignSelf.BASELINE);
-			style.setMarginRight("var(--lumo-space-s)"); //$NON-NLS-1$
-			return image;
-		}
+        @Override
+        public void localeChange(LocaleChangeEvent event) {
+            super.localeChange(event);
+            getMajorText().ifPresent(it -> it.setText(ComponentFactory.getTranslation("views.conferences.updateRankings.step3.comment"))); //$NON-NLS-1$
+        }
 
-		@Override
-		protected SerializableExceptionProvider<String> createAsynchronousTask(int taskNo, Progression progression) {
-			final var pattern0 = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step3.download_core"); //$NON-NLS-1$
-			final var extendedProgression0 = ProgressExtension.withCommentFormatter(progression, it -> MessageFormat.format(pattern0, it));
-			final var terminationMessage0 = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step3.core_downloaded"); //$NON-NLS-1$
-			return () -> {
-				this.conferenceService.downloadConferenceIndicatorsFromCore(
-						getContext().getYear(), getContext().getConferences(),
-						getLogger(),
-						extendedProgression0,
-						(referenceYear, conferenceId, oldRanking, newRanking) -> getContext().addRanking(conferenceId, oldRanking, newRanking));
-				return terminationMessage0;
-			};
-		}
+        @Override
+        protected Component getProgressIcon(int taskNo) {
+            final var image = new Image(ComponentFactory.newStreamImage(ViewConstants.CORE_PORTAL_ICON), ViewConstants.CORE_PORTAL_BASE_URL);
+            image.setMinHeight(ViewConstants.ICON_SIZE, Unit.POINTS);
+            image.setMaxHeight(ViewConstants.MAX_ICON_SIZE, Unit.POINTS);
+            image.setMinWidth(ViewConstants.ICON_SIZE, Unit.POINTS);
+            image.setMaxWidth(ViewConstants.MAX_ICON_SIZE, Unit.POINTS);
+            final var style = image.getStyle();
+            style.setAlignSelf(AlignSelf.BASELINE);
+            style.setMarginRight("var(--lumo-space-s)"); //$NON-NLS-1$
+            return image;
+        }
 
-	}
+        @Override
+        protected SerializableExceptionProvider<String> createAsynchronousTask(int taskNo, Progression progression) {
+            final var pattern0 = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step3.download_core"); //$NON-NLS-1$
+            final var extendedProgression0 = ProgressExtension.withCommentFormatter(progression, it -> MessageFormat.format(pattern0, it));
+            final var terminationMessage0 = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step3.core_downloaded"); //$NON-NLS-1$
+            return () -> {
+                this.conferenceService.downloadConferenceIndicatorsFromCore(
+                        getContext().getYear(), getContext().getConferences(),
+                        getLogger(),
+                        extendedProgression0,
+                        (referenceYear, conferenceId, oldRanking, newRanking) -> getContext().addRanking(conferenceId, oldRanking, newRanking));
+                return terminationMessage0;
+            };
+        }
 
-	/** Wizard step to summarize the updates of the conference ranking informations.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	protected static class ConferenceRankingSummaryWizardStep extends AbstractLabManagerWizardStep<ConferenceRankingUpdate> {
+    }
 
-		private static final long serialVersionUID = -72237848939790719L;
+    /**
+     * Wizard step to summarize the updates of the conference ranking informations.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    protected static class ConferenceRankingSummaryWizardStep extends AbstractLabManagerWizardStep<ConferenceRankingUpdate> {
 
-		private Grid<ConferenceNewInformation> grid;
+        private static final long serialVersionUID = -72237848939790719L;
 
-		private Column<ConferenceNewInformation> nameColumn;
-		
-		private Column<ConferenceNewInformation> coreColumn;
+        private Grid<ConferenceNewInformation> grid;
 
-		/** Constructor.
-		 *
-		 * @param context the data context.
-		 */
-		public ConferenceRankingSummaryWizardStep(ConferenceRankingUpdate context) {
-			super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step4.title"), 4); //$NON-NLS-1$
-		}
+        private Column<ConferenceNewInformation> nameColumn;
 
-		@Override
-		public Div getLayout() {
-			this.grid = new Grid<>(ConferenceNewInformation.class, false);
-			this.grid.setPageSize(ViewConstants.GRID_PAGE_SIZE);
-			this.grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-			this.grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
-			this.grid.setSelectionMode(SelectionMode.NONE);
+        private Column<ConferenceNewInformation> coreColumn;
 
-			this.nameColumn = this.grid.addColumn(info -> info.conference().getAcronymAndName())
-					.setAutoWidth(true).setSortable(true);
-			this.coreColumn = this.grid.addColumn(info -> toString(info.oldRanking(), info.newRanking()))
-					.setAutoWidth(true).setSortable(true);
+        /**
+         * Constructor.
+         *
+         * @param context the data context.
+         */
+        public ConferenceRankingSummaryWizardStep(ConferenceRankingUpdate context) {
+            super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step4.title"), 4); //$NON-NLS-1$
+        }
 
-			this.grid.sort(GridSortOrder.asc(this.nameColumn).build());
+        private static String toString(CoreRanking oldRanking, CoreRanking newRanking) {
+            if (oldRanking != null && newRanking != null) {
+                return oldRanking +
+                        " \u2B95 " + //$NON-NLS-1$
+                        newRanking;
+            }
+            return ""; //$NON-NLS-1$
+        }
 
-			this.grid.setItems(new ListDataProvider<>(getContext().getConferenceUpdates().toList()));
+        @Override
+        public Div getLayout() {
+            this.grid = new Grid<>(ConferenceNewInformation.class, false);
+            this.grid.setPageSize(ViewConstants.GRID_PAGE_SIZE);
+            this.grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+            this.grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
+            this.grid.setSelectionMode(SelectionMode.NONE);
 
-			return new Div(this.grid);
-		}
-		
-		@Override
-		public void localeChange(LocaleChangeEvent event) {
-			super.localeChange(event);
-			if (this.nameColumn != null) {
-				this.nameColumn.setHeader(ComponentFactory.getTranslation("views.conferences.updateRankings.step4.conference_name")); //$NON-NLS-1$
-			}
-			if (this.coreColumn != null) {
-				this.coreColumn.setHeader(ComponentFactory.getTranslation("views.conferences.updateRankings.step4.core")); //$NON-NLS-1$
-			}
-		}
+            this.nameColumn = this.grid.addColumn(info -> info.conference().getAcronymAndName())
+                    .setAutoWidth(true).setSortable(true);
+            this.coreColumn = this.grid.addColumn(info -> toString(info.oldRanking(), info.newRanking()))
+                    .setAutoWidth(true).setSortable(true);
 
-		private static String toString(CoreRanking oldRanking, CoreRanking newRanking) {
-			if (oldRanking != null && newRanking != null) {
-				return new StringBuilder()
-						.append(oldRanking.toString())
-						.append(" \u2B95 ") //$NON-NLS-1$
-						.append(newRanking.toString())
-						.toString();
-			}
-			return ""; //$NON-NLS-1$
-		}
+            this.grid.sort(GridSortOrder.asc(this.nameColumn).build());
 
-		@Override
-		public boolean isValid() {
-			return this.grid.getListDataView().getItemCount() > 0;
-		}
+            this.grid.setItems(new ListDataProvider<>(getContext().getConferenceUpdates().toList()));
 
-		@Override
-		public boolean commit() {
-			return true;
-		}
+            return new Div(this.grid);
+        }
 
-	}
+        @Override
+        public void localeChange(LocaleChangeEvent event) {
+            super.localeChange(event);
+            if (this.nameColumn != null) {
+                this.nameColumn.setHeader(ComponentFactory.getTranslation("views.conferences.updateRankings.step4.conference_name")); //$NON-NLS-1$
+            }
+            if (this.coreColumn != null) {
+                this.coreColumn.setHeader(ComponentFactory.getTranslation("views.conferences.updateRankings.step4.core")); //$NON-NLS-1$
+            }
+        }
 
-	/** Wizard step for saving the ranking updates.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	protected static class ConferenceRankSavingWizardStep extends AbstractLabManagerProgressionWizardStep<ConferenceRankingUpdate> {
+        @Override
+        public boolean isValid() {
+            return this.grid.getListDataView().getItemCount() > 0;
+        }
 
-		private static final long serialVersionUID = 6508993951334784831L;
+        @Override
+        public boolean commit() {
+            return true;
+        }
 
-		private final ConferenceService conferenceService;
+    }
 
-		/** Constructor.
-		 *
-		 * @param context the data to be shared between the wizard steps.
-		 * @param conferenceService the service for accessing to the conferences' JPA entities.
-		 */
-		public ConferenceRankSavingWizardStep(ConferenceRankingUpdate context, ConferenceService conferenceService) {
-			super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step5.title"), 5, 1, false, true);//$NON-NLS-1$
-			this.conferenceService = conferenceService;
-		}
+    /**
+     * Wizard step for saving the ranking updates.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    protected static class ConferenceRankSavingWizardStep extends AbstractLabManagerProgressionWizardStep<ConferenceRankingUpdate> {
 
-		@Override
-		public BiFunction<Component, String, String> getBackActionMessageSupplier() {
-			return (cmp, tlt) -> ComponentFactory.getTranslation("views.conferences.updateRankings.step5.back.message", tlt); //$NON-NLS-1$
-		}
+        private static final long serialVersionUID = 6508993951334784831L;
 
-		@Override
-		public void localeChange(LocaleChangeEvent event) {
-			super.localeChange(event);
-			getMajorText().ifPresent(it -> it.setText(ComponentFactory.getTranslation("views.conferences.updateRankings.step5.comment"))); //$NON-NLS-1$
-		}
+        private final ConferenceService conferenceService;
 
-		@Override
-		protected Component getProgressIcon(int taskNo) {
-			final var image = VaadinIcon.COG.create();
-			final var style = image.getStyle();
-			style.setAlignSelf(AlignSelf.BASELINE);
-			style.setMarginRight("var(--lumo-space-s)"); //$NON-NLS-1$
-			return image;
-		}
+        /**
+         * Constructor.
+         *
+         * @param context           the data to be shared between the wizard steps.
+         * @param conferenceService the service for accessing to the conferences' JPA entities.
+         */
+        public ConferenceRankSavingWizardStep(ConferenceRankingUpdate context, ConferenceService conferenceService) {
+            super(context, ComponentFactory.getTranslation("views.conferences.updateRankings.step5.title"), 5, 1, false, true);//$NON-NLS-1$
+            this.conferenceService = conferenceService;
+        }
 
-		@Override
-		protected SerializableExceptionProvider<String> createAsynchronousTask(int taskNo, Progression progression) {
-			final var pattern0 = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step5.saving"); //$NON-NLS-1$
-			final var extendedProgression0 = ProgressExtension.withCommentFormatter(progression, it -> MessageFormat.format(pattern0, it));
-			final var terminationMessage0 = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step5.end"); //$NON-NLS-1$
-			return () -> {
-				final var context = getContext();
-				this.conferenceService.updateConferenceIndicators(context.getYear(),
-						context.getConferenceUpdates().map(it -> {
-							final var conference = it.conference();
-							final var ranking = it.newRanking();
-							return new ConferenceRankingUpdateInformation(conference, ranking);
-						}).toList(),
-						getLogger(),
-						extendedProgression0);
-				return terminationMessage0;
-			};
-		}
+        @Override
+        public BiFunction<Component, String, String> getBackActionMessageSupplier() {
+            return (cmp, tlt) -> ComponentFactory.getTranslation("views.conferences.updateRankings.step5.back.message", tlt); //$NON-NLS-1$
+        }
 
-	}
+        @Override
+        public void localeChange(LocaleChangeEvent event) {
+            super.localeChange(event);
+            getMajorText().ifPresent(it -> it.setText(ComponentFactory.getTranslation("views.conferences.updateRankings.step5.comment"))); //$NON-NLS-1$
+        }
+
+        @Override
+        protected Component getProgressIcon(int taskNo) {
+            final var image = VaadinIcon.COG.create();
+            final var style = image.getStyle();
+            style.setAlignSelf(AlignSelf.BASELINE);
+            style.setMarginRight("var(--lumo-space-s)"); //$NON-NLS-1$
+            return image;
+        }
+
+        @Override
+        protected SerializableExceptionProvider<String> createAsynchronousTask(int taskNo, Progression progression) {
+            final var pattern0 = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step5.saving"); //$NON-NLS-1$
+            final var extendedProgression0 = ProgressExtension.withCommentFormatter(progression, it -> MessageFormat.format(pattern0, it));
+            final var terminationMessage0 = getWizard().orElseThrow().getTranslation("views.conferences.updateRankings.step5.end"); //$NON-NLS-1$
+            return () -> {
+                final var context = getContext();
+                this.conferenceService.updateConferenceIndicators(context.getYear(),
+                        context.getConferenceUpdates().map(it -> {
+                            final var conference = it.conference();
+                            final var ranking = it.newRanking();
+                            return new ConferenceRankingUpdateInformation(conference, ranking);
+                        }).toList(),
+                        getLogger(),
+                        extendedProgression0);
+                return terminationMessage0;
+            };
+        }
+
+    }
 
 }

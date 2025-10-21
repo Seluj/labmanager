@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
-/** A converter from double to float.
- * 
+/**
+ * A converter from double to float.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,22 +34,22 @@ import com.vaadin.flow.data.converter.Converter;
  */
 public class DoubleToFloatConverter implements Converter<Double, Float> {
 
-	private static final long serialVersionUID = 8089235500647403698L;
+    private static final long serialVersionUID = 8089235500647403698L;
 
-	@Override
-	public Result<Float> convertToModel(Double value, ValueContext context) {
-		if (value == null) {
-			return Result.ok(Float.valueOf(0f));
-		}
-		return Result.ok(Float.valueOf(value.floatValue()));
-	}
+    @Override
+    public Result<Float> convertToModel(Double value, ValueContext context) {
+        if (value == null) {
+            return Result.ok(Float.valueOf(0f));
+        }
+        return Result.ok(Float.valueOf(value.floatValue()));
+    }
 
-	@Override
-	public Double convertToPresentation(Float value, ValueContext context) {
-		if (value == null) {
-			return Double.valueOf(0.);
-		}
-		return Double.valueOf(value.doubleValue());
-	}
+    @Override
+    public Double convertToPresentation(Float value, ValueContext context) {
+        if (value == null) {
+            return Double.valueOf(0.);
+        }
+        return Double.valueOf(value.doubleValue());
+    }
 
 }

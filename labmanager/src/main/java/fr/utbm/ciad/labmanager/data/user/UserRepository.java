@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 import java.util.Optional;
 
-/** JPA repository for application users.
- * 
+/**
+ * JPA repository for application users.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,27 +36,30 @@ import java.util.Optional;
  */
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-	/** Replies the application user with the given login.
-	 *
-	 * @param login the login to search for.
-	 * @return the user.
-	 */
-	Optional<User> findByLogin(String login);
+    /**
+     * Replies the application user with the given login.
+     *
+     * @param login the login to search for.
+     * @return the user.
+     */
+    Optional<User> findByLogin(String login);
 
-	/** Replies the application user with the given person id.
-	 *
-	 * @param personId the identifier of the person to search for.
-	 * @return the user.
-	 */
-	Optional<User> findByPersonId(long personId);
+    /**
+     * Replies the application user with the given person id.
+     *
+     * @param personId the identifier of the person to search for.
+     * @return the user.
+     */
+    Optional<User> findByPersonId(long personId);
 
-	/** Replies all the application users with the given role.
-	 *
-	 * @param role the role to search for.
-	 * @return the list of users.
-	 * @deprecated no replacement
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	List<User> findDistinctByRole(UserRole role);
+    /**
+     * Replies all the application users with the given role.
+     *
+     * @param role the role to search for.
+     * @return the list of users.
+     * @deprecated no replacement
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    List<User> findDistinctByRole(UserRole role);
 
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  * Copyright (c) 2019 Kaspar Scherrer
  *
@@ -20,14 +20,15 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.localization;
 
-import java.util.Locale;
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import fr.utbm.ciad.labmanager.utils.country.CountryCode;
 
-/** Item renderer for the language select that is rendering only the flag and not the language name.
+import java.util.Locale;
+
+/**
+ * Item renderer for the language select that is rendering only the flag and not the language name.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -37,26 +38,27 @@ import fr.utbm.ciad.labmanager.utils.country.CountryCode;
  */
 public class LanguageSelectFlagItemRenderer extends AbstractLanguageSelectItemRenderer {
 
-	private static final long serialVersionUID = -2304075478884549020L;
+    private static final long serialVersionUID = -2304075478884549020L;
 
-	/** Constructor.
-	 *
-	 * @param locale the current locale for displaying the names.
-	 */
-	protected LanguageSelectFlagItemRenderer(Locale locale) {
-		super(locale);
-	}
+    /**
+     * Constructor.
+     *
+     * @param locale the current locale for displaying the names.
+     */
+    protected LanguageSelectFlagItemRenderer(Locale locale) {
+        super(locale);
+    }
 
-	@Override
-	public Component apply(Locale item) {
-		final var wrapper = new FlexLayout();
-	    wrapper.setAlignItems(Alignment.CENTER);
+    @Override
+    public Component apply(Locale item) {
+        final var wrapper = new FlexLayout();
+        wrapper.setAlignItems(Alignment.CENTER);
 
-	    final var countryCode = CountryCode.fromLocale(item);
-		final var flag = getLanguageFlag(countryCode);
+        final var countryCode = CountryCode.fromLocale(item);
+        final var flag = getLanguageFlag(countryCode);
 
-		wrapper.add(flag);
-	    return wrapper;
-	}
+        wrapper.add(flag);
+        return wrapper;
+    }
 
 }

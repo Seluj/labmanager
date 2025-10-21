@@ -27,7 +27,8 @@ import fr.utbm.ciad.labmanager.utils.builders.ConstructionPropertiesBuilder;
 import fr.utbm.ciad.labmanager.views.components.addons.entities.EntityCreationStatusComputer;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of person information that may be embedded. This editor does not provide
+/**
+ * Editor of person information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited person.
  *
@@ -41,18 +42,19 @@ public final class EmbeddedPersonEditor extends AbstractPersonEditor {
 
     private static final long serialVersionUID = 3928100811567654630L;
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param userContext the editing context for the user.
-	 * @param personCreationStatusComputer the tool for computer the creation status for the persons.
-	 * @param personService the service for accessing to the person entities.
-     * @param authenticatedUser the connected user.
-     * @param messages the accessor to the localized messages (Spring layer).
+     * @param userContext                  the editing context for the user.
+     * @param personCreationStatusComputer the tool for computer the creation status for the persons.
+     * @param personService                the service for accessing to the person entities.
+     * @param authenticatedUser            the connected user.
+     * @param messages                     the accessor to the localized messages (Spring layer).
      */
     public EmbeddedPersonEditor(UserEditingContext userContext,
-    		EntityCreationStatusComputer<Person> personCreationStatusComputer,
-    		PersonService personService, AuthenticatedUser authenticatedUser,
-    		MessageSourceAccessor messages) {
+                                EntityCreationStatusComputer<Person> personCreationStatusComputer,
+                                PersonService personService, AuthenticatedUser authenticatedUser,
+                                MessageSourceAccessor messages) {
         super(userContext, personCreationStatusComputer, personService, false, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
         createEditorContentAndLinkBeans();
     }

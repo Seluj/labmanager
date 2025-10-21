@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import org.springframework.stereotype.Component;
 
 import java.net.Proxy.Type;
 
-/** A wrapper for the network connection that assumes a connection from the UTBM network.
- * 
+/**
+ * A wrapper for the network connection that assumes a connection from the UTBM network.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -38,20 +39,20 @@ public class UtbmNetConnection extends AbstractProxyNetConnection {
 
     private static final int PROXY_PORT = 3128;
 
-	@Override
-	protected int getProxyPort() {
-		return PROXY_PORT;
-	}
+    @Override
+    protected int getProxyPort() {
+        return PROXY_PORT;
+    }
 
-	@Override
-	protected Type getProxyType() {
-		return Type.HTTP;
-	}
+    @Override
+    protected Type getProxyType() {
+        return Type.HTTP;
+    }
 
-	@Override
-	protected String getProxyAddress() {
-		return PROXY_URL;
-	}
+    @Override
+    protected String getProxyAddress() {
+        return PROXY_URL;
+    }
 
 }
 

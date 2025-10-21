@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-/** Describe the type of the students in teaching activities.
- * 
+/**
+ * Describe the type of the students in teaching activities.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -37,59 +38,65 @@ import java.util.stream.Collectors;
  */
 public enum StudentType {
 
-	/** Students are in their initial training.
-	 */
-	INITIAL_TRAINING,
+    /**
+     * Students are in their initial training.
+     */
+    INITIAL_TRAINING,
 
-	/** Students are in apprenticeship.
-	 */
-	APPRENTICESHIP,
+    /**
+     * Students are in apprenticeship.
+     */
+    APPRENTICESHIP,
 
-	/** Students are doing there teaching activities during their professional career.
-	 */
-	CONTINUOUS;
+    /**
+     * Students are doing there teaching activities during their professional career.
+     */
+    CONTINUOUS;
 
-	private static final String MESSAGE_PREFIX = "studentType."; //$NON-NLS-1$
+    private static final String MESSAGE_PREFIX = "studentType."; //$NON-NLS-1$
 
-	/** Replies the label of the student type in the given language.
-	 *
-	 * @param messages the accessor to the localized labels.
-	 * @param locale the locale to use.
-	 * @return the label of the student type in the given  language.
-	 */
-	public String getLabel(MessageSourceAccessor messages, Locale locale) {
-		final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
-		return Strings.nullToEmpty(label);
-	}
+    /**
+     * Replies the student type that corresponds to the given name, with a case-insensitive
+     * test of the name.
+     *
+     * @param name the name of the student type, to search for.
+     * @return the student type.
+     * @throws IllegalArgumentException if the given name does not corresponds to a student type.
+     */
+    public static StudentType valueOfCaseInsensitive(String name) {
+        if (!Strings.isNullOrEmpty(name)) {
+            for (final var ranking : values()) {
+                if (name.equalsIgnoreCase(ranking.name())) {
+                    return ranking;
+                }
+            }
+        }
+        throw new IllegalArgumentException("Invalid student type: " + name); //$NON-NLS-1$
+    }
 
-	/** Replies the student type that corresponds to the given name, with a case-insensitive
-	 * test of the name.
-	 *
-	 * @param name the name of the student type, to search for.
-	 * @return the student type.
-	 * @throws IllegalArgumentException if the given name does not corresponds to a student type.
-	 */
-	public static StudentType valueOfCaseInsensitive(String name) {
-		if (!Strings.isNullOrEmpty(name)) {
-			for (final var ranking : values()) {
-				if (name.equalsIgnoreCase(ranking.name())) {
-					return ranking;
-				}
-			}
-		}
-		throw new IllegalArgumentException("Invalid student type: " + name); //$NON-NLS-1$
-	}
+    /**
+     * Replies all the student types sorted according to their display names.
+     *
+     * @param messages the accessor to the localized labels.
+     * @param locale   the locale to use.
+     * @return the list of all the types.
+     */
+    public static List<StudentType> getAllDisplayTypes(MessageSourceAccessor messages, Locale locale) {
+        return Arrays.asList(values()).stream().sorted(
+                        (a, b) -> a.getLabel(messages, locale).compareToIgnoreCase(b.getLabel(messages, locale)))
+                .collect(Collectors.toList());
+    }
 
-	/** Replies all the student types sorted according to their display names.
-	 *
-	 * @param messages the accessor to the localized labels.
-	 * @param locale the locale to use.
-	 * @return the list of all the types.
-	 */
-	public static List<StudentType> getAllDisplayTypes(MessageSourceAccessor messages, Locale locale) {
-		return Arrays.asList(values()).stream().sorted(
-				(a, b) -> a.getLabel(messages, locale).compareToIgnoreCase(b.getLabel(messages, locale)))
-				.collect(Collectors.toList());
-	}
+    /**
+     * Replies the label of the student type in the given language.
+     *
+     * @param messages the accessor to the localized labels.
+     * @param locale   the locale to use.
+     * @return the label of the student type in the given  language.
+     */
+    public String getLabel(MessageSourceAccessor messages, Locale locale) {
+        final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
+        return Strings.nullToEmpty(label);
+    }
 
 }

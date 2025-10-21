@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import fr.utbm.ciad.labmanager.data.publication.Publication;
 
 import java.util.Collection;
 
-/** Provider of publication that are not coming from the database.
- * 
+/**
+ * Provider of publication that are not coming from the database.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,10 +34,11 @@ import java.util.Collection;
  */
 public interface ExtraPublicationProvider {
 
-	/** Replies the extra publications that are not provided by the database.
-	 *
-	 * @return the publications.
-	 */
-	Collection<Publication> getPublications();
+    /**
+     * Replies the extra publications that are not provided by the database.
+     *
+     * @return the publications.
+     */
+    Collection<Publication> getPublications();
 
 }

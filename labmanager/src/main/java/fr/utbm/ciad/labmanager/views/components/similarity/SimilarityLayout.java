@@ -6,7 +6,8 @@ import fr.utbm.ciad.labmanager.views.components.similarity.buttons.AbstractSimil
 import java.util.List;
 import java.util.Set;
 
-/** Represent an Interface for a specific layout for the similarity options.
+/**
+ * Represent an Interface for a specific layout for the similarity options.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -16,22 +17,26 @@ import java.util.Set;
  */
 public interface SimilarityLayout<T> {
 
-    /** Create the grids.
+    /**
+     * Create the grids.
      */
     void createGrids(double threshold);
 
-    /** Get the entity duplicates.
+    /**
+     * Get the entity duplicates.
      *
      * @param threshold the threshold
      * @return the duplicates
      */
     List<Set<T>> getDuplicates(double threshold);
 
-    /** Set the grid headers.
+    /**
+     * Set the grid headers.
      */
     void setGridHeaders(Grid<T> grid);
 
-    /** Create new button
+    /**
+     * Create new button
      */
     AbstractSimilarityNativeButtonRenderer<T> createButton(Grid<T> grid, List<Grid<T>> grids);
 }

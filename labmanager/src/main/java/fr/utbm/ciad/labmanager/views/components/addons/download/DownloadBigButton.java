@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.download;
 
-import java.lang.ref.WeakReference;
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Unit;
@@ -29,8 +27,11 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.AbstractIcon;
 import com.vaadin.flow.function.SerializableSupplier;
 
-/** A button that enables to download a file, with a big icon.
- * 
+import java.lang.ref.WeakReference;
+
+/**
+ * A button that enables to download a file, with a big icon.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -39,80 +40,84 @@ import com.vaadin.flow.function.SerializableSupplier;
  */
 public class DownloadBigButton extends Button {
 
-	private static final long serialVersionUID = 8484095728459257303L;
+    private static final long serialVersionUID = 8484095728459257303L;
 
-	private static final int BUTTON_WIDTH = 512;
+    private static final int BUTTON_WIDTH = 512;
 
-	private static final int BUTTON_HEIGHT = 164;
-	
-	private static final int ICON_MIN_HEIGHT = 32;
+    private static final int BUTTON_HEIGHT = 164;
 
-	private static final int ICON_MIN_WIDTH = 32;
+    private static final int ICON_MIN_HEIGHT = 32;
 
-	private static final int ICON_MAX_HEIGHT = 128;
+    private static final int ICON_MIN_WIDTH = 32;
 
-	private static final int ICON_MAX_WIDTH = 128;
+    private static final int ICON_MAX_HEIGHT = 128;
 
-	private static final String ICON_SIZE_STR = new StringBuilder().append(ICON_MAX_WIDTH).append(Unit.PIXELS.getSymbol()).toString();
-	
-	private static final String BUTTON_MARGIN_STR = new StringBuilder().append(10).append(Unit.PIXELS.getSymbol()).toString();
+    private static final int ICON_MAX_WIDTH = 128;
 
-	private final WeakReference<DownloadExtension<? extends Button>> configurator;
-	
-	/** Constructor.
-	 *
-	 * @param dialogTitle the title of the download dialog box.
-	 */
+    private static final String ICON_SIZE_STR = ICON_MAX_WIDTH + Unit.PIXELS.getSymbol();
+
+    private static final String BUTTON_MARGIN_STR = 10 + Unit.PIXELS.getSymbol();
+
+    private final WeakReference<DownloadExtension<? extends Button>> configurator;
+
+    /**
+     * Constructor.
+     *
+     * @param dialogTitle the title of the download dialog box.
+     */
     protected DownloadBigButton(String dialogTitle) {
-    	setMinHeight(BUTTON_HEIGHT, Unit.PIXELS);
-    	setMaxHeight(BUTTON_HEIGHT, Unit.PIXELS);
-    	setMinWidth(BUTTON_WIDTH, Unit.PIXELS);
-    	setMaxWidth(BUTTON_WIDTH, Unit.PIXELS);
-    	setWhiteSpace(WhiteSpace.NORMAL);
-    	addThemeVariants(ButtonVariant.LUMO_LARGE);
-    	getStyle().setMargin(BUTTON_MARGIN_STR);
+        setMinHeight(BUTTON_HEIGHT, Unit.PIXELS);
+        setMaxHeight(BUTTON_HEIGHT, Unit.PIXELS);
+        setMinWidth(BUTTON_WIDTH, Unit.PIXELS);
+        setMaxWidth(BUTTON_WIDTH, Unit.PIXELS);
+        setWhiteSpace(WhiteSpace.NORMAL);
+        addThemeVariants(ButtonVariant.LUMO_LARGE);
+        getStyle().setMargin(BUTTON_MARGIN_STR);
 
-    	final var config = DownloadExtension.<Button>extend(this);
-    	this.configurator = new WeakReference<>(config);
-    	
-    	config.withProgressTitle(dialogTitle);
+        final var config = DownloadExtension.extend(this);
+        this.configurator = new WeakReference<>(config);
+
+        config.withProgressTitle(dialogTitle);
     }
 
-	/** Factory method for a big button for downloading a file.
-	 *
-	 * @param <C> the type of the button.
-	 * @param dialogTitle the title of the download dialog box.
-	 * @param iconProvider the lambda that provides the icon for the button and the download dialog.
-	 * @return the button.
-	 */
-	public static <C extends Component & HasSize> DownloadBigButton newButtonWithComponent(String dialogTitle, SerializableSupplier<C> iconProvider) {
-		final var button = new DownloadBigButton(dialogTitle);
-		final var buttonIcon = iconProvider.get();
-		buttonIcon.setMinHeight(ICON_MIN_HEIGHT, Unit.PIXELS);
-		buttonIcon.setMaxHeight(ICON_MAX_HEIGHT, Unit.PIXELS);
-		buttonIcon.setMinWidth(ICON_MIN_WIDTH, Unit.PIXELS);
-		buttonIcon.setMaxWidth(ICON_MAX_WIDTH, Unit.PIXELS);
-		button.setIcon(buttonIcon);
-		button.configure().withProgressIcon(iconProvider.get());
-		return button;
-	}
+    /**
+     * Factory method for a big button for downloading a file.
+     *
+     * @param <C>          the type of the button.
+     * @param dialogTitle  the title of the download dialog box.
+     * @param iconProvider the lambda that provides the icon for the button and the download dialog.
+     * @return the button.
+     */
+    public static <C extends Component & HasSize> DownloadBigButton newButtonWithComponent(String dialogTitle, SerializableSupplier<C> iconProvider) {
+        final var button = new DownloadBigButton(dialogTitle);
+        final var buttonIcon = iconProvider.get();
+        buttonIcon.setMinHeight(ICON_MIN_HEIGHT, Unit.PIXELS);
+        buttonIcon.setMaxHeight(ICON_MAX_HEIGHT, Unit.PIXELS);
+        buttonIcon.setMinWidth(ICON_MIN_WIDTH, Unit.PIXELS);
+        buttonIcon.setMaxWidth(ICON_MAX_WIDTH, Unit.PIXELS);
+        button.setIcon(buttonIcon);
+        button.configure().withProgressIcon(iconProvider.get());
+        return button;
+    }
 
-	/** Factory method for a big button for downloading a file.
-	 *
-	 * @param dialogTitle the title of the download dialog box.
-	 * @param iconProvider the lambda that provides the icon for the button and the download dialog.
-	 * @return the button.
-	 */
-	public static DownloadBigButton newButtonWithIcon(String dialogTitle, SerializableSupplier<AbstractIcon<?>> iconProvider) {
-		final var button = new DownloadBigButton(dialogTitle);
-		final var buttonIcon = iconProvider.get();
-		buttonIcon.setSize(ICON_SIZE_STR);
-		button.setIcon(buttonIcon);
-		button.configure().withProgressIcon(iconProvider.get());
-		return button;
-	}
+    /**
+     * Factory method for a big button for downloading a file.
+     *
+     * @param dialogTitle  the title of the download dialog box.
+     * @param iconProvider the lambda that provides the icon for the button and the download dialog.
+     * @return the button.
+     */
+    public static DownloadBigButton newButtonWithIcon(String dialogTitle, SerializableSupplier<AbstractIcon<?>> iconProvider) {
+        final var button = new DownloadBigButton(dialogTitle);
+        final var buttonIcon = iconProvider.get();
+        buttonIcon.setSize(ICON_SIZE_STR);
+        button.setIcon(buttonIcon);
+        button.configure().withProgressIcon(iconProvider.get());
+        return button;
+    }
 
-	/** Configure the download button.
+    /**
+     * Configure the download button.
      *
      * @return the configurator.
      */

@@ -78,10 +78,10 @@ public class OrganizationRestService {
      */
     @Operation(summary = "Retrieves all organization members", description = "Fetches all members from every organization.", tags = {"Organization API"})
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved all organization members", content = @Content(array = @ArraySchema(schema = @Schema(implementation = OrganizationMembersDTO.class)))),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all organization members", content = @Content(array = @ArraySchema(schema = @Schema(implementation = OrganizationMembersDTO.class)))),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    
+
     @GetMapping("/members/all")
     public ResponseEntity<List<OrganizationMembersDTO>> getAllMembers() {
         List<OrganizationMembersDTO> organizationMembers = researchOrganizationService.getAllResearchOrganizations().stream()
@@ -100,11 +100,11 @@ public class OrganizationRestService {
      */
     @Operation(summary = "Retrieves members of a specific organization", description = "Fetches all members from a specific organization.", tags = {"Organization API"})
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved organization members", content = @Content(schema = @Schema(implementation = OrganizationMembersDTO.class))),
-        @ApiResponse(responseCode = "400", description = "Bad request if both or neither id and acronym are provided"),
-        @ApiResponse(responseCode = "404", description = "Not Found if no organization is found with the provided ID or acronym.")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved organization members", content = @Content(schema = @Schema(implementation = OrganizationMembersDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request if both or neither id and acronym are provided"),
+            @ApiResponse(responseCode = "404", description = "Not Found if no organization is found with the provided ID or acronym.")
     })
-    
+
     @GetMapping("/members")
     public ResponseEntity<OrganizationMembersDTO> getOrganizationMembers(
             @RequestParam(required = false) Long id,
@@ -127,19 +127,19 @@ public class OrganizationRestService {
     /**
      * Retrieves the indicators of a specific organization by either its ID or acronym.
      *
-     * @param id      the ID of the organization (optional)
-     * @param acronym the acronym of the organization (optional)
+     * @param id       the ID of the organization (optional)
+     * @param acronym  the acronym of the organization (optional)
      * @param useCache whether to get indicators from cache memory or not (default = false)
      * @return a response containing the indicators of the organization or HTTP 400 / 404 errors
      */
     @Operation(summary = "Retrieves organization indicators", description = "Fetches indicators for a specific organization, identified by ID or acronym.", tags = {"Organization API"})
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved organization indicators", content = @Content(schema = @Schema(implementation = Map.class))),
-        @ApiResponse(responseCode = "400", description = "Bad request if both or neither id and acronym are provided"),
-        @ApiResponse(responseCode = "404", description = "Not Found if no organization is found with the provided ID or acronym.")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved organization indicators", content = @Content(schema = @Schema(implementation = Map.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request if both or neither id and acronym are provided"),
+            @ApiResponse(responseCode = "404", description = "Not Found if no organization is found with the provided ID or acronym.")
     })
     @GetMapping("/indicators")
-    
+
     public ResponseEntity<Map<String, Number>> getIndicators(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String acronym,
@@ -171,10 +171,10 @@ public class OrganizationRestService {
      */
     @Operation(summary = "Retrieves all organization addresses", description = "Fetches all addresses from every organization.", tags = {"Organization API"})
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved all organization addresses", content = @Content(array = @ArraySchema(schema = @Schema(implementation = OrganizationAddressDTO.class)))),
-        @ApiResponse(responseCode = "500", description = "Internal server error")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all organization addresses", content = @Content(array = @ArraySchema(schema = @Schema(implementation = OrganizationAddressDTO.class)))),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    
+
     @GetMapping("/addresses")
     public ResponseEntity<List<OrganizationAddressDTO>> getAddresses() {
         List<OrganizationAddressDTO> addressDTOs = organizationAddressService.getAllAddresses().stream()
@@ -190,7 +190,7 @@ public class OrganizationRestService {
      * @param organization the {@link ResearchOrganization} to retrieve members from
      * @return a list of {@link OrganizationMemberData} representing the members of the organization
      */
-    
+
     public List<OrganizationMemberData> getOrganizationMembers(ResearchOrganization organization) {
         List<OrganizationMemberData> members = new ArrayList<>();
 
@@ -217,7 +217,7 @@ public class OrganizationRestService {
      * @param organization the {@link ResearchOrganization} to retrieve the members data for
      * @return an {@link OrganizationMembersDTO} containing the organization name, acronym, website, and members
      */
-    
+
     public OrganizationMembersDTO getOrganizationMembersData(ResearchOrganization organization) {
         String organizationName = organization.getName();
         String organizationAcronym = organization.getAcronym();
@@ -268,11 +268,11 @@ public class OrganizationRestService {
      * Returns a ResponseEntity containing an error status code (400 or 404) if the given parameters are invalid or if the
      * organization is not found.
      *
-     * @param id the ID of the organization (optional)
-     * @param acronym the acronym of the organization (optional)
+     * @param id                   the ID of the organization (optional)
+     * @param acronym              the acronym of the organization (optional)
      * @param organizationOptional the organization, if found
      * @return a ResponseEntity with an error status code if the parameters are invalid or if the organization is not found,
-     *         null otherwise
+     * null otherwise
      */
     public <T> ResponseEntity<T> getErrorPage(Long id, String acronym, Optional<ResearchOrganization> organizationOptional) {
         if ((id == null && acronym == null) || (id != null && acronym != null)) {

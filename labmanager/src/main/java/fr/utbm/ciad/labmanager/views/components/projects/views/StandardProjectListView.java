@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,11 +18,6 @@
  */
 
 package fr.utbm.ciad.labmanager.views.components.projects.views;
-
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -64,8 +59,14 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-/** List all the projects.
- * 
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * List all the projects.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -74,414 +75,419 @@ import org.springframework.data.domain.PageRequest;
  */
 public class StandardProjectListView extends AbstractEntityListView<Project> {
 
-	private static final long serialVersionUID = -1815606905515706259L;
+    private static final long serialVersionUID = -1815606905515706259L;
 
-	private static final String UNKNOWN = "?"; //$NON-NLS-1$
+    private static final String UNKNOWN = "?"; //$NON-NLS-1$
 
-	private static final int ORIGIN_YEAR = 2000;
-	
-	private final DownloadableFileManager fileManager;
+    private static final int ORIGIN_YEAR = 2000;
 
-	private final ProjectDataProvider dataProvider;
+    private final DownloadableFileManager fileManager;
 
-	private final ProjectService projectService;
+    private final ProjectDataProvider dataProvider;
 
-	private final ProjectEditorFactory projectEditorFactory;
+    private final ProjectService projectService;
 
-	private Column<Project> nameColumn;
+    private final ProjectEditorFactory projectEditorFactory;
 
-	private Column<Project> dateColumn;
+    private Column<Project> nameColumn;
 
-	private Column<Project> typeColumn;
+    private Column<Project> dateColumn;
 
-	private Column<Project> fundingColumn;
+    private Column<Project> typeColumn;
 
-	private Column<Project> coordinatorColumn;
+    private Column<Project> fundingColumn;
 
-	private Column<Project> localHeadColumn;
+    private Column<Project> coordinatorColumn;
 
-	private Column<Project> stateColumn;
+    private Column<Project> localHeadColumn;
 
-	private Column<Project> validationColumn;
+    private Column<Project> stateColumn;
 
-	/** Constructor.
-	 *
-	 * @param fileManager the manager of the filenames for the uploaded files.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param projectService the service for accessing the projects.
-	 * @param projectEditorFactory the factory for creating the project editors.
-	 */
-	public StandardProjectListView(
-			DownloadableFileManager fileManager, AuthenticatedUser authenticatedUser,
-			MessageSourceAccessor messages, ContextualLoggerFactory loggerFactory,
-			ProjectService projectService, ProjectEditorFactory projectEditorFactory) {
-		super(Project.class, authenticatedUser, messages, loggerFactory,
-				ConstructionPropertiesBuilder.create()
-				.map(PROP_DELETION_TITLE_MESSAGE, "views.projects.delete.title") //$NON-NLS-1$
-				.map(PROP_DELETION_MESSAGE, "views.projects.delete.message") //$NON-NLS-1$
-				.map(PROP_DELETION_SUCCESS_MESSAGE, "views.projects.delete_success") //$NON-NLS-1$
-				.map(PROP_DELETION_ERROR_MESSAGE, "views.projects.delete_error")); //$NON-NLS-1$
-		this.fileManager = fileManager;
-		this.projectService = projectService;
-		this.projectEditorFactory = projectEditorFactory;
-		this.dataProvider = (ps, query, filters) -> ps.getAllProjects(query, filters, this::initializeEntityFromJPA);
-		postInitializeFilters();
-		initializeDataInGrid(getGrid(), getFilters());
-	}
+    private Column<Project> validationColumn;
 
-	private void initializeEntityFromJPA(Project entity) {
-		// Force the loaded of the lazy data that is needed for rendering the table
-		Hibernate.initialize(entity.getBudgets());
-		Hibernate.initialize(entity.getCoordinator());
-		Hibernate.initialize(entity.getParticipants());
-		for (final var participant : entity.getParticipants()) {
-			Hibernate.initialize(participant);
-			Hibernate.initialize(participant.getPerson());
-		}
-	}
+    /**
+     * Constructor.
+     *
+     * @param fileManager          the manager of the filenames for the uploaded files.
+     * @param authenticatedUser    the connected user.
+     * @param messages             the accessor to the localized messages (spring layer).
+     * @param loggerFactory        the factory to be used for the composite logger.
+     * @param projectService       the service for accessing the projects.
+     * @param projectEditorFactory the factory for creating the project editors.
+     */
+    public StandardProjectListView(
+            DownloadableFileManager fileManager, AuthenticatedUser authenticatedUser,
+            MessageSourceAccessor messages, ContextualLoggerFactory loggerFactory,
+            ProjectService projectService, ProjectEditorFactory projectEditorFactory) {
+        super(Project.class, authenticatedUser, messages, loggerFactory,
+                ConstructionPropertiesBuilder.create()
+                        .map(PROP_DELETION_TITLE_MESSAGE, "views.projects.delete.title") //$NON-NLS-1$
+                        .map(PROP_DELETION_MESSAGE, "views.projects.delete.message") //$NON-NLS-1$
+                        .map(PROP_DELETION_SUCCESS_MESSAGE, "views.projects.delete_success") //$NON-NLS-1$
+                        .map(PROP_DELETION_ERROR_MESSAGE, "views.projects.delete_error")); //$NON-NLS-1$
+        this.fileManager = fileManager;
+        this.projectService = projectService;
+        this.projectEditorFactory = projectEditorFactory;
+        this.dataProvider = (ps, query, filters) -> ps.getAllProjects(query, filters, this::initializeEntityFromJPA);
+        postInitializeFilters();
+        initializeDataInGrid(getGrid(), getFilters());
+    }
 
-	@Override
-	protected AbstractFilters<Project> createFilters() {
-		return new ProjectFilters(getAuthenticatedUser(), this::refreshGrid);
-	}
+    private void initializeEntityFromJPA(Project entity) {
+        // Force the loaded of the lazy data that is needed for rendering the table
+        Hibernate.initialize(entity.getBudgets());
+        Hibernate.initialize(entity.getCoordinator());
+        Hibernate.initialize(entity.getParticipants());
+        for (final var participant : entity.getParticipants()) {
+            Hibernate.initialize(participant);
+            Hibernate.initialize(participant.getPerson());
+        }
+    }
 
-	@Override
-	protected boolean createGridColumns(Grid<Project> grid) {
-		this.nameColumn = grid.addColumn(new ComponentRenderer<>(this::createNameComponent))
-				.setAutoWidth(true)
-				.setSortProperty("acronym", "scientificTitle"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.dateColumn = grid.addColumn(this::getDateLabel)
-				.setAutoWidth(false)
-				.setSortProperty("creationDate"); //$NON-NLS-1$
-		this.typeColumn = grid.addColumn(new ComponentRenderer<>(this::createTypeComponent))
-				.setAutoWidth(false)
-				.setSortProperty("projectType", "contractType"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.fundingColumn = grid.addColumn(this::getFundingLabel)
-				.setAutoWidth(true);
-		this.coordinatorColumn = grid.addColumn(new ComponentRenderer<>(this::createCoordinatorComponent))
-				.setAutoWidth(true);
-		this.localHeadColumn = grid.addColumn(new ComponentRenderer<>(this::createLocalHeadComponent))
-				.setAutoWidth(true);
-		this.stateColumn = grid.addColumn(new BadgeRenderer<>((data, callback) -> {
-			switch (data.getStatus()) {
-			case EVALUATION:
-				final var evalText = getTranslation("views.projects.status_evaluation"); //$NON-NLS-1$
-				callback.create(BadgeState.PILL, evalText, evalText);
-				break;
-			case CANCELED:
-				final var canText = getTranslation("views.projects.status_canceled"); //$NON-NLS-1$
-				callback.create(BadgeState.CONTRAST, canText, canText);
-				break;
-			case REJECTED:
-				final var rejText = getTranslation("views.projects.status_rejected"); //$NON-NLS-1$
-				callback.create(BadgeState.ERROR, rejText, rejText);
-				break;
-			case ACCEPTED:
-				final var sucText = getTranslation("views.projects.status_accepted"); //$NON-NLS-1$
-				callback.create(BadgeState.SUCCESS, sucText, sucText);
-				break;
-			case PREPARATION:
-			default:
-				final var prepText = getTranslation("views.projects.status_preparation"); //$NON-NLS-1$
-				callback.create(BadgeState.PRIMARY, prepText, prepText);
-				break;
-			}
-		}))
-				.setAutoWidth(false)
-				.setSortProperty("status"); //$NON-NLS-1$
-		this.validationColumn = grid.addColumn(new BadgeRenderer<>((data, callback) -> {
-			if (data.isValidated()) {
-				callback.create(BadgeState.SUCCESS, null, getTranslation("views.validated")); //$NON-NLS-1$
-			} else {
-				callback.create(BadgeState.ERROR, null, getTranslation("views.validable")); //$NON-NLS-1$
-			}
-		}))
-				.setAutoWidth(true)
-				.setFlexGrow(0)
-				.setSortProperty("validated") //$NON-NLS-1$
-				.setWidth("0%"); //$NON-NLS-1$
-		// Create the hover tool bar only if administrator role
-		return isAdminRole();
-	}
-	
-	private String getFundingLabel(Project project) {
-		return project.getMajorFundingScheme().getLabel(getMessageSourceAccessor(), getLocale());
-	}
+    @Override
+    protected AbstractFilters<Project> createFilters() {
+        return new ProjectFilters(getAuthenticatedUser(), this::refreshGrid);
+    }
 
-	private Component createTypeComponent(Project project) {
-		final var div = new Div();
-		final var contract = project.getContractType();
-		if (contract != null) {
-			final var span = new Span();
-			span.setText(contract == ProjectContractType.NOT_SPECIFIED ? UNKNOWN : contract.name());
-			span.setTitle(contract.getLabel(getMessageSourceAccessor(), getLocale()));
-			div.add(span);
-		}
-		final var activity = project.getActivityType();
-		if (activity != null) {
-			if (contract != null) {
-				div.add(new Text(" - ")); //$NON-NLS-1$
-			}
-			final var span = new Span();
-			span.setText(activity.getLabel(getMessageSourceAccessor(), getLocale()));
-			div.add(span);
-		}
-		return div;
-	}
+    @Override
+    protected boolean createGridColumns(Grid<Project> grid) {
+        this.nameColumn = grid.addColumn(new ComponentRenderer<>(this::createNameComponent))
+                .setAutoWidth(true)
+                .setSortProperty("acronym", "scientificTitle"); //$NON-NLS-1$ //$NON-NLS-2$
+        this.dateColumn = grid.addColumn(this::getDateLabel)
+                .setAutoWidth(false)
+                .setSortProperty("creationDate"); //$NON-NLS-1$
+        this.typeColumn = grid.addColumn(new ComponentRenderer<>(this::createTypeComponent))
+                .setAutoWidth(false)
+                .setSortProperty("projectType", "contractType"); //$NON-NLS-1$ //$NON-NLS-2$
+        this.fundingColumn = grid.addColumn(this::getFundingLabel)
+                .setAutoWidth(true);
+        this.coordinatorColumn = grid.addColumn(new ComponentRenderer<>(this::createCoordinatorComponent))
+                .setAutoWidth(true);
+        this.localHeadColumn = grid.addColumn(new ComponentRenderer<>(this::createLocalHeadComponent))
+                .setAutoWidth(true);
+        this.stateColumn = grid.addColumn(new BadgeRenderer<>((data, callback) -> {
+                    switch (data.getStatus()) {
+                        case EVALUATION:
+                            final var evalText = getTranslation("views.projects.status_evaluation"); //$NON-NLS-1$
+                            callback.create(BadgeState.PILL, evalText, evalText);
+                            break;
+                        case CANCELED:
+                            final var canText = getTranslation("views.projects.status_canceled"); //$NON-NLS-1$
+                            callback.create(BadgeState.CONTRAST, canText, canText);
+                            break;
+                        case REJECTED:
+                            final var rejText = getTranslation("views.projects.status_rejected"); //$NON-NLS-1$
+                            callback.create(BadgeState.ERROR, rejText, rejText);
+                            break;
+                        case ACCEPTED:
+                            final var sucText = getTranslation("views.projects.status_accepted"); //$NON-NLS-1$
+                            callback.create(BadgeState.SUCCESS, sucText, sucText);
+                            break;
+                        case PREPARATION:
+                        default:
+                            final var prepText = getTranslation("views.projects.status_preparation"); //$NON-NLS-1$
+                            callback.create(BadgeState.PRIMARY, prepText, prepText);
+                            break;
+                    }
+                }))
+                .setAutoWidth(false)
+                .setSortProperty("status"); //$NON-NLS-1$
+        this.validationColumn = grid.addColumn(new BadgeRenderer<>((data, callback) -> {
+                    if (data.isValidated()) {
+                        callback.create(BadgeState.SUCCESS, null, getTranslation("views.validated")); //$NON-NLS-1$
+                    } else {
+                        callback.create(BadgeState.ERROR, null, getTranslation("views.validable")); //$NON-NLS-1$
+                    }
+                }))
+                .setAutoWidth(true)
+                .setFlexGrow(0)
+                .setSortProperty("validated") //$NON-NLS-1$
+                .setWidth("0%"); //$NON-NLS-1$
+        // Create the hover tool bar only if administrator role
+        return isAdminRole();
+    }
 
-	private String getDateLabel(Project project) {
-		final var startDate = project.getStartDate();
-		final var endDate = project.getEndDate();
-		final var duration = project.getDuration();
-		final var year0 = startDate == null ? ORIGIN_YEAR : startDate.getYear();
-		final var year1 = endDate == null
-				? LocalDate.now().getYear()
-				: endDate.getYear();
-		if (year0 == year1) {
-			if (duration > 1) {
-				return getTranslation("views.projects.date_months", Integer.toString(year0), Integer.valueOf(duration)); //$NON-NLS-1$
-			}
-			if (duration > 0) {
-				return getTranslation("views.projects.date_month", Integer.toString(year0), Integer.valueOf(duration)); //$NON-NLS-1$
-			}
-			return Integer.toString(year0);
-		}
-		if (duration > 1) {
-			return getTranslation("views.projects.dates_months", Integer.toString(year0), Integer.toString(year1), Integer.valueOf(duration)); //$NON-NLS-1$
-		}
-		if (duration > 0) {
-			return getTranslation("views.projects.dates_month", Integer.toString(year0), Integer.toString(year1), Integer.valueOf(duration)); //$NON-NLS-1$
-		}
-		return getTranslation("views.projects.dates", Integer.toString(year0), Integer.toString(year1)); //$NON-NLS-1$
-	}
+    private String getFundingLabel(Project project) {
+        return project.getMajorFundingScheme().getLabel(getMessageSourceAccessor(), getLocale());
+    }
 
-	private Component createNameComponent(Project project) {
-		return ComponentFactory.newProjectAvatar(project, this.fileManager);
-	}
+    private Component createTypeComponent(Project project) {
+        final var div = new Div();
+        final var contract = project.getContractType();
+        if (contract != null) {
+            final var span = new Span();
+            span.setText(contract == ProjectContractType.NOT_SPECIFIED ? UNKNOWN : contract.name());
+            span.setTitle(contract.getLabel(getMessageSourceAccessor(), getLocale()));
+            div.add(span);
+        }
+        final var activity = project.getActivityType();
+        if (activity != null) {
+            if (contract != null) {
+                div.add(new Text(" - ")); //$NON-NLS-1$
+            }
+            final var span = new Span();
+            span.setText(activity.getLabel(getMessageSourceAccessor(), getLocale()));
+            div.add(span);
+        }
+        return div;
+    }
 
-	private Component createCoordinatorComponent(Project project) {
-		final var coordinator = project.getCoordinator();
-		if (coordinator != null) {
-			return ComponentFactory.newOrganizationAvatar(coordinator, this.fileManager);
-		}
-		return new Span("?"); //$NON-NLS-1$
-	}
+    private String getDateLabel(Project project) {
+        final var startDate = project.getStartDate();
+        final var endDate = project.getEndDate();
+        final var duration = project.getDuration();
+        final var year0 = startDate == null ? ORIGIN_YEAR : startDate.getYear();
+        final var year1 = endDate == null
+                ? LocalDate.now().getYear()
+                : endDate.getYear();
+        if (year0 == year1) {
+            if (duration > 1) {
+                return getTranslation("views.projects.date_months", Integer.toString(year0), Integer.valueOf(duration)); //$NON-NLS-1$
+            }
+            if (duration > 0) {
+                return getTranslation("views.projects.date_month", Integer.toString(year0), Integer.valueOf(duration)); //$NON-NLS-1$
+            }
+            return Integer.toString(year0);
+        }
+        if (duration > 1) {
+            return getTranslation("views.projects.dates_months", Integer.toString(year0), Integer.toString(year1), Integer.valueOf(duration)); //$NON-NLS-1$
+        }
+        if (duration > 0) {
+            return getTranslation("views.projects.dates_month", Integer.toString(year0), Integer.toString(year1), Integer.valueOf(duration)); //$NON-NLS-1$
+        }
+        return getTranslation("views.projects.dates", Integer.toString(year0), Integer.toString(year1)); //$NON-NLS-1$
+    }
 
-	private Component createLocalHeadComponent(Project project) {
-		final var heads = project.getParticipants().stream().filter(it -> it.getRole().isHead()).toList();
-		if (!heads.isEmpty()) {
-			final var layout = new VerticalLayout();
-			layout.setSpacing(false);
-			layout.setPadding(false);
-			for (final var head : heads) {
-				layout.add(ComponentFactory.newPersonAvatar(head.getPerson(), null,
-						(login, role) -> role.getLabel(getMessageSourceAccessor(), getLocale())));
-			}
-			return layout;
-		}
-		return new Span("?"); //$NON-NLS-1$
-	}
+    private Component createNameComponent(Project project) {
+        return ComponentFactory.newProjectAvatar(project, this.fileManager);
+    }
 
-	@Override
-	protected List<Column<Project>> getInitialSortingColumns() {
-		return Collections.singletonList(this.nameColumn);
-	}
+    private Component createCoordinatorComponent(Project project) {
+        final var coordinator = project.getCoordinator();
+        if (coordinator != null) {
+            return ComponentFactory.newOrganizationAvatar(coordinator, this.fileManager);
+        }
+        return new Span("?"); //$NON-NLS-1$
+    }
 
-	@Override
-	protected FetchCallback<Project, Void> getFetchCallback(AbstractFilters<Project> filters) {
-		return query -> {
-			return this.dataProvider.fetch(
-					this.projectService,
-					VaadinSpringDataHelpers.toSpringPageRequest(query),
-					filters).stream();
-		};
-	}
+    private Component createLocalHeadComponent(Project project) {
+        final var heads = project.getParticipants().stream().filter(it -> it.getRole().isHead()).toList();
+        if (!heads.isEmpty()) {
+            final var layout = new VerticalLayout();
+            layout.setSpacing(false);
+            layout.setPadding(false);
+            for (final var head : heads) {
+                layout.add(ComponentFactory.newPersonAvatar(head.getPerson(), null,
+                        (login, role) -> role.getLabel(getMessageSourceAccessor(), getLocale())));
+            }
+            return layout;
+        }
+        return new Span("?"); //$NON-NLS-1$
+    }
 
-	@Override
-	protected void addEntity() {
-		openProjectEditor(new Project(), getTranslation("views.projects.add_project"), true); //$NON-NLS-1$
-	}
+    @Override
+    protected List<Column<Project>> getInitialSortingColumns() {
+        return Collections.singletonList(this.nameColumn);
+    }
 
-	@Override
-	protected void edit(Project project) {
-		openProjectEditor(project, getTranslation("views.projects.edit_project", project.getAcronym()), false); //$NON-NLS-1$
-	}
+    @Override
+    protected FetchCallback<Project, Void> getFetchCallback(AbstractFilters<Project> filters) {
+        return query -> {
+            return this.dataProvider.fetch(
+                    this.projectService,
+                    VaadinSpringDataHelpers.toSpringPageRequest(query),
+                    filters).stream();
+        };
+    }
 
-	/** Show the editor of an project.
-	 *
-	 * @param project the project to edit.
-	 * @param title the title of the editor.
-	 * @param isCreation indicates if the editor is for creating or updating the entity.
-	 */
-	protected void openProjectEditor(Project project, String title, boolean isCreation) {
-		final AbstractEntityEditor<Project> editor;
-		if (isCreation) {
-			editor = this.projectEditorFactory.createAdditionEditor(project, getLogger());
-		} else {
-			editor = this.projectEditorFactory.createUpdateEditor(project, getLogger());
-		}
-		final var newEntity = editor.isNewEntity();
-		final SerializableBiConsumer<Dialog, Project> refreshAll = (dialog, entity) -> {
-			// The number of papers should be loaded because it was not loaded before
-			this.projectService.inSession(session -> {
-				session.load(entity, Long.valueOf(entity.getId()));
-				initializeEntityFromJPA(entity);
-			});
-			refreshGrid();
-		};
-		final SerializableBiConsumer<Dialog, Project> refreshOne = (dialog, entity) -> {
-			// The number of papers should be loaded because it was not loaded before
-			this.projectService.inSession(session -> {
-				session.load(entity, Long.valueOf(entity.getId()));
-				initializeEntityFromJPA(entity);
-			});
-			refreshItem(entity);
-		};
-		ComponentFactory.openEditionModalDialog(title, editor, false,
-				// Refresh the "old" item, even if its has been changed in the JPA database
-				newEntity ? refreshAll : refreshOne,
-				newEntity ? null : refreshAll);
-	}
+    @Override
+    protected void addEntity() {
+        openProjectEditor(new Project(), getTranslation("views.projects.add_project"), true); //$NON-NLS-1$
+    }
 
-	@Override
-	protected EntityDeletingContext<Project> createDeletionContextFor(Set<Project> entities) {
-		return this.projectService.startDeletion(entities, getLogger());
-	}
+    @Override
+    protected void edit(Project project) {
+        openProjectEditor(project, getTranslation("views.projects.edit_project", project.getAcronym()), false); //$NON-NLS-1$
+    }
 
-	@Override
-	public void localeChange(LocaleChangeEvent event) {
-		super.localeChange(event);
-		this.nameColumn.setHeader(getTranslation("views.name")); //$NON-NLS-1$
-		this.dateColumn.setHeader(getTranslation("views.period")); //$NON-NLS-1$
-		this.typeColumn.setHeader(getTranslation("views.type")); //$NON-NLS-1$
-		this.fundingColumn.setHeader(getTranslation("views.fundings")); //$NON-NLS-1$
-		this.coordinatorColumn.setHeader(getTranslation("views.coordinator")); //$NON-NLS-1$
-		this.localHeadColumn.setHeader(getTranslation("views.projects.local_project_head")); //$NON-NLS-1$
-		this.stateColumn.setHeader(getTranslation("views.states")); //$NON-NLS-1$
-		this.validationColumn.setHeader(getTranslation("views.validated")); //$NON-NLS-1$
-		refreshGrid();
-	}
+    /**
+     * Show the editor of an project.
+     *
+     * @param project    the project to edit.
+     * @param title      the title of the editor.
+     * @param isCreation indicates if the editor is for creating or updating the entity.
+     */
+    protected void openProjectEditor(Project project, String title, boolean isCreation) {
+        final AbstractEntityEditor<Project> editor;
+        if (isCreation) {
+            editor = this.projectEditorFactory.createAdditionEditor(project, getLogger());
+        } else {
+            editor = this.projectEditorFactory.createUpdateEditor(project, getLogger());
+        }
+        final var newEntity = editor.isNewEntity();
+        final SerializableBiConsumer<Dialog, Project> refreshAll = (dialog, entity) -> {
+            // The number of papers should be loaded because it was not loaded before
+            this.projectService.inSession(session -> {
+                session.load(entity, Long.valueOf(entity.getId()));
+                initializeEntityFromJPA(entity);
+            });
+            refreshGrid();
+        };
+        final SerializableBiConsumer<Dialog, Project> refreshOne = (dialog, entity) -> {
+            // The number of papers should be loaded because it was not loaded before
+            this.projectService.inSession(session -> {
+                session.load(entity, Long.valueOf(entity.getId()));
+                initializeEntityFromJPA(entity);
+            });
+            refreshItem(entity);
+        };
+        ComponentFactory.openEditionModalDialog(title, editor, false,
+                // Refresh the "old" item, even if its has been changed in the JPA database
+                newEntity ? refreshAll : refreshOne,
+                newEntity ? null : refreshAll);
+    }
 
-	/** UI and JPA filters for {@link StandardProjectListView}.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	protected static class ProjectFilters extends AbstractAuthenticatedUserDataFilters<Project> {
+    @Override
+    protected EntityDeletingContext<Project> createDeletionContextFor(Set<Project> entities) {
+        return this.projectService.startDeletion(entities, getLogger());
+    }
 
-		private static final long serialVersionUID = 7079030666137901350L;
+    @Override
+    public void localeChange(LocaleChangeEvent event) {
+        super.localeChange(event);
+        this.nameColumn.setHeader(getTranslation("views.name")); //$NON-NLS-1$
+        this.dateColumn.setHeader(getTranslation("views.period")); //$NON-NLS-1$
+        this.typeColumn.setHeader(getTranslation("views.type")); //$NON-NLS-1$
+        this.fundingColumn.setHeader(getTranslation("views.fundings")); //$NON-NLS-1$
+        this.coordinatorColumn.setHeader(getTranslation("views.coordinator")); //$NON-NLS-1$
+        this.localHeadColumn.setHeader(getTranslation("views.projects.local_project_head")); //$NON-NLS-1$
+        this.stateColumn.setHeader(getTranslation("views.states")); //$NON-NLS-1$
+        this.validationColumn.setHeader(getTranslation("views.validated")); //$NON-NLS-1$
+        refreshGrid();
+    }
 
-		private Checkbox includeNames;
+    /**
+     * Provider of data for projects to be displayed in the list of projects view.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    @FunctionalInterface
+    protected interface ProjectDataProvider {
 
-		private Checkbox includeDates;
+        /**
+         * Fetch project data.
+         *
+         * @param projectService the service to have access to the JPA.
+         * @param pageRequest    the request for paging the data.
+         * @param filters        the filters to apply for selecting the data.
+         * @return the lazy data page.
+         */
+        Page<Project> fetch(ProjectService projectService, PageRequest pageRequest, AbstractFilters<Project> filters);
 
-		private Checkbox includeTypes;
+    }
 
-		private Checkbox includeFundings;
+    /**
+     * UI and JPA filters for {@link StandardProjectListView}.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    protected static class ProjectFilters extends AbstractAuthenticatedUserDataFilters<Project> {
 
-		private Checkbox includeStates;
+        private static final long serialVersionUID = 7079030666137901350L;
 
-		/** Constructor.
-		 *
-		 * @param user the connected user, or {@code null} if the filter does not care about a connected user.
-		 * @param onSearch the callback function for running the filtering.
-		 */
-		public ProjectFilters(AuthenticatedUser user, Runnable onSearch) {
-			super(user, onSearch);
-		}
+        private Checkbox includeNames;
 
-		@Override
-		protected void buildOptionsComponent(HorizontalLayout options) {
-			this.includeNames = new Checkbox(true);
-			this.includeDates = new Checkbox(false);
-			this.includeTypes = new Checkbox(true);
-			this.includeFundings = new Checkbox(false);
-			this.includeStates = new Checkbox(true);
+        private Checkbox includeDates;
 
-			options.add(this.includeNames);
-			options.add(this.includeDates);
-			options.add(this.includeTypes);
-			options.add(this.includeFundings);
-			options.add(this.includeStates);
-			
-			this.includeFundings.setEnabled(false);
-		}
+        private Checkbox includeTypes;
 
-		@Override
-		protected void resetFilters() {
-			this.includeNames.setValue(Boolean.TRUE);
-			this.includeDates.setValue(Boolean.TRUE);
-			this.includeTypes.setValue(Boolean.TRUE);
-			this.includeFundings.setValue(Boolean.FALSE);
-			this.includeStates.setValue(Boolean.TRUE);
-		}
+        private Checkbox includeFundings;
 
-		@Override
-		protected Predicate buildPredicateForAuthenticatedUser(Root<Project> root, CriteriaQuery<?> query,
-				CriteriaBuilder criteriaBuilder, Person user) {
-			return criteriaBuilder.equal(root.get("participants").get("person"), user); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+        private Checkbox includeStates;
 
-		@Override
-		protected void buildQueryFor(String keywords, List<Predicate> predicates, Root<Project> root,
-				CriteriaBuilder criteriaBuilder) {
-			if (this.includeNames.getValue() == Boolean.TRUE) {
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("acronym")), keywords)); //$NON-NLS-1$
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("scientificTitle")), keywords)); //$NON-NLS-1$
-			}
-			if (this.includeDates.getValue() == Boolean.TRUE) {
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("startDate")), keywords)); //$NON-NLS-1$
-			}
-			if (this.includeTypes.getValue() == Boolean.TRUE) {
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("activityType")), keywords)); //$NON-NLS-1$
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("contractType")), keywords)); //$NON-NLS-1$
-			}
-			if (this.includeFundings.getValue() == Boolean.TRUE) {
-				//predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("budgets")), keywords)); //$NON-NLS-1$
-			}
-			if (this.includeStates.getValue() == Boolean.TRUE) {
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("status")), keywords)); //$NON-NLS-1$
-			}
-		}
+        /**
+         * Constructor.
+         *
+         * @param user     the connected user, or {@code null} if the filter does not care about a connected user.
+         * @param onSearch the callback function for running the filtering.
+         */
+        public ProjectFilters(AuthenticatedUser user, Runnable onSearch) {
+            super(user, onSearch);
+        }
 
-		@Override
-		public void localeChange(LocaleChangeEvent event) {
-			super.localeChange(event);
-			this.includeNames.setLabel(getTranslation("views.filters.include_names")); //$NON-NLS-1$
-			this.includeDates.setLabel(getTranslation("views.filters.include_periods")); //$NON-NLS-1$
-			this.includeTypes.setLabel(getTranslation("views.filters.include_types")); //$NON-NLS-1$
-			this.includeFundings.setLabel(getTranslation("views.filters.include_fundings")); //$NON-NLS-1$
-			this.includeStates.setLabel(getTranslation("views.filters.include_states")); //$NON-NLS-1$
-		}
+        @Override
+        protected void buildOptionsComponent(HorizontalLayout options) {
+            this.includeNames = new Checkbox(true);
+            this.includeDates = new Checkbox(false);
+            this.includeTypes = new Checkbox(true);
+            this.includeFundings = new Checkbox(false);
+            this.includeStates = new Checkbox(true);
 
-	}
+            options.add(this.includeNames);
+            options.add(this.includeDates);
+            options.add(this.includeTypes);
+            options.add(this.includeFundings);
+            options.add(this.includeStates);
 
+            this.includeFundings.setEnabled(false);
+        }
 
-	/** Provider of data for projects to be displayed in the list of projects view.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	@FunctionalInterface
-	protected interface ProjectDataProvider {
+        @Override
+        protected void resetFilters() {
+            this.includeNames.setValue(Boolean.TRUE);
+            this.includeDates.setValue(Boolean.TRUE);
+            this.includeTypes.setValue(Boolean.TRUE);
+            this.includeFundings.setValue(Boolean.FALSE);
+            this.includeStates.setValue(Boolean.TRUE);
+        }
 
-		/** Fetch project data.
-		 *
-		 * @param projectService the service to have access to the JPA.
-		 * @param pageRequest the request for paging the data.
-		 * @param filters the filters to apply for selecting the data.
-		 * @return the lazy data page.
-		 */
-		Page<Project> fetch(ProjectService projectService, PageRequest pageRequest, AbstractFilters<Project> filters);
+        @Override
+        protected Predicate buildPredicateForAuthenticatedUser(Root<Project> root, CriteriaQuery<?> query,
+                                                               CriteriaBuilder criteriaBuilder, Person user) {
+            return criteriaBuilder.equal(root.get("participants").get("person"), user); //$NON-NLS-1$ //$NON-NLS-2$
+        }
 
-	}
+        @Override
+        protected void buildQueryFor(String keywords, List<Predicate> predicates, Root<Project> root,
+                                     CriteriaBuilder criteriaBuilder) {
+            if (this.includeNames.getValue() == Boolean.TRUE) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("acronym")), keywords)); //$NON-NLS-1$
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("scientificTitle")), keywords)); //$NON-NLS-1$
+            }
+            if (this.includeDates.getValue() == Boolean.TRUE) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("startDate")), keywords)); //$NON-NLS-1$
+            }
+            if (this.includeTypes.getValue() == Boolean.TRUE) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("activityType")), keywords)); //$NON-NLS-1$
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("contractType")), keywords)); //$NON-NLS-1$
+            }
+            if (this.includeFundings.getValue() == Boolean.TRUE) {
+                //predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("budgets")), keywords)); //$NON-NLS-1$
+            }
+            if (this.includeStates.getValue() == Boolean.TRUE) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("status")), keywords)); //$NON-NLS-1$
+            }
+        }
+
+        @Override
+        public void localeChange(LocaleChangeEvent event) {
+            super.localeChange(event);
+            this.includeNames.setLabel(getTranslation("views.filters.include_names")); //$NON-NLS-1$
+            this.includeDates.setLabel(getTranslation("views.filters.include_periods")); //$NON-NLS-1$
+            this.includeTypes.setLabel(getTranslation("views.filters.include_types")); //$NON-NLS-1$
+            this.includeFundings.setLabel(getTranslation("views.filters.include_fundings")); //$NON-NLS-1$
+            this.includeStates.setLabel(getTranslation("views.filters.include_states")); //$NON-NLS-1$
+        }
+
+    }
 
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,10 +18,6 @@
  */
 
 package fr.utbm.ciad.labmanager.views.components.supervisions.views;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -57,8 +53,13 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-/** List all the supervisions.
- * 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * List all the supervisions.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -67,277 +68,283 @@ import org.springframework.data.domain.PageRequest;
  */
 public class StandardSupervisionListView extends AbstractEntityListView<Supervision> {
 
-	private static final long serialVersionUID = -7908569503954366686L;
+    private static final long serialVersionUID = -7908569503954366686L;
 
-	private final SupervisionDataProvider dataProvider;
+    private final SupervisionDataProvider dataProvider;
 
-	private final SupervisionService supervisionService;
-	
-	private final SupervisionEditorFactory supervisionEditorFactory;
+    private final SupervisionService supervisionService;
 
-	private Column<Supervision> supervisedPersonColumn;
+    private final SupervisionEditorFactory supervisionEditorFactory;
 
-	private Column<Supervision> typeColumn;
+    private Column<Supervision> supervisedPersonColumn;
 
-	private Column<Supervision> dateColumn;
+    private Column<Supervision> typeColumn;
 
-	private Column<Supervision> supervisorsColumn;
+    private Column<Supervision> dateColumn;
 
-	/** Constructor.
-	 *
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param supervisionService the service for accessing the supervisions.
-	 * @param supervisionEditorFactory the factory for creating the person supervision editors.
-	 * @since 4.0
-	 */
-	public StandardSupervisionListView(
-			AuthenticatedUser authenticatedUser, MessageSourceAccessor messages, ContextualLoggerFactory loggerFactory,
-			SupervisionService supervisionService, SupervisionEditorFactory supervisionEditorFactory) {
-		super(Supervision.class, authenticatedUser, messages, loggerFactory,
-				ConstructionPropertiesBuilder.create()
-				.map(PROP_DELETION_TITLE_MESSAGE, "views.supervision.delete.title") //$NON-NLS-1$
-				.map(PROP_DELETION_MESSAGE, "views.supervision.delete.message") //$NON-NLS-1$
-				.map(PROP_DELETION_SUCCESS_MESSAGE, "views.supervision.delete_success") //$NON-NLS-1$
-				.map(PROP_DELETION_ERROR_MESSAGE, "views.supervision.delete_error")); //$NON-NLS-1$
-		this.supervisionService = supervisionService;
-		this.supervisionEditorFactory = supervisionEditorFactory;
-		this.dataProvider = (ps, query, filters) -> ps.getAllSupervisions(query, filters, this::initializeEntityFromJPA);
-		postInitializeFilters();
-		initializeDataInGrid(getGrid(), getFilters());
-	}
+    private Column<Supervision> supervisorsColumn;
 
-	private void initializeEntityFromJPA(Supervision entity) {
-		// Force the loaded of the lazy data that is needed for rendering the table
-		Hibernate.initialize(entity.getSupervisedPerson());
-		Hibernate.initialize(entity.getSupervisors());
-		entity.getSupervisors().forEach(it -> {
-			Hibernate.initialize(it.getSupervisor());
-		});
-	}
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser        the connected user.
+     * @param messages                 the accessor to the localized messages (spring layer).
+     * @param loggerFactory            the factory to be used for the composite logger.
+     * @param supervisionService       the service for accessing the supervisions.
+     * @param supervisionEditorFactory the factory for creating the person supervision editors.
+     * @since 4.0
+     */
+    public StandardSupervisionListView(
+            AuthenticatedUser authenticatedUser, MessageSourceAccessor messages, ContextualLoggerFactory loggerFactory,
+            SupervisionService supervisionService, SupervisionEditorFactory supervisionEditorFactory) {
+        super(Supervision.class, authenticatedUser, messages, loggerFactory,
+                ConstructionPropertiesBuilder.create()
+                        .map(PROP_DELETION_TITLE_MESSAGE, "views.supervision.delete.title") //$NON-NLS-1$
+                        .map(PROP_DELETION_MESSAGE, "views.supervision.delete.message") //$NON-NLS-1$
+                        .map(PROP_DELETION_SUCCESS_MESSAGE, "views.supervision.delete_success") //$NON-NLS-1$
+                        .map(PROP_DELETION_ERROR_MESSAGE, "views.supervision.delete_error")); //$NON-NLS-1$
+        this.supervisionService = supervisionService;
+        this.supervisionEditorFactory = supervisionEditorFactory;
+        this.dataProvider = (ps, query, filters) -> ps.getAllSupervisions(query, filters, this::initializeEntityFromJPA);
+        postInitializeFilters();
+        initializeDataInGrid(getGrid(), getFilters());
+    }
 
-	@Override
-	protected AbstractFilters<Supervision> createFilters() {
-		return new SupervisionFilters(getAuthenticatedUser(), this::refreshGrid);
-	}
+    private void initializeEntityFromJPA(Supervision entity) {
+        // Force the loaded of the lazy data that is needed for rendering the table
+        Hibernate.initialize(entity.getSupervisedPerson());
+        Hibernate.initialize(entity.getSupervisors());
+        entity.getSupervisors().forEach(it -> {
+            Hibernate.initialize(it.getSupervisor());
+        });
+    }
 
-	@Override
-	protected boolean createGridColumns(Grid<Supervision> grid) {
-		this.supervisedPersonColumn = grid.addColumn(new ComponentRenderer<>(this::createSupervisedPersonComponent))
-				.setAutoWidth(true);
-		this.typeColumn = grid.addColumn(this::getTypeLabel)
-				.setAutoWidth(false);
-		this.dateColumn = grid.addColumn(this::getDateLabel)
-				.setAutoWidth(false)
-				.setSortProperty("supervisedPerson.memberToWhen", "defenseDate"); //$NON-NLS-1$ //$NON-NLS-2$
-		this.supervisorsColumn = grid.addColumn(new ComponentRenderer<>(this::createSupervisorsComponent))
-				.setAutoWidth(true);
-		return isAdminRole();
-	}
+    @Override
+    protected AbstractFilters<Supervision> createFilters() {
+        return new SupervisionFilters(getAuthenticatedUser(), this::refreshGrid);
+    }
 
-	private Component createSupervisedPersonComponent(Supervision supervision) {
-		final var membership = supervision.getSupervisedPerson();
-		if (membership != null) {
-			final var person = membership.getPerson();
-			if (person != null) {
-				return ComponentFactory.newPersonAvatar(person);
-			}
-		}
-		return new Span();
-	}
+    @Override
+    protected boolean createGridColumns(Grid<Supervision> grid) {
+        this.supervisedPersonColumn = grid.addColumn(new ComponentRenderer<>(this::createSupervisedPersonComponent))
+                .setAutoWidth(true);
+        this.typeColumn = grid.addColumn(this::getTypeLabel)
+                .setAutoWidth(false);
+        this.dateColumn = grid.addColumn(this::getDateLabel)
+                .setAutoWidth(false)
+                .setSortProperty("supervisedPerson.memberToWhen", "defenseDate"); //$NON-NLS-1$ //$NON-NLS-2$
+        this.supervisorsColumn = grid.addColumn(new ComponentRenderer<>(this::createSupervisorsComponent))
+                .setAutoWidth(true);
+        return isAdminRole();
+    }
 
-	private String getTypeLabel(Supervision supervision) {
-		final var membership = supervision.getSupervisedPerson();
-		if (membership != null) {
-			final var person = membership.getPerson();
-			final var gender = person == null ? null : person.getGender();
-			return membership.getMemberStatus().getLabel(getMessageSourceAccessor(), gender, false, getLocale());
-		}
-		return ""; //$NON-NLS-1$
-	}
+    private Component createSupervisedPersonComponent(Supervision supervision) {
+        final var membership = supervision.getSupervisedPerson();
+        if (membership != null) {
+            final var person = membership.getPerson();
+            if (person != null) {
+                return ComponentFactory.newPersonAvatar(person);
+            }
+        }
+        return new Span();
+    }
 
-	private String getDateLabel(Supervision supervision) {
-		return supervision.getYearRange().toString();
-	}
+    private String getTypeLabel(Supervision supervision) {
+        final var membership = supervision.getSupervisedPerson();
+        if (membership != null) {
+            final var person = membership.getPerson();
+            final var gender = person == null ? null : person.getGender();
+            return membership.getMemberStatus().getLabel(getMessageSourceAccessor(), gender, false, getLocale());
+        }
+        return ""; //$NON-NLS-1$
+    }
 
-	private Component createSupervisorsComponent(Supervision supervision) {
-		final var supervisors = supervision.getSupervisors();
-		if (supervisors != null && !supervisors.isEmpty()) {
-			final var layout = new HorizontalLayout();
-			layout.setSpacing(false);
-			layout.setPadding(false);
-			for (final var supervisor : supervisors) {
-				final var supervisorComponent =  ComponentFactory.newPersonAvatar(supervisor.getSupervisor());
-				layout.add(supervisorComponent);
-			}
-			return layout;
-		}
-		return new Span();
-	}
+    private String getDateLabel(Supervision supervision) {
+        return supervision.getYearRange().toString();
+    }
 
-	@Override
-	protected List<Column<Supervision>> getInitialSortingColumns() {
-		return Arrays.asList(this.dateColumn, this.supervisedPersonColumn);
-	}
+    private Component createSupervisorsComponent(Supervision supervision) {
+        final var supervisors = supervision.getSupervisors();
+        if (supervisors != null && !supervisors.isEmpty()) {
+            final var layout = new HorizontalLayout();
+            layout.setSpacing(false);
+            layout.setPadding(false);
+            for (final var supervisor : supervisors) {
+                final var supervisorComponent = ComponentFactory.newPersonAvatar(supervisor.getSupervisor());
+                layout.add(supervisorComponent);
+            }
+            return layout;
+        }
+        return new Span();
+    }
 
-	@Override
-	protected SortDirection getInitialSortingDirection(Column<Supervision> column) {
-		if (column == this.dateColumn) {
-			return SortDirection.DESCENDING;
-		}
-		return SortDirection.ASCENDING;
-	}
+    @Override
+    protected List<Column<Supervision>> getInitialSortingColumns() {
+        return Arrays.asList(this.dateColumn, this.supervisedPersonColumn);
+    }
 
-	@Override
-	protected FetchCallback<Supervision, Void> getFetchCallback(AbstractFilters<Supervision> filters) {
-		return query -> {
-			return this.dataProvider.fetch(
-					this.supervisionService,
-					VaadinSpringDataHelpers.toSpringPageRequest(query),
-					filters).stream();
-		};
-	}
+    @Override
+    protected SortDirection getInitialSortingDirection(Column<Supervision> column) {
+        if (column == this.dateColumn) {
+            return SortDirection.DESCENDING;
+        }
+        return SortDirection.ASCENDING;
+    }
 
-	@Override
-	protected void addEntity() {
-		openSupervisionEditor(new Supervision(), getTranslation("views.supervision.add_supervision"), true); //$NON-NLS-1$
-	}
+    @Override
+    protected FetchCallback<Supervision, Void> getFetchCallback(AbstractFilters<Supervision> filters) {
+        return query -> {
+            return this.dataProvider.fetch(
+                    this.supervisionService,
+                    VaadinSpringDataHelpers.toSpringPageRequest(query),
+                    filters).stream();
+        };
+    }
 
-	@Override
-	protected void edit(Supervision supervision) {
-		openSupervisionEditor(supervision, getTranslation("views.supervision.edit_supervision", supervision.getTitle()), false); //$NON-NLS-1$
-	}
+    @Override
+    protected void addEntity() {
+        openSupervisionEditor(new Supervision(), getTranslation("views.supervision.add_supervision"), true); //$NON-NLS-1$
+    }
 
-	/** Show the editor of a supervision.
-	 *
-	 * @param supervision the supervision to edit.
-	 * @param title the title of the editor.
-	 * @param isCreation indicates if the editor is for creating or updating the entity.
-	 */
-	protected void openSupervisionEditor(Supervision supervision, String title, boolean isCreation) {
-		final AbstractEntityEditor<Supervision> editor;
-		if (isCreation) {
-			editor = this.supervisionEditorFactory.createAdditionEditor(supervision, getLogger());
-		} else {
-			editor = this.supervisionEditorFactory.createUpdateEditor(supervision, getLogger());
-		}
-		final var newEntity = editor.isNewEntity();
-		final SerializableBiConsumer<Dialog, Supervision> refreshAll = (dialog, entity) -> {
-			// The person should be loaded because it was not loaded before
-			this.supervisionService.inSession(session -> {
-				session.load(entity, Long.valueOf(entity.getId()));
-				initializeEntityFromJPA(entity);
-			});
-			refreshGrid();
-		};
-		final SerializableBiConsumer<Dialog, Supervision> refreshOne = (dialog, entity) -> {
-			// The person should be loaded because it was not loaded before
-			this.supervisionService.inSession(session -> {
-				session.load(entity, Long.valueOf(entity.getId()));
-				initializeEntityFromJPA(entity);
-			});
-			refreshItem(entity);
-		};
-		ComponentFactory.openEditionModalDialog(title, editor, false,
-				// Refresh the "old" item, even if its has been changed in the JPA database
-				newEntity ? refreshAll : refreshOne,
-				newEntity ? null : refreshAll);
-	}
+    @Override
+    protected void edit(Supervision supervision) {
+        openSupervisionEditor(supervision, getTranslation("views.supervision.edit_supervision", supervision.getTitle()), false); //$NON-NLS-1$
+    }
 
-	@Override
-	protected EntityDeletingContext<Supervision> createDeletionContextFor(Set<Supervision> entities) {
-		return this.supervisionService.startDeletion(entities, getLogger());
-	}
+    /**
+     * Show the editor of a supervision.
+     *
+     * @param supervision the supervision to edit.
+     * @param title       the title of the editor.
+     * @param isCreation  indicates if the editor is for creating or updating the entity.
+     */
+    protected void openSupervisionEditor(Supervision supervision, String title, boolean isCreation) {
+        final AbstractEntityEditor<Supervision> editor;
+        if (isCreation) {
+            editor = this.supervisionEditorFactory.createAdditionEditor(supervision, getLogger());
+        } else {
+            editor = this.supervisionEditorFactory.createUpdateEditor(supervision, getLogger());
+        }
+        final var newEntity = editor.isNewEntity();
+        final SerializableBiConsumer<Dialog, Supervision> refreshAll = (dialog, entity) -> {
+            // The person should be loaded because it was not loaded before
+            this.supervisionService.inSession(session -> {
+                session.load(entity, Long.valueOf(entity.getId()));
+                initializeEntityFromJPA(entity);
+            });
+            refreshGrid();
+        };
+        final SerializableBiConsumer<Dialog, Supervision> refreshOne = (dialog, entity) -> {
+            // The person should be loaded because it was not loaded before
+            this.supervisionService.inSession(session -> {
+                session.load(entity, Long.valueOf(entity.getId()));
+                initializeEntityFromJPA(entity);
+            });
+            refreshItem(entity);
+        };
+        ComponentFactory.openEditionModalDialog(title, editor, false,
+                // Refresh the "old" item, even if its has been changed in the JPA database
+                newEntity ? refreshAll : refreshOne,
+                newEntity ? null : refreshAll);
+    }
 
-	@Override
-	public void localeChange(LocaleChangeEvent event) {
-		super.localeChange(event);
-		this.supervisedPersonColumn.setHeader(getTranslation("views.supervised_person")); //$NON-NLS-1$
-		this.typeColumn.setHeader(getTranslation("views.type")); //$NON-NLS-1$
-		this.dateColumn.setHeader(getTranslation("views.period")); //$NON-NLS-1$
-		this.supervisorsColumn.setHeader(getTranslation("views.supervisors")); //$NON-NLS-1$
-	}
+    @Override
+    protected EntityDeletingContext<Supervision> createDeletionContextFor(Set<Supervision> entities) {
+        return this.supervisionService.startDeletion(entities, getLogger());
+    }
 
-	/** UI and JPA filters for {@link StandardSupervisionListView}.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	protected static class SupervisionFilters extends AbstractAuthenticatedUserDataFilters<Supervision> {
+    @Override
+    public void localeChange(LocaleChangeEvent event) {
+        super.localeChange(event);
+        this.supervisedPersonColumn.setHeader(getTranslation("views.supervised_person")); //$NON-NLS-1$
+        this.typeColumn.setHeader(getTranslation("views.type")); //$NON-NLS-1$
+        this.dateColumn.setHeader(getTranslation("views.period")); //$NON-NLS-1$
+        this.supervisorsColumn.setHeader(getTranslation("views.supervisors")); //$NON-NLS-1$
+    }
 
-		private static final long serialVersionUID = 829919544629910175L;
+    /**
+     * Provider of data for supervisions to be displayed in the list of supervisions view.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    @FunctionalInterface
+    protected interface SupervisionDataProvider {
 
-		private Checkbox includeTypes;
+        /**
+         * Fetch supervisions data.
+         *
+         * @param supervisionService the service to have access to the JPA.
+         * @param pageRequest        the request for paging the data.
+         * @param filters            the filters to apply for selecting the data.
+         * @return the lazy data page.
+         */
+        Page<Supervision> fetch(SupervisionService supervisionService, PageRequest pageRequest, AbstractFilters<Supervision> filters);
 
-		/** Constructor.
-		 *
-		 * @param user the connected user, or {@code null} if the filter does not care about a connected user.
-		 * @param onSearch the callback function for running the filtering.
-		 */
-		public SupervisionFilters(AuthenticatedUser user, Runnable onSearch) {
-			super(user, onSearch);
-		}
+    }
 
-		@Override
-		protected void buildOptionsComponent(HorizontalLayout options) {
-			this.includeTypes = new Checkbox(true);
+    /**
+     * UI and JPA filters for {@link StandardSupervisionListView}.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    protected static class SupervisionFilters extends AbstractAuthenticatedUserDataFilters<Supervision> {
 
-			options.add(this.includeTypes);
-		}
+        private static final long serialVersionUID = 829919544629910175L;
 
-		@Override
-		protected void resetFilters() {
-			this.includeTypes.setValue(Boolean.TRUE);
-		}
+        private Checkbox includeTypes;
 
-		@Override
-		protected Predicate buildPredicateForAuthenticatedUser(Root<Supervision> root, CriteriaQuery<?> query,
-				CriteriaBuilder criteriaBuilder, Person user) {
-			final var crit1 = criteriaBuilder.equal(root.get("supervisedPerson").get("person"), user); //$NON-NLS-1$ //$NON-NLS-2$
-			final var crit2 = criteriaBuilder.equal(root.get("supervisors").get("supervisor"), user); //$NON-NLS-1$ //$NON-NLS-2$
-			return criteriaBuilder.or(crit1, crit2);
-		}
+        /**
+         * Constructor.
+         *
+         * @param user     the connected user, or {@code null} if the filter does not care about a connected user.
+         * @param onSearch the callback function for running the filtering.
+         */
+        public SupervisionFilters(AuthenticatedUser user, Runnable onSearch) {
+            super(user, onSearch);
+        }
 
-		@Override
-		protected void buildQueryFor(String keywords, List<Predicate> predicates, Root<Supervision> root,
-				CriteriaBuilder criteriaBuilder) {
-			if (this.includeTypes.getValue() == Boolean.TRUE) {
-				predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("types")), keywords)); //$NON-NLS-1$
-			}
-		}
+        @Override
+        protected void buildOptionsComponent(HorizontalLayout options) {
+            this.includeTypes = new Checkbox(true);
 
-		@Override
-		public void localeChange(LocaleChangeEvent event) {
-			super.localeChange(event);
-			this.includeTypes.setLabel(getTranslation("views.filters.include_types")); //$NON-NLS-1$
-		}
+            options.add(this.includeTypes);
+        }
 
-	}
+        @Override
+        protected void resetFilters() {
+            this.includeTypes.setValue(Boolean.TRUE);
+        }
 
-	/** Provider of data for supervisions to be displayed in the list of supervisions view.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	@FunctionalInterface
-	protected interface SupervisionDataProvider {
+        @Override
+        protected Predicate buildPredicateForAuthenticatedUser(Root<Supervision> root, CriteriaQuery<?> query,
+                                                               CriteriaBuilder criteriaBuilder, Person user) {
+            final var crit1 = criteriaBuilder.equal(root.get("supervisedPerson").get("person"), user); //$NON-NLS-1$ //$NON-NLS-2$
+            final var crit2 = criteriaBuilder.equal(root.get("supervisors").get("supervisor"), user); //$NON-NLS-1$ //$NON-NLS-2$
+            return criteriaBuilder.or(crit1, crit2);
+        }
 
-		/** Fetch supervisions data.
-		 *
-		 * @param supervisionService the service to have access to the JPA.
-		 * @param pageRequest the request for paging the data.
-		 * @param filters the filters to apply for selecting the data.
-		 * @return the lazy data page.
-		 */
-		Page<Supervision> fetch(SupervisionService supervisionService, PageRequest pageRequest, AbstractFilters<Supervision> filters);
+        @Override
+        protected void buildQueryFor(String keywords, List<Predicate> predicates, Root<Supervision> root,
+                                     CriteriaBuilder criteriaBuilder) {
+            if (this.includeTypes.getValue() == Boolean.TRUE) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("types")), keywords)); //$NON-NLS-1$
+            }
+        }
 
-	}
+        @Override
+        public void localeChange(LocaleChangeEvent event) {
+            super.localeChange(event);
+            this.includeTypes.setLabel(getTranslation("views.filters.include_types")); //$NON-NLS-1$
+        }
+
+    }
 
 }

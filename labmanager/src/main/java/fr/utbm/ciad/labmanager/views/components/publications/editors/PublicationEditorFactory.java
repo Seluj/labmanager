@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,9 @@ import fr.utbm.ciad.labmanager.views.components.addons.entities.AbstractEntityEd
 import fr.utbm.ciad.labmanager.views.components.addons.entities.EntityCreationStatus;
 import org.slf4j.Logger;
 
-/** Factory that is providing a publication editor according to the editing context.
- * 
+/**
+ * Factory that is providing a publication editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -36,272 +37,285 @@ import org.slf4j.Logger;
  */
 public interface PublicationEditorFactory {
 
-	/** Replies the editing context for the given publication.
-	 *
-	 * @param publication the publication to be edited.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editing context.
-	 */
-	EntityEditingContext<Publication> createContextFor(Publication publication, Logger logger);
+    /**
+     * Replies the editing context for the given publication.
+     *
+     * @param publication the publication to be edited.
+     * @param logger      the logger to be associated to the context.
+     * @return the editing context.
+     */
+    EntityEditingContext<Publication> createContextFor(Publication publication, Logger logger);
 
-	/** Create an editor that may be used for creating a new publication.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @param initialPublicationStatus the initial status for the publication.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param mandatoryAbstractText indicates if the abstract text is considered as mandatory or not.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<Publication> createAdditionEditor(EntityEditingContext<Publication> context,
-			EntityCreationStatus initialPublicationStatus,
-			PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey);
+    /**
+     * Create an editor that may be used for creating a new publication.
+     *
+     * @param context                   the context for editing the entity.
+     * @param initialPublicationStatus  the initial status for the publication.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param mandatoryAbstractText     indicates if the abstract text is considered as mandatory or not.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<Publication> createAdditionEditor(EntityEditingContext<Publication> context,
+                                                           EntityCreationStatus initialPublicationStatus,
+                                                           PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
+                                                           String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                           String personNullErrorKey, String personDuplicateErrorKey);
 
-	/** Create an editor that may be used for creating a new publication.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @param initialPublicationStatus the initial status for the publication.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param mandatoryAbstractText indicates if the abstract text is considered as mandatory or not.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createAdditionEditor(EntityEditingContext<Publication> context,
-			PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey) {
-		return createAdditionEditor(context, null, supportedTypes, enableTypeSelector, mandatoryAbstractText,
-				personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
-	}
+    /**
+     * Create an editor that may be used for creating a new publication.
+     *
+     * @param context                   the context for editing the entity.
+     * @param initialPublicationStatus  the initial status for the publication.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param mandatoryAbstractText     indicates if the abstract text is considered as mandatory or not.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createAdditionEditor(EntityEditingContext<Publication> context,
+                                                                   PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
+                                                                   String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                   String personNullErrorKey, String personDuplicateErrorKey) {
+        return createAdditionEditor(context, null, supportedTypes, enableTypeSelector, mandatoryAbstractText,
+                personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
+    }
 
-	/** Create an editor that may be used for creating a new publication.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createAdditionEditor(EntityEditingContext<Publication> context,
-			PublicationType[] supportedTypes, boolean enableTypeSelector,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey) {
-		return createAdditionEditor(context, null, supportedTypes, enableTypeSelector, true,
-				personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
-	}
+    /**
+     * Create an editor that may be used for creating a new publication.
+     *
+     * @param context                   the context for editing the entity.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createAdditionEditor(EntityEditingContext<Publication> context,
+                                                                   PublicationType[] supportedTypes, boolean enableTypeSelector,
+                                                                   String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                   String personNullErrorKey, String personDuplicateErrorKey) {
+        return createAdditionEditor(context, null, supportedTypes, enableTypeSelector, true,
+                personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
+    }
 
-	/** Create an editor that may be used for creating a new publication.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @param initialPublicationStatus the initial status for the publication.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createAdditionEditor(EntityEditingContext<Publication> context,
-			EntityCreationStatus initialPublicationStatus,
-			PublicationType[] supportedTypes, boolean enableTypeSelector,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey) {
-		return createAdditionEditor(context, initialPublicationStatus, supportedTypes, enableTypeSelector, true,
-				personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
-	}
+    /**
+     * Create an editor that may be used for creating a new publication.
+     *
+     * @param context                   the context for editing the entity.
+     * @param initialPublicationStatus  the initial status for the publication.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createAdditionEditor(EntityEditingContext<Publication> context,
+                                                                   EntityCreationStatus initialPublicationStatus,
+                                                                   PublicationType[] supportedTypes, boolean enableTypeSelector,
+                                                                   String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                   String personNullErrorKey, String personDuplicateErrorKey) {
+        return createAdditionEditor(context, initialPublicationStatus, supportedTypes, enableTypeSelector, true,
+                personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
+    }
 
-	/** Create an editor that may be used for creating a new publication.
-	 * 
-	 * @param publication the publication to be edited.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param mandatoryAbstractText indicates if the abstract text is considered as mandatory or not.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createAdditionEditor(Publication publication,
-			PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
-		final var context = createContextFor(publication, logger);
-		return createAdditionEditor(context, null, supportedTypes, enableTypeSelector, mandatoryAbstractText, personCreationLabelKey,
-				personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
-	}
+    /**
+     * Create an editor that may be used for creating a new publication.
+     *
+     * @param publication               the publication to be edited.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param mandatoryAbstractText     indicates if the abstract text is considered as mandatory or not.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @param logger                    the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createAdditionEditor(Publication publication,
+                                                                   PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
+                                                                   String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                   String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
+        final var context = createContextFor(publication, logger);
+        return createAdditionEditor(context, null, supportedTypes, enableTypeSelector, mandatoryAbstractText, personCreationLabelKey,
+                personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
+    }
 
-	/** Create an editor that may be used for creating a new publication.
-	 * 
-	 * @param publication the publication to be edited.
-	 * @param initialPublicationStatus the initial status for the publication.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param mandatoryAbstractText indicates if the abstract text is considered as mandatory or not.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createAdditionEditor(Publication publication,
-			EntityCreationStatus initialPublicationStatus,
-			PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
-		final var context = createContextFor(publication, logger);
-		return createAdditionEditor(context, initialPublicationStatus, supportedTypes, enableTypeSelector, mandatoryAbstractText, personCreationLabelKey,
-				personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
-	}
+    /**
+     * Create an editor that may be used for creating a new publication.
+     *
+     * @param publication               the publication to be edited.
+     * @param initialPublicationStatus  the initial status for the publication.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param mandatoryAbstractText     indicates if the abstract text is considered as mandatory or not.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @param logger                    the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createAdditionEditor(Publication publication,
+                                                                   EntityCreationStatus initialPublicationStatus,
+                                                                   PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
+                                                                   String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                   String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
+        final var context = createContextFor(publication, logger);
+        return createAdditionEditor(context, initialPublicationStatus, supportedTypes, enableTypeSelector, mandatoryAbstractText, personCreationLabelKey,
+                personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
+    }
 
-	/** Create an editor that may be used for creating a new publication.
-	 * 
-	 * @param publication the publication to be edited.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createAdditionEditor(Publication publication,
-			PublicationType[] supportedTypes, boolean enableTypeSelector,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
-		return createAdditionEditor(publication, null, supportedTypes, enableTypeSelector, true,
-				personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey,
-				personDuplicateErrorKey, logger);
-	}
+    /**
+     * Create an editor that may be used for creating a new publication.
+     *
+     * @param publication               the publication to be edited.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @param logger                    the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createAdditionEditor(Publication publication,
+                                                                   PublicationType[] supportedTypes, boolean enableTypeSelector,
+                                                                   String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                   String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
+        return createAdditionEditor(publication, null, supportedTypes, enableTypeSelector, true,
+                personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey,
+                personDuplicateErrorKey, logger);
+    }
 
-	/** Create an editor that may be used for creating a new publication.
-	 * 
-	 * @param publication the publication to be edited.
-	 * @param initialPublicationStatus the initial status for the publication.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createAdditionEditor(Publication publication,
-			EntityCreationStatus initialPublicationStatus,
-			PublicationType[] supportedTypes, boolean enableTypeSelector,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
-		return createAdditionEditor(publication, initialPublicationStatus, supportedTypes, enableTypeSelector, true,
-				personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey,
-				personDuplicateErrorKey, logger);
-	}
+    /**
+     * Create an editor that may be used for creating a new publication.
+     *
+     * @param publication               the publication to be edited.
+     * @param initialPublicationStatus  the initial status for the publication.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @param logger                    the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createAdditionEditor(Publication publication,
+                                                                   EntityCreationStatus initialPublicationStatus,
+                                                                   PublicationType[] supportedTypes, boolean enableTypeSelector,
+                                                                   String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                   String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
+        return createAdditionEditor(publication, initialPublicationStatus, supportedTypes, enableTypeSelector, true,
+                personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey,
+                personDuplicateErrorKey, logger);
+    }
 
-	/** Create an editor that may be used for updating an existing person.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param mandatoryAbstractText indicates if the abstract text is considered as mandatory or not.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<Publication> createUpdateEditor(EntityEditingContext<Publication> context,
-			PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey);
+    /**
+     * Create an editor that may be used for updating an existing person.
+     *
+     * @param context                   the context for editing the entity.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param mandatoryAbstractText     indicates if the abstract text is considered as mandatory or not.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<Publication> createUpdateEditor(EntityEditingContext<Publication> context,
+                                                         PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
+                                                         String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                         String personNullErrorKey, String personDuplicateErrorKey);
 
-	/** Create an editor that may be used for updating an existing person.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createUpdateEditor(EntityEditingContext<Publication> context,
-			PublicationType[] supportedTypes, boolean enableTypeSelector,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey) {
-		return createUpdateEditor(context, supportedTypes, enableTypeSelector, true,
-				personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
-	}
+    /**
+     * Create an editor that may be used for updating an existing person.
+     *
+     * @param context                   the context for editing the entity.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createUpdateEditor(EntityEditingContext<Publication> context,
+                                                                 PublicationType[] supportedTypes, boolean enableTypeSelector,
+                                                                 String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                 String personNullErrorKey, String personDuplicateErrorKey) {
+        return createUpdateEditor(context, supportedTypes, enableTypeSelector, true,
+                personCreationLabelKey, personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
+    }
 
-	/** Create an editor that may be used for updating an existing person.
-	 * 
-	 * @param publication the publication to be edited.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param mandatoryAbstractText indicates if the abstract text is considered as mandatory or not.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createUpdateEditor(Publication publication,
-			PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
-		final var context = createContextFor(publication, logger);
-		return createUpdateEditor(context, supportedTypes, enableTypeSelector, mandatoryAbstractText, personCreationLabelKey,
-				personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
-	}
+    /**
+     * Create an editor that may be used for updating an existing person.
+     *
+     * @param publication               the publication to be edited.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param mandatoryAbstractText     indicates if the abstract text is considered as mandatory or not.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @param logger                    the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createUpdateEditor(Publication publication,
+                                                                 PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
+                                                                 String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                 String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
+        final var context = createContextFor(publication, logger);
+        return createUpdateEditor(context, supportedTypes, enableTypeSelector, mandatoryAbstractText, personCreationLabelKey,
+                personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey);
+    }
 
-	/** Create an editor that may be used for updating an existing person.
-	 * 
-	 * @param publication the publication to be edited.
-	 * @param supportedTypes list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-	 * @param enableTypeSelector indicates if the type selector is enabled or disabled.
-	 * @param personCreationLabelKey the key that is used for retrieving the text for creating a new person and associating it to the publication.
-	 * @param personFieldLabelKey the key that is used for retrieving the text for the label of the author/editor field.
-	 * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
-	 * @param personNullErrorKey the key that is used for retrieving the text of the author/editor null error.
-	 * @param personDuplicateErrorKey the key that is used for retrieving the text of the author/editor duplicate error.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Publication> createUpdateEditor(Publication publication,
-			PublicationType[] supportedTypes, boolean enableTypeSelector,
-			String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
-			String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
-		return createUpdateEditor(publication, supportedTypes, enableTypeSelector, true, personCreationLabelKey,
-				personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey, logger);
-	}
+    /**
+     * Create an editor that may be used for updating an existing person.
+     *
+     * @param publication               the publication to be edited.
+     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
+     * @param personCreationLabelKey    the key that is used for retrieving the text for creating a new person and associating it to the publication.
+     * @param personFieldLabelKey       the key that is used for retrieving the text for the label of the author/editor field.
+     * @param personFieldHelperLabelKey the key that is used for retrieving the text for the helper of the author/editor field.
+     * @param personNullErrorKey        the key that is used for retrieving the text of the author/editor null error.
+     * @param personDuplicateErrorKey   the key that is used for retrieving the text of the author/editor duplicate error.
+     * @param logger                    the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Publication> createUpdateEditor(Publication publication,
+                                                                 PublicationType[] supportedTypes, boolean enableTypeSelector,
+                                                                 String personCreationLabelKey, String personFieldLabelKey, String personFieldHelperLabelKey,
+                                                                 String personNullErrorKey, String personDuplicateErrorKey, Logger logger) {
+        return createUpdateEditor(publication, supportedTypes, enableTypeSelector, true, personCreationLabelKey,
+                personFieldLabelKey, personFieldHelperLabelKey, personNullErrorKey, personDuplicateErrorKey, logger);
+    }
 
 }

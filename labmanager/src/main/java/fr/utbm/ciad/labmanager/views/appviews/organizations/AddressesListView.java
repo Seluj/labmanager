@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,8 +32,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** List all the addresses.
- * 
+/**
+ * List all the addresses.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -44,28 +45,29 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class AddressesListView extends StandardAddressListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = 7405006673440187284L;
+    private static final long serialVersionUID = 7405006673440187284L;
 
-	/** Constructor.
-	 *
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param addressService the service for accessing the addresses.
-	 * @param addressEditorFactory the factory for creating the address editors.
-	 */
-	public AddressesListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired OrganizationAddressService addressService,
-			@Autowired AddressEditorFactory addressEditorFactory) {
-		super(authenticatedUser, messages, loggerFactory, addressService, addressEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser    the connected user.
+     * @param messages             the accessor to the localized messages (spring layer).
+     * @param loggerFactory        the factory to be used for the composite logger.
+     * @param addressService       the service for accessing the addresses.
+     * @param addressEditorFactory the factory for creating the address editors.
+     */
+    public AddressesListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired OrganizationAddressService addressService,
+            @Autowired AddressEditorFactory addressEditorFactory) {
+        super(authenticatedUser, messages, loggerFactory, addressService, addressEditorFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.organizations.addresses.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.organizations.addresses.list"); //$NON-NLS-1$
+    }
 
 }

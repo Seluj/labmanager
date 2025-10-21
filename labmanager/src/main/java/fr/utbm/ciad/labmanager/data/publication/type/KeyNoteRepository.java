@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,14 +20,14 @@
 package fr.utbm.ciad.labmanager.data.publication.type;
 
 import fr.utbm.ciad.labmanager.data.conference.Conference;
-import fr.utbm.ciad.labmanager.data.publication.AbstractConferenceBasedPublication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Set;
 
-/** JPA Repository for keynote speaks.
- * 
+/**
+ * JPA Repository for keynote speaks.
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @version $Name$ $Revision$ $Date$
@@ -36,7 +36,8 @@ import java.util.Set;
  */
 public interface KeyNoteRepository extends JpaRepository<KeyNote, Long>, JpaSpecificationExecutor<KeyNote> {
 
-    /** Replies the list of keynotes for the conference.
+    /**
+     * Replies the list of keynotes for the conference.
      *
      * @param conference the conference.
      * @return the list of keynotes.

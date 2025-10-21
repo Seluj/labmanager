@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,9 +22,10 @@ package fr.utbm.ciad.labmanager.utils;
 import java.io.IOException;
 import java.io.Serializable;
 
-/** Interface that provides a function for updating a value in the implementation object
+/**
+ * Interface that provides a function for updating a value in the implementation object
  * and saving any uploaded data in memory.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,16 +34,18 @@ import java.io.Serializable;
  */
 public interface HasAsynchronousUploadService extends Serializable {
 
-	/** Update the value stored in the memory of the object.
-	 */
-	void updateValue();
+    /**
+     * Update the value stored in the memory of the object.
+     */
+    void updateValue();
 
-	/** Save any uploaded data in memory to a file.
-	 *
-	 * <p>The target filename is decied by the implementation object.
-	 *
-	 * @throws IOException if the files cannot be saved on the server.
-	 */
-	void saveUploadedFileOnServer() throws IOException;
+    /**
+     * Save any uploaded data in memory to a file.
+     *
+     * <p>The target filename is decied by the implementation object.
+     *
+     * @throws IOException if the files cannot be saved on the server.
+     */
+    void saveUploadedFileOnServer() throws IOException;
 
 }

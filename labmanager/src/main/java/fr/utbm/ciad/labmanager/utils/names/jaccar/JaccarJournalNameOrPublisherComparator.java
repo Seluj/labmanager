@@ -5,7 +5,8 @@ import info.debatty.java.stringsimilarity.Jaccard;
 import info.debatty.java.stringsimilarity.interfaces.NormalizedStringSimilarity;
 import org.springframework.stereotype.Component;
 
-/** Utilities for comparing journal names and publishers using the Jaccar algorithm.
+/**
+ * Utilities for comparing journal names and publishers using the Jaccar algorithm.
  * Similarity used by this comparator is the maximum similarity level for journal names and publishers names.
  *
  * @author $Author: sgalland$
@@ -19,7 +20,8 @@ public class JaccarJournalNameOrPublisherComparator extends AbstractJournalNameO
 
     private static final double DEFAULT_SIMILARITY_LEVEL = 0.4;
 
-    /** Constructor.
+    /**
+     * Constructor.
      */
     public JaccarJournalNameOrPublisherComparator() {
         setSimilarityLevel(DEFAULT_SIMILARITY_LEVEL);

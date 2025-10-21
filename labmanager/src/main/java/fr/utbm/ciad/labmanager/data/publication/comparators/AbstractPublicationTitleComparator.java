@@ -4,6 +4,7 @@ import fr.utbm.ciad.labmanager.utils.AbstractNormalizableStringComparator;
 
 /**
  * Abstract implementation of utiferlin$
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -21,11 +22,11 @@ public abstract class AbstractPublicationTitleComparator extends AbstractNormali
      */
     @Override
     public double getSimilarity(String title1, String title2) {
-		final var normedTitle1 = normalizeString(title1);
-		final var normedTitle2 = title1 != title2 ? normalizeString(title2) : normedTitle1;
+        final var normedTitle1 = normalizeString(title1);
+        final var normedTitle2 = title1 != title2 ? normalizeString(title2) : normedTitle1;
 
-		final var similarityComputer = getStringSimilarityComputer();
-		return getSimilarity(similarityComputer, normedTitle1, normedTitle2);
+        final var similarityComputer = getStringSimilarityComputer();
+        return getSimilarity(similarityComputer, normedTitle1, normedTitle2);
     }
 
 }

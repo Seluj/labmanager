@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,7 +33,8 @@ import com.vaadin.flow.server.StreamResource;
 import fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory;
 import org.slf4j.Logger;
 
-/** A field that enables to upload a file and show an image representation of the uploaded file.
+/**
+ * A field that enables to upload a file and show an image representation of the uploaded file.
  * This field does not assume that the field's data is of a specific type.
  * Subclasses must implement function to handle the upload file data.
  *
@@ -46,126 +47,133 @@ import org.slf4j.Logger;
  */
 public abstract class AbstractUploadableFileImageViewerField<T> extends AbstractUploadableFileField<T> implements HasClearButton {
 
-	private static final long serialVersionUID = 3100784001699040679L;
+    private static final long serialVersionUID = 3100784001699040679L;
 
-	private static final int DEFAULT_IMAGE_SIZE = 100;
-	
-	private final Image image;
+    private static final int DEFAULT_IMAGE_SIZE = 100;
 
-	private final Button clearButton;
+    private final Image image;
 
-	/** Default constructor.
-	 *
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 */
-	public AbstractUploadableFileImageViewerField(SerializableSupplier<Logger> loggerSupplier) {
-		super(loggerSupplier);
+    private final Button clearButton;
 
-		this.image = new Image();
-		this.image.setVisible(true);
-		setImageSize(DEFAULT_IMAGE_SIZE, Unit.PIXELS);
+    /**
+     * Default constructor.
+     *
+     * @param loggerSupplier the dynamic supplier of the loggers.
+     */
+    public AbstractUploadableFileImageViewerField(SerializableSupplier<Logger> loggerSupplier) {
+        super(loggerSupplier);
 
-		this.clearButton = new Button("", it -> onImageCleared()); //$NON-NLS-1$
-		this.clearButton.setIcon(VaadinIcon.CLOSE_SMALL.create());
-		this.clearButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-		this.clearButton.setEnabled(false);
-		this.clearButton.setVisible(false);
+        this.image = new Image();
+        this.image.setVisible(true);
+        setImageSize(DEFAULT_IMAGE_SIZE, Unit.PIXELS);
 
-		final var layout = new HorizontalLayout();
-		layout.setSpacing(false);
-		layout.setAlignItems(Alignment.START);
-		layout.add(this.image, this.clearButton);
+        this.clearButton = new Button("", it -> onImageCleared()); //$NON-NLS-1$
+        this.clearButton.setIcon(VaadinIcon.CLOSE_SMALL.create());
+        this.clearButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        this.clearButton.setEnabled(false);
+        this.clearButton.setVisible(false);
 
-		getContent().addComponentAsFirst(layout);
-		
-		updateImage(this.image, this.clearButton);
-	}
+        final var layout = new HorizontalLayout();
+        layout.setSpacing(false);
+        layout.setAlignItems(Alignment.START);
+        layout.add(this.image, this.clearButton);
 
-	@Override
+        getContent().addComponentAsFirst(layout);
+
+        updateImage(this.image, this.clearButton);
+    }
+
+    @Override
     public boolean isClearButtonVisible() {
         return this.clearButton.isVisible();
     }
 
-	@Override
+    @Override
     public void setClearButtonVisible(boolean clearButtonVisible) {
         this.clearButton.setVisible(true);
     }
 
-	/** Invoked to clear all UI components that are not the uploader itself.
-	 *
-	 * @see #resetUploader()
-	 */
-	protected void resetUi() {
-		final var source = ComponentFactory.newEmptyBackgroundStreamImage();
-		this.clearButton.setEnabled(false);
-		this.image.setSrc(source);
-	}
+    /**
+     * Invoked to clear all UI components that are not the uploader itself.
+     *
+     * @see #resetUploader()
+     */
+    protected void resetUi() {
+        final var source = ComponentFactory.newEmptyBackgroundStreamImage();
+        this.clearButton.setEnabled(false);
+        this.image.setSrc(source);
+    }
 
-	/** Invoked to clear all internal properties for resetting.
-	 */
-	protected void resetProperties() {
-		//
-	}
+    /**
+     * Invoked to clear all internal properties for resetting.
+     */
+    protected void resetProperties() {
+        //
+    }
 
-	/** Change the size of the image on the viewer.
-	 *
-	 * @param size the size of the image.
-	 * @param unit the unit.
-	 */
-	public void setImageSize(int size, Unit unit) {
-		this.image.setMinHeight(size, unit);
-		this.image.setMaxHeight(size, unit);
-	}
+    /**
+     * Change the size of the image on the viewer.
+     *
+     * @param size the size of the image.
+     * @param unit the unit.
+     */
+    public void setImageSize(int size, Unit unit) {
+        this.image.setMinHeight(size, unit);
+        this.image.setMaxHeight(size, unit);
+    }
 
-	/** Invoked to change the image in the viewer.
-	 *
-	 * @param viewer the receiver of the image.
-	 * @param clearButton the clear button.
-	 */
-	protected void updateImage(Image viewer, Button clearButton) {
-		final var buffer = getMemoryReceiver();
-		final StreamResource source;
-		if (buffer != null && buffer.hasFileData()) {
-			source = buffer.createStreamResource();
-			clearButton.setEnabled(true);
-		} else {
-			source = ComponentFactory.newEmptyBackgroundStreamImage();
-			clearButton.setEnabled(false);
-		}
-		viewer.setSrc(source);
-	}
+    /**
+     * Invoked to change the image in the viewer.
+     *
+     * @param viewer      the receiver of the image.
+     * @param clearButton the clear button.
+     */
+    protected void updateImage(Image viewer, Button clearButton) {
+        final var buffer = getMemoryReceiver();
+        final StreamResource source;
+        if (buffer != null && buffer.hasFileData()) {
+            source = buffer.createStreamResource();
+            clearButton.setEnabled(true);
+        } else {
+            source = ComponentFactory.newEmptyBackgroundStreamImage();
+            clearButton.setEnabled(false);
+        }
+        viewer.setSrc(source);
+    }
 
-	@Override
-	protected void uploadSucceeded(String filename) {
-		updateImage(this.image, this.clearButton);
-	}
-	
-	@Override
-	protected void uploadFailed(String filename, Throwable error) {
-		resetProperties();
-		resetUi();
-	}
+    @Override
+    protected void uploadSucceeded(String filename) {
+        updateImage(this.image, this.clearButton);
+    }
 
-	private void onImageCleared() {
-		resetUploader();
-		resetProperties();
-		resetUi();
-		imageCleared();
-	}
+    @Override
+    protected void uploadFailed(String filename, Throwable error) {
+        resetProperties();
+        resetUi();
+    }
 
-	/** Invoked when the image is cleared.
-	 */
-	protected void imageCleared() {
-		//
-	}
+    private void onImageCleared() {
+        resetUploader();
+        resetProperties();
+        resetUi();
+        imageCleared();
+    }
 
-	/** Change the image that is displayed in the viewer.
-	 *
-	 * @param stream the stream to the resource.
-	 */
-	protected void setImageSource(AbstractStreamResource stream) {
-		this.image.setSrc(stream);
-		this.clearButton.setEnabled(true);
-	}
+    /**
+     * Invoked when the image is cleared.
+     */
+    protected void imageCleared() {
+        //
+    }
+
+    /**
+     * Change the image that is displayed in the viewer.
+     *
+     * @param stream the stream to the resource.
+     */
+    protected void setImageSource(AbstractStreamResource stream) {
+        this.image.setSrc(stream);
+        this.clearButton.setEnabled(true);
+    }
 
 }

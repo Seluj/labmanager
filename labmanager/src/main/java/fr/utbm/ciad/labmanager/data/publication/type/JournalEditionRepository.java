@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Set;
 
-/** JPA Repository for editions of journals and special issues.
- * 
+/**
+ * JPA Repository for editions of journals and special issues.
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @version $Name$ $Revision$ $Date$

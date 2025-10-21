@@ -20,8 +20,8 @@ public class ToggleIconComponent extends ToggleComponent {
     /**
      * Constructs a ToggleComponent with custom labels and actions for two modes.
      *
-     * @param firstMode      the action to execute when switching to the first mode.
-     * @param secondMode     the action to execute when switching to the second mode.
+     * @param firstMode  the action to execute when switching to the first mode.
+     * @param secondMode the action to execute when switching to the second mode.
      */
     public ToggleIconComponent(Icon firstModeText, Runnable firstMode, Icon secondModeText, Runnable secondMode) {
         super(firstMode, secondMode);
@@ -50,10 +50,10 @@ public class ToggleIconComponent extends ToggleComponent {
         add(secondModeIcon);
     }
 
-    public Icon getIcon(){
-        if(isInFirstMode()){
+    public Icon getIcon() {
+        if (isInFirstMode()) {
             return secondModeIcon;
-        }else{
+        } else {
             return firstModeIcon;
         }
     }

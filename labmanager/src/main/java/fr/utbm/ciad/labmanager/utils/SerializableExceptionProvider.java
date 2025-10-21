@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  * Copyright (c) 2019 Kaspar Scherrer
  *
@@ -22,7 +22,8 @@ package fr.utbm.ciad.labmanager.utils;
 
 import java.io.Serializable;
 
-/** Provider that is serializable and may throw an exception.
+/**
+ * Provider that is serializable and may throw an exception.
  *
  * @param <O> the type of returned value.
  * @author $Author: sgalland$
@@ -34,11 +35,12 @@ import java.io.Serializable;
 @FunctionalInterface
 public interface SerializableExceptionProvider<O> extends Serializable {
 
-	/** Run the provider.
-	 *
-	 * @return the output value.
-	 * @throws Exception if there is some error inside.
-	 */
-	O get() throws Exception;
-	
+    /**
+     * Run the provider.
+     *
+     * @return the output value.
+     * @throws Exception if there is some error inside.
+     */
+    O get() throws Exception;
+
 }

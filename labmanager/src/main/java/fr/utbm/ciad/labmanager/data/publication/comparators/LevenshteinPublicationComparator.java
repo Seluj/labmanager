@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,10 +23,11 @@ import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import info.debatty.java.stringsimilarity.interfaces.NormalizedStringSimilarity;
 import org.springframework.stereotype.Component;
 
-/** Comparator of publications. For comparison, the order of the publication is based on the
+/**
+ * Comparator of publications. For comparison, the order of the publication is based on the
  * type of publication, the year, the authors, the identifier.
  * For similarity, the Levenshtein algorithm is used.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,17 +36,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class LevenshteinPublicationComparator extends AbstractPublicationComparator {
 
-	private static final double SIMILARITY_LEVEL = 0.8;
+    private static final double SIMILARITY_LEVEL = 0.8;
 
-	/** Constructor.
-	 */
-	public LevenshteinPublicationComparator() {
-		super(SIMILARITY_LEVEL);
-	}
+    /**
+     * Constructor.
+     */
+    public LevenshteinPublicationComparator() {
+        super(SIMILARITY_LEVEL);
+    }
 
-	@Override
-	protected NormalizedStringSimilarity createStringSimilarityComputer() {
-		return new NormalizedLevenshtein();
-	}
+    @Override
+    protected NormalizedStringSimilarity createStringSimilarityComputer() {
+        return new NormalizedLevenshtein();
+    }
 
 }

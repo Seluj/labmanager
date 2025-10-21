@@ -31,32 +31,18 @@ public interface DashboardComponentItem {
     int getIndex();
 
     /**
-     * Retrieves the width of the component.
-     *
-     * @return the width as a string (e.g., "200px")
-     */
-    String getWidth();
-
-    /**
-     * Retrieves the height of the component.
-     *
-     * @return the height as a string (e.g., "300px")
-     */
-    String getHeight();
-
-    /**
-     * Retrieves the type of the dashboard component.
-     *
-     * @return the component type
-     */
-    DashboardComponentType getComponentType();
-
-    /**
      * Sets the index of the dashboard component.
      *
      * @param index the index to set
      */
     void setIndex(int index);
+
+    /**
+     * Retrieves the width of the component.
+     *
+     * @return the width as a string (e.g., "200px")
+     */
+    String getWidth();
 
     /**
      * Sets the width of the dashboard component.
@@ -66,11 +52,25 @@ public interface DashboardComponentItem {
     void setWidth(String width);
 
     /**
+     * Retrieves the height of the component.
+     *
+     * @return the height as a string (e.g., "300px")
+     */
+    String getHeight();
+
+    /**
      * Sets the height of the dashboard component.
      *
      * @param height the height to set
      */
     void setHeight(String height);
+
+    /**
+     * Retrieves the type of the dashboard component.
+     *
+     * @return the component type
+     */
+    DashboardComponentType getComponentType();
 
     /**
      * Sets the type of the dashboard component.

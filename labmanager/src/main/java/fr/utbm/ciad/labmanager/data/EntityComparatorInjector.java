@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,8 +44,9 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/** Spring component that is injecting the comparators for the Spring entities.
- * 
+/**
+ * Spring component that is injecting the comparators for the Spring entities.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -55,94 +56,95 @@ import org.springframework.stereotype.Component;
 @Component
 public class EntityComparatorInjector {
 
-	@Autowired
-	private PersonComparator personComparator;
+    @Autowired
+    private PersonComparator personComparator;
 
-	@Autowired
-	private PersonListComparator personListComparator;
+    @Autowired
+    private PersonListComparator personListComparator;
 
-	@Autowired
-	private MembershipComparator membershipComparator;
+    @Autowired
+    private MembershipComparator membershipComparator;
 
-	@Autowired
-	private NameBasedMembershipComparator nameMembershipComparator;
+    @Autowired
+    private NameBasedMembershipComparator nameMembershipComparator;
 
-	@Autowired
-	private ResearchOrganizationComparator organizationComparator;
+    @Autowired
+    private ResearchOrganizationComparator organizationComparator;
 
-	@Autowired
-	private OrganizationAddressComparator organizationAddressComparator;
+    @Autowired
+    private OrganizationAddressComparator organizationAddressComparator;
 
-	@Autowired
-	private PublicationComparator publicationComparator;
+    @Autowired
+    private PublicationComparator publicationComparator;
 
-	@Autowired
-	private JournalComparator journalComparator;
+    @Autowired
+    private JournalComparator journalComparator;
 
-	@Autowired
-	private ConferenceComparator conferenceComparator;
+    @Autowired
+    private ConferenceComparator conferenceComparator;
 
-	@Autowired
-	private JuryMembershipComparator juryMembershipComparator;
+    @Autowired
+    private JuryMembershipComparator juryMembershipComparator;
 
-	@Autowired
-	private PersonInvitationComparator personInvitationComparator;
+    @Autowired
+    private PersonInvitationComparator personInvitationComparator;
 
-	@Autowired
-	private SupervisorComparator supervisorComparator;
+    @Autowired
+    private SupervisorComparator supervisorComparator;
 
-	@Autowired
-	private SupervisionComparator supervisionComparator;
+    @Autowired
+    private SupervisionComparator supervisionComparator;
 
-	@Autowired
-	private ProjectComparator projectComparator;
+    @Autowired
+    private ProjectComparator projectComparator;
 
-	@Autowired
-	private ProjectMemberComparator projectMemberComparator;
+    @Autowired
+    private ProjectMemberComparator projectMemberComparator;
 
-	@Autowired
-	private ProjectBudgetComparator projectBudgetComparator;
+    @Autowired
+    private ProjectBudgetComparator projectBudgetComparator;
 
-	@Autowired
-	private AssociatedStructureHolderComparator externalStructureHolderComparator;
+    @Autowired
+    private AssociatedStructureHolderComparator externalStructureHolderComparator;
 
-	@Autowired
-	private AssociatedStructureComparator externalStructureComparator;
+    @Autowired
+    private AssociatedStructureComparator externalStructureComparator;
 
-	@Autowired
-	private TeachingActivityComparator teachingActivityComparator;
+    @Autowired
+    private TeachingActivityComparator teachingActivityComparator;
 
-	@Autowired
-	private ScientificAxisComparator scientificAxisComparator;
+    @Autowired
+    private ScientificAxisComparator scientificAxisComparator;
 
-	@Autowired
-	private UserComparator userComparator;
+    @Autowired
+    private UserComparator userComparator;
 
-	/** Invoked by the Spring engine is started and this injector is created in memory.
-	 */
-	@PostConstruct
-	public void postConstruct() {
-		EntityUtils.setPreferredUserComparator(this.userComparator);
-		EntityUtils.setPreferredResearchOrganizationComparator(this.organizationComparator);
-		EntityUtils.setPreferredOrganizationAddressComparator(this.organizationAddressComparator);
-		EntityUtils.setPreferredPersonComparator(this.personComparator);
-		EntityUtils.setPreferredPersonListComparator(this.personListComparator);
-		EntityUtils.setPreferredMembershipComparator(this.membershipComparator);
-		EntityUtils.setPreferredPersonNameBasedMembershipComparator(this.nameMembershipComparator);
-		EntityUtils.setPreferredPublicationComparator(this.publicationComparator);
-		EntityUtils.setPreferredJournalComparator(this.journalComparator);
-		EntityUtils.setPreferredJuryMembershipComparator(this.juryMembershipComparator);
-		EntityUtils.setPreferredPersonInvitationComparator(this.personInvitationComparator);
-		EntityUtils.setPreferredSupervisorComparator(this.supervisorComparator);
-		EntityUtils.setPreferredSupervisionComparator(this.supervisionComparator);
-		EntityUtils.setPreferredProjectComparator(this.projectComparator);
-		EntityUtils.setPreferredProjectMemberComparator(this.projectMemberComparator);
-		EntityUtils.setPreferredProjectBudgetComparator(this.projectBudgetComparator);
-		EntityUtils.setPreferredAssociatedStructureHolderComparator(this.externalStructureHolderComparator);
-		EntityUtils.setPreferredAssociatedStructureComparator(this.externalStructureComparator);
-		EntityUtils.setPreferredTeachingActivityComparator(this.teachingActivityComparator);
-		EntityUtils.setPreferredScientificAxisComparator(this.scientificAxisComparator);
-		EntityUtils.setPreferredConferenceComparator(this.conferenceComparator);
-	}
+    /**
+     * Invoked by the Spring engine is started and this injector is created in memory.
+     */
+    @PostConstruct
+    public void postConstruct() {
+        EntityUtils.setPreferredUserComparator(this.userComparator);
+        EntityUtils.setPreferredResearchOrganizationComparator(this.organizationComparator);
+        EntityUtils.setPreferredOrganizationAddressComparator(this.organizationAddressComparator);
+        EntityUtils.setPreferredPersonComparator(this.personComparator);
+        EntityUtils.setPreferredPersonListComparator(this.personListComparator);
+        EntityUtils.setPreferredMembershipComparator(this.membershipComparator);
+        EntityUtils.setPreferredPersonNameBasedMembershipComparator(this.nameMembershipComparator);
+        EntityUtils.setPreferredPublicationComparator(this.publicationComparator);
+        EntityUtils.setPreferredJournalComparator(this.journalComparator);
+        EntityUtils.setPreferredJuryMembershipComparator(this.juryMembershipComparator);
+        EntityUtils.setPreferredPersonInvitationComparator(this.personInvitationComparator);
+        EntityUtils.setPreferredSupervisorComparator(this.supervisorComparator);
+        EntityUtils.setPreferredSupervisionComparator(this.supervisionComparator);
+        EntityUtils.setPreferredProjectComparator(this.projectComparator);
+        EntityUtils.setPreferredProjectMemberComparator(this.projectMemberComparator);
+        EntityUtils.setPreferredProjectBudgetComparator(this.projectBudgetComparator);
+        EntityUtils.setPreferredAssociatedStructureHolderComparator(this.externalStructureHolderComparator);
+        EntityUtils.setPreferredAssociatedStructureComparator(this.externalStructureComparator);
+        EntityUtils.setPreferredTeachingActivityComparator(this.teachingActivityComparator);
+        EntityUtils.setPreferredScientificAxisComparator(this.scientificAxisComparator);
+        EntityUtils.setPreferredConferenceComparator(this.conferenceComparator);
+    }
 
 }

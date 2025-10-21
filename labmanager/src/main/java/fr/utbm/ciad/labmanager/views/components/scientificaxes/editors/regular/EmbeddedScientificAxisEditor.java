@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,10 +26,11 @@ import fr.utbm.ciad.labmanager.utils.builders.ConstructionPropertiesBuilder;
 import fr.utbm.ciad.labmanager.views.components.addons.entities.EntityCreationStatusComputer;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of scientific axis information that may be embedded. This editor does not provide
+/**
+ * Editor of scientific axis information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited axis.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -38,21 +39,22 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public final class EmbeddedScientificAxisEditor extends AbstractScientificAxisEditor {
 
-	private static final long serialVersionUID = -4704487014166974489L;
+    private static final long serialVersionUID = -4704487014166974489L;
 
-	/** Constructor.
-	 *
-	 * @param context the editing context for the scientific axis.
-	 * @param axisCreationStatusComputer the tool for computer the creation status for the scientific axes.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public EmbeddedScientificAxisEditor(EntityEditingContext<ScientificAxis> context,
-			EntityCreationStatusComputer<ScientificAxis> axisCreationStatusComputer,
-			AuthenticatedUser authenticatedUser, MessageSourceAccessor messages) {
-		super(context, axisCreationStatusComputer, false, authenticatedUser, messages,
-				ConstructionPropertiesBuilder.create());
-		createEditorContentAndLinkBeans();
-	}
+    /**
+     * Constructor.
+     *
+     * @param context                    the editing context for the scientific axis.
+     * @param axisCreationStatusComputer the tool for computer the creation status for the scientific axes.
+     * @param authenticatedUser          the connected user.
+     * @param messages                   the accessor to the localized messages (Spring layer).
+     */
+    public EmbeddedScientificAxisEditor(EntityEditingContext<ScientificAxis> context,
+                                        EntityCreationStatusComputer<ScientificAxis> axisCreationStatusComputer,
+                                        AuthenticatedUser authenticatedUser, MessageSourceAccessor messages) {
+        super(context, axisCreationStatusComputer, false, authenticatedUser, messages,
+                ConstructionPropertiesBuilder.create());
+        createEditorContentAndLinkBeans();
+    }
 
 }

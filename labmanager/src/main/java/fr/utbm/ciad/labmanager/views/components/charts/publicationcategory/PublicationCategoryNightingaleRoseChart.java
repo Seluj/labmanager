@@ -19,12 +19,9 @@ import java.util.*;
  */
 public class PublicationCategoryNightingaleRoseChart extends AbstractPublicationCategoryChart {
 
-    private CategoryData categoryData;
-
-    private NightingaleRoseChart nightingaleRoseChart;
-
     private final Map<String, Integer> publicationCategories;
-
+    private CategoryData categoryData;
+    private NightingaleRoseChart nightingaleRoseChart;
     private List<Integer> years;
 
     private Integer totalPublication;

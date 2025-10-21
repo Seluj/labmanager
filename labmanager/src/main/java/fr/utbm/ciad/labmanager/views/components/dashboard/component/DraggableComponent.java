@@ -8,8 +8,8 @@ import elemental.json.JsonValue;
 import fr.utbm.ciad.labmanager.utils.container.ComponentContainerWithContextMenu;
 import fr.utbm.ciad.labmanager.utils.contextMenu.ConditionalManagedContextMenu;
 import fr.utbm.ciad.labmanager.utils.contextMenu.ContextMenuFactory;
-import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardComponentType;
 import fr.utbm.ciad.labmanager.views.components.charts.layout.PublicationCategoryLayout;
+import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardComponentType;
 
 import java.util.function.Consumer;
 
@@ -34,7 +34,7 @@ public class DraggableComponent extends ComponentContainerWithContextMenu {
     /**
      * Default Constructor
      */
-    public DraggableComponent(){
+    public DraggableComponent() {
         this(new FlexLayout());
     }
 
@@ -70,7 +70,7 @@ public class DraggableComponent extends ComponentContainerWithContextMenu {
     }
 
     @Override
-    protected void setStyle(){
+    protected void setStyle() {
         super.setStyle();
         getStyle().setBorderRadius("8px");
         getStyle().setOverflow(Style.Overflow.HIDDEN);
@@ -78,7 +78,7 @@ public class DraggableComponent extends ComponentContainerWithContextMenu {
     }
 
     @Override
-    protected void setComponentStyle(){
+    protected void setComponentStyle() {
         super.setComponentStyle();
         getComponent().getStyle().setBoxShadow("0 4px 8px #00000033");
         getComponent().getStyle().setBorderRadius("8px");
@@ -95,8 +95,8 @@ public class DraggableComponent extends ComponentContainerWithContextMenu {
     }
 
     @Override
-    protected void afterResizingInstructionsCall(){
-        if(getAfterResizingInstructions() != null){
+    protected void afterResizingInstructionsCall() {
+        if (getAfterResizingInstructions() != null) {
             getAfterResizingInstructions().accept(this);
         }
     }
@@ -109,9 +109,9 @@ public class DraggableComponent extends ComponentContainerWithContextMenu {
     /**
      * Sets event listeners for the component.
      */
-    private void setListeners(){
+    private void setListeners() {
         getElement().addEventListener("mouseenter", event -> {
-            if(isDraggable()){
+            if (isDraggable()) {
                 getComponent().getStyle().set("border", "2px solid #c4c5ff");
             }
         });
@@ -122,26 +122,26 @@ public class DraggableComponent extends ComponentContainerWithContextMenu {
     }
 
     /**
-     * Sets whether the component is draggable.
-     *
-     * @param isDraggable true to make the component draggable; false otherwise.
-     */
-    public void setDraggable(boolean isDraggable){
-        dragSource.setDraggable(isDraggable);
-        if(isDraggable){
-            getStyle().set("resize", "both");
-        }else{
-            getStyle().set("resize", "none");
-        }
-    }
-
-    /**
      * Checks whether the component is currently draggable.
      *
      * @return true if the component is draggable; false otherwise.
      */
-    public boolean isDraggable(){
+    public boolean isDraggable() {
         return dragSource.isDraggable();
+    }
+
+    /**
+     * Sets whether the component is draggable.
+     *
+     * @param isDraggable true to make the component draggable; false otherwise.
+     */
+    public void setDraggable(boolean isDraggable) {
+        dragSource.setDraggable(isDraggable);
+        if (isDraggable) {
+            getStyle().set("resize", "both");
+        } else {
+            getStyle().set("resize", "none");
+        }
     }
 
     /**
@@ -166,7 +166,7 @@ public class DraggableComponent extends ComponentContainerWithContextMenu {
      * Sets the instructions to be executed after a drag event starts.
      *
      * @param afterDragEventStart a Consumer that defines the actions to be performed
-     *                          on a DraggableComponent after a drag event begins
+     *                            on a DraggableComponent after a drag event begins
      */
     public void setAfterDragEventStart(Consumer<DraggableComponent> afterDragEventStart) {
         this.afterDragEventStart = afterDragEventStart;

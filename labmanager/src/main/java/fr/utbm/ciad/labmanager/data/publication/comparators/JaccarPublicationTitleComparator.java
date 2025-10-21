@@ -18,7 +18,8 @@ public class JaccarPublicationTitleComparator extends AbstractPublicationTitleCo
 
     private static final double SIMILARITY_LEVEL = 0.65;
 
-    /** Constructor with default similarity level
+    /**
+     * Constructor with default similarity level
      */
     public JaccarPublicationTitleComparator() {
         setSimilarityLevel(SIMILARITY_LEVEL);

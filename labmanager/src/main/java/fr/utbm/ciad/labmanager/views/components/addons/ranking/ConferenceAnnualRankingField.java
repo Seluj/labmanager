@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,8 @@ import com.vaadin.flow.i18n.LocaleChangeEvent;
 import fr.utbm.ciad.labmanager.data.conference.ConferenceQualityAnnualIndicators;
 import fr.utbm.ciad.labmanager.utils.ranking.CoreRanking;
 
-/** Vaadin component for input an annual ranking for a conference.
+/**
+ * Vaadin component for input an annual ranking for a conference.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -37,49 +38,50 @@ import fr.utbm.ciad.labmanager.utils.ranking.CoreRanking;
  */
 public class ConferenceAnnualRankingField extends AbstractAnnualRankingField<ConferenceQualityAnnualIndicators> {
 
-	private static final long serialVersionUID = 3516999589059290212L;
-	
-	private final Column<DataItem<ConferenceQualityAnnualIndicators>> coreIndexColumn;
+    private static final long serialVersionUID = 3516999589059290212L;
 
-	/** Constructor.
-	 */
-	public ConferenceAnnualRankingField() {
-		super();
-		this.coreIndexColumn = getGrid().addColumn(new ComponentRenderer<>(this::getCoreIndexLabel))
-				.setAutoWidth(true)
-				.setEditorComponent(this::createCoreIndexEditor);
-	}
+    private final Column<DataItem<ConferenceQualityAnnualIndicators>> coreIndexColumn;
 
-	@Override
-	protected ConferenceQualityAnnualIndicators createIndicatorInstance() {
-		return new ConferenceQualityAnnualIndicators();
-	}
+    /**
+     * Constructor.
+     */
+    public ConferenceAnnualRankingField() {
+        super();
+        this.coreIndexColumn = getGrid().addColumn(new ComponentRenderer<>(this::getCoreIndexLabel))
+                .setAutoWidth(true)
+                .setEditorComponent(this::createCoreIndexEditor);
+    }
 
-	private ComboBox<CoreRanking> createCoreIndexEditor(DataItem<ConferenceQualityAnnualIndicators> item) {
-		final var combo = createBaseCoreIndexEditor();
-		final var binder = getGridEditor().getBinder();
-		binder.forField(combo).bind(ConferenceAnnualRankingField::getCoreIndex, ConferenceAnnualRankingField::setCoreIndex);
-		return combo;
-	}
+    private static CoreRanking getCoreIndex(DataItem<ConferenceQualityAnnualIndicators> item) {
+        return item.getIndicators().getCoreIndex();
+    }
 
-	private static CoreRanking getCoreIndex(DataItem<ConferenceQualityAnnualIndicators> item) {
-		return item.getIndicators().getCoreIndex();
-	}
+    private static void setCoreIndex(DataItem<ConferenceQualityAnnualIndicators> item, CoreRanking ranking) {
+        item.getIndicators().setCoreIndex(ranking);
+    }
 
-	private static void setCoreIndex(DataItem<ConferenceQualityAnnualIndicators> item, CoreRanking ranking) {
-		item.getIndicators().setCoreIndex(ranking);
-	}
+    @Override
+    protected ConferenceQualityAnnualIndicators createIndicatorInstance() {
+        return new ConferenceQualityAnnualIndicators();
+    }
 
-	private Span getCoreIndexLabel(DataItem<ConferenceQualityAnnualIndicators> item) {
-		return getIndicatorLabel(item,
-				it -> DataItem.getCoreIndexString(it.getIndicators().getCoreIndex()),
-				it -> it.getPreviousItem(it0 -> it0.getCoreIndex() != null));
-	}
+    private ComboBox<CoreRanking> createCoreIndexEditor(DataItem<ConferenceQualityAnnualIndicators> item) {
+        final var combo = createBaseCoreIndexEditor();
+        final var binder = getGridEditor().getBinder();
+        binder.forField(combo).bind(ConferenceAnnualRankingField::getCoreIndex, ConferenceAnnualRankingField::setCoreIndex);
+        return combo;
+    }
 
-	@Override
-	public void localeChange(LocaleChangeEvent event) {
-		super.localeChange(event);
-		this.coreIndexColumn.setHeader(getTranslation("views.rankings.coreIndex")); //$NON-NLS-1$
-	}
+    private Span getCoreIndexLabel(DataItem<ConferenceQualityAnnualIndicators> item) {
+        return getIndicatorLabel(item,
+                it -> DataItem.getCoreIndexString(it.getIndicators().getCoreIndex()),
+                it -> it.getPreviousItem(it0 -> it0.getCoreIndex() != null));
+    }
+
+    @Override
+    public void localeChange(LocaleChangeEvent event) {
+        super.localeChange(event);
+        this.coreIndexColumn.setHeader(getTranslation("views.rankings.coreIndex")); //$NON-NLS-1$
+    }
 
 }

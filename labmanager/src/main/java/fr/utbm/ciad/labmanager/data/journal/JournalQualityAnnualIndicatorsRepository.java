@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/** JPA repository for journal quality indicators.
- * 
+/**
+ * JPA repository for journal quality indicators.
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @author $Author: erenon$

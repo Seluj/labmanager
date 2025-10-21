@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,9 +18,6 @@
  */
 
 package fr.utbm.ciad.labmanager.views.components.assocstructures.fields;
-
-import java.util.HashSet;
-import java.util.List;
 
 import com.google.common.base.Strings;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -41,7 +38,11 @@ import fr.utbm.ciad.labmanager.views.components.persons.fields.SinglePersonNameF
 import org.slf4j.Logger;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Implementation of a Vaadin component for input a list of associated structure holder using values in a grid row.
+import java.util.HashSet;
+import java.util.List;
+
+/**
+ * Implementation of a Vaadin component for input a list of associated structure holder using values in a grid row.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -51,220 +52,223 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public class AssociatedStructureHolderListGridField extends AbstractEntityListGridField<AssociatedStructureHolder> {
 
-	private static final long serialVersionUID = -3891347566824272385L;
+    private static final long serialVersionUID = -3891347566824272385L;
 
-	private final PersonFieldFactory personFieldFactory;
-	
-	private final OrganizationFieldFactory organizationFieldFactory;
+    private final PersonFieldFactory personFieldFactory;
 
-	private final Logger logger;
+    private final OrganizationFieldFactory organizationFieldFactory;
 
-	private Column<AssociatedStructureHolder> personColumn;
+    private final Logger logger;
 
-	private Column<AssociatedStructureHolder> roleColumn;
+    private Column<AssociatedStructureHolder> personColumn;
 
-	private Column<AssociatedStructureHolder> roleDescriptionColumn;
+    private Column<AssociatedStructureHolder> roleColumn;
 
-	private Column<AssociatedStructureHolder> organizationColumn;
+    private Column<AssociatedStructureHolder> roleDescriptionColumn;
 
-	private Column<AssociatedStructureHolder> superOrganizationColumn;
+    private Column<AssociatedStructureHolder> organizationColumn;
 
-	/** Constructor.
-	 *
-	 * @param personFieldFactory the factory for creating the person fields.
-	 * @param organizationFieldFactory the factory for creating the organization fields.
-	 * @param messages accessor to the localized messages.
-	 * @param logger the logger to be used by the component.
-	 * @since 4.0
-	 */
-	public AssociatedStructureHolderListGridField(
-			PersonFieldFactory personFieldFactory, OrganizationFieldFactory organizationFieldFactory,
-			MessageSourceAccessor messages, Logger logger) {
-		super(messages, "views.associated_structure.holders.edit"); //$NON-NLS-1$
-		this.organizationFieldFactory = organizationFieldFactory;
-		this.personFieldFactory = personFieldFactory;
-		this.logger = logger;
-	}
+    private Column<AssociatedStructureHolder> superOrganizationColumn;
 
-	@Override
-	protected void createColumns(Grid<AssociatedStructureHolder> grid) {
-		this.personColumn = grid.addColumn(it -> getPersonValueLabel(it))
-			.setAutoWidth(true)
-			.setEditorComponent(this::createPersonEditor);
+    /**
+     * Constructor.
+     *
+     * @param personFieldFactory       the factory for creating the person fields.
+     * @param organizationFieldFactory the factory for creating the organization fields.
+     * @param messages                 accessor to the localized messages.
+     * @param logger                   the logger to be used by the component.
+     * @since 4.0
+     */
+    public AssociatedStructureHolderListGridField(
+            PersonFieldFactory personFieldFactory, OrganizationFieldFactory organizationFieldFactory,
+            MessageSourceAccessor messages, Logger logger) {
+        super(messages, "views.associated_structure.holders.edit"); //$NON-NLS-1$
+        this.organizationFieldFactory = organizationFieldFactory;
+        this.personFieldFactory = personFieldFactory;
+        this.logger = logger;
+    }
 
-		this.roleColumn = grid.addColumn(it -> getRoleValueLabel(it))
-				.setAutoWidth(true)
-				.setEditorComponent(this::createRoleEditor);
+    @Override
+    protected void createColumns(Grid<AssociatedStructureHolder> grid) {
+        this.personColumn = grid.addColumn(it -> getPersonValueLabel(it))
+                .setAutoWidth(true)
+                .setEditorComponent(this::createPersonEditor);
 
-		this.roleDescriptionColumn = grid.addColumn(it -> getRoleDescriptionValueLabel(it))
-				.setAutoWidth(true)
-				.setEditorComponent(this::createRoleDescriptionEditor);
+        this.roleColumn = grid.addColumn(it -> getRoleValueLabel(it))
+                .setAutoWidth(true)
+                .setEditorComponent(this::createRoleEditor);
 
-		this.organizationColumn = grid.addColumn(it -> getOrganizationValueLabel(it))
-				.setAutoWidth(true)
-				.setEditorComponent(this::createOrganizationEditor);
+        this.roleDescriptionColumn = grid.addColumn(it -> getRoleDescriptionValueLabel(it))
+                .setAutoWidth(true)
+                .setEditorComponent(this::createRoleDescriptionEditor);
 
-		this.superOrganizationColumn = grid.addColumn(it -> getSuperOrganizationValueLabel(it))
-				.setAutoWidth(true)
-				.setEditorComponent(this::createSuperOrganizationEditor);
-	}
+        this.organizationColumn = grid.addColumn(it -> getOrganizationValueLabel(it))
+                .setAutoWidth(true)
+                .setEditorComponent(this::createOrganizationEditor);
 
-	@SuppressWarnings("static-method")
-	private String getPersonValueLabel(AssociatedStructureHolder holder) {
-		if (holder == null) {
-			return ""; //$NON-NLS-1$
-		}
-		final var person = holder.getPerson();
-		if (person == null) {
-			return ""; //$NON-NLS-1$
-		}
-		return person.getFullNameWithLastNameFirst();
-	}
+        this.superOrganizationColumn = grid.addColumn(it -> getSuperOrganizationValueLabel(it))
+                .setAutoWidth(true)
+                .setEditorComponent(this::createSuperOrganizationEditor);
+    }
 
-	private SinglePersonNameField createPersonEditor(AssociatedStructureHolder holder) {
-		final var field = this.personFieldFactory.createSingleNameField(getTranslation("views.projects.members.create"), //$NON-NLS-1$
-				this.logger);
-		final var binder = getGridEditor().getBinder();
-		binder.forField(field).bind(AssociatedStructureHolder::getPerson, AssociatedStructureHolder::setPerson);
-		return field;
-	}
+    @SuppressWarnings("static-method")
+    private String getPersonValueLabel(AssociatedStructureHolder holder) {
+        if (holder == null) {
+            return ""; //$NON-NLS-1$
+        }
+        final var person = holder.getPerson();
+        if (person == null) {
+            return ""; //$NON-NLS-1$
+        }
+        return person.getFullNameWithLastNameFirst();
+    }
 
-	private String getRoleValueLabel(AssociatedStructureHolder holder) {
-		if (holder == null) {
-			return ""; //$NON-NLS-1$
-		}
-		final var role = holder.getRole();
-		if (role == null) {
-			return ""; //$NON-NLS-1$
-		}
-		return role.getLabel(this.messages, getLocale());
-	}
+    private SinglePersonNameField createPersonEditor(AssociatedStructureHolder holder) {
+        final var field = this.personFieldFactory.createSingleNameField(getTranslation("views.projects.members.create"), //$NON-NLS-1$
+                this.logger);
+        final var binder = getGridEditor().getBinder();
+        binder.forField(field).bind(AssociatedStructureHolder::getPerson, AssociatedStructureHolder::setPerson);
+        return field;
+    }
 
-	private ComboBox<HolderRole> createRoleEditor(AssociatedStructureHolder holder) {
-		final var field = createBaseEnumEditor(HolderRole.class);
-		field.setItemLabelGenerator(it -> {
-			return it.getLabel(this.messages, getLocale());
-		});
-		final var binder = getGridEditor().getBinder();
-		binder.forField(field).bind(AssociatedStructureHolder::getRole, AssociatedStructureHolder::setRole);
-		return field;
-	}
+    private String getRoleValueLabel(AssociatedStructureHolder holder) {
+        if (holder == null) {
+            return ""; //$NON-NLS-1$
+        }
+        final var role = holder.getRole();
+        if (role == null) {
+            return ""; //$NON-NLS-1$
+        }
+        return role.getLabel(this.messages, getLocale());
+    }
 
-	@SuppressWarnings("static-method")
-	private String getRoleDescriptionValueLabel(AssociatedStructureHolder holder) {
-		if (holder == null) {
-			return ""; //$NON-NLS-1$
-		}
-		final var description = holder.getRoleDescription();
-		return Strings.nullToEmpty(description);
-	}
+    private ComboBox<HolderRole> createRoleEditor(AssociatedStructureHolder holder) {
+        final var field = createBaseEnumEditor(HolderRole.class);
+        field.setItemLabelGenerator(it -> {
+            return it.getLabel(this.messages, getLocale());
+        });
+        final var binder = getGridEditor().getBinder();
+        binder.forField(field).bind(AssociatedStructureHolder::getRole, AssociatedStructureHolder::setRole);
+        return field;
+    }
 
-	private TextField createRoleDescriptionEditor(AssociatedStructureHolder holder) {
-		final var field = new TextField();
-		final var binder = getGridEditor().getBinder();
-		binder.forField(field).bind(AssociatedStructureHolder::getRoleDescription, AssociatedStructureHolder::setRoleDescription);
-		return field;
-	}
+    @SuppressWarnings("static-method")
+    private String getRoleDescriptionValueLabel(AssociatedStructureHolder holder) {
+        if (holder == null) {
+            return ""; //$NON-NLS-1$
+        }
+        final var description = holder.getRoleDescription();
+        return Strings.nullToEmpty(description);
+    }
 
-	@SuppressWarnings("static-method")
-	private String getOrganizationValueLabel(AssociatedStructureHolder holder) {
-		if (holder == null) {
-			return ""; //$NON-NLS-1$
-		}
-		final var organization = holder.getOrganization();
-		if (organization == null) {
-			return ""; //$NON-NLS-1$
-		}
-		return organization.getAcronymAndName();
-	}
+    private TextField createRoleDescriptionEditor(AssociatedStructureHolder holder) {
+        final var field = new TextField();
+        final var binder = getGridEditor().getBinder();
+        binder.forField(field).bind(AssociatedStructureHolder::getRoleDescription, AssociatedStructureHolder::setRoleDescription);
+        return field;
+    }
 
-	private SingleOrganizationNameField createOrganizationEditor(AssociatedStructureHolder holder) {
-		final var field = this.organizationFieldFactory.createSingleNameField(getTranslation("views.associated_structure.holders.organization.create"), this.logger, null); //$NON-NLS-1$
-		final var binder = getGridEditor().getBinder();
-		binder.forField(field).bind(AssociatedStructureHolder::getOrganization, AssociatedStructureHolder::setOrganization);
-		return field;
-	}
+    @SuppressWarnings("static-method")
+    private String getOrganizationValueLabel(AssociatedStructureHolder holder) {
+        if (holder == null) {
+            return ""; //$NON-NLS-1$
+        }
+        final var organization = holder.getOrganization();
+        if (organization == null) {
+            return ""; //$NON-NLS-1$
+        }
+        return organization.getAcronymAndName();
+    }
 
-	@SuppressWarnings("static-method")
-	private String getSuperOrganizationValueLabel(AssociatedStructureHolder holder) {
-		if (holder == null) {
-			return ""; //$NON-NLS-1$
-		}
-		final var organization = holder.getSuperOrganization();
-		if (organization == null) {
-			return ""; //$NON-NLS-1$
-		}
-		return organization.getAcronymAndName();
-	}
+    private SingleOrganizationNameField createOrganizationEditor(AssociatedStructureHolder holder) {
+        final var field = this.organizationFieldFactory.createSingleNameField(getTranslation("views.associated_structure.holders.organization.create"), this.logger, null); //$NON-NLS-1$
+        final var binder = getGridEditor().getBinder();
+        binder.forField(field).bind(AssociatedStructureHolder::getOrganization, AssociatedStructureHolder::setOrganization);
+        return field;
+    }
 
-	private SingleOrganizationNameField createSuperOrganizationEditor(AssociatedStructureHolder holder) {
-		final var field = this.organizationFieldFactory.createSingleNameField(getTranslation("views.associated_structure.holders.super_organization.create"), this.logger, null); //$NON-NLS-1$
-		final var binder = getGridEditor().getBinder();
-		binder.forField(field).bind(AssociatedStructureHolder::getSuperOrganization, AssociatedStructureHolder::setSuperOrganization);
-		return field;
-	}
+    @SuppressWarnings("static-method")
+    private String getSuperOrganizationValueLabel(AssociatedStructureHolder holder) {
+        if (holder == null) {
+            return ""; //$NON-NLS-1$
+        }
+        final var organization = holder.getSuperOrganization();
+        if (organization == null) {
+            return ""; //$NON-NLS-1$
+        }
+        return organization.getAcronymAndName();
+    }
 
-	@Override
-	protected AssociatedStructureHolder createEntityInstance() {
-		return new AssociatedStructureHolder();
-	}
+    private SingleOrganizationNameField createSuperOrganizationEditor(AssociatedStructureHolder holder) {
+        final var field = this.organizationFieldFactory.createSingleNameField(getTranslation("views.associated_structure.holders.super_organization.create"), this.logger, null); //$NON-NLS-1$
+        final var binder = getGridEditor().getBinder();
+        binder.forField(field).bind(AssociatedStructureHolder::getSuperOrganization, AssociatedStructureHolder::setSuperOrganization);
+        return field;
+    }
 
-	@Override
-	public Validator<List<AssociatedStructureHolder>> newStandardValidator() {
-		return new StandardValidator();
-	}
+    @Override
+    protected AssociatedStructureHolder createEntityInstance() {
+        return new AssociatedStructureHolder();
+    }
 
-	@Override
-	public void localeChange(LocaleChangeEvent event) {
-		super.localeChange(event);
-		this.personColumn.setHeader(getTranslation("views.associated_structure.holders.person")); //$NON-NLS-1$
-		this.roleColumn.setHeader(getTranslation("views.associated_structure.holders.role")); //$NON-NLS-1$
-		this.roleDescriptionColumn.setHeader(getTranslation("views.associated_structure.holders.role_description")); //$NON-NLS-1$
-		this.organizationColumn.setHeader(getTranslation("views.associated_structure.holders.organization")); //$NON-NLS-1$
-		this.superOrganizationColumn.setHeader(getTranslation("views.associated_structure.holders.super_organization")); //$NON-NLS-1$
-	}
+    @Override
+    public Validator<List<AssociatedStructureHolder>> newStandardValidator() {
+        return new StandardValidator();
+    }
 
-	/** Implementation of a Vaadin component for input a list of project members using values in a grid row.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	protected class StandardValidator implements Validator<List<AssociatedStructureHolder>> {
+    @Override
+    public void localeChange(LocaleChangeEvent event) {
+        super.localeChange(event);
+        this.personColumn.setHeader(getTranslation("views.associated_structure.holders.person")); //$NON-NLS-1$
+        this.roleColumn.setHeader(getTranslation("views.associated_structure.holders.role")); //$NON-NLS-1$
+        this.roleDescriptionColumn.setHeader(getTranslation("views.associated_structure.holders.role_description")); //$NON-NLS-1$
+        this.organizationColumn.setHeader(getTranslation("views.associated_structure.holders.organization")); //$NON-NLS-1$
+        this.superOrganizationColumn.setHeader(getTranslation("views.associated_structure.holders.super_organization")); //$NON-NLS-1$
+    }
 
-		private static final long serialVersionUID = 4311121308670667317L;
+    /**
+     * Implementation of a Vaadin component for input a list of project members using values in a grid row.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    protected class StandardValidator implements Validator<List<AssociatedStructureHolder>> {
 
-		/** Default Constructor.
-		 */
-		public StandardValidator() {
-			//
-		}
+        private static final long serialVersionUID = 4311121308670667317L;
 
-		@Override
-		public ValidationResult apply(List<AssociatedStructureHolder> value, ValueContext context) {
-			final var committee = new HashSet<>();
-			for (final var member : value) {
-				// Check the member
-				final var person = member.getPerson();
-				if (person == null) {
-					return ValidationResult.error(getTranslation("views.associated_structure.holders.person.error.null")); //$NON-NLS-1$
-				}
-				// Check for unicity of person
-				if (!committee.add(person)) {
-					return ValidationResult.error(getTranslation("views.associated_structure.holders.person.error.duplicate", person.getFullName())); //$NON-NLS-1$
-				}
-				// Check the role of member
-				final var role = member.getRole();
-				if (role == null) {
-					return ValidationResult.error(getTranslation("views.associated_structure.holders.role.error.null")); //$NON-NLS-1$
-				}
-			}
-			//
-			return ValidationResult.ok();
-		}
-		
-	}
+        /**
+         * Default Constructor.
+         */
+        public StandardValidator() {
+            //
+        }
+
+        @Override
+        public ValidationResult apply(List<AssociatedStructureHolder> value, ValueContext context) {
+            final var committee = new HashSet<>();
+            for (final var member : value) {
+                // Check the member
+                final var person = member.getPerson();
+                if (person == null) {
+                    return ValidationResult.error(getTranslation("views.associated_structure.holders.person.error.null")); //$NON-NLS-1$
+                }
+                // Check for unicity of person
+                if (!committee.add(person)) {
+                    return ValidationResult.error(getTranslation("views.associated_structure.holders.person.error.duplicate", person.getFullName())); //$NON-NLS-1$
+                }
+                // Check the role of member
+                final var role = member.getRole();
+                if (role == null) {
+                    return ValidationResult.error(getTranslation("views.associated_structure.holders.role.error.null")); //$NON-NLS-1$
+                }
+            }
+            //
+            return ValidationResult.ok();
+        }
+
+    }
 
 }

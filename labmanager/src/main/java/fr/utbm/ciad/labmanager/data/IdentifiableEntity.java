@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager.data;
 
-/** Interface that represents an object that has an database identifier.
- * 
+/**
+ * Interface that represents an object that has an database identifier.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -29,21 +30,23 @@ package fr.utbm.ciad.labmanager.data;
  */
 public interface IdentifiableEntity {
 
-	/** Replies the database identifier for this entity.
-	 *
-	 * @return the identifier. It is equals to {@code 0} when the entity is not linked to a JPA entity.
-	 */
-	long getId();
+    /**
+     * Replies the database identifier for this entity.
+     *
+     * @return the identifier. It is equals to {@code 0} when the entity is not linked to a JPA entity.
+     */
+    long getId();
 
-	/** Replies if the given entity is a fake entity or not.
-	 * A fake entity is created for being provided by the JPA to the front-end.
-	 * It is not supposed to be saved into the JPA database.
-	 *
-	 * @return {@code true} if the entity is a fake entity.
-	 * @since 2.4
-	 */
-	default boolean isFakeEntity() {
-		return false;
-	}
+    /**
+     * Replies if the given entity is a fake entity or not.
+     * A fake entity is created for being provided by the JPA to the front-end.
+     * It is not supposed to be saved into the JPA database.
+     *
+     * @return {@code true} if the entity is a fake entity.
+     * @since 2.4
+     */
+    default boolean isFakeEntity() {
+        return false;
+    }
 
 }

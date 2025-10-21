@@ -8,7 +8,8 @@ import fr.utbm.ciad.labmanager.utils.builders.ConstructionPropertiesBuilder;
 import fr.utbm.ciad.labmanager.views.components.addons.entities.EntityCreationStatusComputer;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of journal information that may be embedded. This editor does not provide
+/**
+ * Editor of journal information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited journal. It is a wizard
  *
@@ -23,17 +24,18 @@ public final class EmbeddedJournalEditorWizard extends AbstractJournalEditorWiza
 
     private static final long serialVersionUID = -8334616123986168541L;
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param context the editing context for the conference.
-	 * @param journalCreationStatusComputer the tool for computer the creation status for the journals.
-     * @param authenticatedUser the connected user.
-     * @param messages the accessor to the localized messages (Spring layer).
+     * @param context                       the editing context for the conference.
+     * @param journalCreationStatusComputer the tool for computer the creation status for the journals.
+     * @param authenticatedUser             the connected user.
+     * @param messages                      the accessor to the localized messages (Spring layer).
      */
     public EmbeddedJournalEditorWizard(AbstractEntityService.EntityEditingContext<Journal> context,
-			EntityCreationStatusComputer<Journal> journalCreationStatusComputer, JournalService journalService,
-			AuthenticatedUser authenticatedUser, MessageSourceAccessor messages) {
-        super(context, journalCreationStatusComputer, false, authenticatedUser, journalService,messages, ConstructionPropertiesBuilder.create());
+                                       EntityCreationStatusComputer<Journal> journalCreationStatusComputer, JournalService journalService,
+                                       AuthenticatedUser authenticatedUser, MessageSourceAccessor messages) {
+        super(context, journalCreationStatusComputer, false, authenticatedUser, journalService, messages, ConstructionPropertiesBuilder.create());
         createEditorContentAndLinkBeans();
     }
 

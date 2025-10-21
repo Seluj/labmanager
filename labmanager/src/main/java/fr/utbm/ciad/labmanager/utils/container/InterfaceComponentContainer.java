@@ -7,19 +7,19 @@ import java.util.function.Consumer;
 public interface InterfaceComponentContainer {
 
     /**
+     * Retrieves the contained component.
+     *
+     * @return the currently contained component, or null if the container is empty.
+     */
+    Component getComponent();
+
+    /**
      * Sets the specified component as the contained component of this container.
      * Applies initial styling.
      *
      * @param component the component to set and manage within this container.
      */
     void setComponent(Component component);
-
-    /**
-     * Retrieves the contained component.
-     *
-     * @return the currently contained component, or null if the container is empty.
-     */
-    Component getComponent();
 
     /**
      * Sets the size of the contained component to the specified width and height.
@@ -45,25 +45,24 @@ public interface InterfaceComponentContainer {
     boolean isEmpty();
 
     /**
-     * Sets the instructions to be executed after a component is resized.
-     *
-     * @param afterResizingInstructions a Consumer that defines the actions to be performed
-     *                                   on a ComponentContainer after resizing
-     */
-    void setAfterResizingInstructions(Consumer<ComponentContainer> afterResizingInstructions);
-
-    /**
      * Retrieves the instructions to be executed after a component is resized.
      *
      * @return a Consumer that defines the actions to be performed
-     *         on a ComponentContainer after resizing
+     * on a ComponentContainer after resizing
      */
     Consumer<ComponentContainer> getAfterResizingInstructions();
 
     /**
+     * Sets the instructions to be executed after a component is resized.
+     *
+     * @param afterResizingInstructions a Consumer that defines the actions to be performed
+     *                                  on a ComponentContainer after resizing
+     */
+    void setAfterResizingInstructions(Consumer<ComponentContainer> afterResizingInstructions);
+
+    /**
      * Adapts the size of the contained component to match its parent's dimensions,
      * executing the provided callback once the adjustment is complete.
-     *
      */
     void adaptComponentSize();
 }

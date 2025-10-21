@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,10 +30,11 @@ import fr.utbm.ciad.labmanager.views.components.persons.fields.PersonFieldFactor
 import fr.utbm.ciad.labmanager.views.components.scientificaxes.editors.ScientificAxisEditorFactory;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of membership information that may be embedded. This editor does not provide
+/**
+ * Editor of membership information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited membership.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -42,32 +43,33 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public final class EmbeddedMembershipEditor extends AbstractMembershipEditor {
 
-	private static final long serialVersionUID = 5271631470481314239L;
+    private static final long serialVersionUID = 5271631470481314239L;
 
-	/** Constructor.
-	 *
-	 * @param context the editing context for the membership.
-	 * @param membershipCreationStatusComputer the tool for computer the creation status for the organization memberships.
-	 * @param editAssociatedPerson indicates if the associated person could be edited or not.
-	 * @param personFieldFactory the factory for creating the person fields.
-	 * @param organizationFieldFactory the factory for creating the organization fields.
-	 * @param axisService the service for accessing the JPA entities for scientific axes.
-	 * @param axisEditorFactory the factory for creating the scientific axis editors.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 * @since 4.0
-	 */
-	public EmbeddedMembershipEditor(EntityEditingContext<Membership> context,
-			EntityCreationStatusComputer<Membership> membershipCreationStatusComputer,
-			boolean editAssociatedPerson, PersonFieldFactory personFieldFactory,
-			OrganizationFieldFactory organizationFieldFactory,
-			ScientificAxisService axisService, ScientificAxisEditorFactory axisEditorFactory, AuthenticatedUser authenticatedUser,
-			MessageSourceAccessor messages) {
-		super(context, membershipCreationStatusComputer, editAssociatedPerson, false, personFieldFactory,
-				organizationFieldFactory, axisService, axisEditorFactory,
-				authenticatedUser, messages,
-				ConstructionPropertiesBuilder.create());
-		createEditorContentAndLinkBeans();
-	}
+    /**
+     * Constructor.
+     *
+     * @param context                          the editing context for the membership.
+     * @param membershipCreationStatusComputer the tool for computer the creation status for the organization memberships.
+     * @param editAssociatedPerson             indicates if the associated person could be edited or not.
+     * @param personFieldFactory               the factory for creating the person fields.
+     * @param organizationFieldFactory         the factory for creating the organization fields.
+     * @param axisService                      the service for accessing the JPA entities for scientific axes.
+     * @param axisEditorFactory                the factory for creating the scientific axis editors.
+     * @param authenticatedUser                the connected user.
+     * @param messages                         the accessor to the localized messages (Spring layer).
+     * @since 4.0
+     */
+    public EmbeddedMembershipEditor(EntityEditingContext<Membership> context,
+                                    EntityCreationStatusComputer<Membership> membershipCreationStatusComputer,
+                                    boolean editAssociatedPerson, PersonFieldFactory personFieldFactory,
+                                    OrganizationFieldFactory organizationFieldFactory,
+                                    ScientificAxisService axisService, ScientificAxisEditorFactory axisEditorFactory, AuthenticatedUser authenticatedUser,
+                                    MessageSourceAccessor messages) {
+        super(context, membershipCreationStatusComputer, editAssociatedPerson, false, personFieldFactory,
+                organizationFieldFactory, axisService, axisEditorFactory,
+                authenticatedUser, messages,
+                ConstructionPropertiesBuilder.create());
+        createEditorContentAndLinkBeans();
+    }
 
 }

@@ -22,7 +22,7 @@ public class ChartHandler implements ChartObserver {
     /**
      * Default Constructor
      */
-    public ChartHandler(){
+    public ChartHandler() {
     }
 
     /**
@@ -31,14 +31,14 @@ public class ChartHandler implements ChartObserver {
      * @param callback  the action to perform when the chart is generated
      * @param component the draggable component associated with the chart
      */
-    public ChartHandler(Consumer<Component> callback, Component component){
+    public ChartHandler(Consumer<Component> callback, Component component) {
         this.callback = callback;
         this.component = component;
     }
 
     @Override
     public void onChartGenerated() {
-        if(callback != null && component != null){
+        if (callback != null && component != null) {
             callback.accept(component);
         }
     }

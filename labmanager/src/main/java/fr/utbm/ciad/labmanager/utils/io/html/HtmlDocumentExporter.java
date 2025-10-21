@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,9 +19,10 @@
 
 package fr.utbm.ciad.labmanager.utils.io.html;
 
-/** Utilities for exporting publications to HTML content.
+/**
+ * Utilities for exporting publications to HTML content.
  * This exporter is not dedicated to a website but to standalone HTML document.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -29,5 +30,5 @@ package fr.utbm.ciad.labmanager.utils.io.html;
  * @since 2.0.0
  */
 public interface HtmlDocumentExporter extends HtmlExporter {
-	//
+    //
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 
-/** Comparator of supervisors.
- * 
+/**
+ * Comparator of supervisors.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -38,50 +39,51 @@ import java.util.Comparator;
 @Primary
 public class SupervisorComparator implements Comparator<Supervisor> {
 
-	private PersonComparator personComparator;
+    private final PersonComparator personComparator;
 
-	/** Constructor.
-	 *
-	 * @param personComparator the comparator of persons names.
-	 */
-	public SupervisorComparator(@Autowired PersonComparator personComparator) {
-		this.personComparator = personComparator;
-	}
+    /**
+     * Constructor.
+     *
+     * @param personComparator the comparator of persons names.
+     */
+    public SupervisorComparator(@Autowired PersonComparator personComparator) {
+        this.personComparator = personComparator;
+    }
 
-	@Override
-	public int compare(Supervisor s1, Supervisor s2) {
-		if (s1 == s2) {
-			return 0;
-		}
-		if (s1 == null) {
-			return Integer.MIN_VALUE;
-		}
-		if (s2 == null) {
-			return Integer.MAX_VALUE;
-		}
-		var cmp = compareSupervisorTypes(s1.getType(), s2.getType());
-		if (cmp != 0) {
-			return cmp;
-		}
-		// Higher percentage first
-		cmp = Integer.compare(s2.getPercentage(), s1.getPercentage());
-		if (cmp != 0) {
-			return cmp;
-		}
-		return this.personComparator.compare(s1.getSupervisor(), s2.getSupervisor());
-	}
+    private static int compareSupervisorTypes(SupervisorType t1, SupervisorType t2) {
+        if (t1 == t2) {
+            return 0;
+        }
+        if (t1 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (t2 == null) {
+            return Integer.MAX_VALUE;
+        }
+        return t1.compareTo(t2);
+    }
 
-	private static int compareSupervisorTypes(SupervisorType t1, SupervisorType t2) {
-		if (t1 == t2) {
-			return 0;
-		}
-		if (t1 == null) {
-			return Integer.MIN_VALUE;
-		}
-		if (t2 == null) {
-			return Integer.MAX_VALUE;
-		}
-		return t1.compareTo(t2);
-	}
+    @Override
+    public int compare(Supervisor s1, Supervisor s2) {
+        if (s1 == s2) {
+            return 0;
+        }
+        if (s1 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (s2 == null) {
+            return Integer.MAX_VALUE;
+        }
+        var cmp = compareSupervisorTypes(s1.getType(), s2.getType());
+        if (cmp != 0) {
+            return cmp;
+        }
+        // Higher percentage first
+        cmp = Integer.compare(s2.getPercentage(), s1.getPercentage());
+        if (cmp != 0) {
+            return cmp;
+        }
+        return this.personComparator.compare(s1.getSupervisor(), s2.getSupervisor());
+    }
 
 }

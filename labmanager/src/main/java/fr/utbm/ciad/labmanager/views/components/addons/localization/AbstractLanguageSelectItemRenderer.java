@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  * Copyright (c) 2019 Kaspar Scherrer
  *
@@ -20,8 +20,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.localization;
 
-import java.util.Locale;
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.html.Div;
@@ -29,7 +27,10 @@ import com.vaadin.flow.function.SerializableFunction;
 import fr.utbm.ciad.labmanager.utils.country.CountryCode;
 import fr.utbm.ciad.labmanager.views.components.addons.countryflag.CountryFlag;
 
-/** Item renderer for the language select that is rendering only the flag and not the language name.
+import java.util.Locale;
+
+/**
+ * Item renderer for the language select that is rendering only the flag and not the language name.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -39,42 +40,45 @@ import fr.utbm.ciad.labmanager.views.components.addons.countryflag.CountryFlag;
  */
 public abstract class AbstractLanguageSelectItemRenderer implements SerializableFunction<Locale, Component> {
 
-	private static final long serialVersionUID = 3923448249054863389L;
+    private static final long serialVersionUID = 3923448249054863389L;
 
-	private final Locale locale;
+    private final Locale locale;
 
-	/** Constructor.
-	 *
-	 * @param locale the current locale for displaying the names.
-	 */
-	protected AbstractLanguageSelectItemRenderer(Locale locale) {
-		this.locale = locale;
-	}
-	
-	/** Replies the component corresponding to the language flag.
-	 *
-	 * @param language the code of the country/anguage
-	 * @return the flag icon resource.
-	 */
-	@SuppressWarnings("static-method")
-	protected CountryFlag getLanguageFlag(CountryCode language) {
-		final CountryFlag flag = new CountryFlag(language);
-		flag.addClassName("language-select-flag"); //$NON-NLS-1$
-		flag.setSizeFromHeight(2, Unit.EX);
-		return flag;
-	}
-	
-	/** Replies the name of the language.
-	 *
-	 * @param language the code of the country/anguage
-	 * @return the language name component.
-	 */
-	protected Div getLanguageName(CountryCode language) {
-		final var name = new Div();
-		name.setText(language.getDisplayLanguage(this.locale));
-		name.addClassName("language-select-name"); //$NON-NLS-1$
-		name.getStyle().set("margin-left", "5px"); //$NON-NLS-1$ //$NON-NLS-2$
-		return name;
-	}
+    /**
+     * Constructor.
+     *
+     * @param locale the current locale for displaying the names.
+     */
+    protected AbstractLanguageSelectItemRenderer(Locale locale) {
+        this.locale = locale;
+    }
+
+    /**
+     * Replies the component corresponding to the language flag.
+     *
+     * @param language the code of the country/anguage
+     * @return the flag icon resource.
+     */
+    @SuppressWarnings("static-method")
+    protected CountryFlag getLanguageFlag(CountryCode language) {
+        final CountryFlag flag = new CountryFlag(language);
+        flag.addClassName("language-select-flag"); //$NON-NLS-1$
+        flag.setSizeFromHeight(2, Unit.EX);
+        return flag;
+    }
+
+    /**
+     * Replies the name of the language.
+     *
+     * @param language the code of the country/anguage
+     * @return the language name component.
+     */
+    protected Div getLanguageName(CountryCode language) {
+        final var name = new Div();
+        name.setText(language.getDisplayLanguage(this.locale));
+        name.addClassName("language-select-name"); //$NON-NLS-1$
+        name.getStyle().set("margin-left", "5px"); //$NON-NLS-1$ //$NON-NLS-2$
+        return name;
+    }
 
 }

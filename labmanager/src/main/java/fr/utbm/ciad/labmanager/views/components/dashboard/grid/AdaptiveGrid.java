@@ -3,8 +3,8 @@ package fr.utbm.ciad.labmanager.views.components.dashboard.grid;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import elemental.json.JsonValue;
-import fr.utbm.ciad.labmanager.views.components.dashboard.cell.DropCell;
 import fr.utbm.ciad.labmanager.utils.container.ComponentContainer;
+import fr.utbm.ciad.labmanager.views.components.dashboard.cell.DropCell;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class AdaptiveGrid extends AbstractGrid {
     /**
      * Default Constructor
      */
-    public AdaptiveGrid(){
+    public AdaptiveGrid() {
         super();
     }
 
@@ -45,7 +45,7 @@ public class AdaptiveGrid extends AbstractGrid {
     }
 
     @Override
-    public void initializeGrid(){
+    public void initializeGrid() {
         super.initializeGrid();
 
         UI.getCurrent().getPage().executeJs("return window.innerWidth;")
@@ -60,8 +60,8 @@ public class AdaptiveGrid extends AbstractGrid {
     }
 
     @Override
-    public void addNewComponent(DropCell cell, Component component){
-        if(component instanceof ComponentContainer componentContainer){
+    public void addNewComponent(DropCell cell, Component component) {
+        if (component instanceof ComponentContainer componentContainer) {
             setResizing(false);
             setupComponentListeners(componentContainer);
             makeComponentFitInCells(componentContainer);
@@ -74,8 +74,8 @@ public class AdaptiveGrid extends AbstractGrid {
      *
      * @param width the width to which the grid will be resized as a JsonValue.
      */
-    protected void setGridSize(JsonValue width){
-        double doubleWidth =  width.asNumber();
+    protected void setGridSize(JsonValue width) {
+        double doubleWidth = width.asNumber();
         setGridSize((int) doubleWidth);
     }
 
@@ -84,14 +84,14 @@ public class AdaptiveGrid extends AbstractGrid {
      *
      * @param width the width to which the grid will be resized in pixels.
      */
-    protected void setGridSize(int width){
+    protected void setGridSize(int width) {
         getStyle()
                 .setWidth(width + "px")
                 .setHeight(width + "px");
         double cellSize = getCellSize();
         setCellSize((double) width / getColumns());
         for (DropCell cell : getCellsContainingComponents()) {
-            if(cell.getComponent() instanceof ComponentContainer componentContainer){
+            if (cell.getComponent() instanceof ComponentContainer componentContainer) {
                 makeComponentFitInCells(cellSize, componentContainer);
             }
         }
@@ -102,7 +102,7 @@ public class AdaptiveGrid extends AbstractGrid {
      *
      * @param component the component whose dimensions will be adjusted
      */
-    protected void makeComponentFitInCells(ComponentContainer component){
+    protected void makeComponentFitInCells(ComponentContainer component) {
         long componentWidth = Math.round(calculateComponentSizeInCells(component, "width") * getCellSize());
         long componentHeight = Math.round(calculateComponentSizeInCells(component, "height") * getCellSize());
 
@@ -113,15 +113,15 @@ public class AdaptiveGrid extends AbstractGrid {
      * Adjusts the dimensions of a component to fit within the grid's cell size.
      *
      * @param previousCellSize the size of a cell before the adjustment
-     * @param component the component whose dimensions will be adjusted
+     * @param component        the component whose dimensions will be adjusted
      */
-    private void makeComponentFitInCells(double previousCellSize, ComponentContainer component){
+    private void makeComponentFitInCells(double previousCellSize, ComponentContainer component) {
         double componentWidth = calculateComponentSizeInCells(previousCellSize, component, "width") * getCellSize();
         double componentHeight = calculateComponentSizeInCells(previousCellSize, component, "height") * getCellSize();
 
         component.getStyle()
-                .setWidth(componentWidth+"px")
-                .setHeight(componentHeight+"px");
+                .setWidth(componentWidth + "px")
+                .setHeight(componentHeight + "px");
     }
 
     /**
@@ -139,7 +139,7 @@ public class AdaptiveGrid extends AbstractGrid {
         return cellsList;
     }
 
-    public List<Component> getComponents(){
+    public List<Component> getComponents() {
         List<Component> list = new ArrayList<>();
         getCellsContainingComponents().forEach(cell -> list.add(cell.getComponent()));
         return list;
@@ -148,7 +148,7 @@ public class AdaptiveGrid extends AbstractGrid {
     /**
      * Sets up listeners to handle grid-related events.
      */
-    private void setupListeners(){
+    private void setupListeners() {
         UI.getCurrent().getPage().addBrowserWindowResizeListener(event -> setGridSize(event.getWidth()));
     }
 
@@ -157,15 +157,15 @@ public class AdaptiveGrid extends AbstractGrid {
      *
      * @param component the component container to add listeners to.
      */
-    protected void setupComponentListeners(ComponentContainer component){
+    protected void setupComponentListeners(ComponentContainer component) {
         component.setAfterResizingInstructions(this::afterResizingComponent);
         component.getElement().addEventListener("mouseup", mouseUpEvent -> component.getParent().ifPresent(parent -> {
-            if(parent instanceof DropCell cell){
+            if (parent instanceof DropCell cell) {
                 mouseUp(cell, component);
             }
         }));
         component.getElement().addEventListener("mousedown", mouseUpEvent -> component.getParent().ifPresent(parent -> {
-            if(parent instanceof DropCell cell){
+            if (parent instanceof DropCell cell) {
                 mouseDown(cell, component);
             }
         }));
@@ -186,7 +186,7 @@ public class AdaptiveGrid extends AbstractGrid {
      *
      * @param component the draggable component.
      */
-    protected void mouseDown(DropCell cell, ComponentContainer component){
+    protected void mouseDown(DropCell cell, ComponentContainer component) {
         setResizing(true);
     }
 
@@ -195,7 +195,8 @@ public class AdaptiveGrid extends AbstractGrid {
      *
      * @param component the component that was resized.
      */
-    protected void afterResizingComponent(Component component){}
+    protected void afterResizingComponent(Component component) {
+    }
 
     /**
      * Determines if a component can be placed in a given cell based on grid boundaries.
@@ -211,8 +212,8 @@ public class AdaptiveGrid extends AbstractGrid {
     /**
      * Checks if placing a component in a cell would cause it to exceed the grid's boundaries.
      *
-     * @param targetCell      the target cell.
-     * @param component the component to check.
+     * @param targetCell the target cell.
+     * @param component  the component to check.
      * @return true if the component would exceed the grid's boundaries in this cell, false otherwise.
      */
     protected boolean isOverTheEdge(DropCell targetCell, ComponentContainer component) {
@@ -243,7 +244,7 @@ public class AdaptiveGrid extends AbstractGrid {
      *
      * @return true if resizing is in progress, false otherwise.
      */
-    public boolean isResizing(){
+    public boolean isResizing() {
         return isResizing;
     }
 
@@ -252,7 +253,7 @@ public class AdaptiveGrid extends AbstractGrid {
      *
      * @param isResizing true to indicate resizing is in progress, false otherwise.
      */
-    public void setResizing(boolean isResizing){
+    public void setResizing(boolean isResizing) {
         this.isResizing = isResizing;
     }
 }

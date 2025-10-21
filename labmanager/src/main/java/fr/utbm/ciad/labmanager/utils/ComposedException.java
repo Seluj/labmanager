@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import com.google.common.base.Strings;
 import java.util.Collection;
 import java.util.Collections;
 
-/** An exception that contains multiple causes.
- * 
+/**
+ * An exception that contains multiple causes.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,43 +35,45 @@ import java.util.Collections;
  */
 public class ComposedException extends Exception {
 
-	private static final long serialVersionUID = 1077595052229473266L;
+    private static final long serialVersionUID = 1077595052229473266L;
 
-	private final Collection<? extends Throwable> errors;
+    private final Collection<? extends Throwable> errors;
 
-	/** Constructor.
-	 * 
-	 * @param errors the causes.
-	 */
-	public ComposedException(Collection<? extends Throwable> errors) {
-		super();
-		this.errors = errors;
-	}
-	
-	@Override
-	public String getMessage() {
-		final var msg = super.getMessage();
-		if (Strings.isNullOrEmpty(msg)) {
-			final var b = new StringBuilder();
-			for (final var ex : getCauses()) {
-				if (!Strings.isNullOrEmpty(ex.getLocalizedMessage())) {
-					if (b.length() > 0) {
-						b.append("\n"); //$NON-NLS-1$
-					}
-					b.append(ex.getLocalizedMessage());
-				}
-			}
-			return b.toString();
-		}
-		return msg;
-	}
+    /**
+     * Constructor.
+     *
+     * @param errors the causes.
+     */
+    public ComposedException(Collection<? extends Throwable> errors) {
+        super();
+        this.errors = errors;
+    }
 
-	/** Replies the causes of this exception.
-	 *
-	 * @return the causes.
-	 */
-	public synchronized Collection<? extends Throwable> getCauses() {
-		return this.errors == null ? Collections.emptyList() : this.errors;
-	}
+    @Override
+    public String getMessage() {
+        final var msg = super.getMessage();
+        if (Strings.isNullOrEmpty(msg)) {
+            final var b = new StringBuilder();
+            for (final var ex : getCauses()) {
+                if (!Strings.isNullOrEmpty(ex.getLocalizedMessage())) {
+                    if (b.length() > 0) {
+                        b.append("\n"); //$NON-NLS-1$
+                    }
+                    b.append(ex.getLocalizedMessage());
+                }
+            }
+            return b.toString();
+        }
+        return msg;
+    }
+
+    /**
+     * Replies the causes of this exception.
+     *
+     * @return the causes.
+     */
+    public synchronized Collection<? extends Throwable> getCauses() {
+        return this.errors == null ? Collections.emptyList() : this.errors;
+    }
 
 }

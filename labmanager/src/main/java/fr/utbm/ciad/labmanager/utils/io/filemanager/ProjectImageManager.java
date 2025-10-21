@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import fr.utbm.ciad.labmanager.data.project.Project;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 
-/** Utilities for managing the project images.
- * 
+/**
+ * Utilities for managing the project images.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,13 +34,14 @@ import org.slf4j.Logger;
  */
 public interface ProjectImageManager extends FileManager {
 
-	/** Replies the path to the thumbnail image for the given project.
-	 * Depending on the implementation, the thumbnail image may be generated on the fly.
-	 *
-	 * @param project the project for which the thumbnail image must be generated.
-	 * @param logger the logger to be used for output the log messages.
-	 * @return the path to the thumbnail image or {@code null} if there is no available thumbnail image.
-	 */
-	String getThumbnailPath(Project project, @NotNull Logger logger);
+    /**
+     * Replies the path to the thumbnail image for the given project.
+     * Depending on the implementation, the thumbnail image may be generated on the fly.
+     *
+     * @param project the project for which the thumbnail image must be generated.
+     * @param logger  the logger to be used for output the log messages.
+     * @return the path to the thumbnail image or {@code null} if there is no available thumbnail image.
+     */
+    String getThumbnailPath(Project project, @NotNull Logger logger);
 
 }

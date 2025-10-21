@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,8 +32,9 @@ import fr.utbm.ciad.labmanager.views.components.addons.logger.AbstractLoggerLogi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-/** View for logged-in the users in the development mode.
- * 
+/**
+ * View for logged-in the users in the development mode.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,43 +46,44 @@ import org.springframework.beans.factory.annotation.Value;
 @Route(value = "devlogin")
 public class DevelopperLoginView extends AbstractLoggerLoginOverlay implements BeforeEnterObserver {
 
-	private static final long serialVersionUID = 4873621745334362590L;
+    private static final long serialVersionUID = 4873621745334362590L;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructor.
-	 *
-	 * @param authenticatedUser the logged-in user.
-	 * @param applicationName the name of the application.
-	 */
-	public DevelopperLoginView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Value("${labmanager.application-name}") String applicationName) {
-		this.authenticatedUser = authenticatedUser;
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser the logged-in user.
+     * @param applicationName   the name of the application.
+     */
+    public DevelopperLoginView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Value("${labmanager.application-name}") String applicationName) {
+        this.authenticatedUser = authenticatedUser;
 
-		setAction(RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
+        setAction(RouteUtil.getRoutePath(VaadinService.getCurrent().getContext(), getClass()));
 
-		final var inviteMessage = getTranslation("views.login.dev.invite"); //$NON-NLS-1$
-		
-		final var i18n = LoginI18n.createDefault();
-		i18n.setHeader(new LoginI18n.Header());
-		i18n.getHeader().setTitle(applicationName);
-		i18n.getHeader().setDescription(inviteMessage);
-		i18n.setAdditionalInformation(null);
-		setI18n(i18n);
+        final var inviteMessage = getTranslation("views.login.dev.invite"); //$NON-NLS-1$
 
-		setForgotPasswordButtonVisible(false);
-		setOpened(true);
-	}
+        final var i18n = LoginI18n.createDefault();
+        i18n.setHeader(new LoginI18n.Header());
+        i18n.getHeader().setTitle(applicationName);
+        i18n.getHeader().setDescription(inviteMessage);
+        i18n.setAdditionalInformation(null);
+        setI18n(i18n);
 
-	@Override
-	public void beforeEnter(BeforeEnterEvent event) {
-		if (this.authenticatedUser.get().isPresent()) {
-			// Already logged in
-			setOpened(false);
-			event.forwardTo(""); //$NON-NLS-1$
-		}
-		setError(event.getLocation().getQueryParameters().getParameters().containsKey("error")); //$NON-NLS-1$
-	}
+        setForgotPasswordButtonVisible(false);
+        setOpened(true);
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (this.authenticatedUser.get().isPresent()) {
+            // Already logged in
+            setOpened(false);
+            event.forwardTo(""); //$NON-NLS-1$
+        }
+        setError(event.getLocation().getQueryParameters().getParameters().containsKey("error")); //$NON-NLS-1$
+    }
 
 }

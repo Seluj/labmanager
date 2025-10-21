@@ -16,24 +16,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 public class CasAuthenticationProvider extends org.springframework.security.cas.authentication.CasAuthenticationProvider {
 
-	/**
-	 * Create a new instance with the given user details service, service properties, ticket validator and key.
-	 *
-	 * @param userDetailsService the user details service.
-	 * @param serviceProperties the service properties.
-	 * @param ticket the ticket validator.
-	 * @param key the key associated to the server.
-	 */
-	public CasAuthenticationProvider(
-			UserDetailsService userDetailsService,
-			ServiceProperties serviceProperties,
-			TicketValidator ticket,
-			String key) {
-		setUserDetailsService(userDetailsService);
-		setAuthenticationUserDetailsService(new UserDetailsByNameServiceWrapper<>(userDetailsService));
-		setServiceProperties(serviceProperties);
-		setTicketValidator(ticket);
-		setKey(key);
-	}
+    /**
+     * Create a new instance with the given user details service, service properties, ticket validator and key.
+     *
+     * @param userDetailsService the user details service.
+     * @param serviceProperties  the service properties.
+     * @param ticket             the ticket validator.
+     * @param key                the key associated to the server.
+     */
+    public CasAuthenticationProvider(
+            UserDetailsService userDetailsService,
+            ServiceProperties serviceProperties,
+            TicketValidator ticket,
+            String key) {
+        setUserDetailsService(userDetailsService);
+        setAuthenticationUserDetailsService(new UserDetailsByNameServiceWrapper<>(userDetailsService));
+        setServiceProperties(serviceProperties);
+        setTicketValidator(ticket);
+        setKey(key);
+    }
 
 }

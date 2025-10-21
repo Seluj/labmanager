@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,9 @@ package fr.utbm.ciad.labmanager.utils.io.filemanager;
 import java.io.File;
 import java.io.Serializable;
 
-/** Utilities for managing the files.
- * 
+/**
+ * Utilities for managing the files.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -32,19 +33,22 @@ import java.io.Serializable;
  */
 public interface FileManager extends Serializable {
 
-	/** JPEG filename extension.
-	 */
-	String JPEG_FILE_EXTENSION = ".jpg"; //$NON-NLS-1$
+    /**
+     * JPEG filename extension.
+     */
+    String JPEG_FILE_EXTENSION = ".jpg"; //$NON-NLS-1$
 
-	/** PDF filename extension.
-	 */
-	String PDF_FILE_EXTENSION = ".pdf"; //$NON-NLS-1$
+    /**
+     * PDF filename extension.
+     */
+    String PDF_FILE_EXTENSION = ".pdf"; //$NON-NLS-1$
 
-	/** Normalize a relative filename to be absolute for the server.
-	 *
-	 * @param file the relative filename.
-	 * @return the absolute filename.
-	 */
-	File normalizeForServerSide(File file);
+    /**
+     * Normalize a relative filename to be absolute for the server.
+     *
+     * @param file the relative filename.
+     * @return the absolute filename.
+     */
+    File normalizeForServerSide(File file);
 
 }

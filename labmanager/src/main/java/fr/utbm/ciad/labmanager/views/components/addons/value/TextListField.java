@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,14 +18,6 @@
  */
 
 package fr.utbm.ciad.labmanager.views.components.addons.value;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ItemLabelGenerator;
@@ -46,8 +38,13 @@ import fr.utbm.ciad.labmanager.views.ViewConstants;
 import fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
-/** Component that enables to select a list of entities from a given text field.
- * 
+import java.io.Serializable;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * Component that enables to select a list of entities from a given text field.
+ *
  * @param <T> the type of the edited entity.
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -57,373 +54,398 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
  */
 public class TextListField<T> extends CustomField<List<T>> {
 
-	private static final long serialVersionUID = 1267945151659867594L;
+    private static final long serialVersionUID = 1267945151659867594L;
 
-	private final Converter<T> converter;
+    private final Converter<T> converter;
 
-	private final String errorMessageKey;
-	
-	private final TextField text;
+    private final String errorMessageKey;
 
-	private final EmptySetMultiSelectListBox<T> selectedEntities;
+    private final TextField text;
 
-	private final MenuItem insertButton;
+    private final EmptySetMultiSelectListBox<T> selectedEntities;
 
-	private final MenuItem deleteButton;
+    private final MenuItem insertButton;
 
-	/** Constructor.
-	 *
-	 * @param comparator the comparator to be used for sorting the entities in the list.
-	 * @param converter the converter from String to the entity type.
-	 * @param errorMessageKey the key in the translation file that corresponds to the error message when the string value is invalid.
-	 */
-	public TextListField(SerializableComparator<T> comparator, Converter<T> converter, String errorMessageKey) {
-		this.converter = converter;
-		this.errorMessageKey = errorMessageKey;
+    private final MenuItem deleteButton;
 
-		this.selectedEntities = new EmptySetMultiSelectListBox<>(comparator);
+    /**
+     * Constructor.
+     *
+     * @param comparator      the comparator to be used for sorting the entities in the list.
+     * @param converter       the converter from String to the entity type.
+     * @param errorMessageKey the key in the translation file that corresponds to the error message when the string value is invalid.
+     */
+    public TextListField(SerializableComparator<T> comparator, Converter<T> converter, String errorMessageKey) {
+        this.converter = converter;
+        this.errorMessageKey = errorMessageKey;
 
-		this.text = new TextField();
-		this.text.setWidthFull();
-		
-		final var tools = new MenuBar();
-		tools.addThemeVariants(MenuBarVariant.LUMO_ICON);
+        this.selectedEntities = new EmptySetMultiSelectListBox<>(comparator);
 
-		this.insertButton = ComponentFactory.addIconItem(tools, LineAwesomeIcon.PLUS_SOLID, null, null, it -> doAddition(true));
+        this.text = new TextField();
+        this.text.setWidthFull();
 
-		this.deleteButton = ComponentFactory.addIconItem(tools, LineAwesomeIcon.MINUS_SOLID, null, null, it -> doDeletion(true));
-		this.deleteButton.setEnabled(false);
+        final var tools = new MenuBar();
+        tools.addThemeVariants(MenuBarVariant.LUMO_ICON);
 
-		final var additionPanel = new HorizontalLayout();
-		additionPanel.add(this.text, tools);
-		additionPanel.setAlignItems(Alignment.CENTER);
-		additionPanel.setSpacing(false);
-		additionPanel.setPadding(false);
-		
-		final var mainPanel = new VerticalLayout();
-		mainPanel.add(this.selectedEntities.withScroller(), additionPanel);
-		mainPanel.setAlignItems(Alignment.STRETCH);
-		mainPanel.setSpacing(false);
-		mainPanel.setPadding(false);
-		add(mainPanel);
+        this.insertButton = ComponentFactory.addIconItem(tools, LineAwesomeIcon.PLUS_SOLID, null, null, it -> doAddition(true));
 
-		this.selectedEntities.addSelectionListener(it -> this.deleteButton.setEnabled(!it.getAllSelectedItems().isEmpty()));
-	}
+        this.deleteButton = ComponentFactory.addIconItem(tools, LineAwesomeIcon.MINUS_SOLID, null, null, it -> doDeletion(true));
+        this.deleteButton.setEnabled(false);
 
-	/** Change the height of the list. This function differs to {@link #setHeight(float, Unit)} in the fact
-	 * it changes the height of the inner list and not of the global component.
-	 *
-	 * @param height the height value.
-	 * @param unit the height unit.
-	 */
-	public void setListHeight(float height, Unit unit) {
-		this.selectedEntities.setHeight(height, unit);
-	}
+        final var additionPanel = new HorizontalLayout();
+        additionPanel.add(this.text, tools);
+        additionPanel.setAlignItems(Alignment.CENTER);
+        additionPanel.setSpacing(false);
+        additionPanel.setPadding(false);
 
-	/** Do the insertion of the given item. This function add the given item
-	 * in the list of selected entities, but not in the text field
-	 *
-	 * @param item the new item.
-	 * @param updateFieldValue indicates if the field component is notified
-	 *     about a value change. In other words, the function
-	 *     {@link #updateValue()} is invoked if this argument is evaluated
-	 *     to {@code true} and it is not invoked otherwise.
-	 */
-	@SuppressWarnings("unchecked")
-	protected void addNewEntity(T newEntity, boolean updateFieldValue) {
-		this.selectedEntities.addEntity(newEntity);
-		this.selectedEntities.select(newEntity);
-		if (updateFieldValue) {
-			updateValue();
-		}
-	}
+        final var mainPanel = new VerticalLayout();
+        mainPanel.add(this.selectedEntities.withScroller(), additionPanel);
+        mainPanel.setAlignItems(Alignment.STRETCH);
+        mainPanel.setSpacing(false);
+        mainPanel.setPadding(false);
+        add(mainPanel);
 
-	private T readEntityValue(String selection) {
-		if (selection != null) {
-			setErrorMessage(null);
-			setInvalid(false);
-			try {
-				return this.converter.convert(selection);
-			} catch (Throwable ex) {
-				setErrorMessage(getErrorMessage(selection));
-				setInvalid(true);
-			}
-		}
-		return null;
-	}
+        this.selectedEntities.addSelectionListener(it -> this.deleteButton.setEnabled(!it.getAllSelectedItems().isEmpty()));
+    }
 
-	/** Add the selected item in the list of available items into the list of selected entities.
-	 *
-	 * @param updateFieldValue indicates if the field component is notified
-	 *     about a value change. In other words, the function
-	 *     {@link #updateValue()} is invoked if this argument is evaluated
-	 *     to {@code true} and it is not invoked otherwise.
-	 */
-	protected void doAddition(boolean updateFieldValue) {
-		final var entity = readEntityValue(this.text.getValue());
-		if (entity != null) {
-			this.selectedEntities.addEntity(entity);
-			// Clear the combo box selection
-			this.text.setValue(""); //$NON-NLS-1$
-			if (updateFieldValue) {
-				updateValue();
-			}
-		}
-	}
+    /**
+     * Change the height of the list. This function differs to {@link #setHeight(float, Unit)} in the fact
+     * it changes the height of the inner list and not of the global component.
+     *
+     * @param height the height value.
+     * @param unit   the height unit.
+     */
+    public void setListHeight(float height, Unit unit) {
+        this.selectedEntities.setHeight(height, unit);
+    }
 
-	/** Replies the error message with the given value.
-	 *
-	 * @param value the input value.
-	 * @return the error message.
-	 */
-	protected String getErrorMessage(String value) {
-		return getTranslation(this.errorMessageKey, value);
-	}
-	
-	/** Remove the selected items in the list of selected entities.
-	 *
-	 * @param updateFieldValue indicates if the field component is notified
-	 *     about a value change. In other words, the function
-	 *     {@link #updateValue()} is invoked if this argument is evaluated
-	 *     to {@code true} and it is not invoked otherwise.
-	 */
-	protected void doDeletion(boolean updateFieldValue) {
-		final var selection = this.selectedEntities.getSelectedItems();
-		if (selection != null) {
-			// Copy the selection for avoiding ConcurrentModificationException
-			for (final var entity : new ArrayList<>(selection)) {
-				this.selectedEntities.removeEntity(entity);
-			}
-			if (updateFieldValue) {
-				updateValue();
-			}
-		}
-	}
+    /**
+     * Do the insertion of the given item. This function add the given item
+     * in the list of selected entities, but not in the text field
+     *
+     * @param item             the new item.
+     * @param updateFieldValue indicates if the field component is notified
+     *                         about a value change. In other words, the function
+     *                         {@link #updateValue()} is invoked if this argument is evaluated
+     *                         to {@code true} and it is not invoked otherwise.
+     */
+    @SuppressWarnings("unchecked")
+    protected void addNewEntity(T newEntity, boolean updateFieldValue) {
+        this.selectedEntities.addEntity(newEntity);
+        this.selectedEntities.select(newEntity);
+        if (updateFieldValue) {
+            updateValue();
+        }
+    }
 
-	/** Change the tooltip of the insertion button.
-	 *
-	 * @param text the text.
-	 */
-	public void setAdditionTooltip(String text) {
-		this.insertButton.setAriaLabel(text);
-	}
+    private T readEntityValue(String selection) {
+        if (selection != null) {
+            setErrorMessage(null);
+            setInvalid(false);
+            try {
+                return this.converter.convert(selection);
+            } catch (Throwable ex) {
+                setErrorMessage(getErrorMessage(selection));
+                setInvalid(true);
+            }
+        }
+        return null;
+    }
 
-	/** Change the tooltip of the deletion button.
-	 *
-	 * @param text the text.
-	 */
-	public void setDeletionTooltip(String text) {
-		this.deleteButton.setAriaLabel(text);
-	}
+    /**
+     * Add the selected item in the list of available items into the list of selected entities.
+     *
+     * @param updateFieldValue indicates if the field component is notified
+     *                         about a value change. In other words, the function
+     *                         {@link #updateValue()} is invoked if this argument is evaluated
+     *                         to {@code true} and it is not invoked otherwise.
+     */
+    protected void doAddition(boolean updateFieldValue) {
+        final var entity = readEntityValue(this.text.getValue());
+        if (entity != null) {
+            this.selectedEntities.addEntity(entity);
+            // Clear the combo box selection
+            this.text.setValue(""); //$NON-NLS-1$
+            if (updateFieldValue) {
+                updateValue();
+            }
+        }
+    }
 
-	/** Change the renderer of the entities in the list of available entities
-	 * and in the list of selected entities too.
-	 *
-	 * @param labelGenerator the generator of labels for the entities.
-	 */
-	public void setEntityLabelGenerator(ItemLabelGenerator<T> labelGenerator) {
-		this.selectedEntities.setItemLabelGenerator(labelGenerator);
-	}
+    /**
+     * Replies the error message with the given value.
+     *
+     * @param value the input value.
+     * @return the error message.
+     */
+    protected String getErrorMessage(String value) {
+        return getTranslation(this.errorMessageKey, value);
+    }
 
-	/** Change the renderer of the entities in the list of selected entities.
-	 *
-	 * @param selectedListRenderer the renderer for the list of selected entities.
-	 */
-	public void setEntityRenderers(ComponentRenderer<? extends Component, T> selectedListRenderer) {
-		this.selectedEntities.setRenderer(selectedListRenderer);
-	}
+    /**
+     * Remove the selected items in the list of selected entities.
+     *
+     * @param updateFieldValue indicates if the field component is notified
+     *                         about a value change. In other words, the function
+     *                         {@link #updateValue()} is invoked if this argument is evaluated
+     *                         to {@code true} and it is not invoked otherwise.
+     */
+    protected void doDeletion(boolean updateFieldValue) {
+        final var selection = this.selectedEntities.getSelectedItems();
+        if (selection != null) {
+            // Copy the selection for avoiding ConcurrentModificationException
+            for (final var entity : new ArrayList<>(selection)) {
+                this.selectedEntities.removeEntity(entity);
+            }
+            if (updateFieldValue) {
+                updateValue();
+            }
+        }
+    }
 
-	/** Clear the selected entities and put them back in the available entities.
-	 */
-	protected void clearSelectedEntities() {
-		this.selectedEntities.deselectAll();
-		//
-		this.selectedEntities.clear();
-	}
+    /**
+     * Change the tooltip of the insertion button.
+     *
+     * @param text the text.
+     */
+    public void setAdditionTooltip(String text) {
+        this.insertButton.setAriaLabel(text);
+    }
 
-	/** Add the given items in the list of selected items.
-	 * This function adds only the entities that are inside
-	 * the list of available entities.
-	 *
-	 * @param entities the list of items to add to the list of selected items.
-	 */
-	protected void addSelectedEntities(Iterable<T> entities) {
-		if (entities != null) {
-			for (var entity : entities) {
-				this.selectedEntities.addEntity(entity);
-			}
-		}
-	}
+    /**
+     * Change the tooltip of the deletion button.
+     *
+     * @param text the text.
+     */
+    public void setDeletionTooltip(String text) {
+        this.deleteButton.setAriaLabel(text);
+    }
 
-	/** Remove the given items from the list of selected items.
-	 *
-	 * @param entities the list of items to remove from the list of selected items.
-	 */
-	protected void removeSelectedEntities(Set<T> entities) {
-		if (entities != null) {
-			for (var item : entities) {
-				this.selectedEntities.removeEntity(item);
-			}
-		}
-	}
+    /**
+     * Change the renderer of the entities in the list of available entities
+     * and in the list of selected entities too.
+     *
+     * @param labelGenerator the generator of labels for the entities.
+     */
+    public void setEntityLabelGenerator(ItemLabelGenerator<T> labelGenerator) {
+        this.selectedEntities.setItemLabelGenerator(labelGenerator);
+    }
 
-	/** Change the list of selected items.
-	 * The list of available items is updated for reflecting the selection.
-	 *
-	 * @param items the list of items.
-	 */
-	public void setSelectedEntities(Set<T> items) {
-		clearSelectedEntities();
-		addSelectedEntities(items);
-		updateValue();
-	}
+    /**
+     * Change the renderer of the entities in the list of selected entities.
+     *
+     * @param selectedListRenderer the renderer for the list of selected entities.
+     */
+    public void setEntityRenderers(ComponentRenderer<? extends Component, T> selectedListRenderer) {
+        this.selectedEntities.setRenderer(selectedListRenderer);
+    }
 
-	/** Replies the list of selected items.
-	 *
-	 * @return the collection of selected items.
-	 */
-	public Set<T> getSelectedEntities() {
-		return this.selectedEntities.getEntities();
-	}
+    /**
+     * Clear the selected entities and put them back in the available entities.
+     */
+    protected void clearSelectedEntities() {
+        this.selectedEntities.deselectAll();
+        //
+        this.selectedEntities.clear();
+    }
 
-	@Override
-	protected final List<T> generateModelValue() {
-		return getSelectedEntities().stream().toList();
-	}
+    /**
+     * Add the given items in the list of selected items.
+     * This function adds only the entities that are inside
+     * the list of available entities.
+     *
+     * @param entities the list of items to add to the list of selected items.
+     */
+    protected void addSelectedEntities(Iterable<T> entities) {
+        if (entities != null) {
+            for (var entity : entities) {
+                this.selectedEntities.addEntity(entity);
+            }
+        }
+    }
 
-	@Override
-	protected final void setPresentationValue(List<T> currentModelValue) {
-		clearSelectedEntities();
-		addSelectedEntities(currentModelValue);
-	}
+    /**
+     * Remove the given items from the list of selected items.
+     *
+     * @param entities the list of items to remove from the list of selected items.
+     */
+    protected void removeSelectedEntities(Set<T> entities) {
+        if (entities != null) {
+            for (var item : entities) {
+                this.selectedEntities.removeEntity(item);
+            }
+        }
+    }
 
-	/** Multi-selection list with empty set as empty value.
-	 * 
-	 * @param <T> the type of the edited entity.
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	@FunctionalInterface
-	public interface Converter<T> extends Serializable {
+    /**
+     * Replies the list of selected items.
+     *
+     * @return the collection of selected items.
+     */
+    public Set<T> getSelectedEntities() {
+        return this.selectedEntities.getEntities();
+    }
 
-		/** Convert the given string value to entity.
-		 *
-		 * @param value the string value.
-		 * @return the entity.
-		 * @throws Exception if the string value cannot be converted.
-		 */
-		T convert(String value) throws Exception;
+    /**
+     * Change the list of selected items.
+     * The list of available items is updated for reflecting the selection.
+     *
+     * @param items the list of items.
+     */
+    public void setSelectedEntities(Set<T> items) {
+        clearSelectedEntities();
+        addSelectedEntities(items);
+        updateValue();
+    }
 
-	}
+    @Override
+    protected final List<T> generateModelValue() {
+        return getSelectedEntities().stream().toList();
+    }
 
-	/** Multi-selection list with empty set as empty value.
-	 * 
-	 * @param <T> the type of the edited entity.
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	private static class EmptySetMultiSelectListBox<T> extends MultiSelectListBox<T> {
+    @Override
+    protected final void setPresentationValue(List<T> currentModelValue) {
+        clearSelectedEntities();
+        addSelectedEntities(currentModelValue);
+    }
 
-		private static final long serialVersionUID = 2438544745470124713L;
+    /**
+     * Multi-selection list with empty set as empty value.
+     *
+     * @param <T> the type of the edited entity.
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    @FunctionalInterface
+    public interface Converter<T> extends Serializable {
 
-		private final SerializableComparator<T> comparator;
+        /**
+         * Convert the given string value to entity.
+         *
+         * @param value the string value.
+         * @return the entity.
+         * @throws Exception if the string value cannot be converted.
+         */
+        T convert(String value) throws Exception;
 
-		private Set<T> dataStorage;
+    }
 
-		private ListDataProvider<T> dataProvider;
+    /**
+     * Multi-selection list with empty set as empty value.
+     *
+     * @param <T> the type of the edited entity.
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    private static class EmptySetMultiSelectListBox<T> extends MultiSelectListBox<T> {
 
-		/** Constructor.
-		 *
-		 * @param comparator the comparator to be used for sorting the entities in the list.
-		 */
-		EmptySetMultiSelectListBox(SerializableComparator<T> comparator) {
-			this.comparator = comparator;
-			getStyle().setBackground("var(--lumo-shade-5pct)"); //$NON-NLS-1$
-			//
-			setEntities(null);
-		}
+        private static final long serialVersionUID = 2438544745470124713L;
 
-		/** Return the list inside a scroller.
-		 *
-		 * @return the scroller.
-		 */
-		public Component withScroller() {
-			// Use "height" instead of "max height" or "min height" for enabling the scroller
-			setHeight(ViewConstants.DEFAULT_LIST_HEIGHT, Unit.PIXELS);
-			setWidthFull();
-			return this;
-		}
+        private final SerializableComparator<T> comparator;
 
-		/** Add the given entity in the list.
-		 *
-		 * @param entity the entity to add.
-		 */
-		public void addEntity(T entity) {
-			getListDataView().addItem(entity);
-		}
+        private Set<T> dataStorage;
 
-		/** Remove the given entity from the list.
-		 *
-		 * @param entity the entity to remove.
-		 * @return {@code true} if the entity was removed from the list. {@code false} if
-		 *     the entity
-		 */
-		public boolean removeEntity(T entity) {
-			if (getListDataView().contains(entity)) {
-				getListDataView().removeItem(entity);
-				return true;
-			}
-			return false;
-		}
+        private ListDataProvider<T> dataProvider;
 
-		/** Change the entities that are inside the list.
-		 *
-		 * @param entities the new collection of entities.
-		 */
-		void setEntities(Collection<T> entities) {
-			final var currentFilter = this.dataProvider == null ? null : this.dataProvider.getFilter();
-			this.dataStorage = createStorageFor(entities);
-			this.dataProvider = new ListDataProvider<>(this.dataStorage);
-			this.dataProvider.setSortComparator(this.comparator);
-			if (currentFilter != null) {
-				this.dataProvider.setFilter(currentFilter);
-			}
-			setItems(this.dataProvider);
-		}
+        /**
+         * Constructor.
+         *
+         * @param comparator the comparator to be used for sorting the entities in the list.
+         */
+        EmptySetMultiSelectListBox(SerializableComparator<T> comparator) {
+            this.comparator = comparator;
+            getStyle().setBackground("var(--lumo-shade-5pct)"); //$NON-NLS-1$
+            //
+            setEntities(null);
+        }
 
-		/** Replies the entities that are inside the list.
-		 *
-		 * @return the collection of entities in the list.
-		 */
-		Set<T> getEntities() {
-			return getListDataView().getItems().collect(Collectors.toSet());
-		}
+        /**
+         * Return the list inside a scroller.
+         *
+         * @return the scroller.
+         */
+        public Component withScroller() {
+            // Use "height" instead of "max height" or "min height" for enabling the scroller
+            setHeight(ViewConstants.DEFAULT_LIST_HEIGHT, Unit.PIXELS);
+            setWidthFull();
+            return this;
+        }
 
-		/** Create a storage data structure that may be used for the internal lists for
-		 * containing the given entities.
-		 *
-		 * @param entities the entities to put in the created data structure.
-		 * @return the created data structure.
-		 */
-		Set<T> createStorageFor(Collection<T> entities) {
-			final var newCollection = new TreeSet<>(this.comparator);
-			if (entities != null) {
-				newCollection.addAll(entities);
-			}
-			return newCollection;
-		}
-		
-		@Override
-	    public Set<T> getEmptyValue() {
-	        return new TreeSet<>(this.comparator);
-	    }
+        /**
+         * Add the given entity in the list.
+         *
+         * @param entity the entity to add.
+         */
+        public void addEntity(T entity) {
+            getListDataView().addItem(entity);
+        }
 
-	}
+        /**
+         * Remove the given entity from the list.
+         *
+         * @param entity the entity to remove.
+         * @return {@code true} if the entity was removed from the list. {@code false} if
+         * the entity
+         */
+        public boolean removeEntity(T entity) {
+            if (getListDataView().contains(entity)) {
+                getListDataView().removeItem(entity);
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Replies the entities that are inside the list.
+         *
+         * @return the collection of entities in the list.
+         */
+        Set<T> getEntities() {
+            return getListDataView().getItems().collect(Collectors.toSet());
+        }
+
+        /**
+         * Change the entities that are inside the list.
+         *
+         * @param entities the new collection of entities.
+         */
+        void setEntities(Collection<T> entities) {
+            final var currentFilter = this.dataProvider == null ? null : this.dataProvider.getFilter();
+            this.dataStorage = createStorageFor(entities);
+            this.dataProvider = new ListDataProvider<>(this.dataStorage);
+            this.dataProvider.setSortComparator(this.comparator);
+            if (currentFilter != null) {
+                this.dataProvider.setFilter(currentFilter);
+            }
+            setItems(this.dataProvider);
+        }
+
+        /**
+         * Create a storage data structure that may be used for the internal lists for
+         * containing the given entities.
+         *
+         * @param entities the entities to put in the created data structure.
+         * @return the created data structure.
+         */
+        Set<T> createStorageFor(Collection<T> entities) {
+            final var newCollection = new TreeSet<>(this.comparator);
+            if (entities != null) {
+                newCollection.addAll(entities);
+            }
+            return newCollection;
+        }
+
+        @Override
+        public Set<T> getEmptyValue() {
+            return new TreeSet<>(this.comparator);
+        }
+
+    }
 
 }

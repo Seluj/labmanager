@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-/** A wrapper for the network connection that assumes a direct connection to Internet.
- * 
+/**
+ * A wrapper for the network connection that assumes a direct connection to Internet.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -39,9 +40,9 @@ import java.net.URL;
 @Primary
 public class DirectNetConnection implements NetConnection {
 
-	@Override
+    @Override
     public BufferedImage getImageFromURL(URL url) throws IOException {
-		assert url != null;
+        assert url != null;
         return ImageIO.read(url);
     }
 

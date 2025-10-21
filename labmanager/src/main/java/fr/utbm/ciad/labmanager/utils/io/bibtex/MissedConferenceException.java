@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager.utils.io.bibtex;
 
-/** Exception that indicates a conference is missed.
- * 
+/**
+ * Exception that indicates a conference is missed.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -29,15 +30,16 @@ package fr.utbm.ciad.labmanager.utils.io.bibtex;
  */
 public class MissedConferenceException extends RuntimeException {
 
-	private static final long serialVersionUID = 1235523142208197014L;
+    private static final long serialVersionUID = 1235523142208197014L;
 
-	/** Constructor.
-	 *
-	 * @param entryKey the BibTeX key.
-	 * @param conferenceName the name of the missed conference.
-	 */
-	public MissedConferenceException(String entryKey, String conferenceName) {
-		super("Unknown conference for entry " + entryKey + ": " + conferenceName); //$NON-NLS-1$ //$NON-NLS-2$);
-	}
+    /**
+     * Constructor.
+     *
+     * @param entryKey       the BibTeX key.
+     * @param conferenceName the name of the missed conference.
+     */
+    public MissedConferenceException(String entryKey, String conferenceName) {
+        super("Unknown conference for entry " + entryKey + ": " + conferenceName); //$NON-NLS-1$ //$NON-NLS-2$);
+    }
 
 }

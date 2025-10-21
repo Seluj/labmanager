@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,8 +34,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** List all the scientific publications.
- * 
+/**
+ * List all the scientific publications.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -46,32 +47,33 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class ScientificPublicationsListView extends StandardScientificPublicationListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = 8325321198229338069L;
+    private static final long serialVersionUID = 8325321198229338069L;
 
-	/** Constructor.
-	 * 
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param publicationService the service for accessing the scientific publications.
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser        the connected user.
+     * @param messages                 the accessor to the localized messages (spring layer).
+     * @param loggerFactory            the factory to be used for the composite logger.
+     * @param publicationService       the service for accessing the scientific publications.
      * @param publicationEditorFactory the factory for creating publication editors.
-	 * @param journalService the service for accessing the JPA entities for journal.
-	 * @param organizationService the service for accessing the JPA entities for research organization.
-	 */
-	public ScientificPublicationsListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired PublicationService publicationService,
-			@Autowired PublicationEditorFactory publicationEditorFactory,
-			@Autowired JournalService journalService,
-			@Autowired ResearchOrganizationService organizationService) {
-		super(authenticatedUser, messages, loggerFactory, publicationService, publicationEditorFactory, journalService, organizationService);
-	}
+     * @param journalService           the service for accessing the JPA entities for journal.
+     * @param organizationService      the service for accessing the JPA entities for research organization.
+     */
+    public ScientificPublicationsListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired PublicationService publicationService,
+            @Autowired PublicationEditorFactory publicationEditorFactory,
+            @Autowired JournalService journalService,
+            @Autowired ResearchOrganizationService organizationService) {
+        super(authenticatedUser, messages, loggerFactory, publicationService, publicationEditorFactory, journalService, organizationService);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.publication.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.publication.list"); //$NON-NLS-1$
+    }
 
 }

@@ -5,8 +5,10 @@ import fr.utbm.ciad.labmanager.data.EntityUtils;
 import fr.utbm.ciad.labmanager.data.conference.Conference;
 import fr.utbm.ciad.labmanager.data.conference.ConferenceQualityAnnualIndicators;
 import fr.utbm.ciad.labmanager.data.conference.ConferenceRepository;
-import fr.utbm.ciad.labmanager.data.journal.*;
-import fr.utbm.ciad.labmanager.data.publication.type.*;
+import fr.utbm.ciad.labmanager.data.publication.type.ConferencePaper;
+import fr.utbm.ciad.labmanager.data.publication.type.ConferencePaperRepository;
+import fr.utbm.ciad.labmanager.data.publication.type.KeyNote;
+import fr.utbm.ciad.labmanager.data.publication.type.KeyNoteRepository;
 import fr.utbm.ciad.labmanager.services.AbstractEntityService;
 import fr.utbm.ciad.labmanager.services.publication.type.ConferencePaperService;
 import fr.utbm.ciad.labmanager.services.publication.type.KeyNoteService;
@@ -20,7 +22,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/** Service for the merging conferences.
+/**
+ * Service for the merging conferences.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -73,12 +76,13 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
         this.keyNoteRepository = keyNoteRepository;
     }
 
-    /** Replies the duplicate conference names.
+    /**
+     * Replies the duplicate conference names.
      * The replied list contains groups of conferences who have similar names and publishers.
      *
      * @param comparator comparator of conferences that is used for sorting the groups of duplicates. If it is {@code null},
-     *      a {@link ConferenceComparator} is used.
-     * @param callback the callback invoked during the building.
+     *                   a {@link ConferenceComparator} is used.
+     * @param callback   the callback invoked during the building.
      * @return the duplicate conferences that is finally computed.
      * @throws Exception if a problem occurred during the building.
      */
@@ -130,10 +134,11 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
         return matchingConferences;
     }
 
-    /** Merge the entities by replacing those with an old conference by those with the new conference.
+    /**
+     * Merge the entities by replacing those with an old conference by those with the new conference.
      *
      * @param sources the list of conferences to remove and replace by the target conference.
-     * @param target the target conference who should replace the source conference.
+     * @param target  the target conference who should replace the source conference.
      * @throws Exception if the merging cannot be completed.
      */
     public void mergeConferences(Iterable<Conference> sources, Conference target) throws Exception {
@@ -149,7 +154,7 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
                 lchange = reassignConferenceQualityIndicators(source, target) || lchange;
 
                 this.conferenceService.removeConference(source.getId());
-                changed = changed || lchange ;
+                changed = changed || lchange;
             }
         }
         if (changed) {
@@ -157,7 +162,8 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
         }
     }
 
-    /** Re-assign the properties attached to the source conference to the target conference. There are attached only if
+    /**
+     * Re-assign the properties attached to the source conference to the target conference. There are attached only if
      * the target conference has null properties.
      *
      * @param source the conference to remove and replace by the target conference.
@@ -165,7 +171,7 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
      * @return {@code true} if conference properties has changed.
      * @throws Exception if the change cannot be completed.
      */
-    protected boolean reassignConferenceProperties(Conference source, Conference target){
+    protected boolean reassignConferenceProperties(Conference source, Conference target) {
 
         boolean changed = false;
 
@@ -202,7 +208,8 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
         return changed;
     }
 
-    /** Reassign the conference publication papers of the source to the target.
+    /**
+     * Reassign the conference publication papers of the source to the target.
      *
      * @param source the source conference to remove and replace by the target conference.
      * @param target the target conference who should replace the source conference.
@@ -232,7 +239,8 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
         return changed;
     }
 
-    /** Reassign the conferences under the source to the target.
+    /**
+     * Reassign the conferences under the source to the target.
      *
      * @param source the source conference to remove and replace by the target conference.
      * @param target the target conference who should replace the source conference.
@@ -243,7 +251,7 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
 
         Set<Conference> enclosedConferences = conferenceService.getEnclosedConferences(source);
 
-        for(Conference enclosedConference : enclosedConferences) {
+        for (Conference enclosedConference : enclosedConferences) {
             enclosedConference.setEnclosingConference(target);
             changed = true;
         }
@@ -256,8 +264,9 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
     }
 
 
-    /** Reassign the conference quality indicators of the source to the target. The function checks if the target conference already
-     *  has the quality indicators of the source conference.
+    /**
+     * Reassign the conference quality indicators of the source to the target. The function checks if the target conference already
+     * has the quality indicators of the source conference.
      *
      * @param source the source conference to remove and replace by the target conference.
      * @param target the target conference who should replace the source conference.
@@ -304,7 +313,8 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
     }
 
 
-    /** Callback that is invoked when building the list of duplicate conferences.
+    /**
+     * Callback that is invoked when building the list of duplicate conferences.
      *
      * @author $Author: sgalland$
      * @author $Author: erenon$
@@ -316,14 +326,15 @@ public class ConferenceMergingService extends AbstractEntityService<Conference> 
     @FunctionalInterface
     public interface ConferenceDuplicateCallback {
 
-        /** Invoked for each conference.
+        /**
+         * Invoked for each conference.
          *
-         * @param index the position of the reference conference in the list of conferences. It represents the progress of the treatment
-         *     of each conference.
+         * @param index          the position of the reference conference in the list of conferences. It represents the progress of the treatment
+         *                       of each conference.
          * @param duplicateCount the count of discovered duplicates.
-         * @param total the total number of conferences in the list.
+         * @param total          the total number of conferences in the list.
          * @throws Exception if there is an error during the callback treatment. This exception is forwarded to the
-         *     caller of the function that has invoked this callback.
+         *                   caller of the function that has invoked this callback.
          */
         void onDuplicate(int index, int duplicateCount, int total) throws Exception;
 

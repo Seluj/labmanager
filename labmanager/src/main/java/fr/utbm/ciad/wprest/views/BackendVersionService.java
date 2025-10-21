@@ -12,6 +12,7 @@ public class BackendVersionService {
 
     /**
      * Gets the version of the backend API {@link Constants#MANAGER_MAJOR_VERSION}.
+     *
      * @return - the version of the backend
      */
     @Operation(summary = "Gets the version of the backend API.", description = "Use this in the frontend to know the version of the backend API.", tags = {"Utils"})

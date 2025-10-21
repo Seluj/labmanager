@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Represent a Person native button renderer for similarity.
+/**
+ * Represent a Person native button renderer for similarity.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -25,12 +26,14 @@ public class PersonSimilarityNativeButtonRenderer extends AbstractSimilarityNati
 
     private final PersonMergingService personMergingService;
 
-    /** Constructor.
+    /**
+     * Constructor.
+     *
      * @param personMergingService the person merging service
-     * @param label the label
-     * @param grid the grid
-     * @param grids the grids
-     * @param layout the layout
+     * @param label                the label
+     * @param grid                 the grid
+     * @param grids                the grids
+     * @param layout               the layout
      */
     public PersonSimilarityNativeButtonRenderer(@Autowired PersonMergingService personMergingService, String label,
                                                 Grid<Person> grid, List<Grid<Person>> grids,

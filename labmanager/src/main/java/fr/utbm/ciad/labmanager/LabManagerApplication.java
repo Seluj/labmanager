@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,10 +34,10 @@ import org.springframework.scheduling.annotation.Async;
 
 /**
  * The entry point of the Spring Boot application.
- *
+ * <p>
  * Use the @PWA annotation make the application installable on phones, tablets
  * and some desktop browsers.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,11 +45,11 @@ import org.springframework.scheduling.annotation.Async;
  * @since 4.0
  */
 @OpenAPIDefinition(
-		info = @Info(
-				title = "API LabManager",
-				version = "4.0",
-				description = "LabManager API Documentation"
-		)
+        info = @Info(
+                title = "API LabManager",
+                version = "4.0",
+                description = "LabManager API Documentation"
+        )
 )
 @SpringBootApplication
 @ComponentScan(basePackages = {"fr.utbm.ciad.labmanager", "fr.utbm.ciad.wprest"})
@@ -58,25 +58,26 @@ import org.springframework.scheduling.annotation.Async;
 @Theme(value = ViewConstants.DEFAULT_BACKEND_THEME)
 public class LabManagerApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 
-	private static final long serialVersionUID = 3672131574382734484L;
+    private static final long serialVersionUID = 3672131574382734484L;
 
-	/** Starting point for the LabManaer application.
-	 *
-	 * @param args the commande-line arguments.
-	 */
-	@SuppressWarnings("resource")
-	public static void main(String[] args) {
-		SpringApplication.run(LabManagerApplication.class, args);
-	}
+    /**
+     * Starting point for the LabManaer application.
+     *
+     * @param args the commande-line arguments.
+     */
+    @SuppressWarnings("resource")
+    public static void main(String[] args) {
+        SpringApplication.run(LabManagerApplication.class, args);
+    }
 
-	@Override
-	public void configurePage(AppShellSettings settings) {
-		settings.addLink("shortcut icon", makeFavIconPath("ico")); //$NON-NLS-1$ //$NON-NLS-2$
-		settings.addFavIcon("icon", makeFavIconPath("svg"), "92x92"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	}
+    private static String makeFavIconPath(String fileExtension) {
+        return "themes/" + ViewConstants.DEFAULT_BACKEND_THEME + "/icons/favicon." + fileExtension; //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
-	private static String makeFavIconPath(String fileExtension) {
-		return new StringBuilder().append("themes/").append(ViewConstants.DEFAULT_BACKEND_THEME).append("/icons/favicon.").append(fileExtension).toString(); //$NON-NLS-1$ //$NON-NLS-2$
-	}
+    @Override
+    public void configurePage(AppShellSettings settings) {
+        settings.addLink("shortcut icon", makeFavIconPath("ico")); //$NON-NLS-1$ //$NON-NLS-2$
+        settings.addFavIcon("icon", makeFavIconPath("svg"), "92x92"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
 
 }

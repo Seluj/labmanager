@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,8 +33,9 @@ import org.springframework.context.support.MessageSourceAccessor;
 import java.io.IOException;
 import java.util.Locale;
 
-/** History of the quality indicators for a journal.
- * 
+/**
+ * History of the quality indicators for a journal.
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @version $Name$ $Revision$ $Date$
@@ -45,232 +46,250 @@ import java.util.Locale;
 @Table(name = "JournalAnnualIndicators")
 public class JournalQualityAnnualIndicators implements QualityAnnualIndicators, AttributeProvider {
 
-	private static final long serialVersionUID = -3671513001937890573L;
+    private static final long serialVersionUID = -3671513001937890573L;
 
-	/** Identifier for the history entry.
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	@JsonIgnore
-	private long id;
+    /**
+     * Identifier for the history entry.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    @JsonIgnore
+    private long id;
 
-	/** Year for the entry.
-	 */
-	@Column
-	@ColumnDefault("0")
-	@JsonIgnore
-	private int referenceYear;
+    /**
+     * Year for the entry.
+     */
+    @Column
+    @ColumnDefault("0")
+    @JsonIgnore
+    private int referenceYear;
 
-	/** Scimargo Q-Index.
-	 */
-	@Column
-	@Enumerated(EnumType.STRING)
-	private QuartileRanking scimagoQIndex;
+    /**
+     * Scimargo Q-Index.
+     */
+    @Column
+    @Enumerated(EnumType.STRING)
+    private QuartileRanking scimagoQIndex;
 
-	/** JCR/Web-Of-Science Q-Index.
-	 */
-	@Column
-	@Enumerated(EnumType.STRING)
-	private QuartileRanking wosQIndex;
+    /**
+     * JCR/Web-Of-Science Q-Index.
+     */
+    @Column
+    @Enumerated(EnumType.STRING)
+    private QuartileRanking wosQIndex;
 
-	/** Impact factor.
-	 */
-	@Column
-	@ColumnDefault("0")
-	private float impactFactor;
+    /**
+     * Impact factor.
+     */
+    @Column
+    @ColumnDefault("0")
+    private float impactFactor;
 
-	/** Default constructor.
-	 */
-	public JournalQualityAnnualIndicators() {
-		this.referenceYear = 0;
-		this.scimagoQIndex = null;
-		this.wosQIndex = null;
-		this.impactFactor = 0;
-	}
+    /**
+     * Default constructor.
+     */
+    public JournalQualityAnnualIndicators() {
+        this.referenceYear = 0;
+        this.scimagoQIndex = null;
+        this.wosQIndex = null;
+        this.impactFactor = 0;
+    }
 
-	/** Construct an history with the given values.
-	 *
-	 * @param year the year of the entry.
-	 * @param scimagoQuartile the Scimargo Q-index.
-	 * @param wosQuartile the JCR/Web-Of-Science Q-Index.
-	 * @param impactFactor the journal impact factor.
-	 */
-	public JournalQualityAnnualIndicators(int year, QuartileRanking scimagoQuartile,
-			QuartileRanking wosQuartile, float impactFactor) {
-		this.referenceYear = year;
-		this.scimagoQIndex = scimagoQuartile;
-		this.wosQIndex = wosQuartile;
-		this.impactFactor = impactFactor;
-	}
-	
-	@Override
-	public long getId() {
-		return this.id;
-	}
+    /**
+     * Construct an history with the given values.
+     *
+     * @param year            the year of the entry.
+     * @param scimagoQuartile the Scimargo Q-index.
+     * @param wosQuartile     the JCR/Web-Of-Science Q-Index.
+     * @param impactFactor    the journal impact factor.
+     */
+    public JournalQualityAnnualIndicators(int year, QuartileRanking scimagoQuartile,
+                                          QuartileRanking wosQuartile, float impactFactor) {
+        this.referenceYear = year;
+        this.scimagoQIndex = scimagoQuartile;
+        this.wosQIndex = wosQuartile;
+        this.impactFactor = impactFactor;
+    }
 
-	/** Change the database identifier.
-	 *
-	 * @param id the new database identifier.
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
+    @Override
+    public long getId() {
+        return this.id;
+    }
 
-	@Override
-	public int hashCode() {
-		if (this.id != 0) {
-			return Long.hashCode(this.id);
-		}
-		var h = HashCodeUtils.start();
-		h = HashCodeUtils.add(h, this.referenceYear);
-		return h;
-	}
+    /**
+     * Change the database identifier.
+     *
+     * @param id the new database identifier.
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final var other = (JournalQualityAnnualIndicators) obj;
-		if (this.id != 0 && other.id != 0) {
-			return this.id == other.id;
-		}
-		return this.referenceYear == other.referenceYear;
-	}
+    @Override
+    public int hashCode() {
+        if (this.id != 0) {
+            return Long.hashCode(this.id);
+        }
+        var h = HashCodeUtils.start();
+        h = HashCodeUtils.add(h, this.referenceYear);
+        return h;
+    }
 
-	/** {@inheritDoc}
-	 * <p>The attributes that are not considered by this function are:<ul>
-	 * </ul>
-	 */
-	@Override
-	public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
-		if (getScimagoQIndex() != null) {
-			consumer.accept("scimagoQIndex", getScimagoQIndex()); //$NON-NLS-1$
-		}
-		if (getWosQIndex() != null) {
-			consumer.accept("wosQIndex", getWosQIndex()); //$NON-NLS-1$
-		}
-		if (getImpactFactor() > 0f) {
-			consumer.accept("impactFactor", Float.valueOf(getImpactFactor())); //$NON-NLS-1$
-		}
-		if (getReferenceYear() > 0) {
-			consumer.accept("referenceYear", Integer.valueOf(getReferenceYear())); //$NON-NLS-1$
-		}
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final var other = (JournalQualityAnnualIndicators) obj;
+        if (this.id != 0 && other.id != 0) {
+            return this.id == other.id;
+        }
+        return this.referenceYear == other.referenceYear;
+    }
 
-	@Override
-	public int getReferenceYear() {
-		return this.referenceYear;
-	}
+    /**
+     * {@inheritDoc}
+     * <p>The attributes that are not considered by this function are:<ul>
+     * </ul>
+     */
+    @Override
+    public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
+        if (getScimagoQIndex() != null) {
+            consumer.accept("scimagoQIndex", getScimagoQIndex()); //$NON-NLS-1$
+        }
+        if (getWosQIndex() != null) {
+            consumer.accept("wosQIndex", getWosQIndex()); //$NON-NLS-1$
+        }
+        if (getImpactFactor() > 0f) {
+            consumer.accept("impactFactor", Float.valueOf(getImpactFactor())); //$NON-NLS-1$
+        }
+        if (getReferenceYear() > 0) {
+            consumer.accept("referenceYear", Integer.valueOf(getReferenceYear())); //$NON-NLS-1$
+        }
+    }
 
-	@Override
-	public void setReferenceYear(int year) {
-		this.referenceYear = year;
-	}
+    @Override
+    public int getReferenceYear() {
+        return this.referenceYear;
+    }
 
-	/** Replies the Q-Index of the journal from Scimago source.
-	 * 
-	 * @return the Q-Index, or {@code null} if not defined.
-	 */
-	public QuartileRanking getScimagoQIndex() {
-		return this.scimagoQIndex;
-	}
+    @Override
+    public void setReferenceYear(int year) {
+        this.referenceYear = year;
+    }
 
-	/** Change the Q-Index of the journal from Scimago source.
-	 *
-	 * @param quartile the Q-Index.
-	 */
-	public void setScimagoQIndex(QuartileRanking  quartile) {
-		this.scimagoQIndex = quartile;
-	}
+    /**
+     * Replies the Q-Index of the journal from Scimago source.
+     *
+     * @return the Q-Index, or {@code null} if not defined.
+     */
+    public QuartileRanking getScimagoQIndex() {
+        return this.scimagoQIndex;
+    }
 
-	/** Change the Q-Index of the journal from Scimago source.
-	 *
-	 * @param quartile the Q-Index.
-	 */
-	public final void setScimagoQIndex(String quartile) {
-		if (Strings.isNullOrEmpty(quartile)) {
-			setScimagoQIndex((QuartileRanking) null);
-		} else {
-			setScimagoQIndex(QuartileRanking.valueOfCaseInsensitive(quartile));
-		}
-	}
+    /**
+     * Change the Q-Index of the journal from Scimago source.
+     *
+     * @param quartile the Q-Index.
+     */
+    public void setScimagoQIndex(QuartileRanking quartile) {
+        this.scimagoQIndex = quartile;
+    }
 
-	/** Replies the Q-Index of the journal from JCR/Web-Of-Science source.
-	 * 
-	 * @return the Q-Index, or {@code null} if not defined.
-	 */
-	public QuartileRanking getWosQIndex() {
-		return this.wosQIndex;
-	}
+    /**
+     * Change the Q-Index of the journal from Scimago source.
+     *
+     * @param quartile the Q-Index.
+     */
+    public final void setScimagoQIndex(String quartile) {
+        if (Strings.isNullOrEmpty(quartile)) {
+            setScimagoQIndex((QuartileRanking) null);
+        } else {
+            setScimagoQIndex(QuartileRanking.valueOfCaseInsensitive(quartile));
+        }
+    }
 
-	/** Change the Q-Index of the journal from JCR/Web-Of-Science source.
-	 * 
-	 * @param quartile the Q-Index.
-	 */
-	public void setWosQIndex(QuartileRanking quartile) {
-		this.wosQIndex = quartile;
-	}
+    /**
+     * Replies the Q-Index of the journal from JCR/Web-Of-Science source.
+     *
+     * @return the Q-Index, or {@code null} if not defined.
+     */
+    public QuartileRanking getWosQIndex() {
+        return this.wosQIndex;
+    }
 
-	/** Change the Q-Index of the journal from JCR/Web-Of-Science source.
-	 * 
-	 * @param quartile the Q-Index.
-	 */
-	public final void setWosQIndex(String quartile) {
-		if (Strings.isNullOrEmpty(quartile)) {
-			setWosQIndex((QuartileRanking) null);
-		} else {
-			setWosQIndex(QuartileRanking.valueOfCaseInsensitive(quartile));
-		}
-	}
+    /**
+     * Change the Q-Index of the journal from JCR/Web-Of-Science source.
+     *
+     * @param quartile the Q-Index.
+     */
+    public void setWosQIndex(QuartileRanking quartile) {
+        this.wosQIndex = quartile;
+    }
 
-	/** Replies the impact factor of the journal.
-	 * 
-	 * @return the impact factor, or {@code 0} if not defined
-	 */
-	public float getImpactFactor() {
-		return this.impactFactor;
-	}
+    /**
+     * Change the Q-Index of the journal from JCR/Web-Of-Science source.
+     *
+     * @param quartile the Q-Index.
+     */
+    public final void setWosQIndex(String quartile) {
+        if (Strings.isNullOrEmpty(quartile)) {
+            setWosQIndex((QuartileRanking) null);
+        } else {
+            setWosQIndex(QuartileRanking.valueOfCaseInsensitive(quartile));
+        }
+    }
 
-	/** Change the impact factor of the journal.
-	 * 
-	 * @param impactFactor the impact factor that is a positive number.
-	 */
-	public void setImpactFactor(float impactFactor) {
-		if (impactFactor >= 0f) {
-			this.impactFactor = impactFactor;
-		} else {
-			this.impactFactor = 0f;
-		}
-	}
+    /**
+     * Replies the impact factor of the journal.
+     *
+     * @return the impact factor, or {@code 0} if not defined
+     */
+    public float getImpactFactor() {
+        return this.impactFactor;
+    }
 
-	/** Change the impact factor of the journal.
-	 * 
-	 * @param impactFactor the impact factor that is a positive number.
-	 */
-	public final void setImpactFactor(Number impactFactor) {
-		if (impactFactor == null) {
-			setImpactFactor(0f);
-		} else {
-			setImpactFactor(impactFactor.floatValue());
-		}
-	}
+    /**
+     * Change the impact factor of the journal.
+     *
+     * @param impactFactor the impact factor that is a positive number.
+     */
+    public void setImpactFactor(float impactFactor) {
+        if (impactFactor >= 0f) {
+            this.impactFactor = impactFactor;
+        } else {
+            this.impactFactor = 0f;
+        }
+    }
 
-	@Override
-	public String toString() {
-		return EntityUtils.toString(this);
-	}
+    /**
+     * Change the impact factor of the journal.
+     *
+     * @param impactFactor the impact factor that is a positive number.
+     */
+    public final void setImpactFactor(Number impactFactor) {
+        if (impactFactor == null) {
+            setImpactFactor(0f);
+        } else {
+            setImpactFactor(impactFactor.floatValue());
+        }
+    }
 
-	@Override
-	public boolean isSignificant() {
-		return this.scimagoQIndex != null || this.wosQIndex != null || this.impactFactor > 0f;
-	}
+    @Override
+    public String toString() {
+        return EntityUtils.toString(this);
+    }
+
+    @Override
+    public boolean isSignificant() {
+        return this.scimagoQIndex != null || this.wosQIndex != null || this.impactFactor > 0f;
+    }
 
 }

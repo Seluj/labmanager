@@ -11,8 +11,8 @@ public class ToggleTextComponent extends ToggleComponent {
     /**
      * Constructs a ToggleComponent with custom labels and actions for two modes.
      *
-     * @param firstMode      the action to execute when switching to the first mode.
-     * @param secondMode     the action to execute when switching to the second mode.
+     * @param firstMode  the action to execute when switching to the first mode.
+     * @param secondMode the action to execute when switching to the second mode.
      */
     public ToggleTextComponent(String firstModeText, Runnable firstMode, String secondModeText, Runnable secondMode) {
         super(firstMode, secondMode);
@@ -32,10 +32,10 @@ public class ToggleTextComponent extends ToggleComponent {
         textDisplay.setText(secondModeText);
     }
 
-    public String getText(){
-        if(isInFirstMode()){
+    public String getText() {
+        if (isInFirstMode()) {
             return secondModeText;
-        }else{
+        } else {
             return firstModeText;
         }
     }

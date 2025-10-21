@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,8 @@ import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.validator.AbstractValidator;
 
-/** A validator that matches not {@code null} value.
+/**
+ * A validator that matches not {@code null} value.
  *
  * @param <T> the type of the value to be tested.
  * @author $Author: sgalland$
@@ -34,34 +35,35 @@ import com.vaadin.flow.data.validator.AbstractValidator;
  */
 public class NotNullValueValidator<T> extends AbstractValidator<T> {
 
-	private static final long serialVersionUID = 7471157821901818568L;
+    private static final long serialVersionUID = 7471157821901818568L;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param errorMessage the message to display in case the value does not validate. Parameter {@code {0}} is replaced by the invalid entity in the message.
-	 */
-	public NotNullValueValidator(String errorMessage) {
-		super(errorMessage);
-	}
+    /**
+     * Constructor.
+     *
+     * @param errorMessage the message to display in case the value does not validate. Parameter {@code {0}} is replaced by the invalid entity in the message.
+     */
+    public NotNullValueValidator(String errorMessage) {
+        super(errorMessage);
+    }
 
-	@Override
-	public String toString() {
-		return "NotNullValueValidator"; //$NON-NLS-1$
-	}
+    @Override
+    public String toString() {
+        return "NotNullValueValidator"; //$NON-NLS-1$
+    }
 
-	/** Replies if the given value is valid or not.
-	 *
-	 * @param value
-	 * @return
-	 */
-	protected boolean isValid(T value) {
-		return value != null;
-	}
+    /**
+     * Replies if the given value is valid or not.
+     *
+     * @param value
+     * @return
+     */
+    protected boolean isValid(T value) {
+        return value != null;
+    }
 
-	@Override
-	public ValidationResult apply(T value, ValueContext context) {
-		return toResult(value, isValid(value));
-	}
+    @Override
+    public ValidationResult apply(T value, ValueContext context) {
+        return toResult(value, isValid(value));
+    }
 
 }

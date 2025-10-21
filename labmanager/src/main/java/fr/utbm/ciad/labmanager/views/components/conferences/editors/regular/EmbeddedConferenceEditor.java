@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,10 +27,11 @@ import fr.utbm.ciad.labmanager.utils.builders.ConstructionPropertiesBuilder;
 import fr.utbm.ciad.labmanager.views.components.addons.entities.EntityCreationStatusComputer;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of conference information that may be embedded. This editor does not provide
+/**
+ * Editor of conference information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited conference.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -39,22 +40,23 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public final class EmbeddedConferenceEditor extends AbstractConferenceEditor {
 
-	private static final long serialVersionUID = -2522520461244264353L;
-	
-	/** Constructor.
-	 *
-	 * @param context the editing context for the conference.
-	 * @param conferenceCreationStatusComputer the tool for computer the creation status for the conferences.
-	 * @param conferenceService the service for accessing to the conference entities.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public EmbeddedConferenceEditor(EntityEditingContext<Conference> context,
-			EntityCreationStatusComputer<Conference> conferenceCreationStatusComputer,
-			ConferenceService conferenceService, AuthenticatedUser authenticatedUser,
-			MessageSourceAccessor messages) {
-		super(context, conferenceCreationStatusComputer, false, conferenceService, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
-		createEditorContentAndLinkBeans();
-	}
+    private static final long serialVersionUID = -2522520461244264353L;
+
+    /**
+     * Constructor.
+     *
+     * @param context                          the editing context for the conference.
+     * @param conferenceCreationStatusComputer the tool for computer the creation status for the conferences.
+     * @param conferenceService                the service for accessing to the conference entities.
+     * @param authenticatedUser                the connected user.
+     * @param messages                         the accessor to the localized messages (Spring layer).
+     */
+    public EmbeddedConferenceEditor(EntityEditingContext<Conference> context,
+                                    EntityCreationStatusComputer<Conference> conferenceCreationStatusComputer,
+                                    ConferenceService conferenceService, AuthenticatedUser authenticatedUser,
+                                    MessageSourceAccessor messages) {
+        super(context, conferenceCreationStatusComputer, false, conferenceService, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
+        createEditorContentAndLinkBeans();
+    }
 
 }

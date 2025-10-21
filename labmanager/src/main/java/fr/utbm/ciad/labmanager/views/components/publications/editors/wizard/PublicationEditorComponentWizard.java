@@ -1,8 +1,5 @@
 package fr.utbm.ciad.labmanager.views.components.publications.editors.wizard;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -16,8 +13,10 @@ import fr.utbm.ciad.labmanager.views.components.addons.wizard.AbstractLabManager
 import fr.utbm.ciad.labmanager.views.components.addons.wizard.AbstractLabManagerWizard;
 import fr.utbm.ciad.labmanager.views.components.journals.fields.SingleJournalNameField;
 import fr.utbm.ciad.labmanager.views.components.persons.fields.MultiPersonNameField;
-import io.overcoded.vaadin.wizard.AbstractFormWizardStep;
 import io.overcoded.vaadin.wizard.config.WizardConfigurationProperties;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Wizard for adding a publication.
@@ -42,12 +41,12 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      * @param referenceInformationComponent    the components for the reference information.
      */
     public PublicationEditorComponentWizard(
-    		ContextualLoggerFactory loggerFactory,
-    		VerticalLayout productionTypeComponents, VerticalLayout minimalInformationComponent,
-    		VerticalLayout worldwideIdentificationComponent, VerticalLayout contentInformationComponent,
-    		VerticalLayout associatedResourcesComponent, VerticalLayout referenceInformationComponent) {
+            ContextualLoggerFactory loggerFactory,
+            VerticalLayout productionTypeComponents, VerticalLayout minimalInformationComponent,
+            VerticalLayout worldwideIdentificationComponent, VerticalLayout contentInformationComponent,
+            VerticalLayout associatedResourcesComponent, VerticalLayout referenceInformationComponent) {
         this(defaultWizardConfiguration(null, false),
-        		loggerFactory,
+                loggerFactory,
                 new PublicationImp(), productionTypeComponents, minimalInformationComponent, worldwideIdentificationComponent, contentInformationComponent, associatedResourcesComponent, referenceInformationComponent);
     }
 
@@ -63,17 +62,13 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      * @param administrationComponents         the components for the administration information.
      */
     public PublicationEditorComponentWizard(
-    		ContextualLoggerFactory loggerFactory,
-    		VerticalLayout productionTypeComponents, VerticalLayout minimalInformationComponent,
-    		VerticalLayout worldwideIdentificationComponent, VerticalLayout contentInformationComponent,
-    		VerticalLayout associatedResourcesComponent, VerticalLayout referenceInformationComponent,
-    		VerticalLayout administrationComponents) {
+            ContextualLoggerFactory loggerFactory,
+            VerticalLayout productionTypeComponents, VerticalLayout minimalInformationComponent,
+            VerticalLayout worldwideIdentificationComponent, VerticalLayout contentInformationComponent,
+            VerticalLayout associatedResourcesComponent, VerticalLayout referenceInformationComponent,
+            VerticalLayout administrationComponents) {
         this(defaultWizardConfiguration(null, false), loggerFactory,
                 new PublicationImp(), productionTypeComponents, minimalInformationComponent, worldwideIdentificationComponent, contentInformationComponent, associatedResourcesComponent, referenceInformationComponent, administrationComponents);
-    }
-
-    public boolean isNewEntity() {
-        return true;
     }
 
     /**
@@ -89,9 +84,9 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      * @param referenceInformationComponent    the components for the reference information.
      */
     protected PublicationEditorComponentWizard(WizardConfigurationProperties properties,
-    		ContextualLoggerFactory loggerFactory,
-    		PublicationImp context, VerticalLayout productionTypeComponents, VerticalLayout minimalInformationComponent, VerticalLayout worldwideIdentificationComponent, VerticalLayout contentInformationComponent, VerticalLayout associatedResourcesComponent,
-    		VerticalLayout referenceInformationComponent) {
+                                               ContextualLoggerFactory loggerFactory,
+                                               PublicationImp context, VerticalLayout productionTypeComponents, VerticalLayout minimalInformationComponent, VerticalLayout worldwideIdentificationComponent, VerticalLayout contentInformationComponent, VerticalLayout associatedResourcesComponent,
+                                               VerticalLayout referenceInformationComponent) {
         super(properties, loggerFactory, context, Arrays.asList(
                 new ProductionTypeComponents(context, productionTypeComponents),
                 new MinimalInformationComponent(context, minimalInformationComponent),
@@ -116,9 +111,9 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      * @param administrationComponents         the components for the administration information.
      */
     protected PublicationEditorComponentWizard(WizardConfigurationProperties properties,
-    		ContextualLoggerFactory loggerFactory,
-    		PublicationImp context, VerticalLayout productionTypeComponents,
-    		VerticalLayout minimalInformationComponent, VerticalLayout worldwideIdentificationComponent, VerticalLayout contentInformationComponent, VerticalLayout associatedResourcesComponent, VerticalLayout referenceInformationComponent, VerticalLayout administrationComponents) {
+                                               ContextualLoggerFactory loggerFactory,
+                                               PublicationImp context, VerticalLayout productionTypeComponents,
+                                               VerticalLayout minimalInformationComponent, VerticalLayout worldwideIdentificationComponent, VerticalLayout contentInformationComponent, VerticalLayout associatedResourcesComponent, VerticalLayout referenceInformationComponent, VerticalLayout administrationComponents) {
         super(properties, loggerFactory, context, Arrays.asList(
                 new ProductionTypeComponents(context, productionTypeComponents),
                 new MinimalInformationComponent(context, minimalInformationComponent),
@@ -128,6 +123,10 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
                 new ReferenceInformationComponent(context, referenceInformationComponent),
                 new PublicationAdministration(context, administrationComponents
                 )));
+    }
+
+    public boolean isNewEntity() {
+        return true;
     }
 
     /**
@@ -142,7 +141,7 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      */
     protected static class ProductionTypeComponents extends AbstractLabManagerFormWizardStep<Publication> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
 
         public ProductionTypeComponents(Publication context, VerticalLayout content) {
             super(context, content.getTranslation("views.publication.type"), 1);
@@ -186,7 +185,7 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      */
     protected static class MinimalInformationComponent extends AbstractLabManagerFormWizardStep<Publication> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
 
         public MinimalInformationComponent(Publication context, VerticalLayout content) {
             super(context, content.getTranslation("views.publication.general_informations"), 2);
@@ -204,11 +203,7 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
             TextField title = (TextField) components.get(0).getChildren().toList().get(0);
             MultiPersonNameField authors = (MultiPersonNameField) components.get(0).getChildren().toList().get(1);
             SingleJournalNameField journal = (SingleJournalNameField) components.get(0).getChildren().toList().get(2);
-            if (title.isEmpty() || authors.getValue().isEmpty() || journal.isEmpty()) {
-                return false;
-            }
-
-            return true;
+            return !title.isEmpty() && !authors.getValue().isEmpty() && !journal.isEmpty();
         }
 
         @Override
@@ -259,7 +254,7 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      */
     protected static class WorldwideIdentificationComponent extends AbstractLabManagerFormWizardStep<Publication> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
 
         public WorldwideIdentificationComponent(Publication context, VerticalLayout content) {
             super(context, content.getTranslation("views.publication.identification_informations"), 3);
@@ -302,7 +297,7 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      */
     protected static class ContentInformationComponent extends AbstractLabManagerFormWizardStep<Publication> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
 
         public ContentInformationComponent(Publication context, VerticalLayout content) {
             super(context, content.getTranslation("views.publication.content_informations"), 4);
@@ -318,10 +313,7 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
         public boolean isValid() {
             List<Component> components = content.getChildren().toList();
             MarkdownField markdownField = (MarkdownField) components.get(0).getChildren().toList().get(0);
-            if (markdownField.getValue() == null || markdownField.getValue().isEmpty()) {
-                return false;
-            }
-            return true;
+            return markdownField.getValue() != null && !markdownField.getValue().isEmpty();
         }
 
         @Override
@@ -356,7 +348,7 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      */
     protected static class AssociatedResourcesComponent extends AbstractLabManagerFormWizardStep<Publication> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
 
         public AssociatedResourcesComponent(Publication context, VerticalLayout content) {
             super(context, content.getTranslation("views.publication.resources_informations "), 5);
@@ -399,7 +391,7 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      */
     protected static class ReferenceInformationComponent extends AbstractLabManagerFormWizardStep<Publication> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
 
         public ReferenceInformationComponent(Publication context, VerticalLayout content) {
             super(context, content.getTranslation("views.publication.references_informations"), 6);
@@ -442,7 +434,7 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      */
     protected static class PublicationAdministration extends AbstractLabManagerFormWizardStep<Publication> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
 
         public PublicationAdministration(Publication context, VerticalLayout content) {
             super(context, content.getTranslation("views.publication.administration_details"), 7);
@@ -474,7 +466,6 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
     }
 
     /**
-     *
      * @author $Author: erenon$
      * @version $Name$ $Revision$ $Date$
      * @mavengroupid $GroupId$
@@ -482,8 +473,8 @@ public class PublicationEditorComponentWizard extends AbstractLabManagerWizard<P
      * @since 4.0
      */
     public static class PublicationImp extends Publication {
-    	
-    	//TODO Is it the same class as PrePublication?
+
+        //TODO Is it the same class as PrePublication?
 
         public PublicationImp() {
             super();

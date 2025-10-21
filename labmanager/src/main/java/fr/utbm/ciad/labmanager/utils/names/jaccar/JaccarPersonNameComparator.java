@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,8 +26,9 @@ import info.debatty.java.stringsimilarity.interfaces.NormalizedStringSimilarity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/** Utilities for comparing person names using the Jaccar algorithm.
- * 
+/**
+ * Utilities for comparing person names using the Jaccar algorithm.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -37,20 +38,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class JaccarPersonNameComparator extends AbstractPersonNameComparator {
 
-	private static final double SIMILARITY_LEVEL = 0.65;
+    private static final double SIMILARITY_LEVEL = 0.65;
 
-	/** Constructor.
-	 *
-	 * @param nameParser the parser for persons' names.
-	 */
-	public JaccarPersonNameComparator(@Autowired PersonNameParser nameParser) {
-		super(nameParser);
-		setSimilarityLevel(SIMILARITY_LEVEL);
-	}
+    /**
+     * Constructor.
+     *
+     * @param nameParser the parser for persons' names.
+     */
+    public JaccarPersonNameComparator(@Autowired PersonNameParser nameParser) {
+        super(nameParser);
+        setSimilarityLevel(SIMILARITY_LEVEL);
+    }
 
-	@Override
-	protected NormalizedStringSimilarity createStringSimilarityComputer() {
-		return new Jaccard();
-	}
+    @Override
+    protected NormalizedStringSimilarity createStringSimilarityComputer() {
+        return new Jaccard();
+    }
 
 }

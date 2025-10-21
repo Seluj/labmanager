@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,8 +33,9 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
 
-/** Description of a user of the application.
- * 
+/**
+ * Description of a user of the application.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,163 +46,175 @@ import java.util.Objects;
 @Table(name = "ApplicationUser")
 public class User implements Serializable, AttributeProvider, Comparable<User>, IdentifiableEntity {
 
-	private static final long serialVersionUID = 7961987477984383310L;
+    /**
+     * Default role for the application user.
+     */
+    public static final UserRole DEFAULT_ROLE = UserRole.USER;
+    private static final long serialVersionUID = 7961987477984383310L;
+    /**
+     * Identifier of the jury.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
+    private long id;
 
-	/** Default role for the application user.
-	 */
-	public static final UserRole DEFAULT_ROLE = UserRole.USER;
+    /**
+     * Role of the application user.
+     */
+    @Column
+    @Enumerated(EnumType.STRING)
+    private UserRole role = DEFAULT_ROLE;
 
-	/** Identifier of the jury.
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(nullable = false)
-	private long id;
+    /**
+     * Login of the application user.
+     */
+    @Column
+    private String login;
 
-	/** Role of the application user.
-	 */
-	@Column
-	@Enumerated(EnumType.STRING)
-	private UserRole role = DEFAULT_ROLE;
+    /**
+     * Reference to the person.
+     */
+    @OneToOne(fetch = FetchType.EAGER)
+    private Person person;
 
-	/** Login of the application user.
-	 */
-	@Column
-	private String login;
+    /**
+     * Construct an empty user.
+     */
+    public User() {
+        //
+    }
 
-	/** Reference to the person.
-	 */
-	@OneToOne(fetch = FetchType.EAGER)
-	private Person person;
+    @Override
+    public int hashCode() {
+        if (this.id != 0) {
+            return Long.hashCode(this.id);
+        }
+        var h = HashCodeUtils.start();
+        h = HashCodeUtils.add(h, this.person);
+        return h;
+    }
 
-	/** Construct an empty user.
-	 */
-	public User() {
-		//
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final var other = (User) obj;
+        if (this.id != 0 && other.id != 0) {
+            return this.id == other.id;
+        }
+        return Objects.equals(this.person, other.person);
+    }
 
-	@Override
-	public int hashCode() {
-		if (this.id != 0) {
-			return Long.hashCode(this.id);
-		}
-		var h = HashCodeUtils.start();
-		h = HashCodeUtils.add(h, this.person);
-		return h;
-	}
+    @Override
+    public int compareTo(User o) {
+        return EntityUtils.getPreferredUserComparator().compare(this, o);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final var other = (User) obj;
-		if (this.id != 0 && other.id != 0) {
-			return this.id == other.id;
-		}
-		return Objects.equals(this.person, other.person);
-	}
+    @Override
+    public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
+        if (getRole() != null) {
+            consumer.accept("role", getRole()); //$NON-NLS-1$
+        }
+        if (!Strings.isNullOrEmpty(getLogin())) {
+            consumer.accept("login", getLogin()); //$NON-NLS-1$
+        }
+        if (getPerson() != null) {
+            consumer.accept("person", getPerson()); //$NON-NLS-1$
+        }
+    }
 
-	@Override
-	public int compareTo(User o) {
-		return EntityUtils.getPreferredUserComparator().compare(this, o);
-	}
+    @Override
+    public long getId() {
+        return this.id;
+    }
 
-	@Override
-	public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
-		if (getRole() != null) {
-			consumer.accept("role", getRole()); //$NON-NLS-1$
-		}
-		if (!Strings.isNullOrEmpty(getLogin())) {
-			consumer.accept("login", getLogin()); //$NON-NLS-1$
-		}
-		if (getPerson() != null) {
-			consumer.accept("person", getPerson()); //$NON-NLS-1$
-		}
-	}
+    /**
+     * Change the membership identifier.
+     *
+     * @param id the identifier.
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	@Override
-	public long getId() {
-		return this.id;
-	}
+    /**
+     * Replies the user role in the application.
+     *
+     * @return the role.
+     */
+    public UserRole getRole() {
+        return this.role;
+    }
 
-	/** Change the membership identifier.
-	 *
-	 * @param id the identifier.
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
+    /**
+     * Change the role of the user in the application.
+     *
+     * @param role user role . If it is {@code null}, the role is reset to its default value.
+     */
+    public void setRole(UserRole role) {
+        this.role = role == null ? DEFAULT_ROLE : role;
+    }
 
-	/** Replies the user role in the application.
-	 *
-	 * @return the role.
-	 */
-	public UserRole getRole() {
-		return this.role;
-	}
+    /**
+     * Change the role of the user in the application.
+     *
+     * @param role user role . If it is {@code null}, the role is reset to its default value.
+     */
+    public final void setRole(String role) {
+        if (Strings.isNullOrEmpty(role)) {
+            setRole((UserRole) null);
+        } else {
+            setRole(UserRole.valueOfCaseInsensitive(role));
+        }
+    }
 
-	/** Change the role of the user in the application.
-	 *
-	 * @param role user role . If it is {@code null}, the role is reset to its default value.
-	 */
-	public void setRole(UserRole role) {
-		this.role = role == null ? DEFAULT_ROLE : role;
-	}
+    /**
+     * Replies the user login in the application.
+     *
+     * @return the login.
+     */
+    public String getLogin() {
+        return this.login;
+    }
 
-	/** Change the role of the user in the application.
-	 *
-	 * @param role user role . If it is {@code null}, the role is reset to its default value.
-	 */
-	public final void setRole(String role) {
-		if (Strings.isNullOrEmpty(role)) {
-			setRole((UserRole) null);
-		} else {
-			setRole(UserRole.valueOfCaseInsensitive(role));
-		}
-	}
+    /**
+     * Change the login of the user in the application.
+     *
+     * @param login user login.
+     */
+    public void setLogin(String login) {
+        this.login = Strings.emptyToNull(login);
+    }
 
-	/** Replies the user login in the application.
-	 *
-	 * @return the login.
-	 */
-	public String getLogin() {
-		return this.login;
-	}
+    /**
+     * Replies the person related to application user.
+     *
+     * @return the person.
+     */
+    public Person getPerson() {
+        return this.person;
+    }
 
-	/** Change the login of the user in the application.
-	 *
-	 * @param login user login.
-	 */
-	public void setLogin(String login) {
-		this.login = Strings.emptyToNull(login);
-	}
+    /**
+     * Change the person related to application user.
+     *
+     * @param person the person.
+     */
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
-	/** Replies the person related to application user.
-	 *
-	 * @return the person.
-	 */
-	public Person getPerson() {
-		return this.person;
-	}
-
-	/** Change the person related to application user.
-	 *
-	 * @param person the person.
-	 */
-	public void setPerson(Person person) {
-		this.person = person;
-	}
-
-	@Override
-	public String toString() {
-		return EntityUtils.toString(this, getLogin());
-	}
+    @Override
+    public String toString() {
+        return EntityUtils.toString(this, getLogin());
+    }
 
 }

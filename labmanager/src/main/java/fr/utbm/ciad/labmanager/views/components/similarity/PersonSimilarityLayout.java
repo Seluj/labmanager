@@ -6,9 +6,12 @@ import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
 import fr.utbm.ciad.labmanager.utils.names.PersonNameComparator;
 import fr.utbm.ciad.labmanager.views.components.similarity.buttons.PersonSimilarityNativeButtonRenderer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
-/** Represent a layout for the Person similarity options.
+/**
+ * Represent a layout for the Person similarity options.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -22,7 +25,9 @@ public class PersonSimilarityLayout extends AbstractSimilarityLayout<Person> {
 
     private final PersonNameComparator personNameComparator;
 
-    /** Constructor.
+    /**
+     * Constructor.
+     *
      * @param personMergingService the person merging service
      * @param personNameComparator the person name comparator
      */

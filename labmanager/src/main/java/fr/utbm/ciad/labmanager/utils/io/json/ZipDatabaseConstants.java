@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager.utils.io.json;
 
-/** Definition of constants for the Zipped databases.
- * 
+/**
+ * Definition of constants for the Zipped databases.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -29,13 +30,14 @@ package fr.utbm.ciad.labmanager.utils.io.json;
  */
 public final class ZipDatabaseConstants {
 
-	/** Default basename of the files in attachment with DB content.
-	 * The name must be always lower case.
-	 */
-	public static final String DEFAULT_DBCONTENT_ATTACHMENT_BASENAME = "dbcontent"; //$NON-NLS-1$
+    /**
+     * Default basename of the files in attachment with DB content.
+     * The name must be always lower case.
+     */
+    public static final String DEFAULT_DBCONTENT_ATTACHMENT_BASENAME = "dbcontent"; //$NON-NLS-1$
 
-	private ZipDatabaseConstants() {
-		//
-	}
-	
+    private ZipDatabaseConstants() {
+        //
+    }
+
 }

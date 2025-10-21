@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,9 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.uploads.powerpoint;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.google.common.base.Strings;
 import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.function.SerializableSupplier;
@@ -30,8 +27,12 @@ import fr.utbm.ciad.labmanager.utils.io.filemanager.DownloadableFileManager;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.slf4j.Logger;
 
-/** A field that enables to upload and show a Powerpoint file, and to write the file in a
- * folder of the server. 
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * A field that enables to upload and show a Powerpoint file, and to write the file in a
+ * folder of the server.
  * This field assumes that the data linked to the backend JPA is the relative server-side filename.
  *
  * @author $Author: sgalland$
@@ -42,84 +43,86 @@ import org.slf4j.Logger;
  */
 public class ServerSideUploadablePowerpointField extends AbstractServerSideUploadablePowerpointField<String> implements HasAsynchronousUploadService {
 
-	private static final long serialVersionUID = 6353874816079573524L;
+    private static final long serialVersionUID = 6353874816079573524L;
 
-	private String lastJpaData = ""; //$NON-NLS-1$
+    private String lastJpaData = ""; //$NON-NLS-1$
 
-	/** Constructor.
-	 *
-	 * @param fileManager the manager of the server-side files.
-	 * @param filenameSupplier provides the client-side name that should be considered as
-	 *     the field's value for the uploaded file.
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 */
-	public ServerSideUploadablePowerpointField(DownloadableFileManager fileManager, SerializableSupplier<File> filenameSupplier,
-			SerializableSupplier<Logger> loggerSupplier) {
-		super(fileManager, filenameSupplier, loggerSupplier);
-	}
+    /**
+     * Constructor.
+     *
+     * @param fileManager      the manager of the server-side files.
+     * @param filenameSupplier provides the client-side name that should be considered as
+     *                         the field's value for the uploaded file.
+     * @param loggerSupplier   the dynamic supplier of the loggers.
+     */
+    public ServerSideUploadablePowerpointField(DownloadableFileManager fileManager, SerializableSupplier<File> filenameSupplier,
+                                               SerializableSupplier<Logger> loggerSupplier) {
+        super(fileManager, filenameSupplier, loggerSupplier);
+    }
 
-	/** Constructor.
-	 *
-	 * @param fileManager the manager of the server-side files.
-	 * @param filenameSupplier provides the client-side name that should be considered as
-	 *     the field's value for the uploaded file.
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 */
-	public ServerSideUploadablePowerpointField(DownloadableFileManager fileManager, SerializableFunction<String, File> filenameSupplier,
-			SerializableSupplier<Logger> loggerSupplier) {
-		super(fileManager, filenameSupplier, loggerSupplier);
-	}
+    /**
+     * Constructor.
+     *
+     * @param fileManager      the manager of the server-side files.
+     * @param filenameSupplier provides the client-side name that should be considered as
+     *                         the field's value for the uploaded file.
+     * @param loggerSupplier   the dynamic supplier of the loggers.
+     */
+    public ServerSideUploadablePowerpointField(DownloadableFileManager fileManager, SerializableFunction<String, File> filenameSupplier,
+                                               SerializableSupplier<Logger> loggerSupplier) {
+        super(fileManager, filenameSupplier, loggerSupplier);
+    }
 
-	@Override
-	protected void resetProperties() {
-		super.resetProperties();
-		this.lastJpaData = ""; //$NON-NLS-1$
-	}
+    @Override
+    protected void resetProperties() {
+        super.resetProperties();
+        this.lastJpaData = ""; //$NON-NLS-1$
+    }
 
-	@Override
-	protected void uploadSucceeded(String filename) {
-		super.uploadSucceeded(filename);
-		updateValue();
-	}
+    @Override
+    protected void uploadSucceeded(String filename) {
+        super.uploadSucceeded(filename);
+        updateValue();
+    }
 
-	@Override
-	protected void imageCleared() {
-		super.imageCleared();
-		updateValue();
-	}
+    @Override
+    protected void imageCleared() {
+        super.imageCleared();
+        updateValue();
+    }
 
-	@Override
-	public void updateValue() {
-		// Overridden for increasing the visibility of this function 
-		super.updateValue();
-	}
+    @Override
+    public void updateValue() {
+        // Overridden for increasing the visibility of this function
+        super.updateValue();
+    }
 
-	@Override
-	protected String generateModelValue() {
-		if (hasUploadedData()) {
-			this.lastJpaData = getFilenameSupplier().get().toString();
-		}
-		return this.lastJpaData;
-	}
+    @Override
+    protected String generateModelValue() {
+        if (hasUploadedData()) {
+            this.lastJpaData = getFilenameSupplier().get().toString();
+        }
+        return this.lastJpaData;
+    }
 
-	@Override
-	protected void setPresentationValue(String newPresentationValue) {
-		resetProperties();
-		resetUi();
-		this.lastJpaData = Strings.nullToEmpty(newPresentationValue);
-		if (!Strings.isNullOrEmpty(newPresentationValue)) {
-			final var file = FileSystem.convertStringToFile(newPresentationValue);
-			final var thumbnailFile = toServerSideThumbnailFile(file);
-			if (thumbnailFile != null) {
-				setImageSource(thumbnailFile);
-			}
-		}
-	}
+    @Override
+    protected void setPresentationValue(String newPresentationValue) {
+        resetProperties();
+        resetUi();
+        this.lastJpaData = Strings.nullToEmpty(newPresentationValue);
+        if (!Strings.isNullOrEmpty(newPresentationValue)) {
+            final var file = FileSystem.convertStringToFile(newPresentationValue);
+            final var thumbnailFile = toServerSideThumbnailFile(file);
+            if (thumbnailFile != null) {
+                setImageSource(thumbnailFile);
+            }
+        }
+    }
 
-	@Override
-	public void saveUploadedFileOnServer() throws IOException {
-		final var filename = getFileManager().normalizeForServerSide(getFilenameSupplier().get());
-		saveUploadedFileOnServer(filename);
-	}
+    @Override
+    public void saveUploadedFileOnServer() throws IOException {
+        final var filename = getFileManager().normalizeForServerSide(getFilenameSupplier().get());
+        saveUploadedFileOnServer(filename);
+    }
 
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  * Copyright (c) 2019 Kaspar Scherrer
  *
@@ -22,7 +22,8 @@ package fr.utbm.ciad.labmanager.utils;
 
 import java.io.Serializable;
 
-/** Function that is serializable and may throw an exception.
+/**
+ * Function that is serializable and may throw an exception.
  *
  * @param <I> the type of input argument.
  * @param <O> the type of returned value.
@@ -35,12 +36,13 @@ import java.io.Serializable;
 @FunctionalInterface
 public interface SerializableExceptionFunction<I, O> extends Serializable {
 
-	/** Run the function.
-	 *
-	 * @param input the input argument.
-	 * @return the output value.
-	 * @throws Exception if there is some error inside.
-	 */
-	O apply(I input) throws Exception;
-	
+    /**
+     * Run the function.
+     *
+     * @param input the input argument.
+     * @return the output value.
+     * @throws Exception if there is some error inside.
+     */
+    O apply(I input) throws Exception;
+
 }

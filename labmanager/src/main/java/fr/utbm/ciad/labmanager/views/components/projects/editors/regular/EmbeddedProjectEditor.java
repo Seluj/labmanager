@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,10 +34,11 @@ import fr.utbm.ciad.labmanager.views.components.projects.fields.ProjectFieldFact
 import fr.utbm.ciad.labmanager.views.components.scientificaxes.editors.ScientificAxisEditorFactory;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of project information that may be embedded. This editor does not provide
+/**
+ * Editor of project information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited project.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -46,38 +47,39 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public final class EmbeddedProjectEditor extends AbstractProjectEditor {
 
-	private static final long serialVersionUID = 1553551688880862732L;
+    private static final long serialVersionUID = 1553551688880862732L;
 
-	/** Constructor.
-	 *
-	 * @param context the context for editing the entity.
-	 * @param projectCreationStatusComputer the tool for computer the creation status for the scientific projects.
-	 * @param projectFieldFactory the factory for creating the project fields.
-	 * @param axisEditorFactory the factory for creating the scientific axis editors.
-	 * @param organizationService the service for accessing the JPA entities for research organizations.
-	 * @param addressService the service for accessing the JPA entities for organization addresses.
-	 * @param axisService the service for accessing the JPA entities for scientific axes.
-	 * @param axisEditorFactory the factory for creating the scientific axis editors.
-	 * @param organizationEditorFactory the factory for creating the organization editors.
-	 * @param organizationFieldFactory the factory for creating the organization fields.
-	 * @param fileManager the manager of files at the server-side.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 * @since 4.0
-	 */
-	public EmbeddedProjectEditor(EntityEditingContext<Project> context,
-			EntityCreationStatusComputer<Project> projectCreationStatusComputer,
-			ProjectFieldFactory projectFieldFactory,
-			ResearchOrganizationService organizationService, OrganizationAddressService addressService,
-			ScientificAxisService axisService, ScientificAxisEditorFactory axisEditorFactory,
-			OrganizationEditorFactory organizationEditorFactory,
-			OrganizationFieldFactory organizationFieldFactory,
-			DownloadableFileManager fileManager, AuthenticatedUser authenticatedUser,
-			MessageSourceAccessor messages) {
-		super(context, projectCreationStatusComputer, false, projectFieldFactory, organizationService, addressService,
-				axisService, axisEditorFactory, organizationEditorFactory, organizationFieldFactory,
-				fileManager, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
-		createEditorContentAndLinkBeans();
-	}
+    /**
+     * Constructor.
+     *
+     * @param context                       the context for editing the entity.
+     * @param projectCreationStatusComputer the tool for computer the creation status for the scientific projects.
+     * @param projectFieldFactory           the factory for creating the project fields.
+     * @param axisEditorFactory             the factory for creating the scientific axis editors.
+     * @param organizationService           the service for accessing the JPA entities for research organizations.
+     * @param addressService                the service for accessing the JPA entities for organization addresses.
+     * @param axisService                   the service for accessing the JPA entities for scientific axes.
+     * @param axisEditorFactory             the factory for creating the scientific axis editors.
+     * @param organizationEditorFactory     the factory for creating the organization editors.
+     * @param organizationFieldFactory      the factory for creating the organization fields.
+     * @param fileManager                   the manager of files at the server-side.
+     * @param authenticatedUser             the connected user.
+     * @param messages                      the accessor to the localized messages (Spring layer).
+     * @since 4.0
+     */
+    public EmbeddedProjectEditor(EntityEditingContext<Project> context,
+                                 EntityCreationStatusComputer<Project> projectCreationStatusComputer,
+                                 ProjectFieldFactory projectFieldFactory,
+                                 ResearchOrganizationService organizationService, OrganizationAddressService addressService,
+                                 ScientificAxisService axisService, ScientificAxisEditorFactory axisEditorFactory,
+                                 OrganizationEditorFactory organizationEditorFactory,
+                                 OrganizationFieldFactory organizationFieldFactory,
+                                 DownloadableFileManager fileManager, AuthenticatedUser authenticatedUser,
+                                 MessageSourceAccessor messages) {
+        super(context, projectCreationStatusComputer, false, projectFieldFactory, organizationService, addressService,
+                axisService, axisEditorFactory, organizationEditorFactory, organizationFieldFactory,
+                fileManager, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
+        createEditorContentAndLinkBeans();
+    }
 
 }

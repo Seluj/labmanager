@@ -24,13 +24,10 @@ import static com.storedobject.chart.Color.TRANSPARENT;
  */
 public abstract class AbstractPublicationCategoryChart extends AbstractSOChartChart implements PublicationCategoryChart {
 
-    protected PublicationService publicationService;
-
-    protected Toolbox toolbox;
-
     private final List<PublicationType> publicationTypeList;
-
     private final List<Integer> years;
+    protected PublicationService publicationService;
+    protected Toolbox toolbox;
 
     /**
      * Constructor.

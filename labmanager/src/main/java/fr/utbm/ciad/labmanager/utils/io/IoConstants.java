@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager.utils.io;
 
-/** Definition of constants for Inpout/Output.
- * 
+/**
+ * Definition of constants for Inpout/Output.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -29,28 +30,33 @@ package fr.utbm.ciad.labmanager.utils.io;
  */
 public final class IoConstants {
 
-	/** MIME for MS Excel file.
-	 */
-	public static final String EXCEL_MIME = "application/ms-excel"; //$NON-NLS-1$
+    /**
+     * MIME for MS Excel file.
+     */
+    public static final String EXCEL_MIME = "application/ms-excel"; //$NON-NLS-1$
 
-	/** MIME for JSON file.
-	 */
-	public static final String JSON_MIME = "application/json"; //$NON-NLS-1$
+    /**
+     * MIME for JSON file.
+     */
+    public static final String JSON_MIME = "application/json"; //$NON-NLS-1$
 
-	/** Filename extension for JSON file.
-	 */
-	public static final String JSON_FILENAME_EXTENSION = ".json"; //$NON-NLS-1$
+    /**
+     * Filename extension for JSON file.
+     */
+    public static final String JSON_FILENAME_EXTENSION = ".json"; //$NON-NLS-1$
 
-	/** MIME for ZIP file.
-	 */
-	public static final String ZIP_MIME = "application/zip"; //$NON-NLS-1$
+    /**
+     * MIME for ZIP file.
+     */
+    public static final String ZIP_MIME = "application/zip"; //$NON-NLS-1$
 
-	/** Filename extension for ZIP file.
-	 */
-	public static final String ZIP_FILENAME_EXTENSION = ".zip"; //$NON-NLS-1$
+    /**
+     * Filename extension for ZIP file.
+     */
+    public static final String ZIP_FILENAME_EXTENSION = ".zip"; //$NON-NLS-1$
 
-	private IoConstants() {
-		//
-	}
+    private IoConstants() {
+        //
+    }
 
 }

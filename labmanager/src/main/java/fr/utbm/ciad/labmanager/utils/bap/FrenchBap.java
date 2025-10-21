@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,11 +26,12 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import java.util.Locale;
 
-/** The French BAP is a classification of the types of jobs that engineers, technicians and other
+/**
+ * The French BAP is a classification of the types of jobs that engineers, technicians and other
  * not researcher staff could do. BAP means "Branch d'activité professionnelle".
  * Usually, a staff meber who is not researcher in public institution is associated to BAP.
  * <p>Rsearcher classification are {@link CnuSection CNU section} and {@link ConrsSection CoNRS section}.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -40,106 +41,117 @@ import java.util.Locale;
  * @see ConrsSection
  */
 public enum FrenchBap {
-	/** BAP A.
-	 */
-	BAP_A {
-		@Override
-		public String getShortName() {
-			return "A"; //$NON-NLS-1$
-		}
-	},
-	/** BAP B.
-	 */
-	BAP_B {
-		@Override
-		public String getShortName() {
-			return "B"; //$NON-NLS-1$
-		}
-	},
-	/** BAP C.
-	 */
-	BAP_C {
-		@Override
-		public String getShortName() {
-			return "C"; //$NON-NLS-1$
-		}
-	},
-	/** BAP D.
-	 */
-	BAP_D {
-		@Override
-		public String getShortName() {
-			return "D"; //$NON-NLS-1$
-		}
-	},
-	/** BAP E.
-	 */
-	BAP_E {
-		@Override
-		public String getShortName() {
-			return "E"; //$NON-NLS-1$
-		}
-	},
-	/** BAP F.
-	 */
-	BAP_F {
-		@Override
-		public String getShortName() {
-			return "F"; //$NON-NLS-1$
-		}
-	},
-	/** BAP G.
-	 */
-	BAP_G {
-		@Override
-		public String getShortName() {
-			return "G"; //$NON-NLS-1$
-		}
-	},
-	/** BAP J.
-	 */
-	BAP_J {
-		@Override
-		public String getShortName() {
-			return "J"; //$NON-NLS-1$
-		}
-	};
+    /**
+     * BAP A.
+     */
+    BAP_A {
+        @Override
+        public String getShortName() {
+            return "A"; //$NON-NLS-1$
+        }
+    },
+    /**
+     * BAP B.
+     */
+    BAP_B {
+        @Override
+        public String getShortName() {
+            return "B"; //$NON-NLS-1$
+        }
+    },
+    /**
+     * BAP C.
+     */
+    BAP_C {
+        @Override
+        public String getShortName() {
+            return "C"; //$NON-NLS-1$
+        }
+    },
+    /**
+     * BAP D.
+     */
+    BAP_D {
+        @Override
+        public String getShortName() {
+            return "D"; //$NON-NLS-1$
+        }
+    },
+    /**
+     * BAP E.
+     */
+    BAP_E {
+        @Override
+        public String getShortName() {
+            return "E"; //$NON-NLS-1$
+        }
+    },
+    /**
+     * BAP F.
+     */
+    BAP_F {
+        @Override
+        public String getShortName() {
+            return "F"; //$NON-NLS-1$
+        }
+    },
+    /**
+     * BAP G.
+     */
+    BAP_G {
+        @Override
+        public String getShortName() {
+            return "G"; //$NON-NLS-1$
+        }
+    },
+    /**
+     * BAP J.
+     */
+    BAP_J {
+        @Override
+        public String getShortName() {
+            return "J"; //$NON-NLS-1$
+        }
+    };
 
-	private static final String MESSAGE_PREFIX = "frenchBap."; //$NON-NLS-1$
+    private static final String MESSAGE_PREFIX = "frenchBap."; //$NON-NLS-1$
 
-	/** Replies the label of the French BAP in the current language.
-	 *
-	 * @param messages the accessor to the localized labels.
-	 * @param locale the locale to use.
-	 * @return the label of the French BAP in the current language.
-	 */
-	public String getLabel(MessageSourceAccessor messages, Locale locale) {
-		final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
-		return Strings.nullToEmpty(label);
-	}
+    /**
+     * Replies the French BAP that corresponds to the given name, with a case-insensitive
+     * test of the name.
+     *
+     * @param name the name of the French BAP, to search for.
+     * @return the French BAP.
+     * @throws IllegalArgumentException if the given name does not corresponds to a French BAP.
+     */
+    public static FrenchBap valueOfCaseInsensitive(String name) {
+        if (!Strings.isNullOrEmpty(name)) {
+            for (final var section : values()) {
+                if (name.equalsIgnoreCase(section.name()) || name.equalsIgnoreCase(section.getShortName())) {
+                    return section;
+                }
+            }
+        }
+        throw new IllegalArgumentException("Invalid French BAP: " + name); //$NON-NLS-1$
+    }
 
-	/** Replies the French BAP that corresponds to the given name, with a case-insensitive
-	 * test of the name.
-	 *
-	 * @param name the name of the French BAP, to search for.
-	 * @return the French BAP.
-	 * @throws IllegalArgumentException if the given name does not corresponds to a French BAP.
-	 */
-	public static FrenchBap valueOfCaseInsensitive(String name) {
-		if (!Strings.isNullOrEmpty(name)) {
-			for (final var section : values()) {
-				if (name.equalsIgnoreCase(section.name()) || name.equalsIgnoreCase(section.getShortName())) {
-					return section;
-				}
-			}
-		}
-		throw new IllegalArgumentException("Invalid French BAP: " + name); //$NON-NLS-1$
-	}
+    /**
+     * Replies the label of the French BAP in the current language.
+     *
+     * @param messages the accessor to the localized labels.
+     * @param locale   the locale to use.
+     * @return the label of the French BAP in the current language.
+     */
+    public String getLabel(MessageSourceAccessor messages, Locale locale) {
+        final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
+        return Strings.nullToEmpty(label);
+    }
 
-	/** Replies the short name of this French BAP. The sohrt name is usually a letter. 
-	 *
-	 * @return the short name.
-	 */
-	public abstract String getShortName();
+    /**
+     * Replies the short name of this French BAP. The sohrt name is usually a letter.
+     *
+     * @return the short name.
+     */
+    public abstract String getShortName();
 
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,14 @@
 
 package fr.utbm.ciad.labmanager.data.invitation;
 
-import java.util.Locale;
-
 import com.google.common.base.Strings;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Type of persin invitation.
- * 
+import java.util.Locale;
+
+/**
+ * Type of persin invitation.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,69 +35,75 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public enum PersonInvitationType {
 
-	/** Incoming guest professor.
-	 */
-	INCOMING_GUEST_PROFESSOR {
-		@Override
-		public boolean isOutgoing() {
-			return false;
-		}
-	},
+    /**
+     * Incoming guest professor.
+     */
+    INCOMING_GUEST_PROFESSOR {
+        @Override
+        public boolean isOutgoing() {
+            return false;
+        }
+    },
 
-	/** Incoming guest PhD student.
-	 */
-	INCOMING_GUEST_PHD_STUDENT {
-		@Override
-		public boolean isOutgoing() {
-			return false;
-		}
-	},
+    /**
+     * Incoming guest PhD student.
+     */
+    INCOMING_GUEST_PHD_STUDENT {
+        @Override
+        public boolean isOutgoing() {
+            return false;
+        }
+    },
 
-	/** Outgoing guest.
-	 */
-	OUTGOING_GUEST {
-		@Override
-		public boolean isOutgoing() {
-			return true;
-		}
-	};
+    /**
+     * Outgoing guest.
+     */
+    OUTGOING_GUEST {
+        @Override
+        public boolean isOutgoing() {
+            return true;
+        }
+    };
 
-	private static final String MESSAGE_PREFIX = "personInvitationType."; //$NON-NLS-1$
+    private static final String MESSAGE_PREFIX = "personInvitationType."; //$NON-NLS-1$
 
-	/** Replies if this type is for outgoing invitations.
-	 *
-	 * @return {@code true} if the type of invitation is for outgoing invitations, {@code false} if it is for
-	 *     incoming invitations.
-	 */
-	public abstract boolean isOutgoing();
+    /**
+     * Replies the jury membership that corresponds to the given name, with a case-insensitive
+     * test of the name.
+     *
+     * @param name the name of the membership, to search for.
+     * @return the status.
+     * @throws IllegalArgumentException if the given name does not corresponds to a membership.
+     */
+    public static PersonInvitationType valueOfCaseInsensitive(String name) {
+        if (!Strings.isNullOrEmpty(name)) {
+            for (final var status : values()) {
+                if (name.equalsIgnoreCase(status.name())) {
+                    return status;
+                }
+            }
+        }
+        throw new IllegalArgumentException("Invalid person invitation type: " + name); //$NON-NLS-1$
+    }
 
-	/** Replies the label of the type.
-	 *
-	 * @param messages the accessor to the lcoalized names.
-	 * @param locale the locale to use.
-	 * @return the label of the type.
-	 */
-	public String getLabel(MessageSourceAccessor messages, Locale locale) {
-		final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
-		return Strings.nullToEmpty(label);
-	}
+    /**
+     * Replies if this type is for outgoing invitations.
+     *
+     * @return {@code true} if the type of invitation is for outgoing invitations, {@code false} if it is for
+     * incoming invitations.
+     */
+    public abstract boolean isOutgoing();
 
-	/** Replies the jury membership that corresponds to the given name, with a case-insensitive
-	 * test of the name.
-	 *
-	 * @param name the name of the membership, to search for.
-	 * @return the status.
-	 * @throws IllegalArgumentException if the given name does not corresponds to a membership.
-	 */
-	public static PersonInvitationType valueOfCaseInsensitive(String name) {
-		if (!Strings.isNullOrEmpty(name)) {
-			for (final var status : values()) {
-				if (name.equalsIgnoreCase(status.name())) {
-					return status;
-				}
-			}
-		}
-		throw new IllegalArgumentException("Invalid person invitation type: " + name); //$NON-NLS-1$
-	}
+    /**
+     * Replies the label of the type.
+     *
+     * @param messages the accessor to the lcoalized names.
+     * @param locale   the locale to use.
+     * @return the label of the type.
+     */
+    public String getLabel(MessageSourceAccessor messages, Locale locale) {
+        final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
+        return Strings.nullToEmpty(label);
+    }
 
 }

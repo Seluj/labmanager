@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,9 @@ package fr.utbm.ciad.labmanager.views.components.addons.badges;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
-/** State of a badge that is used by a renderer in grids, combos, etc.
- * 
+/**
+ * State of a badge that is used by a renderer in grids, combos, etc.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -32,122 +33,140 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 public enum BadgeState {
 
-	/** Primary badge.
-	 */
-	PRIMARY(null) {
-		@Override
-		public VaadinIcon getIcon() {
-			return null;
-		}
-	},
-	
-	/** Success badge.
-	 */
-	SUCCESS("success") { //$NON-NLS-1$
-		@Override
-		public VaadinIcon getIcon() {
-			return VaadinIcon.CHECK;
-		}
-	},
+    /**
+     * Primary badge.
+     */
+    PRIMARY(null) {
+        @Override
+        public VaadinIcon getIcon() {
+            return null;
+        }
+    },
 
-	/** Error badge.
-	 */
-	ERROR("error") { //$NON-NLS-1$
-		@Override
-		public VaadinIcon getIcon() {
-			return VaadinIcon.CLOSE_SMALL;
-		}
-	},
+    /**
+     * Success badge.
+     */
+    SUCCESS("success") { //$NON-NLS-1$
 
-	/** Contrast badge.
-	 */
-	CONTRAST("contrast") { //$NON-NLS-1$
-		@Override
-		public VaadinIcon getIcon() {
-			return null;
-		}
-	},
+        @Override
+        public VaadinIcon getIcon() {
+            return VaadinIcon.CHECK;
+        }
+    },
 
-	/** Pill badge.
-	 */
-	PILL("contrast pill") { //$NON-NLS-1$
-		@Override
-		public VaadinIcon getIcon() {
-			return null;
-		}
-	},
+    /**
+     * Error badge.
+     */
+    ERROR("error") { //$NON-NLS-1$
 
-	/** Success pill badge.
-	 */
-	SUCCESS_PILL("success pill") { //$NON-NLS-1$
-		@Override
-		public VaadinIcon getIcon() {
-			return null;
-		}
-	},
-	
-	/** Error pill badge.
-	 */
-	ERROR_PILL("error pill") { //$NON-NLS-1$
-		@Override
-		public VaadinIcon getIcon() {
-			return null;
-		}
-	},
-	
-	/** Contrast pill badge.
-	 */
-	CONTRAST_PILL("contrast pill") { //$NON-NLS-1$
-		@Override
-		public VaadinIcon getIcon() {
-			return null;
-		}
-	};
+        @Override
+        public VaadinIcon getIcon() {
+            return VaadinIcon.CLOSE_SMALL;
+        }
+    },
 
-	private static final String BADGE_STYLE = "badge"; //$NON-NLS-1$
-	
-	private final String style;
+    /**
+     * Contrast badge.
+     */
+    CONTRAST("contrast") { //$NON-NLS-1$
 
-	private BadgeState(String style) {
-		if (style == null) {
-			this.style = BADGE_STYLE;
-		} else {
-			final var result = new StringBuilder();
-			result.append(BADGE_STYLE).append(" ").append(style); //$NON-NLS-1$
-			this.style = result.toString();
-		}
-	}
+        @Override
+        public VaadinIcon getIcon() {
+            return null;
+        }
+    },
 
-	/** Replies the style of the badge.
-	 *
-	 * @return the CSS style.
-	 */
-	public String getStyle() {
-		return this.style;
-	}
+    /**
+     * Pill badge.
+     */
+    PILL("contrast pill") { //$NON-NLS-1$
 
-	/** Replies the icon of the badge.
-	 *
-	 * @return the icon.
-	 */
-	public abstract VaadinIcon getIcon();
+        @Override
+        public VaadinIcon getIcon() {
+            return null;
+        }
+    },
 
-	/** Replies the given state or the default state if the given state is {@code null}..
-	 *
-	 * @param state a state or {@code null}.
-	 * @return a state, never {@code null}.
-	 */
-	public static BadgeState orDefault(BadgeState state) {
-		return state == null ? PRIMARY : state;
-	}
+    /**
+     * Success pill badge.
+     */
+    SUCCESS_PILL("success pill") { //$NON-NLS-1$
 
-	/** Assign the style of this badge to the given component.
-	 *
-	 * @param component the component to change.
-	 */
-	public void assignTo(Component component) {
-		assert component != null;
-		component.getElement().getThemeList().add(getStyle());
-	}
+        @Override
+        public VaadinIcon getIcon() {
+            return null;
+        }
+    },
+
+    /**
+     * Error pill badge.
+     */
+    ERROR_PILL("error pill") { //$NON-NLS-1$
+
+        @Override
+        public VaadinIcon getIcon() {
+            return null;
+        }
+    },
+
+    /**
+     * Contrast pill badge.
+     */
+    CONTRAST_PILL("contrast pill") { //$NON-NLS-1$
+
+        @Override
+        public VaadinIcon getIcon() {
+            return null;
+        }
+    };
+
+    private static final String BADGE_STYLE = "badge"; //$NON-NLS-1$
+
+    private final String style;
+
+    BadgeState(String style) {
+        if (style == null) {
+            this.style = BADGE_STYLE;
+        } else {
+            this.style = BADGE_STYLE + " " + style //$NON-NLS-1$
+            ;
+        }
+    }
+
+    /**
+     * Replies the given state or the default state if the given state is {@code null}..
+     *
+     * @param state a state or {@code null}.
+     * @return a state, never {@code null}.
+     */
+    public static BadgeState orDefault(BadgeState state) {
+        return state == null ? PRIMARY : state;
+    }
+
+    /**
+     * Replies the style of the badge.
+     *
+     * @return the CSS style.
+     */
+    public String getStyle() {
+        return this.style;
+    }
+
+    /**
+     * Replies the icon of the badge.
+     *
+     * @return the icon.
+     */
+    public abstract VaadinIcon getIcon();
+
+    /**
+     * Assign the style of this badge to the given component.
+     *
+     * @param component the component to change.
+     */
+    public void assignTo(Component component) {
+        assert component != null;
+        component.getElement().getThemeList().add(getStyle());
+    }
 
 }

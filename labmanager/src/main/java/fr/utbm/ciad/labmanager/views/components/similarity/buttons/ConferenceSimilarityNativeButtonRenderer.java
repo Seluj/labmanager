@@ -5,9 +5,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import fr.utbm.ciad.labmanager.data.conference.Conference;
-import fr.utbm.ciad.labmanager.data.member.Person;
 import fr.utbm.ciad.labmanager.services.conference.ConferenceMergingService;
-import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
 import fr.utbm.ciad.labmanager.views.components.similarity.AbstractSimilarityLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Represent a Person native button renderer for similarity.
+/**
+ * Represent a Person native button renderer for similarity.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -27,16 +26,18 @@ public class ConferenceSimilarityNativeButtonRenderer extends AbstractSimilarity
 
     private final ConferenceMergingService conferenceMergingService;
 
-    /** Constructor.
+    /**
+     * Constructor.
+     *
      * @param conferenceMergingService the person merging service
-     * @param label the label
-     * @param grid the grid
-     * @param grids the grids
-     * @param layout the layout
+     * @param label                    the label
+     * @param grid                     the grid
+     * @param grids                    the grids
+     * @param layout                   the layout
      */
     public ConferenceSimilarityNativeButtonRenderer(@Autowired ConferenceMergingService conferenceMergingService, String label,
-                                                Grid<Conference> grid, List<Grid<Conference>> grids,
-                                                AbstractSimilarityLayout<Conference> layout) {
+                                                    Grid<Conference> grid, List<Grid<Conference>> grids,
+                                                    AbstractSimilarityLayout<Conference> layout) {
         super(label, grid, grids, layout);
         this.conferenceMergingService = conferenceMergingService;
     }
@@ -53,7 +54,7 @@ public class ConferenceSimilarityNativeButtonRenderer extends AbstractSimilarity
         Map<Conference, Checkbox> checkboxMap = new HashMap<>();
 
         for (Conference c : entityInGrid) {
-                Checkbox checkbox = new Checkbox(c.getName());
+            Checkbox checkbox = new Checkbox(c.getName());
             checkboxLayout.add(checkbox);
             checkboxMap.put(c, checkbox);
         }

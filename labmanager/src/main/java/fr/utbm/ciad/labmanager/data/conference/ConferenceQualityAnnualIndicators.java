@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,8 +33,9 @@ import org.springframework.context.support.MessageSourceAccessor;
 import java.io.IOException;
 import java.util.Locale;
 
-/** History of the quality indicators for a conference.
- * 
+/**
+ * History of the quality indicators for a conference.
+ *
  * @author $Author: sgalland$
  * @author $Author: anoubli$
  * @author $Author: bpdj$
@@ -48,144 +49,153 @@ import java.util.Locale;
 @Table(name = "ConferenceAnnualIndicators")
 public class ConferenceQualityAnnualIndicators implements QualityAnnualIndicators, AttributeProvider {
 
-	private static final long serialVersionUID = 1212711963054404563L;
+    private static final long serialVersionUID = 1212711963054404563L;
 
-	/** Identifier for the history entry.
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	@JsonIgnore
-	private long id;
+    /**
+     * Identifier for the history entry.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    @JsonIgnore
+    private long id;
 
-	/** Year for the entry.
-	 */
-	@Column
-	@ColumnDefault("0")
-	@JsonIgnore
-	private int referenceYear;
+    /**
+     * Year for the entry.
+     */
+    @Column
+    @ColumnDefault("0")
+    @JsonIgnore
+    private int referenceYear;
 
-	/** CORE Index.
-	 */
-	@Column
-	@Enumerated(EnumType.STRING)
-	private CoreRanking coreIndex;
+    /**
+     * CORE Index.
+     */
+    @Column
+    @Enumerated(EnumType.STRING)
+    private CoreRanking coreIndex;
 
-	/** Default constructor.
-	 */
-	public ConferenceQualityAnnualIndicators() {
-		this.referenceYear = 0;
-		this.coreIndex = null;
-	}
+    /**
+     * Default constructor.
+     */
+    public ConferenceQualityAnnualIndicators() {
+        this.referenceYear = 0;
+        this.coreIndex = null;
+    }
 
-	/** Construct an history with the given values.
-	 *
-	 * @param year the year of the entry.
-	 * @param coreIndex the CORE index.
-	 */
-	public ConferenceQualityAnnualIndicators(int year, CoreRanking coreIndex) {
-		this.referenceYear = year;
-		this.coreIndex = coreIndex;
-	}
+    /**
+     * Construct an history with the given values.
+     *
+     * @param year      the year of the entry.
+     * @param coreIndex the CORE index.
+     */
+    public ConferenceQualityAnnualIndicators(int year, CoreRanking coreIndex) {
+        this.referenceYear = year;
+        this.coreIndex = coreIndex;
+    }
 
-	@Override
-	public long getId() {
-		return this.id;
-	}
+    @Override
+    public long getId() {
+        return this.id;
+    }
 
-	/** Change the database id.
-	 *
-	 * @param id the new database id;
-	 * @since 4.0
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
+    /**
+     * Change the database id.
+     *
+     * @param id the new database id;
+     * @since 4.0
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	@Override
-	public int hashCode() {
-		if (this.id != 0) {
-			return Long.hashCode(this.id);
-		}
-		var h = HashCodeUtils.start();
-		h = HashCodeUtils.add(h, this.referenceYear);
-		return h;
-	}
+    @Override
+    public int hashCode() {
+        if (this.id != 0) {
+            return Long.hashCode(this.id);
+        }
+        var h = HashCodeUtils.start();
+        h = HashCodeUtils.add(h, this.referenceYear);
+        return h;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final var other = (ConferenceQualityAnnualIndicators) obj;
-		if (this.id != 0 && other.id != 0) {
-			return this.id == other.id;
-		}
-		return this.referenceYear == other.referenceYear;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final var other = (ConferenceQualityAnnualIndicators) obj;
+        if (this.id != 0 && other.id != 0) {
+            return this.id == other.id;
+        }
+        return this.referenceYear == other.referenceYear;
+    }
 
-	@Override
-	public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
-		if (getCoreIndex() != null) {
-			consumer.accept("coreIndex", getCoreIndex()); //$NON-NLS-1$
-		}
-		if (getReferenceYear() > 0) {
-			consumer.accept("referenceYear", Integer.valueOf(getReferenceYear())); //$NON-NLS-1$
-		}
-	}
+    @Override
+    public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
+        if (getCoreIndex() != null) {
+            consumer.accept("coreIndex", getCoreIndex()); //$NON-NLS-1$
+        }
+        if (getReferenceYear() > 0) {
+            consumer.accept("referenceYear", Integer.valueOf(getReferenceYear())); //$NON-NLS-1$
+        }
+    }
 
-	@Override
-	public int getReferenceYear() {
-		return this.referenceYear;
-	}
+    @Override
+    public int getReferenceYear() {
+        return this.referenceYear;
+    }
 
-	@Override
-	public void setReferenceYear(int year) {
-		this.referenceYear = year;
-	}
+    @Override
+    public void setReferenceYear(int year) {
+        this.referenceYear = year;
+    }
 
-	/** Replies the index of the conference from CORE source.
-	 * 
-	 * @return the index, or {@code null} if not defined.
-	 */
-	public CoreRanking getCoreIndex() {
-		return this.coreIndex;
-	}
+    /**
+     * Replies the index of the conference from CORE source.
+     *
+     * @return the index, or {@code null} if not defined.
+     */
+    public CoreRanking getCoreIndex() {
+        return this.coreIndex;
+    }
 
-	/** Change the index of the conference from CORE source.
-	 *
-	 * @param index the CORE index.
-	 */
-	public void setCoreIndex(CoreRanking index) {
-		this.coreIndex = index;
-	}
+    /**
+     * Change the index of the conference from CORE source.
+     *
+     * @param index the CORE index.
+     */
+    public void setCoreIndex(CoreRanking index) {
+        this.coreIndex = index;
+    }
 
-	/** Change the index of the conference from CORE source.
-	 *
-	 * @param index the CORE index.
-	 */
-	public void setCoreIndex(String index) {
-		if (Strings.isNullOrEmpty(index)) {
-			setCoreIndex((CoreRanking) null);
-		} else {
-			setCoreIndex(CoreRanking.valueOfCaseInsensitive(index));
-		}
-	}
+    /**
+     * Change the index of the conference from CORE source.
+     *
+     * @param index the CORE index.
+     */
+    public void setCoreIndex(String index) {
+        if (Strings.isNullOrEmpty(index)) {
+            setCoreIndex((CoreRanking) null);
+        } else {
+            setCoreIndex(CoreRanking.valueOfCaseInsensitive(index));
+        }
+    }
 
-	@Override
-	public String toString() {
-		return EntityUtils.toString(this);
-	}
+    @Override
+    public String toString() {
+        return EntityUtils.toString(this);
+    }
 
-	@Override
-	public boolean isSignificant() {
-		return this.coreIndex != null;
-	}
+    @Override
+    public boolean isSignificant() {
+        return this.coreIndex != null;
+    }
 
 }

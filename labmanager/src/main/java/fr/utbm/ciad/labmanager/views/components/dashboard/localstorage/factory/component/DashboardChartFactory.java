@@ -1,12 +1,12 @@
 package fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.factory.component;
 
 import fr.utbm.ciad.labmanager.services.publication.PublicationService;
-import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardChartItem;
 import fr.utbm.ciad.labmanager.views.components.charts.factory.PublicationCategoryBarChartFactory;
 import fr.utbm.ciad.labmanager.views.components.charts.factory.PublicationCategoryChartFactory;
 import fr.utbm.ciad.labmanager.views.components.charts.factory.PublicationCategoryNightingaleRoseChartFactory;
 import fr.utbm.ciad.labmanager.views.components.charts.factory.PublicationCategoryPieChartFactory;
 import fr.utbm.ciad.labmanager.views.components.charts.layout.PublicationCategoryLayout;
+import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardChartItem;
 import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardComponentType;
 
 /**
@@ -46,12 +46,12 @@ public class DashboardChartFactory implements DashboardComponentFactory<Dashboar
      * @param dashBoardChartItem the DashBoardChartItem used to determine the factory to be returned
      * @return the corresponding PublicationCategoryChartFactory for the chart type, or null if the type is not recognized
      */
-    private PublicationCategoryChartFactory getPublicationCategoryChartFactory(DashboardChartItem dashBoardChartItem){
+    private PublicationCategoryChartFactory getPublicationCategoryChartFactory(DashboardChartItem dashBoardChartItem) {
         return switch (dashBoardChartItem.getComponentType()) {
             case DashboardComponentType.BAR_CHART -> new PublicationCategoryBarChartFactory();
             case DashboardComponentType.PIE_CHART -> new PublicationCategoryPieChartFactory();
             case DashboardComponentType.NIGHTINGALE_CHART -> new PublicationCategoryNightingaleRoseChartFactory();
-            default ->  null;
+            default -> null;
         };
     }
 }

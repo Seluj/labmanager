@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,10 +28,11 @@ import fr.utbm.ciad.labmanager.views.components.memberships.fields.MembershipFie
 import fr.utbm.ciad.labmanager.views.components.supervisions.fields.SupervisionFieldFactory;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of supervision information that may be embedded. This editor does not provide
+/**
+ * Editor of supervision information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited supervision.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -40,28 +41,26 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public final class EmbeddedSupervisionEditor extends AbstractSupervisionEditor {
 
-	private static final long serialVersionUID = -2908551063864242284L;
+    private static final long serialVersionUID = -2908551063864242284L;
 
-	/** Constructor.
-	 *
-	 * @param context the editing context for the supervision.
-	 * @param supervisionCreationStatusComputer the tool for computer the creation status for the person supervisions.
-	 * @param membershipFieldFactory the factory for creating the person membership fields.
-	 * @param organizationService the service for accessing the organization JPA entities.
-	 * @param organizationEditorFactory the factory for creating the organization editors.
-	 * @param supervisionFieldFactory the factory for creating the supervision fields.
-	 * @param axisService the service for accessing the scientific axis JPA entities.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 * @since 4.0
-	 */
-	public EmbeddedSupervisionEditor(EntityEditingContext<Supervision> context,
-			EntityCreationStatusComputer<Supervision> supervisionCreationStatusComputer,
-			MembershipFieldFactory membershipFieldFactory, SupervisionFieldFactory supervisionFieldFactory,
-			AuthenticatedUser authenticatedUser, MessageSourceAccessor messages) {
-		super(context, false, supervisionCreationStatusComputer, membershipFieldFactory, supervisionFieldFactory, authenticatedUser, messages,
-				ConstructionPropertiesBuilder.create());
-		createEditorContentAndLinkBeans();
-	}
+    /**
+     * Constructor.
+     *
+     * @param context                           the editing context for the supervision.
+     * @param supervisionCreationStatusComputer the tool for computer the creation status for the person supervisions.
+     * @param membershipFieldFactory            the factory for creating the person membership fields.
+     * @param supervisionFieldFactory           the factory for creating the supervision fields.
+     * @param authenticatedUser                 the connected user.
+     * @param messages                          the accessor to the localized messages (Spring layer).
+     * @since 4.0
+     */
+    public EmbeddedSupervisionEditor(EntityEditingContext<Supervision> context,
+                                     EntityCreationStatusComputer<Supervision> supervisionCreationStatusComputer,
+                                     MembershipFieldFactory membershipFieldFactory, SupervisionFieldFactory supervisionFieldFactory,
+                                     AuthenticatedUser authenticatedUser, MessageSourceAccessor messages) {
+        super(context, false, supervisionCreationStatusComputer, membershipFieldFactory, supervisionFieldFactory, authenticatedUser, messages,
+                ConstructionPropertiesBuilder.create());
+        createEditorContentAndLinkBeans();
+    }
 
 }

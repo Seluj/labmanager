@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import com.vaadin.flow.router.ErrorParameter;
 import com.vaadin.flow.router.NotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 
-/** Handler for reacting to an invalid route.
- * 
+/**
+ * Handler for reacting to an invalid route.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,8 +36,8 @@ public class RouteNotFoundError extends com.vaadin.flow.router.RouteNotFoundErro
 
     private static final long serialVersionUID = -1463864000043228305L;
 
-	@Override
-	public int setErrorParameter(BeforeEnterEvent event, ErrorParameter<NotFoundException> parameter) {
+    @Override
+    public int setErrorParameter(BeforeEnterEvent event, ErrorParameter<NotFoundException> parameter) {
         getElement().setText("Could not navigate to '" + event.getLocation().getPath() + "'"); //$NON-NLS-1$ //$NON-NLS-2$
         return HttpServletResponse.SC_NOT_FOUND;
     }

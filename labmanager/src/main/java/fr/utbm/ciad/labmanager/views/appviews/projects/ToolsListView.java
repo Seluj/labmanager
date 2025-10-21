@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,8 +34,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** List all the produced tools and software.
- * 
+/**
+ * List all the produced tools and software.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,33 +46,34 @@ import org.springframework.context.support.MessageSourceAccessor;
 @Route(value = "tools", layout = MainLayout.class)
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class ToolsListView extends StandardValorisationToolsListView implements HasDynamicTitle {
-	
-	private static final long serialVersionUID = -5129791615697012823L;
 
-	/** Constructor.
-	 * 
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param publicationService the service for accessing the scientific publications.
+    private static final long serialVersionUID = -5129791615697012823L;
+
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser        the connected user.
+     * @param messages                 the accessor to the localized messages (spring layer).
+     * @param loggerFactory            the factory to be used for the composite logger.
+     * @param publicationService       the service for accessing the scientific publications.
      * @param publicationEditorFactory the factory for creating publication editors.
-	 * @param journalService the service for accessing the JPA entities for journal.
-	 * @param organizationService the service for accessing the JPA entities for research organization.
-	 */
-	public ToolsListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired PublicationService publicationService,
-			@Autowired PublicationEditorFactory publicationEditorFactory,
-			@Autowired JournalService journalService,
-			@Autowired ResearchOrganizationService organizationService) {
-		super(authenticatedUser, messages, loggerFactory, publicationService, publicationEditorFactory, journalService, organizationService);
-	}
+     * @param journalService           the service for accessing the JPA entities for journal.
+     * @param organizationService      the service for accessing the JPA entities for research organization.
+     */
+    public ToolsListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired PublicationService publicationService,
+            @Autowired PublicationEditorFactory publicationEditorFactory,
+            @Autowired JournalService journalService,
+            @Autowired ResearchOrganizationService organizationService) {
+        super(authenticatedUser, messages, loggerFactory, publicationService, publicationEditorFactory, journalService, organizationService);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.tools.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.tools.list"); //$NON-NLS-1$
+    }
 
 }

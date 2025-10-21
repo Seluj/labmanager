@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.utils.io.json;
 
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Utilities for exporting publications to JSON.
- * 
+/**
+ * Utilities for exporting publications to JSON.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,25 +32,28 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public abstract class AbstractJsonExporter implements JsonExporter {
 
-	/** Provider of localized messages.
-	 */
-	private final MessageSourceAccessor messages;
+    /**
+     * Provider of localized messages.
+     */
+    private final MessageSourceAccessor messages;
 
-	/** Constructor.
-	 *
-	 * @param messages the accessor to the localized messages.
-	 */
-	public AbstractJsonExporter(MessageSourceAccessor messages) {
-		this.messages = messages;
-	}
-	
-	/** Replies the accessor to the localized strings.
-	 *
-	 * @return the accessor.
-	 */
-	protected MessageSourceAccessor getMessageSourceAccessor() {
-		return this.messages;
-	}
+    /**
+     * Constructor.
+     *
+     * @param messages the accessor to the localized messages.
+     */
+    public AbstractJsonExporter(MessageSourceAccessor messages) {
+        this.messages = messages;
+    }
+
+    /**
+     * Replies the accessor to the localized strings.
+     *
+     * @return the accessor.
+     */
+    protected MessageSourceAccessor getMessageSourceAccessor() {
+        return this.messages;
+    }
 
 
 }

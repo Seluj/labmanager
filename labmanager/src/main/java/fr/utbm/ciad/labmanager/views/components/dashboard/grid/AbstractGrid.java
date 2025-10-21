@@ -1,4 +1,5 @@
 package fr.utbm.ciad.labmanager.views.components.dashboard.grid;
+
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.dom.Style;
@@ -26,17 +27,15 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
 
     private final int rows;
     private final int columns;
-    private double cellSize = 50 ;
-
     private final List<DropCell> cells = new ArrayList<>();
-
     private final List<GridObserver> observers = new ArrayList<>();
+    private double cellSize = 50;
 
     /**
      * Default Constructor
      */
-    public AbstractGrid(){
-        this(30,30, "#bfbfbf");
+    public AbstractGrid() {
+        this(30, 30, "#bfbfbf");
     }
 
     /**
@@ -60,23 +59,23 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
     }
 
     @Override
-    public void addNewComponent(DropCell cell, Component component){
+    public void addNewComponent(DropCell cell, Component component) {
         addComponent(cell, component);
         notifyNewComponentAdded(component);
     }
 
     @Override
     public void removeComponent(DropCell cell, Component component) {
-        if(cell.contains(component)){
+        if (cell.contains(component)) {
             notifyComponentRemoved(component);
             cell.emptyCell();
         }
     }
 
     @Override
-    public void removeComponent(Component component){
+    public void removeComponent(Component component) {
         component.getParent().ifPresent(parent -> {
-            if(parent instanceof DropCell cell){
+            if (parent instanceof DropCell cell) {
                 removeComponent(cell, component);
             }
         });
@@ -95,7 +94,7 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
     /**
      * Initializes the grid by configuring its layout, style and listeners.
      */
-    protected void initializeGrid(){
+    protected void initializeGrid() {
         setGridStyle();
         createCells();
     }
@@ -117,7 +116,7 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
      * Creates all cells for the grid.
      * This method handle the generation and placement of cells within the grid.
      */
-    protected void createCells(){
+    protected void createCells() {
         int cellCount = rows * columns;
         cells.clear();
         removeAll();
@@ -205,13 +204,14 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
      *
      * @param cellSize the new size for the cells.
      */
-    public void setCellSize(double cellSize){
+    public void setCellSize(double cellSize) {
         this.cellSize = cellSize;
     }
 
 
     /**
      * Adds a GridObserver to the list of observers.
+     *
      * @param observer the observer to be added
      */
     public void addObserver(GridObserver observer) {
@@ -220,6 +220,7 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
 
     /**
      * Removes an from the list of observers.
+     *
      * @param observer the observer to be removed
      */
     public void removeObserver(GridObserver observer) {
@@ -228,6 +229,7 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
 
     /**
      * Notifies all observers that a component has been added to the grid.
+     *
      * @param component the component that was added
      */
     protected void notifyComponentAdded(Component component) {
@@ -238,6 +240,7 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
 
     /**
      * Notifies all observers that a new component has been added to the grid.
+     *
      * @param component the new component that was added
      */
     protected void notifyNewComponentAdded(Component component) {
@@ -248,6 +251,7 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
 
     /**
      * Notifies all observers about changes to a new component.
+     *
      * @param component the new component that has changes
      */
     protected void notifyNewComponentChanges(Component component) {
@@ -258,6 +262,7 @@ public abstract class AbstractGrid extends FlexLayout implements Grid {
 
     /**
      * Notifies all observers that a component has been removed from the grid.
+     *
      * @param component the component that was removed
      */
     protected void notifyComponentRemoved(Component component) {

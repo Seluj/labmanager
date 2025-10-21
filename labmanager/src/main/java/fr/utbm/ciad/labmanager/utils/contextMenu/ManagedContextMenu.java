@@ -25,14 +25,14 @@ public class ManagedContextMenu extends ContextMenu {
     /**
      * Default Constructor
      */
-    public ManagedContextMenu(){
+    public ManagedContextMenu() {
         super();
     }
 
     /**
      * Updates the text of an existing menu item.
      *
-     * @param name the unique name of the menu item.
+     * @param name    the unique name of the menu item.
      * @param newText the new text to set for the menu item.
      */
     public void setMenuItemText(String name, String newText) {

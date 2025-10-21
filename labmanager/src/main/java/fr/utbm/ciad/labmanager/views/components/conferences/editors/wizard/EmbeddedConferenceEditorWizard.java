@@ -27,7 +27,8 @@ import fr.utbm.ciad.labmanager.utils.builders.ConstructionPropertiesBuilder;
 import fr.utbm.ciad.labmanager.views.components.addons.entities.EntityCreationStatusComputer;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of conference information that may be embedded. This editor does not provide
+/**
+ * Editor of conference information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited conference. It is a wizard
  *
@@ -42,19 +43,20 @@ public final class EmbeddedConferenceEditorWizard extends AbstractConferenceEdit
 
     private static final long serialVersionUID = -2522520461244264353L;
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param context the editing context for the conference.
-	 * @param conferenceCreationStatusComputer the tool for computer the creation status for the conferences.
-     * @param conferenceService the service for accessing the conference entities.
-     * @param authenticatedUser the connected user.
-     * @param messages the accessor to the localized messages (Spring layer).
+     * @param context                          the editing context for the conference.
+     * @param conferenceCreationStatusComputer the tool for computer the creation status for the conferences.
+     * @param conferenceService                the service for accessing the conference entities.
+     * @param authenticatedUser                the connected user.
+     * @param messages                         the accessor to the localized messages (Spring layer).
      */
     public EmbeddedConferenceEditorWizard(EntityEditingContext<Conference> context,
-			EntityCreationStatusComputer<Conference> conferenceCreationStatusComputer,
-			AuthenticatedUser authenticatedUser, ConferenceService conferenceService,
-			MessageSourceAccessor messages) {
-        super(context, conferenceCreationStatusComputer, false, conferenceService , authenticatedUser, messages, ConstructionPropertiesBuilder.create());
+                                          EntityCreationStatusComputer<Conference> conferenceCreationStatusComputer,
+                                          AuthenticatedUser authenticatedUser, ConferenceService conferenceService,
+                                          MessageSourceAccessor messages) {
+        super(context, conferenceCreationStatusComputer, false, conferenceService, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
         createEditorContentAndLinkBeans();
     }
 

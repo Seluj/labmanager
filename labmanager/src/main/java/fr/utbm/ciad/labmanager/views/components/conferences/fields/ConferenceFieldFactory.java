@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,15 @@
 
 package fr.utbm.ciad.labmanager.views.components.conferences.fields;
 
-import java.util.function.Consumer;
-
 import com.vaadin.flow.function.SerializableBiConsumer;
 import fr.utbm.ciad.labmanager.data.conference.Conference;
 import org.slf4j.Logger;
 
-/** Factory for building the fields related to the conferences.
- * 
+import java.util.function.Consumer;
+
+/**
+ * Factory for building the fields related to the conferences.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,25 +36,27 @@ import org.slf4j.Logger;
  */
 public interface ConferenceFieldFactory {
 
-	/** Create a field for entering the name of a conference.
-	 *
-	 * @param creationWithUiCallback a lambda that is invoked for creating a new conference using an UI, e.g., an editor. The first argument is the new conference entity.
-	 *      The second argument is a lambda that must be invoked to inject the new conference in the {@code SingleConferenceNameField}.
-	 *      This second lambda takes the created conference.
-	 * @param creationWithoutUiCallback a lambda that is invoked for creating a new conference without using an UI. The first argument is the new conference entity.
-	 *      The second argument is a lambda that must be invoked to inject the new conference in the {@code SingleConferenceNameField}.
-	 *      This second lambda takes the created conference.
-	 * @return the field, never {@code null}.
-	 */
-	SingleConferenceNameField createSingleNameField(SerializableBiConsumer<Conference, Consumer<Conference>> creationWithUiCallback,
-			SerializableBiConsumer<Conference, Consumer<Conference>> creationWithoutUiCallback);
+    /**
+     * Create a field for entering the name of a conference.
+     *
+     * @param creationWithUiCallback    a lambda that is invoked for creating a new conference using an UI, e.g., an editor. The first argument is the new conference entity.
+     *                                  The second argument is a lambda that must be invoked to inject the new conference in the {@code SingleConferenceNameField}.
+     *                                  This second lambda takes the created conference.
+     * @param creationWithoutUiCallback a lambda that is invoked for creating a new conference without using an UI. The first argument is the new conference entity.
+     *                                  The second argument is a lambda that must be invoked to inject the new conference in the {@code SingleConferenceNameField}.
+     *                                  This second lambda takes the created conference.
+     * @return the field, never {@code null}.
+     */
+    SingleConferenceNameField createSingleNameField(SerializableBiConsumer<Conference, Consumer<Conference>> creationWithUiCallback,
+                                                    SerializableBiConsumer<Conference, Consumer<Conference>> creationWithoutUiCallback);
 
-	/** Create a field for entering the name of a conference.
-	 *
-	 * @param creationTitle the title of the dialog box for creating the person.
-	 * @param logger the logger for abnormal messages to the lab manager administrator.
-	 * @return the field, never {@code null}.
-	 */
-	SingleConferenceNameField createSingleNameField(String creationTitle, Logger logger);
+    /**
+     * Create a field for entering the name of a conference.
+     *
+     * @param creationTitle the title of the dialog box for creating the person.
+     * @param logger        the logger for abnormal messages to the lab manager administrator.
+     * @return the field, never {@code null}.
+     */
+    SingleConferenceNameField createSingleNameField(String creationTitle, Logger logger);
 
 }

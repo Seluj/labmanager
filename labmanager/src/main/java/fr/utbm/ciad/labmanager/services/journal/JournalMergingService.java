@@ -19,7 +19,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/** Service for the merging journals.
+/**
+ * Service for the merging journals.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -60,12 +61,13 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
         this.journalEditionRepository = journalEditionRepository;
     }
 
-    /** Replies the duplicate journal names.
+    /**
+     * Replies the duplicate journal names.
      * The replied list contains groups of journals who have similar names and publishers.
      *
      * @param comparator comparator of journals that is used for sorting the groups of duplicates. If it is {@code null},
-     *      a {@link JournalComparator} is used.
-     * @param callback the callback invoked during the building.
+     *                   a {@link JournalComparator} is used.
+     * @param callback   the callback invoked during the building.
      * @return the duplicate journals that is finally computed.
      * @throws Exception if a problem occurred during the building.
      */
@@ -119,10 +121,11 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
         return matchingJournals;
     }
 
-    /** Merge the entities by replacing those with an old journal by those with the new journal.
+    /**
+     * Merge the entities by replacing those with an old journal by those with the new journal.
      *
      * @param sources the list of journals to remove and replace by the target journal.
-     * @param target the target journal who should replace the source journals.
+     * @param target  the target journal who should replace the source journals.
      * @throws Exception if the merging cannot be completed.
      */
     public void mergeJournals(Iterable<Journal> sources, Journal target) throws Exception {
@@ -144,7 +147,8 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
         }
     }
 
-    /** Re-assign the properties attached to the source journal to the target journal. There are attached only if the
+    /**
+     * Re-assign the properties attached to the source journal to the target journal. There are attached only if the
      * target journal has null properties.
      *
      * @param source the journal to remove and replace by the target journal.
@@ -152,7 +156,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
      * @return {@code true} if journal properties has changed.
      * @throws Exception if the change cannot be completed.
      */
-    protected boolean reassignJournalProperties(Journal source, Journal target){
+    protected boolean reassignJournalProperties(Journal source, Journal target) {
 
         boolean changed = false;
 
@@ -210,7 +214,8 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
     }
 
 
-    /** Re-assign the publication papers attached to the source journal to the target journal.
+    /**
+     * Re-assign the publication papers attached to the source journal to the target journal.
      *
      * @param source the journal to remove and replace by the target journal.
      * @param target the target journal which should replace the source journals.
@@ -227,7 +232,7 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
             if (!targetPapers.contains(paper)) {
                 paper.setJournal(target);
                 changed = true;
-                if(paper instanceof JournalPaper) {
+                if (paper instanceof JournalPaper) {
                     this.journalPaperRepository.save((JournalPaper) paper);
                 } else {
                     this.journalEditionRepository.save((JournalEdition) paper);
@@ -238,7 +243,8 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
     }
 
 
-    /** Re-assign the quality indicators attached to the source journal to the target journal. The function checks if the
+    /**
+     * Re-assign the quality indicators attached to the source journal to the target journal. The function checks if the
      * target journal already has the quality indicators of the source journal.
      *
      * @param source the journal to remove and replace by the target journal.
@@ -287,7 +293,8 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
     }
 
 
-    /** Callback that is invoked when building the list of duplicate journals.
+    /**
+     * Callback that is invoked when building the list of duplicate journals.
      *
      * @author $Author: sgalland$
      * @author $Author: erenon$
@@ -299,14 +306,15 @@ public class JournalMergingService extends AbstractEntityService<Journal> {
     @FunctionalInterface
     public interface JournalDuplicateCallback {
 
-        /** Invoked for each journal.
+        /**
+         * Invoked for each journal.
          *
-         * @param index the position of the reference journal in the list of journals. It represents the progress of the treatment
-         *     of each journal.
+         * @param index          the position of the reference journal in the list of journals. It represents the progress of the treatment
+         *                       of each journal.
          * @param duplicateCount the count of discovered duplicates.
-         * @param total the total number of journals in the list.
+         * @param total          the total number of journals in the list.
          * @throws Exception if there is an error during the callback treatment. This exception is forwarded to the
-         *     caller of the function that has invoked this callback.
+         *                   caller of the function that has invoked this callback.
          */
         void onDuplicate(int index, int duplicateCount, int total) throws Exception;
 

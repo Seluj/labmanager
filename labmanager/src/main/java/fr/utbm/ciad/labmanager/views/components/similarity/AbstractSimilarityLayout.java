@@ -8,9 +8,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import fr.utbm.ciad.labmanager.views.components.addons.slider.SingleSlider;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-/** Represent an Abstract for a specific layout for the similarity options.
+/**
+ * Represent an Abstract for a specific layout for the similarity options.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -23,7 +26,8 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
     protected List<Grid<T>> grids;
 
 
-    /** Constructor.
+    /**
+     * Constructor.
      */
     public AbstractSimilarityLayout() {
         grids = new java.util.ArrayList<>();
@@ -66,7 +70,8 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
     }
 
 
-    /** Create the grids. Calls the service to get the duplicates and creates a grid for each group.
+    /**
+     * Create the grids. Calls the service to get the duplicates and creates a grid for each group.
      *
      * @param threshold the threshold
      */
@@ -76,7 +81,7 @@ public abstract class AbstractSimilarityLayout<T> extends VerticalLayout impleme
         try {
             List<Set<T>> similarityGroups = getDuplicates(threshold);
             Iterator<Set<T>> iterator = similarityGroups.iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 Set<T> group = iterator.next();
                 Grid<T> grid = new Grid<>();
                 grid.setItems(group);

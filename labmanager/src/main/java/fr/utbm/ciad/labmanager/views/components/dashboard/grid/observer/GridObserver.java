@@ -17,24 +17,28 @@ public interface GridObserver {
 
     /**
      * Called when a component has been added to the grid.
+     *
      * @param component the component that was added
      */
     void onComponentAdded(Component component);
 
     /**
      * Called when a new component has been added to the grid.
+     *
      * @param component the new component that was added
      */
     void onNewComponentAdded(Component component);
 
     /**
      * Called when there are changes to a component in the grid.
+     *
      * @param component the component that has changes
      */
     void onComponentChanges(Component component);
 
     /**
      * Called when a component has been removed from the grid.
+     *
      * @param component the component that was removed
      */
     void onComponentRemoved(Component component);

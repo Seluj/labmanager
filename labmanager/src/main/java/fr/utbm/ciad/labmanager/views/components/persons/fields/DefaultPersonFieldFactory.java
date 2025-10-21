@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.persons.fields;
 
-import java.util.function.Consumer;
-
 import com.vaadin.flow.function.SerializableBiConsumer;
 import fr.utbm.ciad.labmanager.data.member.Person;
 import fr.utbm.ciad.labmanager.security.AuthenticatedUser;
@@ -30,8 +28,11 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/** Factory for building the fields related to the persons.
- * 
+import java.util.function.Consumer;
+
+/**
+ * Factory for building the fields related to the persons.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -41,57 +42,58 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultPersonFieldFactory implements PersonFieldFactory {
 
-	private final PersonService personService;
+    private final PersonService personService;
 
-	private final PersonEditorFactory personEditorFactory;
+    private final PersonEditorFactory personEditorFactory;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructor.
-	 *
-	 * @param personService the service for accessing the person JPA entities.
-	 * @param personEditorFactory the factory for creating the person editors.
-	 * @param authenticatedUser the user that is currently authenticated.
-	 */
-	public DefaultPersonFieldFactory(@Autowired PersonService personService,
-			@Autowired PersonEditorFactory personEditorFactory, 
-			@Autowired AuthenticatedUser authenticatedUser) {
-		this.personService = personService;
-		this.personEditorFactory = personEditorFactory;
-		this.authenticatedUser = authenticatedUser;
-	}
+    /**
+     * Constructor.
+     *
+     * @param personService       the service for accessing the person JPA entities.
+     * @param personEditorFactory the factory for creating the person editors.
+     * @param authenticatedUser   the user that is currently authenticated.
+     */
+    public DefaultPersonFieldFactory(@Autowired PersonService personService,
+                                     @Autowired PersonEditorFactory personEditorFactory,
+                                     @Autowired AuthenticatedUser authenticatedUser) {
+        this.personService = personService;
+        this.personEditorFactory = personEditorFactory;
+        this.authenticatedUser = authenticatedUser;
+    }
 
-	@Override
-	public SinglePersonNameField createSingleNameField(SerializableBiConsumer<Person, Consumer<Person>> creationWithUiCallback,
-			SerializableBiConsumer<Person, Consumer<Person>> creationWithoutUiCallback) {
-		return new SinglePersonNameField(this.personService, creationWithUiCallback, creationWithoutUiCallback);
-	}
+    @Override
+    public SinglePersonNameField createSingleNameField(SerializableBiConsumer<Person, Consumer<Person>> creationWithUiCallback,
+                                                       SerializableBiConsumer<Person, Consumer<Person>> creationWithoutUiCallback) {
+        return new SinglePersonNameField(this.personService, creationWithUiCallback, creationWithoutUiCallback);
+    }
 
-	@Override
-	public SinglePersonNameField createSingleNameField(String creationTitle, Logger logger) {
-		return new SinglePersonNameField(this.personService, this.personEditorFactory, this.authenticatedUser, creationTitle, logger);
-	}
+    @Override
+    public SinglePersonNameField createSingleNameField(String creationTitle, Logger logger) {
+        return new SinglePersonNameField(this.personService, this.personEditorFactory, this.authenticatedUser, creationTitle, logger);
+    }
 
-	@Override
-	public MultiPersonNameField createMultiNameField(SerializableBiConsumer<Person, Consumer<Person>> creationWithUiCallback,
-			SerializableBiConsumer<Person, Consumer<Person>> creationWithoutUiCallback, Consumer<Person> initializer) {
-		return new MultiPersonNameField(this.personService, creationWithUiCallback, creationWithoutUiCallback, initializer);
-	}
+    @Override
+    public MultiPersonNameField createMultiNameField(SerializableBiConsumer<Person, Consumer<Person>> creationWithUiCallback,
+                                                     SerializableBiConsumer<Person, Consumer<Person>> creationWithoutUiCallback, Consumer<Person> initializer) {
+        return new MultiPersonNameField(this.personService, creationWithUiCallback, creationWithoutUiCallback, initializer);
+    }
 
-	@Override
-	public MultiPersonNameField createMultiNameField(SerializableBiConsumer<Person, Consumer<Person>> creationWithUiCallback,
-			SerializableBiConsumer<Person, Consumer<Person>> creationWithoutUiCallback) {
-		return new MultiPersonNameField(this.personService, creationWithUiCallback, creationWithoutUiCallback);
-	}
+    @Override
+    public MultiPersonNameField createMultiNameField(SerializableBiConsumer<Person, Consumer<Person>> creationWithUiCallback,
+                                                     SerializableBiConsumer<Person, Consumer<Person>> creationWithoutUiCallback) {
+        return new MultiPersonNameField(this.personService, creationWithUiCallback, creationWithoutUiCallback);
+    }
 
-	@Override
-	public MultiPersonNameField createMultiNameField(String creationTitle, Logger logger, Consumer<Person> initializer) {
-		return new MultiPersonNameField(this.personService, this.personEditorFactory, this.authenticatedUser, creationTitle, logger, initializer);
-	}
+    @Override
+    public MultiPersonNameField createMultiNameField(String creationTitle, Logger logger, Consumer<Person> initializer) {
+        return new MultiPersonNameField(this.personService, this.personEditorFactory, this.authenticatedUser, creationTitle, logger, initializer);
+    }
 
-	@Override
-	public MultiPersonNameField createMultiNameField(String creationTitle, Logger logger) {
-		return new MultiPersonNameField(this.personService, this.personEditorFactory, this.authenticatedUser, creationTitle, logger);
-	}
+    @Override
+    public MultiPersonNameField createMultiNameField(String creationTitle, Logger logger) {
+        return new MultiPersonNameField(this.personService, this.personEditorFactory, this.authenticatedUser, creationTitle, logger);
+    }
 
 }

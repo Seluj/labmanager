@@ -5,12 +5,8 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import fr.utbm.ciad.labmanager.data.journal.Journal;
-import fr.utbm.ciad.labmanager.data.member.Person;
 import fr.utbm.ciad.labmanager.services.journal.JournalMergingService;
-import fr.utbm.ciad.labmanager.services.journal.JournalService;
-import fr.utbm.ciad.labmanager.services.member.PersonMergingService;
 import fr.utbm.ciad.labmanager.views.components.similarity.AbstractSimilarityLayout;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.List;

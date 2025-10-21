@@ -59,30 +59,30 @@ public final class EmbeddedPublicationEditorWizard extends AbstractPublicationEd
     /**
      * Constructor.
      *
-     * @param context                   the context for editing the entity.
-     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
-	 * @param mandatoryAbstractText indicates if the abstract text is considered as mandatory or not.
-	 * @param publicationCreationStatusComputer the tool for computer the creation status for the publication.
-     * @param fileManager               the manager of files at the server-side.
-     * @param publicationService        the service for accessing the JPA entities for publications.
-     * @param personService             the service for accessing the JPA entities for persons.
-	 * @param personEditorFactory the factory for creating the person editors.
-	 * @param personFieldFactory the factory for creating the person fields.
-     * @param userService               the service for accessing the JPA entities for users.
-     * @param journalService            the service for accessing the JPA entities for journal.
-     * @param journalEditorFactory the factory for creating journal editors.
-     * @param journalFieldFactory the factory for creating journal fields.
-     * @param conferenceService         the service for accessing the JPA entities for conference.
-     * @param conferenceEditorFactory the factory for creating the conference editors.
-     * @param conferenceFieldFactory the factory for creating the conference fields.
-     * @param axisService               service for accessing to the JPA entities of scientific axes.
-     * @param axisEditorFactory the factory for creating the scientific axis editors.
-     * @param authenticatedUser         the connected user.
-     * @param messages                  the accessor to the localized messages (Spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param properties specification of properties that may be passed to the construction function {@code #create*}.
-	 * @since 4.0
+     * @param context                           the context for editing the entity.
+     * @param supportedTypes                    list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param enableTypeSelector                indicates if the type selector is enabled or disabled.
+     * @param mandatoryAbstractText             indicates if the abstract text is considered as mandatory or not.
+     * @param publicationCreationStatusComputer the tool for computer the creation status for the publication.
+     * @param fileManager                       the manager of files at the server-side.
+     * @param publicationService                the service for accessing the JPA entities for publications.
+     * @param personService                     the service for accessing the JPA entities for persons.
+     * @param personEditorFactory               the factory for creating the person editors.
+     * @param personFieldFactory                the factory for creating the person fields.
+     * @param userService                       the service for accessing the JPA entities for users.
+     * @param journalService                    the service for accessing the JPA entities for journal.
+     * @param journalEditorFactory              the factory for creating journal editors.
+     * @param journalFieldFactory               the factory for creating journal fields.
+     * @param conferenceService                 the service for accessing the JPA entities for conference.
+     * @param conferenceEditorFactory           the factory for creating the conference editors.
+     * @param conferenceFieldFactory            the factory for creating the conference fields.
+     * @param axisService                       service for accessing to the JPA entities of scientific axes.
+     * @param axisEditorFactory                 the factory for creating the scientific axis editors.
+     * @param authenticatedUser                 the connected user.
+     * @param messages                          the accessor to the localized messages (Spring layer).
+     * @param loggerFactory                     the factory to be used for the composite logger.
+     * @param properties                        specification of properties that may be passed to the construction function {@code #create*}.
+     * @since 4.0
      */
     public EmbeddedPublicationEditorWizard(EntityEditingContext<Publication> context,
                                            PublicationType[] supportedTypes, boolean enableTypeSelector, boolean mandatoryAbstractText,
@@ -95,7 +95,7 @@ public final class EmbeddedPublicationEditorWizard extends AbstractPublicationEd
                                            AuthenticatedUser authenticatedUser, MessageSourceAccessor messages,
                                            ConstructionPropertiesBuilder properties) {
         super(context, supportedTypes, false, enableTypeSelector, mandatoryAbstractText, publicationCreationStatusComputer, fileManager,
-        		publicationService, personService, personEditorFactory, personFieldFactory, userService,
+                publicationService, personService, personEditorFactory, personFieldFactory, userService,
                 journalService, journalEditorFactory, journalFieldFactory, conferenceService, conferenceEditorFactory, conferenceFieldFactory, axisService, axisEditorFactory,
                 authenticatedUser, messages, properties);
         createEditorContentAndLinkBeans();

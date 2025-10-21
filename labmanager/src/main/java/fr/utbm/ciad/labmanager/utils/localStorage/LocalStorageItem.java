@@ -20,16 +20,16 @@ public interface LocalStorageItem {
     void createId(String idPart);
 
     /**
-     * Set the unique identifier for the item.
-     *
-     * @param id the unique identifier to set
-     */
-    void setId(String id);
-
-    /**
      * Retrieves the unique identifier of the item.
      *
      * @return the unique identifier of the item
      */
     String getId();
+
+    /**
+     * Set the unique identifier for the item.
+     *
+     * @param id the unique identifier to set
+     */
+    void setId(String id);
 }

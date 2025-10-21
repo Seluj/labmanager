@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,15 +19,16 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.uploads.generic;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import com.vaadin.flow.function.SerializableSupplier;
 import fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory;
 import org.slf4j.Logger;
 
-/** A field that enables to upload a file and show an image representation, and to write the uploaded file in a
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * A field that enables to upload a file and show an image representation, and to write the uploaded file in a
  * folder of the server.
  * This field does not assume that the field's data is of a specific type.
  * Subclasses must implement function to handle the upload file data.
@@ -43,50 +44,54 @@ import org.slf4j.Logger;
  */
 public abstract class AbstractServerSideUploadableFileImageViewerField<T> extends AbstractUploadableFileImageViewerField<T> {
 
-	private static final long serialVersionUID = 598244456800081674L;
+    private static final long serialVersionUID = 598244456800081674L;
 
-	/** Default constructor.
-	 *
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 */
-	public AbstractServerSideUploadableFileImageViewerField(SerializableSupplier<Logger> loggerSupplier) {
-		super(loggerSupplier);
-	}
+    /**
+     * Default constructor.
+     *
+     * @param loggerSupplier the dynamic supplier of the loggers.
+     */
+    public AbstractServerSideUploadableFileImageViewerField(SerializableSupplier<Logger> loggerSupplier) {
+        super(loggerSupplier);
+    }
 
-	/** Change the image that is displayed in the viewer.
-	 *
-	 * @param path the path on the server.
-	 */
-	protected void setImageSource(File serverPath) {
-		if (serverPath != null) {
-			setImageSource(ComponentFactory.newStreamImage(serverPath));
-		}
-	}
+    /**
+     * Change the image that is displayed in the viewer.
+     *
+     * @param path the path on the server.
+     */
+    protected void setImageSource(File serverPath) {
+        if (serverPath != null) {
+            setImageSource(ComponentFactory.newStreamImage(serverPath));
+        }
+    }
 
-	/** Save the uploaded data on the server file system.
-	 *
-	 * @throws IOException if the data cannot be saved.
-	 */
-	public abstract void saveUploadedFileOnServer() throws IOException;
+    /**
+     * Save the uploaded data on the server file system.
+     *
+     * @throws IOException if the data cannot be saved.
+     */
+    public abstract void saveUploadedFileOnServer() throws IOException;
 
-	/** Save the uploaded data on the server file system.
-	 *
-	 * @param outputFile output filename for the uploaded data.
-	 * @throws IOException if the data cannot be saved.
-	 */
-	public void saveUploadedFileOnServer(File outputFile) throws IOException {
-		if (hasUploadedData()) {
-			final var buffer = getMemoryReceiver();
-			if (buffer == null) {
-				throw new IOException("No memory buffer"); //$NON-NLS-1$
-			}
-			outputFile.getParentFile().mkdirs();
-			try (final var outputStream = new FileOutputStream(outputFile)) {
-				try (final var inputStream = buffer.getInputStream()) {
-					inputStream.transferTo(outputStream);
-				}
-			}
-		}
-	}
+    /**
+     * Save the uploaded data on the server file system.
+     *
+     * @param outputFile output filename for the uploaded data.
+     * @throws IOException if the data cannot be saved.
+     */
+    public void saveUploadedFileOnServer(File outputFile) throws IOException {
+        if (hasUploadedData()) {
+            final var buffer = getMemoryReceiver();
+            if (buffer == null) {
+                throw new IOException("No memory buffer"); //$NON-NLS-1$
+            }
+            outputFile.getParentFile().mkdirs();
+            try (final var outputStream = new FileOutputStream(outputFile)) {
+                try (final var inputStream = buffer.getInputStream()) {
+                    inputStream.transferTo(outputStream);
+                }
+            }
+        }
+    }
 
 }

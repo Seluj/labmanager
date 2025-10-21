@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,8 @@ package fr.utbm.ciad.labmanager.views.components.addons.validators;
 
 import fr.utbm.ciad.labmanager.utils.country.CountryCode;
 
-/** A validator that matches a language that is not {@code null}.
+/**
+ * A validator that matches a language that is not {@code null}.
  *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -31,25 +32,25 @@ import fr.utbm.ciad.labmanager.utils.country.CountryCode;
  */
 public class LanguageValidator extends NotNullEnumerationValidator<CountryCode> {
 
-	private static final long serialVersionUID = -8965164018157411102L;
+    private static final long serialVersionUID = -8965164018157411102L;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param errorMessage the message to display in case the value does not validate. Parameter {@code {0}} is replaced by the invalid entity in the message.
-	 */
-	public LanguageValidator(String errorMessage) {
-		super(errorMessage);
-	}
+    /**
+     * Constructor.
+     *
+     * @param errorMessage the message to display in case the value does not validate. Parameter {@code {0}} is replaced by the invalid entity in the message.
+     */
+    public LanguageValidator(String errorMessage) {
+        super(errorMessage);
+    }
 
-	@Override
-	public String toString() {
-		return "LanguageValidator"; //$NON-NLS-1$
-	}
+    @Override
+    public String toString() {
+        return "LanguageValidator"; //$NON-NLS-1$
+    }
 
-	@Override
-	protected boolean isValid(CountryCode value) {
-		return super.isValid(value) && value.isLanguageSource();
-	}
+    @Override
+    protected boolean isValid(CountryCode value) {
+        return super.isValid(value) && value.isLanguageSource();
+    }
 
 }

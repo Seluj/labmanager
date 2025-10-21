@@ -6,7 +6,8 @@ import info.debatty.java.stringsimilarity.interfaces.NormalizedStringSimilarity;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-/** Utilities for comparing journal names and publishers using the Sorensen Dice algorithm.
+/**
+ * Utilities for comparing journal names and publishers using the Sorensen Dice algorithm.
  * Similarity used by this comparator is the maximum similarity level for journal names and publishers names.
  *
  * @author $Author: sgalland$
@@ -21,7 +22,8 @@ public class SorensenDiceJournalNameOrPublisherComparator extends AbstractJourna
 
     private static final double DEFAULT_SIMILARITY_LEVEL = 0.6;
 
-    /** Constructor.
+    /**
+     * Constructor.
      */
     public SorensenDiceJournalNameOrPublisherComparator() {
         setSimilarityLevel(DEFAULT_SIMILARITY_LEVEL);

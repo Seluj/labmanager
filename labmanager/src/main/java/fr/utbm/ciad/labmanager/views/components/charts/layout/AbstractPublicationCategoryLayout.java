@@ -7,13 +7,16 @@ import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import fr.utbm.ciad.labmanager.services.publication.PublicationService;
-import fr.utbm.ciad.labmanager.views.components.charts.observer.ChartObserver;
 import fr.utbm.ciad.labmanager.views.components.addons.value.YearRange;
 import fr.utbm.ciad.labmanager.views.components.charts.factory.PublicationCategoryChartFactory;
+import fr.utbm.ciad.labmanager.views.components.charts.observer.ChartObserver;
 import fr.utbm.ciad.labmanager.views.components.charts.publicationcategory.PublicationCategoryChart;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Abstract implementation of the layout for displaying charts about publication categories.
@@ -28,28 +31,17 @@ import java.util.*;
 public abstract class AbstractPublicationCategoryLayout<T extends PublicationCategoryChart> extends AbstractChartLayout {
 
     private final PublicationService publicationService;
-
-    private PublicationCategoryChartFactory<T> factory;
-
     private final MultiSelectComboBox multiSelectComboBox;
-
-    private Button validateButton;
-
-    private T chart;
-
     private final HorizontalLayout chartHorizontalLayout;
-
     private final YearRange yearRange;
-
-    private SOChart soChart;
-
-    private String chartWidth;
-
-    private String chartHeight;
-
-    private boolean isFormHidden = false;
-
     private final List<ChartObserver> observers = new ArrayList<>();
+    private PublicationCategoryChartFactory<T> factory;
+    private Button validateButton;
+    private T chart;
+    private SOChart soChart;
+    private String chartWidth;
+    private String chartHeight;
+    private boolean isFormHidden = false;
 
     public AbstractPublicationCategoryLayout(@Autowired PublicationService publicationService,
                                              PublicationCategoryChartFactory<T> factory,
@@ -59,16 +51,16 @@ public abstract class AbstractPublicationCategoryLayout<T extends PublicationCat
                                              boolean generateChart) {
         this(publicationService, factory);
 
-        if(multiSelectComboBoxItems != null && !multiSelectComboBoxItems.isEmpty()){
+        if (multiSelectComboBoxItems != null && !multiSelectComboBoxItems.isEmpty()) {
             multiSelectComboBox.setValue(multiSelectComboBoxItems);
         }
-        if(yearRangeStartValue != null){
+        if (yearRangeStartValue != null) {
             yearRange.getStart().setValue(yearRangeStartValue);
         }
-        if(yearRangeEndValue != null){
+        if (yearRangeEndValue != null) {
             yearRange.getEnd().setValue(yearRangeEndValue);
         }
-        if(multiSelectComboBoxItems != null && yearRangeStartValue != null && generateChart){
+        if (multiSelectComboBoxItems != null && yearRangeStartValue != null && generateChart) {
             createChart();
         }
     }
@@ -138,7 +130,7 @@ public abstract class AbstractPublicationCategoryLayout<T extends PublicationCat
 
     }
 
-    private void createChart(Set<String> multiSelectComboBoxItems, Integer yearRangeStartValue, Integer yearRangeEndValue){
+    private void createChart(Set<String> multiSelectComboBoxItems, Integer yearRangeStartValue, Integer yearRangeEndValue) {
 
         this.chart = factory.create(this.publicationService);
         if (yearRange.getEnd().isEmpty()) {
@@ -154,7 +146,7 @@ public abstract class AbstractPublicationCategoryLayout<T extends PublicationCat
         soChart = this.chart.createChart();
         soChart.setSize(chartWidth, chartHeight);
         chartHorizontalLayout.add(soChart);
-        if(isFormHidden){
+        if (isFormHidden) {
             yearRange.setVisible(false);
             multiSelectComboBox.setVisible(false);
         }
@@ -162,7 +154,7 @@ public abstract class AbstractPublicationCategoryLayout<T extends PublicationCat
         notifyObservers();
     }
 
-    private void createChart(){
+    private void createChart() {
         createChart(multiSelectComboBox.getSelectedItems(), yearRange.getChosenStartValue(), yearRange.getChosenEndValue());
     }
 
@@ -177,7 +169,7 @@ public abstract class AbstractPublicationCategoryLayout<T extends PublicationCat
 
     @Override
     public void refreshChart() {
-        if(soChart != null) {
+        if (soChart != null) {
             chartHorizontalLayout.remove(soChart);
             createChart();
         }
@@ -192,7 +184,7 @@ public abstract class AbstractPublicationCategoryLayout<T extends PublicationCat
     public void setChartSize(String width, String height) {
         this.chartHeight = height;
         this.chartWidth = width;
-        if(soChart != null){
+        if (soChart != null) {
             soChart.setSize(width, height);
         }
     }
@@ -203,7 +195,7 @@ public abstract class AbstractPublicationCategoryLayout<T extends PublicationCat
      * @param width  the width to set for the layout.
      * @param height the height to set for the layout.
      */
-    public void setSize(String width, String height){
+    public void setSize(String width, String height) {
         getStyle().setWidth(width).setHeight(height);
     }
 
@@ -221,8 +213,8 @@ public abstract class AbstractPublicationCategoryLayout<T extends PublicationCat
      * of the year range and multi-select combo box. Also resets the button text
      * to indicate the edit mode.
      */
-    public void removeChart(){
-        if(soChart != null){
+    public void removeChart() {
+        if (soChart != null) {
             chartHorizontalLayout.remove(soChart);
             soChart = null;
         }
@@ -237,19 +229,19 @@ public abstract class AbstractPublicationCategoryLayout<T extends PublicationCat
      *
      * @return true if a chart has been generated, false otherwise
      */
-    public boolean isChartGenerated(){
+    public boolean isChartGenerated() {
         return soChart != null;
     }
 
-    public Integer getYearRangeStartValue(){
+    public Integer getYearRangeStartValue() {
         return yearRange.getChosenStartValue();
     }
 
-    public Integer getYearRangeEndValue(){
+    public Integer getYearRangeEndValue() {
         return yearRange.getChosenEndValue();
     }
 
-    public Set<String> getMultiSelectComboBoxItems(){
+    public Set<String> getMultiSelectComboBoxItems() {
         return multiSelectComboBox.getSelectedItems();
     }
 

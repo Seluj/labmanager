@@ -22,7 +22,7 @@ public class MethodArgumentTypeMismatchHandler {
      * @param ex the exception that contains information about the
      *           type mismatch
      * @return a {@link ResponseEntity} containing a detailed error
-     *         message and a status of {@link HttpStatus#BAD_REQUEST}
+     * message and a status of {@link HttpStatus#BAD_REQUEST}
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {

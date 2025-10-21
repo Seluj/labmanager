@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 
-/** Comparator of organization addresses.
- * 
+/**
+ * Comparator of organization addresses.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -36,42 +37,42 @@ import java.util.Comparator;
 @Primary
 public class OrganizationAddressComparator implements Comparator<OrganizationAddress> {
 
-	@Override
-	public int compare(OrganizationAddress o1, OrganizationAddress o2) {
-		if (o1 == o2) {
-			return 0;
-		}
-		if (o1 == null) {
-			return Integer.MIN_VALUE;
-		}
-		if (o2 == null) {
-			return Integer.MAX_VALUE;
-		}
-		var cmp = StringUtils.compareIgnoreCase(o1.getName(), o2.getName());
-		if (cmp != 0) {
-			return cmp;
-		}
-		cmp = StringUtils.compareIgnoreCase(o1.getComplement(), o2.getComplement());
-		if (cmp != 0) {
-			return cmp;
-		}
-		cmp = StringUtils.compareIgnoreCase(o1.getStreet(), o2.getStreet());
-		if (cmp != 0) {
-			return cmp;
-		}
-		cmp = StringUtils.compareIgnoreCase(o1.getZipCode(), o2.getZipCode());
-		if (cmp != 0) {
-			return cmp;
-		}
-		cmp = StringUtils.compareIgnoreCase(o1.getCity(), o2.getCity());
-		if (cmp != 0) {
-			return cmp;
-		}
-		cmp = StringUtils.compare(o1.getMapCoordinates(), o2.getMapCoordinates());
-		if (cmp != 0) {
-			return cmp;
-		}
-		return StringUtils.compare(o1.getGoogleMapLink(), o2.getGoogleMapLink());
-	}
+    @Override
+    public int compare(OrganizationAddress o1, OrganizationAddress o2) {
+        if (o1 == o2) {
+            return 0;
+        }
+        if (o1 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (o2 == null) {
+            return Integer.MAX_VALUE;
+        }
+        var cmp = StringUtils.compareIgnoreCase(o1.getName(), o2.getName());
+        if (cmp != 0) {
+            return cmp;
+        }
+        cmp = StringUtils.compareIgnoreCase(o1.getComplement(), o2.getComplement());
+        if (cmp != 0) {
+            return cmp;
+        }
+        cmp = StringUtils.compareIgnoreCase(o1.getStreet(), o2.getStreet());
+        if (cmp != 0) {
+            return cmp;
+        }
+        cmp = StringUtils.compareIgnoreCase(o1.getZipCode(), o2.getZipCode());
+        if (cmp != 0) {
+            return cmp;
+        }
+        cmp = StringUtils.compareIgnoreCase(o1.getCity(), o2.getCity());
+        if (cmp != 0) {
+            return cmp;
+        }
+        cmp = StringUtils.compare(o1.getMapCoordinates(), o2.getMapCoordinates());
+        if (cmp != 0) {
+            return cmp;
+        }
+        return StringUtils.compare(o1.getGoogleMapLink(), o2.getGoogleMapLink());
+    }
 
 }

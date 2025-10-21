@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,8 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a scientific axis editor according to the editing context.
- * 
+/**
+ * Factory that is providing a scientific axis editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -41,42 +42,43 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultScientificAxisEditorFactory implements ScientificAxisEditorFactory {
 
-	private final ScientificAxisService axisService;
+    private final ScientificAxisService axisService;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final AuthenticatedUser authenticatedUser;
 
-	private final MessageSourceAccessor messages;
+    private final MessageSourceAccessor messages;
 
-	/** Constructor.
-	 *
-	 * @param axisCreationStatusComputer the tool for computer the creation status for the scientific axes.
-	 * @param axisService the service for accessing the JPA entity for scientific axes.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 */
-	public DefaultScientificAxisEditorFactory(
-			@Autowired ScientificAxisService axisService,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.axisService = axisService;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-	}
+    /**
+     * Constructor.
+     *
+     * @param axisCreationStatusComputer the tool for computer the creation status for the scientific axes.
+     * @param axisService                the service for accessing the JPA entity for scientific axes.
+     * @param authenticatedUser          the connected user.
+     * @param messages                   the accessor to the localized messages (Spring layer).
+     * @param loggerFactory              the factory to be used for the composite logger.
+     */
+    public DefaultScientificAxisEditorFactory(
+            @Autowired ScientificAxisService axisService,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.axisService = axisService;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+    }
 
-	@Override
-	public EntityEditingContext<ScientificAxis> createContextFor(ScientificAxis axis, Logger logger) {
-		return this.axisService.startEditing(axis, logger);
-	}
-	
-	@Override
-	public AbstractEntityEditor<ScientificAxis> createAdditionEditor(EntityEditingContext<ScientificAxis> context) {
-		return new EmbeddedScientificAxisEditor(context, null, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public EntityEditingContext<ScientificAxis> createContextFor(ScientificAxis axis, Logger logger) {
+        return this.axisService.startEditing(axis, logger);
+    }
 
-	@Override
-	public AbstractEntityEditor<ScientificAxis> createUpdateEditor(EntityEditingContext<ScientificAxis> context) {
-		return new EmbeddedScientificAxisEditor(context, null, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public AbstractEntityEditor<ScientificAxis> createAdditionEditor(EntityEditingContext<ScientificAxis> context) {
+        return new EmbeddedScientificAxisEditor(context, null, this.authenticatedUser, this.messages);
+    }
+
+    @Override
+    public AbstractEntityEditor<ScientificAxis> createUpdateEditor(EntityEditingContext<ScientificAxis> context) {
+        return new EmbeddedScientificAxisEditor(context, null, this.authenticatedUser, this.messages);
+    }
 
 }

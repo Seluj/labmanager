@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,14 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.uploads.image;
 
-import java.io.File;
-
 import com.vaadin.flow.function.SerializableSupplier;
 import fr.utbm.ciad.labmanager.views.components.addons.uploads.generic.AbstractServerSideUploadableFileImageViewerField;
 import org.slf4j.Logger;
 
-/** A field that enables to upload an image to the server.
+import java.io.File;
+
+/**
+ * A field that enables to upload an image to the server.
  * This field does not assume that the field's data is of a specific type.
  * Subclasses must implement function to handle the upload file data.
  *
@@ -39,17 +40,18 @@ import org.slf4j.Logger;
  * @since 4.0
  */
 public abstract class AbstractServerSideUploadableImageField<T> extends AbstractServerSideUploadableFileImageViewerField<T>
-		implements ServerSideUploadableImageConstants {
+        implements ServerSideUploadableImageConstants {
 
-	private static final long serialVersionUID = 8918559663409687792L;
+    private static final long serialVersionUID = 8918559663409687792L;
 
-	/** Default constructor.
-	 *
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 */
-	public AbstractServerSideUploadableImageField(SerializableSupplier<Logger> loggerSupplier) {
-		super(loggerSupplier);
-		setAcceptedFileTypes(DEFAULT_ACCEPTED_MIME_TYPES);
-	}
+    /**
+     * Default constructor.
+     *
+     * @param loggerSupplier the dynamic supplier of the loggers.
+     */
+    public AbstractServerSideUploadableImageField(SerializableSupplier<Logger> loggerSupplier) {
+        super(loggerSupplier);
+        setAcceptedFileTypes(DEFAULT_ACCEPTED_MIME_TYPES);
+    }
 
 }

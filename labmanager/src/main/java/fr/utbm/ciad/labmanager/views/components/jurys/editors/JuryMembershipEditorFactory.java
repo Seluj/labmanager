@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import fr.utbm.ciad.labmanager.services.AbstractEntityService.EntityEditingConte
 import fr.utbm.ciad.labmanager.views.components.addons.entities.AbstractEntityEditor;
 import org.slf4j.Logger;
 
-/** Factory that is providing an jury membership editor according to the editing context.
- * 
+/**
+ * Factory that is providing an jury membership editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,48 +35,53 @@ import org.slf4j.Logger;
  */
 public interface JuryMembershipEditorFactory {
 
-	/** Replies the editing context for the given jury membership.
-	 *
-	 * @param membership the jury membership to be edited.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editing context.
-	 */
-	EntityEditingContext<JuryMembership> createContextFor(JuryMembership membership, Logger logger);
+    /**
+     * Replies the editing context for the given jury membership.
+     *
+     * @param membership the jury membership to be edited.
+     * @param logger     the logger to be associated to the context.
+     * @return the editing context.
+     */
+    EntityEditingContext<JuryMembership> createContextFor(JuryMembership membership, Logger logger);
 
-	/** Create an editor that may be used for creating a new jury membership.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<JuryMembership> createAdditionEditor(EntityEditingContext<JuryMembership> context);
+    /**
+     * Create an editor that may be used for creating a new jury membership.
+     *
+     * @param context the context for editing the entity.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<JuryMembership> createAdditionEditor(EntityEditingContext<JuryMembership> context);
 
-	/** Create an editor that may be used for creating a new jury membership.
-	 * 
-	 * @param membership the jury membership to be edited.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<JuryMembership> createAdditionEditor(JuryMembership membership, Logger logger) {
-		final var context = createContextFor(membership, logger);
-		return createAdditionEditor(context);
-	}
+    /**
+     * Create an editor that may be used for creating a new jury membership.
+     *
+     * @param membership the jury membership to be edited.
+     * @param logger     the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<JuryMembership> createAdditionEditor(JuryMembership membership, Logger logger) {
+        final var context = createContextFor(membership, logger);
+        return createAdditionEditor(context);
+    }
 
-	/** Create an editor that may be used for updating an existing jury membership.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<JuryMembership> createUpdateEditor(EntityEditingContext<JuryMembership> context);
+    /**
+     * Create an editor that may be used for updating an existing jury membership.
+     *
+     * @param context the context for editing the entity.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<JuryMembership> createUpdateEditor(EntityEditingContext<JuryMembership> context);
 
-	/** Create an editor that may be used for updating an existing jury membership.
-	 * 
-	 * @param membership the jury membership to be edited.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<JuryMembership> createUpdateEditor(JuryMembership membership, Logger logger) {
-		final var context = createContextFor(membership, logger);
-		return createUpdateEditor(context);
-	}
+    /**
+     * Create an editor that may be used for updating an existing jury membership.
+     *
+     * @param membership the jury membership to be edited.
+     * @param logger     the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<JuryMembership> createUpdateEditor(JuryMembership membership, Logger logger) {
+        final var context = createContextFor(membership, logger);
+        return createUpdateEditor(context);
+    }
 
 }

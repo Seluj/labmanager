@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import java.util.Locale;
 
-/** Status for the scientific axis deletion.
- * 
+/**
+ * Status for the scientific axis deletion.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,57 +36,62 @@ import java.util.Locale;
  */
 public enum ScientificAxisDeletionStatus implements DeletionStatus {
 
-	/** Deletion is impossible because the scientific axis has linked publications.
-	 */
-	PUBLICATION,
+    /**
+     * Deletion is impossible because the scientific axis has linked publications.
+     */
+    PUBLICATION,
 
-	/** Deletion is impossible because the scientific axis has linked projects.
-	 */
-	PROJECT,
+    /**
+     * Deletion is impossible because the scientific axis has linked projects.
+     */
+    PROJECT,
 
-	/** Deletion is impossible because the scientific axis has linked organization membership.
-	 */
-	MEMBERSHIP;
+    /**
+     * Deletion is impossible because the scientific axis has linked organization membership.
+     */
+    MEMBERSHIP;
 
-	private static final String MESSAGE_PREFIX = "scientificAxisDeletionStatus."; //$NON-NLS-1$
+    private static final String MESSAGE_PREFIX = "scientificAxisDeletionStatus."; //$NON-NLS-1$
 
-	/** Replies the label of the deletion status.
-	 *
-	 * @param messages the accessor to the localized labels.
-	 * @param locale the locale to use.
-	 * @return the label of the deletion status.
-	 */
-	public String getLabel(MessageSourceAccessor messages, Locale locale) {
-		final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
-		return Strings.nullToEmpty(label);
-	}
+    /**
+     * Replies the status of scientific axis deletion that corresponds to the given name, with a case-insensitive
+     * test of the name.
+     *
+     * @param name the name of the status of scientific axis deletion, to search for.
+     * @return the status.
+     * @throws IllegalArgumentException if the given name does not corresponds to a type.
+     */
+    public static ScientificAxisDeletionStatus valueOfCaseInsensitive(String name) {
+        if (!Strings.isNullOrEmpty(name)) {
+            for (final var status : values()) {
+                if (name.equalsIgnoreCase(status.name())) {
+                    return status;
+                }
+            }
+        }
+        throw new IllegalArgumentException("Invalid status of scientific axis deletion: " + name); //$NON-NLS-1$
+    }
 
-	/** Replies the status of scientific axis deletion that corresponds to the given name, with a case-insensitive
-	 * test of the name.
-	 *
-	 * @param name the name of the status of scientific axis deletion, to search for.
-	 * @return the status.
-	 * @throws IllegalArgumentException if the given name does not corresponds to a type.
-	 */
-	public static ScientificAxisDeletionStatus valueOfCaseInsensitive(String name) {
-		if (!Strings.isNullOrEmpty(name)) {
-			for (final var status : values()) {
-				if (name.equalsIgnoreCase(status.name())) {
-					return status;
-				}
-			}
-		}
-		throw new IllegalArgumentException("Invalid status of scientific axis deletion: " + name); //$NON-NLS-1$
-	}
+    /**
+     * Replies the label of the deletion status.
+     *
+     * @param messages the accessor to the localized labels.
+     * @param locale   the locale to use.
+     * @return the label of the deletion status.
+     */
+    public String getLabel(MessageSourceAccessor messages, Locale locale) {
+        final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
+        return Strings.nullToEmpty(label);
+    }
 
-	@Override
-	public boolean isOk() {
-		return false;
-	}
+    @Override
+    public boolean isOk() {
+        return false;
+    }
 
-	@Override
-	public Throwable getException(MessageSourceAccessor messages, Locale locale) {
-		return new IllegalStateException(getLabel(messages, locale));
-	}
+    @Override
+    public Throwable getException(MessageSourceAccessor messages, Locale locale) {
+        return new IllegalStateException(getLabel(messages, locale));
+    }
 
 }

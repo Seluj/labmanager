@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,8 +38,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a project editor according to the editing context.
- * 
+/**
+ * Factory that is providing a project editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -49,86 +50,87 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultProjectEditorFactory implements ProjectEditorFactory {
 
-	private final DownloadableFileManager fileManager;
+    private final DownloadableFileManager fileManager;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final AuthenticatedUser authenticatedUser;
 
-	private final MessageSourceAccessor messages;
+    private final MessageSourceAccessor messages;
 
-	private final ResearchOrganizationService organizationService;
+    private final ResearchOrganizationService organizationService;
 
-	private final OrganizationEditorFactory organizationEditorFactory;
+    private final OrganizationEditorFactory organizationEditorFactory;
 
-	private final OrganizationFieldFactory organizationFieldFactory;
+    private final OrganizationFieldFactory organizationFieldFactory;
 
-	private final OrganizationAddressService addressService;
+    private final OrganizationAddressService addressService;
 
-	private final ScientificAxisService axisService;
+    private final ScientificAxisService axisService;
 
-	private final ScientificAxisEditorFactory axisEditorFactory;
+    private final ScientificAxisEditorFactory axisEditorFactory;
 
-	private final ProjectService projectService;
+    private final ProjectService projectService;
 
-	private final ProjectFieldFactory projectFieldFactory;
+    private final ProjectFieldFactory projectFieldFactory;
 
-	/** Constructor.
-	 * 
-	 * @param projectService the service for accessing the JPA entities for projects.
-	 * @param organizationService the service for accessing the JPA entities for research organizations.
-	 * @param addressService the service for accessing the JPA entities for organization addresses.
-	 * @param axisService the service for accessing the JPA entities for scientific axes.
-	 * @param axisEditorFactory the factory for creating the scientific axis editors.
-	 * @param organizationEditorFactory the factory for creating the organization editors.
-	 * @param organizationFieldFactory the factory for creating the organization fields.
-	 * @param projectFieldFactory the factory for creating the project fields.
-	 * @param fileManager the manager of files at the server-side.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public DefaultProjectEditorFactory(
-			@Autowired ProjectService projectService,
-			@Autowired ResearchOrganizationService organizationService,
-			@Autowired OrganizationAddressService addressService,
-			@Autowired ScientificAxisService axisService,
-			@Autowired ScientificAxisEditorFactory axisEditorFactory,
-			@Autowired OrganizationEditorFactory organizationEditorFactory,
-			@Autowired OrganizationFieldFactory organizationFieldFactory,
-			@Autowired ProjectFieldFactory projectFieldFactory,
-			@Autowired DownloadableFileManager fileManager,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.projectService = projectService;
-		this.fileManager = fileManager;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-		this.organizationService = organizationService;
-		this.organizationEditorFactory = organizationEditorFactory;
-		this.organizationFieldFactory = organizationFieldFactory;
-		this.addressService = addressService;
-		this.axisService = axisService;
-		this.axisEditorFactory = axisEditorFactory;
-		this.projectFieldFactory = projectFieldFactory;
-	}
+    /**
+     * Constructor.
+     *
+     * @param projectService            the service for accessing the JPA entities for projects.
+     * @param organizationService       the service for accessing the JPA entities for research organizations.
+     * @param addressService            the service for accessing the JPA entities for organization addresses.
+     * @param axisService               the service for accessing the JPA entities for scientific axes.
+     * @param axisEditorFactory         the factory for creating the scientific axis editors.
+     * @param organizationEditorFactory the factory for creating the organization editors.
+     * @param organizationFieldFactory  the factory for creating the organization fields.
+     * @param projectFieldFactory       the factory for creating the project fields.
+     * @param fileManager               the manager of files at the server-side.
+     * @param authenticatedUser         the connected user.
+     * @param messages                  the accessor to the localized messages (Spring layer).
+     */
+    public DefaultProjectEditorFactory(
+            @Autowired ProjectService projectService,
+            @Autowired ResearchOrganizationService organizationService,
+            @Autowired OrganizationAddressService addressService,
+            @Autowired ScientificAxisService axisService,
+            @Autowired ScientificAxisEditorFactory axisEditorFactory,
+            @Autowired OrganizationEditorFactory organizationEditorFactory,
+            @Autowired OrganizationFieldFactory organizationFieldFactory,
+            @Autowired ProjectFieldFactory projectFieldFactory,
+            @Autowired DownloadableFileManager fileManager,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.projectService = projectService;
+        this.fileManager = fileManager;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+        this.organizationService = organizationService;
+        this.organizationEditorFactory = organizationEditorFactory;
+        this.organizationFieldFactory = organizationFieldFactory;
+        this.addressService = addressService;
+        this.axisService = axisService;
+        this.axisEditorFactory = axisEditorFactory;
+        this.projectFieldFactory = projectFieldFactory;
+    }
 
-	@Override
-	public EntityEditingContext<Project> createContextFor(Project project, Logger logger) {
-		return this.projectService.startEditing(project, logger);
-	}
+    @Override
+    public EntityEditingContext<Project> createContextFor(Project project, Logger logger) {
+        return this.projectService.startEditing(project, logger);
+    }
 
-	@Override
-	public AbstractEntityEditor<Project> createAdditionEditor(EntityEditingContext<Project> context) {
-		return new EmbeddedProjectEditor(context, null, this.projectFieldFactory,
-				this.organizationService, this.addressService, this.axisService,
-				this.axisEditorFactory, this.organizationEditorFactory, this.organizationFieldFactory,
-				this.fileManager, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public AbstractEntityEditor<Project> createAdditionEditor(EntityEditingContext<Project> context) {
+        return new EmbeddedProjectEditor(context, null, this.projectFieldFactory,
+                this.organizationService, this.addressService, this.axisService,
+                this.axisEditorFactory, this.organizationEditorFactory, this.organizationFieldFactory,
+                this.fileManager, this.authenticatedUser, this.messages);
+    }
 
-	@Override
-	public AbstractEntityEditor<Project> createUpdateEditor(EntityEditingContext<Project> context) {
-		return new EmbeddedProjectEditor(context, null, this.projectFieldFactory,
-				this.organizationService, this.addressService, this.axisService,
-				this.axisEditorFactory, this.organizationEditorFactory, this.organizationFieldFactory,
-				this.fileManager, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public AbstractEntityEditor<Project> createUpdateEditor(EntityEditingContext<Project> context) {
+        return new EmbeddedProjectEditor(context, null, this.projectFieldFactory,
+                this.organizationService, this.addressService, this.axisService,
+                this.axisEditorFactory, this.organizationEditorFactory, this.organizationFieldFactory,
+                this.fileManager, this.authenticatedUser, this.messages);
+    }
 
 }

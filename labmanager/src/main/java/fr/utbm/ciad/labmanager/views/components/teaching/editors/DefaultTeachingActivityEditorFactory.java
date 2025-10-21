@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,8 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a teaching activity editor according to the editing context.
- * 
+/**
+ * Factory that is providing a teaching activity editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -44,59 +45,60 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultTeachingActivityEditorFactory implements TeachingActivityEditorFactory {
 
-	private final DownloadableFileManager fileManager;
+    private final DownloadableFileManager fileManager;
 
-	private final OrganizationFieldFactory organizationFieldFactory;
+    private final OrganizationFieldFactory organizationFieldFactory;
 
-	private final TeachingService teachingService;
-	
-	private final PersonFieldFactory personFieldFactory;
+    private final TeachingService teachingService;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final PersonFieldFactory personFieldFactory;
 
-	private final MessageSourceAccessor messages;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructor.
-	 * 
-	 * @param teachingService the service for accessing the JPA entities for teaching activities.
-	 * @param activityCreationStatusComputer the tool for computer the creation status for the teaching activity.
-	 * @param fileManager the manager of the downloadable files.
-	 * @param personFieldFactory the factory for creating the person fields.
-	 * @param userService the service for accessing the JPA entities for users.
-	 * @param organizationFieldFactory the factory for creating the organization fields.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public DefaultTeachingActivityEditorFactory(
-			@Autowired TeachingService teachingService,
-			@Autowired DownloadableFileManager fileManager,
-			@Autowired PersonFieldFactory personFieldFactory,
-			@Autowired OrganizationFieldFactory organizationFieldFactory,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.teachingService = teachingService;
-		this.fileManager = fileManager;
-		this.organizationFieldFactory = organizationFieldFactory;
-		this.personFieldFactory = personFieldFactory;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-	}
+    private final MessageSourceAccessor messages;
 
-	@Override
-	public EntityEditingContext<TeachingActivity> createContextFor(TeachingActivity activity, Logger logger) {
-		return this.teachingService.startEditing(activity, logger);
-	}
-	
-	@Override
-	public AbstractEntityEditor<TeachingActivity> createAdditionEditor(EntityEditingContext<TeachingActivity> context) {
-		return new EmbeddedTeachingActivityEditor(context, null, this.fileManager, this.personFieldFactory,
-				this.organizationFieldFactory, this.authenticatedUser, this.messages);
-	}
+    /**
+     * Constructor.
+     *
+     * @param teachingService                the service for accessing the JPA entities for teaching activities.
+     * @param activityCreationStatusComputer the tool for computer the creation status for the teaching activity.
+     * @param fileManager                    the manager of the downloadable files.
+     * @param personFieldFactory             the factory for creating the person fields.
+     * @param userService                    the service for accessing the JPA entities for users.
+     * @param organizationFieldFactory       the factory for creating the organization fields.
+     * @param authenticatedUser              the connected user.
+     * @param messages                       the accessor to the localized messages (Spring layer).
+     */
+    public DefaultTeachingActivityEditorFactory(
+            @Autowired TeachingService teachingService,
+            @Autowired DownloadableFileManager fileManager,
+            @Autowired PersonFieldFactory personFieldFactory,
+            @Autowired OrganizationFieldFactory organizationFieldFactory,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.teachingService = teachingService;
+        this.fileManager = fileManager;
+        this.organizationFieldFactory = organizationFieldFactory;
+        this.personFieldFactory = personFieldFactory;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+    }
 
-	@Override
-	public AbstractEntityEditor<TeachingActivity> createUpdateEditor(EntityEditingContext<TeachingActivity> context) {
-		return new EmbeddedTeachingActivityEditor(context, null, this.fileManager, this.personFieldFactory,
-				this.organizationFieldFactory, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public EntityEditingContext<TeachingActivity> createContextFor(TeachingActivity activity, Logger logger) {
+        return this.teachingService.startEditing(activity, logger);
+    }
+
+    @Override
+    public AbstractEntityEditor<TeachingActivity> createAdditionEditor(EntityEditingContext<TeachingActivity> context) {
+        return new EmbeddedTeachingActivityEditor(context, null, this.fileManager, this.personFieldFactory,
+                this.organizationFieldFactory, this.authenticatedUser, this.messages);
+    }
+
+    @Override
+    public AbstractEntityEditor<TeachingActivity> createUpdateEditor(EntityEditingContext<TeachingActivity> context) {
+        return new EmbeddedTeachingActivityEditor(context, null, this.fileManager, this.personFieldFactory,
+                this.organizationFieldFactory, this.authenticatedUser, this.messages);
+    }
 
 }

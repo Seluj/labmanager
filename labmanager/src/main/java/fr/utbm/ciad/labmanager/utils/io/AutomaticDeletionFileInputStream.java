@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-/** An file input stream that delete the source file at the end of reading.
- * 
+/**
+ * An file input stream that delete the source file at the end of reading.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,24 +35,25 @@ import java.io.IOException;
  */
 public class AutomaticDeletionFileInputStream extends FileInputStream {
 
-	private final File file;
-	
-	/** Constructor.
-	 * 
-	 * @param file the file to read.
-	 * @throws FileNotFoundException if the file does not exist
-	 */
-	public AutomaticDeletionFileInputStream(File file) throws FileNotFoundException {
-		super(file);
-		this.file = file;
-	}
+    private final File file;
 
-	@Override
-	public void close() throws IOException {
-		super.close();
-		if (this.file != null) {
-			this.file.delete();
-		}
-	}
-	
+    /**
+     * Constructor.
+     *
+     * @param file the file to read.
+     * @throws FileNotFoundException if the file does not exist
+     */
+    public AutomaticDeletionFileInputStream(File file) throws FileNotFoundException {
+        super(file);
+        this.file = file;
+    }
+
+    @Override
+    public void close() throws IOException {
+        super.close();
+        if (this.file != null) {
+            this.file.delete();
+        }
+    }
+
 }

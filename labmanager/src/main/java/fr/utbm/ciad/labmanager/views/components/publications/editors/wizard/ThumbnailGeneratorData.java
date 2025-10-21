@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,15 @@
 
 package fr.utbm.ciad.labmanager.views.components.publications.editors.wizard;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.utbm.ciad.labmanager.data.publication.Publication;
 import fr.utbm.ciad.labmanager.views.components.addons.wizard.AbstractContextData;
 
-/** Data for the wizard that generate the thumbnail of the publications.
- * 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Data for the wizard that generate the thumbnail of the publications.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,31 +36,34 @@ import fr.utbm.ciad.labmanager.views.components.addons.wizard.AbstractContextDat
  */
 public class ThumbnailGeneratorData extends AbstractContextData {
 
-	private static final long serialVersionUID = 5287751273038937188L;
+    private static final long serialVersionUID = 5287751273038937188L;
 
-	private List<Publication> publications = new ArrayList<>();
+    private List<Publication> publications = new ArrayList<>();
 
-	/** Constructor.
-	 */
-	public ThumbnailGeneratorData() {
-		//
-	}
+    /**
+     * Constructor.
+     */
+    public ThumbnailGeneratorData() {
+        //
+    }
 
-	/** Replies the list of publications.
-	 * 
-	 * @return the publications.
-	 */
-	public synchronized List<Publication> getPublications() {
-		return this.publications;
-	}
+    /**
+     * Replies the list of publications.
+     *
+     * @return the publications.
+     */
+    public synchronized List<Publication> getPublications() {
+        return this.publications;
+    }
 
-	/** Change the list of publications.
-	 * 
-	 * @param publications the publications.
-	 */
-	public synchronized void setPublications(List<Publication> publications) {
-		assert publications != null;
-		this.publications = publications;
-	}
+    /**
+     * Change the list of publications.
+     *
+     * @param publications the publications.
+     */
+    public synchronized void setPublications(List<Publication> publications) {
+        assert publications != null;
+        this.publications = publications;
+    }
 
 }

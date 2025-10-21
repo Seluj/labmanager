@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager.utils.io.markdown;
 
-/** Utilities for Markdown.
- * 
+/**
+ * Utilities for Markdown.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -29,11 +30,12 @@ package fr.utbm.ciad.labmanager.utils.io.markdown;
  */
 public interface MarkdownTools {
 
-	/** Parse the given markdown text and replies the paragraphs in HTML format.
-	 *
-	 * @param markdown the Markdown text.
-	 * @return the HTML text
-	 */
-	String markdownToHTML(String markdown);
+    /**
+     * Parse the given markdown text and replies the paragraphs in HTML format.
+     *
+     * @param markdown the Markdown text.
+     * @return the HTML text
+     */
+    String markdownToHTML(String markdown);
 
 }

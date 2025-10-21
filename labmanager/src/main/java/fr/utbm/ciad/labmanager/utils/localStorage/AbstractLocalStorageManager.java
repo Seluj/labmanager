@@ -11,7 +11,6 @@ import java.util.function.Consumer;
  * Abstract class for managing items that can be store locally.
  *
  * @param <T> The LocalStorageItem containing the data to store locally
- *
  * @author $Author: sgalland$
  * @author $Author: pschneiderlin$
  * @version $Name$ $Revision$ $Date$
@@ -28,7 +27,7 @@ public abstract class AbstractLocalStorageManager<T extends LocalStorageItem> im
      *
      * @param factory the factory used to create items of type T
      */
-    public AbstractLocalStorageManager(LocalStorageItemFactory<T> factory){
+    public AbstractLocalStorageManager(LocalStorageItemFactory<T> factory) {
         this.factory = factory;
     }
 
@@ -44,23 +43,23 @@ public abstract class AbstractLocalStorageManager<T extends LocalStorageItem> im
     }
 
     @Override
-    public void add(T item){
-        try{
+    public void add(T item) {
+        try {
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(item);
             WebStorage.setItem(item.getId(), json);
-        }catch(JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void remove(T item){
+    public void remove(T item) {
         remove(item.getId());
     }
 
     @Override
-    public void remove(String id){
+    public void remove(String id) {
         WebStorage.removeItem(id);
     }
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.views.components.assocstructures.fields;
 
 import org.slf4j.Logger;
 
-/** Factory for building the fields related to the associated structures.
- * 
+/**
+ * Factory for building the fields related to the associated structures.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,11 +32,12 @@ import org.slf4j.Logger;
  */
 public interface AssociatedStructureFieldFactory {
 
-	/** Create a field for entering the holder identity of an associated structure.
-	 *
-	 * @param logger the logger to be used by the component.
-	 * @return the field, never {@code null}.
-	 */
-	AssociatedStructureHolderListGridField createHolderField(Logger logger);
+    /**
+     * Create a field for entering the holder identity of an associated structure.
+     *
+     * @param logger the logger to be used by the component.
+     * @return the field, never {@code null}.
+     */
+    AssociatedStructureHolderListGridField createHolderField(Logger logger);
 
 }

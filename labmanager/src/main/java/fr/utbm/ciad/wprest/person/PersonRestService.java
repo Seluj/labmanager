@@ -77,7 +77,7 @@ public class PersonRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no user is found with the provided ID or pageId.")
     })
     @GetMapping("/card")
-    
+
     public ResponseEntity<PersonCardDTO> getPersonCard(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String pageId
@@ -108,7 +108,7 @@ public class PersonRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no user is found with the provided ID or pageId.")
     })
     @GetMapping("/biography")
-    
+
     public ResponseEntity<PersonBiographyDTO> getPersonBiography(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String pageId
@@ -142,7 +142,7 @@ public class PersonRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no user is found with the provided ID or pageId.")
     })
     @GetMapping("/guestInvitations")
-    
+
     public ResponseEntity<Map<PersonInvitationType, Set<PersonInvitationData>>> getPersonGuestInvitations(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String pageId
@@ -173,7 +173,7 @@ public class PersonRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no user is found with the provided ID or pageId.")
     })
     @GetMapping("/inviterInvitations")
-    
+
     public ResponseEntity<Map<PersonInvitationType, Set<PersonInvitationData>>> getPersonInviterInvitations(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String pageId
@@ -204,7 +204,7 @@ public class PersonRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no user is found with the provided ID or pageId.")
     })
     @GetMapping("/invitations")
-    
+
     public ResponseEntity<PersonInvitationsDTO> getAllPersonInvitations(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String pageId
@@ -238,7 +238,7 @@ public class PersonRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no user is found with the provided ID or pageId.")
     })
     @GetMapping("/jurys")
-    
+
     public ResponseEntity<Set<PersonJuryMembershipDTO>> getPersonJuryMemberships(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String pageId
@@ -271,7 +271,7 @@ public class PersonRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no user is found with the provided ID or pageId.")
     })
     @GetMapping("/supervisions")
-    
+
     public ResponseEntity<List<SupervisionsDTO>> getPersonSupervisions(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String pageId
@@ -306,7 +306,7 @@ public class PersonRestService {
             @ApiResponse(responseCode = "404", description = "Not Found if no user is found with the provided ID or pageId.")
     })
     @GetMapping("/memberships")
-    
+
     public ResponseEntity<Set<PersonMembershipDTO>> getMemberships(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String pageId) {
@@ -331,7 +331,7 @@ public class PersonRestService {
      * @param invitations a set of PersonInvitation entities
      * @return a map where keys are PersonInvitationType and values are sets of PersonInvitationData
      */
-    
+
     public Map<PersonInvitationType, Set<PersonInvitationData>> getInvitationsDTOEntity(Set<PersonInvitation> invitations) {
         Map<PersonInvitationType, Set<PersonInvitationData>> personInvitations = new HashMap<>();
 
@@ -408,7 +408,7 @@ public class PersonRestService {
      * @param pageId an optional parameter for the person's web page ID
      * @param person the person entity, null if not found
      * @return a ResponseEntity containing an error status code (400 or 404)
-     *         if the parameters are invalid or if the person is null, null otherwise
+     * if the parameters are invalid or if the person is null, null otherwise
      */
     public <T> ResponseEntity<T> getErrorPage(Long id, String pageId, Person person) {
         if ((id == null && pageId == null) || (id != null && pageId != null)) {
@@ -477,7 +477,7 @@ public class PersonRestService {
      *
      * @param jury the JuryMembership entity containing the jury details
      * @return a PersonJuryMembershipDTO object populated with the jury membership's title, year, candidate,
-     *         directors or promoters, university, and type
+     * directors or promoters, university, and type
      */
     public PersonJuryMembershipDTO getJuryMembershipDataFrom(JuryMembership jury) {
         String title = jury.getTitle();
@@ -514,9 +514,9 @@ public class PersonRestService {
      * Constructs a SupervisionsDTO containing details of a supervision.
      *
      * @param supervision the Supervision entity containing the supervision details
-     * @param person the Person entity for whom the supervision details should be retrieved
+     * @param person      the Person entity for whom the supervision details should be retrieved
      * @return a SupervisionsDTO object populated with the supervision's title, year, supervised person,
-     *         organization, supervisors, and type of supervision
+     * organization, supervisors, and type of supervision
      */
     public SupervisionsDTO getSupervisionsDataFrom(Supervision supervision, Person person) {
         String title = supervision.getTitle();
@@ -541,7 +541,7 @@ public class PersonRestService {
             supervisionType = personSupervisorData.get().type();
         }
 
-       return new SupervisionsDTO(title, supervisedPerson, year, supervisionType, organisation, supervisorsData);
+        return new SupervisionsDTO(title, supervisedPerson, year, supervisionType, organisation, supervisorsData);
     }
 
     /**

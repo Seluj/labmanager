@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,8 +38,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
-/** List all the journals.
- * 
+/**
+ * List all the journals.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -50,63 +51,65 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 @PermitAll
 public class JournalsListView extends StandardJournalListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = 4004385277053773899L;
+    private static final long serialVersionUID = 4004385277053773899L;
 
-	private MenuItem updateRankingsButton;
+    private MenuItem updateRankingsButton;
 
-	/** Constructor.
-	 *
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param journalService the service for accessing the journals.
-	 * @param journalEditorFactory the factory for creating journal editors.
-	 */
-	public JournalsListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired JournalService journalService,
-			@Autowired JournalEditorFactory journalEditorFactory) {
-		super(authenticatedUser, messages, loggerFactory, journalService, journalEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser    the connected user.
+     * @param messages             the accessor to the localized messages (spring layer).
+     * @param loggerFactory        the factory to be used for the composite logger.
+     * @param journalService       the service for accessing the journals.
+     * @param journalEditorFactory the factory for creating journal editors.
+     */
+    public JournalsListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired JournalService journalService,
+            @Autowired JournalEditorFactory journalEditorFactory) {
+        super(authenticatedUser, messages, loggerFactory, journalService, journalEditorFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.journals.journals.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.journals.journals.list"); //$NON-NLS-1$
+    }
 
-	@Override
-	protected MenuBar createMenuBar() {
-		var menu = super.createMenuBar();
-		if (menu == null) {
-			menu = new MenuBar(); 
-			menu.addThemeVariants(MenuBarVariant.LUMO_ICON);
-		}
-		
-		this.updateRankingsButton = ComponentFactory.addIconItem(menu, LineAwesomeIcon.SYNC_ALT_SOLID, null, null, it -> openRankingsUpdateWizard());
+    @Override
+    protected MenuBar createMenuBar() {
+        var menu = super.createMenuBar();
+        if (menu == null) {
+            menu = new MenuBar();
+            menu.addThemeVariants(MenuBarVariant.LUMO_ICON);
+        }
 
-		return menu;
-	}
+        this.updateRankingsButton = ComponentFactory.addIconItem(menu, LineAwesomeIcon.SYNC_ALT_SOLID, null, null, it -> openRankingsUpdateWizard());
 
-	/** Open the wizard for updating the journal rankings.
-	 */
-	protected void openRankingsUpdateWizard() {
-		final var selection = getGrid().getSelectedItems();
-		if (selection != null && !selection.isEmpty()) {
-			final var identifiers = AbstractLabManagerWizard.buildQueryParameters(selection);
-			getUI().ifPresent(ui -> ui.navigate(JournalRankingUpdaterWizard.class, identifiers));
-		} else {
-			getUI().ifPresent(ui -> ui.navigate(JournalRankingUpdaterWizard.class));
-		}
-	}
+        return menu;
+    }
 
-	@Override
-	public void localeChange(LocaleChangeEvent event) {
-		super.localeChange(event);
-		if (this.updateRankingsButton != null) {
-			ComponentFactory.setIconItemText(this.updateRankingsButton, getTranslation("views.journals.updateRankings")); //$NON-NLS-1$
-		}
-	}
+    /**
+     * Open the wizard for updating the journal rankings.
+     */
+    protected void openRankingsUpdateWizard() {
+        final var selection = getGrid().getSelectedItems();
+        if (selection != null && !selection.isEmpty()) {
+            final var identifiers = AbstractLabManagerWizard.buildQueryParameters(selection);
+            getUI().ifPresent(ui -> ui.navigate(JournalRankingUpdaterWizard.class, identifiers));
+        } else {
+            getUI().ifPresent(ui -> ui.navigate(JournalRankingUpdaterWizard.class));
+        }
+    }
+
+    @Override
+    public void localeChange(LocaleChangeEvent event) {
+        super.localeChange(event);
+        if (this.updateRankingsButton != null) {
+            ComponentFactory.setIconItemText(this.updateRankingsButton, getTranslation("views.journals.updateRankings")); //$NON-NLS-1$
+        }
+    }
 
 }

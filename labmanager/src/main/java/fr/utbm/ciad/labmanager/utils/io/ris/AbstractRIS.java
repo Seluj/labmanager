@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,74 +26,79 @@ import org.springframework.context.support.MessageSourceAccessor;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-/** Utilities for RIS.
+/**
+ * Utilities for RIS.
  * RIS is a standardized tag format developed by Research Information Systems, Incorporated to enable citation programs
  * to exchange data.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 3.7
  * @see "https://en.wikipedia.org/wiki/RIS_(file_format)"
+ * @since 3.7
  */
 public abstract class AbstractRIS implements RIS {
 
-	private static final Pattern PAGES_PATTERN = Pattern.compile("^\\s*([0-9]+)(?:\\s*\\-+\\s*([0-9]+)\\s*)?$"); //$NON-NLS-1$
+    private static final Pattern PAGES_PATTERN = Pattern.compile("^\\s*([0-9]+)(?:\\s*\\-+\\s*([0-9]+)\\s*)?$"); //$NON-NLS-1$
 
-	private final Random random = new Random();
+    private final Random random = new Random();
 
-	private final MessageSourceAccessor messages;
+    private final MessageSourceAccessor messages;
 
-	/** Constructor.
-	 *
-	 * @param messages the accessor to the localized strings.
-	 */
-	public AbstractRIS(MessageSourceAccessor messages) {
-		this.messages = messages;
-	}
-	
-	/** Replies the accessor to the localized strings.
-	 *
-	 * @return the accessor.
-	 */
-	protected MessageSourceAccessor getMessageSourceAccessor() {
-		return this.messages;
-	}
-	
-	/** Parse the string that represents a page range.
-	 *
-	 * @param pages the string to parse.
-	 * @return the page range, or {@code null} if the given argument cannot be parsed.
-	 */
-	protected static IntegerRange parsePages(String pages) {
-		if (!Strings.isNullOrEmpty(pages)) {
-			final var matcher = PAGES_PATTERN.matcher(pages);
-			if (matcher.find()) {
-				try {
-					final var p0 = matcher.group(1);
-					if (matcher.groupCount() > 1) {
-						final var p1 = matcher.group(2);
-						final var page0 = Integer.parseUnsignedInt(p0);
-						final var page1 = Integer.parseUnsignedInt(p1);
-						return new IntegerRange(page0, page1);
-					}
-					final var page = Integer.parseUnsignedInt(p0);
-					return new IntegerRange(page, page);
-				} catch (Throwable ex) {
-					//
-				}
-			}
-		}
-		return null;
-	}
+    /**
+     * Constructor.
+     *
+     * @param messages the accessor to the localized strings.
+     */
+    public AbstractRIS(MessageSourceAccessor messages) {
+        this.messages = messages;
+    }
 
-	/** Generate an UUID.
-	 *
-	 * @return the UUID.
-	 */
-	protected Integer generateUUID() {
-		return Integer.valueOf(Math.abs(this.random.nextInt()));
-	}
+    /**
+     * Parse the string that represents a page range.
+     *
+     * @param pages the string to parse.
+     * @return the page range, or {@code null} if the given argument cannot be parsed.
+     */
+    protected static IntegerRange parsePages(String pages) {
+        if (!Strings.isNullOrEmpty(pages)) {
+            final var matcher = PAGES_PATTERN.matcher(pages);
+            if (matcher.find()) {
+                try {
+                    final var p0 = matcher.group(1);
+                    if (matcher.groupCount() > 1) {
+                        final var p1 = matcher.group(2);
+                        final var page0 = Integer.parseUnsignedInt(p0);
+                        final var page1 = Integer.parseUnsignedInt(p1);
+                        return new IntegerRange(page0, page1);
+                    }
+                    final var page = Integer.parseUnsignedInt(p0);
+                    return new IntegerRange(page, page);
+                } catch (Throwable ex) {
+                    //
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Replies the accessor to the localized strings.
+     *
+     * @return the accessor.
+     */
+    protected MessageSourceAccessor getMessageSourceAccessor() {
+        return this.messages;
+    }
+
+    /**
+     * Generate an UUID.
+     *
+     * @return the UUID.
+     */
+    protected Integer generateUUID() {
+        return Integer.valueOf(Math.abs(this.random.nextInt()));
+    }
 
 }

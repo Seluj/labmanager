@@ -1,12 +1,12 @@
 package fr.utbm.ciad.labmanager.views.components.addons.entities;
 
-import static fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory.getTranslation;
-
 import fr.utbm.ciad.labmanager.views.components.conferences.editors.regular.ConferenceCreationStatusComputer;
 import fr.utbm.ciad.labmanager.views.components.journals.editors.regular.JournalCreationStatusComputer;
 import fr.utbm.ciad.labmanager.views.components.organizations.editors.regular.OrganizationCreationStatusComputer;
 import fr.utbm.ciad.labmanager.views.components.persons.editors.regular.PersonCreationStatusComputer;
 import fr.utbm.ciad.labmanager.views.components.publications.editors.regular.PublicationCreationStatusComputer;
+
+import static fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory.getTranslation;
 
 /**
  * Enum that represents the different types of similarity errors that can be found when importing data.

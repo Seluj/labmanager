@@ -7,7 +7,6 @@ import java.util.function.Supplier;
  * Manages the creation of a component with a specified name and provides the ability to apply custom styling to it.
  *
  * @param <T> The type of the component.
- *
  * @author $Author: sgalland$
  * @author $Author: pschneiderlin$
  * @version $Name$ $Revision$ $Date$
@@ -23,7 +22,7 @@ public class SelectComponent<T> {
     /**
      * Default Constructor
      */
-    public SelectComponent(){
+    public SelectComponent() {
         name = "";
         componentSupplier = null;
         styleConsumer = null;
@@ -32,11 +31,11 @@ public class SelectComponent<T> {
     /**
      * Constructor
      *
-     * @param name The name of the component.
+     * @param name              The name of the component.
      * @param componentSupplier A supplier to provide the component instance.
-     * @param styleConsumer A consumer to apply styles to the component, can be null.
+     * @param styleConsumer     A consumer to apply styles to the component, can be null.
      */
-    public SelectComponent(String name, Supplier<T> componentSupplier, Consumer<T> styleConsumer){
+    public SelectComponent(String name, Supplier<T> componentSupplier, Consumer<T> styleConsumer) {
         this.name = name;
         this.componentSupplier = componentSupplier;
         this.styleConsumer = styleConsumer;
@@ -45,10 +44,10 @@ public class SelectComponent<T> {
     /**
      * Constructor
      *
-     * @param name The name of the component.
+     * @param name              The name of the component.
      * @param componentSupplier A supplier to provide the component instance.
      */
-    public SelectComponent(String name, Supplier<T> componentSupplier){
+    public SelectComponent(String name, Supplier<T> componentSupplier) {
         this(name, componentSupplier, null);
     }
 
@@ -58,10 +57,10 @@ public class SelectComponent<T> {
      *
      * @return The component instance or null if the supplier is not defined.
      */
-    public T getComponent(){
-        if(componentSupplier != null){
+    public T getComponent() {
+        if (componentSupplier != null) {
             T component = componentSupplier.get();
-            if(styleConsumer != null){
+            if (styleConsumer != null) {
                 styleConsumer.accept(component);
             }
             return component;

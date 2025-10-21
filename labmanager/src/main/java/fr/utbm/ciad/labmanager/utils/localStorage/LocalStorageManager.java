@@ -6,7 +6,6 @@ import java.util.function.Consumer;
  * Interface for managing items that can be store locally.
  *
  * @param <T> The LocalStorageItem containing the data to store locally
- *
  * @author $Author: sgalland$
  * @author $Author: pschneiderlin$
  * @version $Name$ $Revision$ $Date$
@@ -26,7 +25,7 @@ public interface LocalStorageManager<T extends LocalStorageItem> {
     /**
      * Retrieves an item from local storage based on its ID and executes the provided callback once the item is retrieved.
      *
-     * @param id the unique identifier of the item to retrieve
+     * @param id         the unique identifier of the item to retrieve
      * @param onComplete a callback that will be executed when the item is retrieved
      */
     void getItem(String id, Consumer<T> onComplete);

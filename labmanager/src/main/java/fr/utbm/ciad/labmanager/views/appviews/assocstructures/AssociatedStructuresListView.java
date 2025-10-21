@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,8 +32,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** List all the associated structures.
- * 
+/**
+ * List all the associated structures.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -44,28 +45,29 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class AssociatedStructuresListView extends StandardAssociatedStructureListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = -2694471588623830169L;
+    private static final long serialVersionUID = -2694471588623830169L;
 
-	/** Constructor.
-	 * 
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param structureService the service for accessing the associated structures.
-	 * @param associatedStructureEditorFactory the factory for creating the associated-structure editors.
-	 */
-	public AssociatedStructuresListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired AssociatedStructureService structureService,
-			@Autowired AssociatedStructureEditorFactory associatedStructureEditorFactory) {
-		super(authenticatedUser, messages, loggerFactory, structureService, associatedStructureEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser                the connected user.
+     * @param messages                         the accessor to the localized messages (spring layer).
+     * @param loggerFactory                    the factory to be used for the composite logger.
+     * @param structureService                 the service for accessing the associated structures.
+     * @param associatedStructureEditorFactory the factory for creating the associated-structure editors.
+     */
+    public AssociatedStructuresListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired AssociatedStructureService structureService,
+            @Autowired AssociatedStructureEditorFactory associatedStructureEditorFactory) {
+        super(authenticatedUser, messages, loggerFactory, structureService, associatedStructureEditorFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.associated_structure.structures.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.associated_structure.structures.list"); //$NON-NLS-1$
+    }
 
 }

@@ -14,22 +14,22 @@ import com.vaadin.flow.component.orderedlayout.FlexLayout;
  */
 public abstract class ToggleComponent extends FlexLayout {
 
-    private boolean mode = false;
     private final Runnable firstMode;
     private final Runnable secondMode;
+    private boolean mode = false;
 
     /**
      * Default Constructor
      */
-    public ToggleComponent(){
+    public ToggleComponent() {
         this(null, null);
     }
 
     /**
      * Constructs a ToggleComponent with custom labels and actions for two modes.
      *
-     * @param firstMode      the action to execute when switching to the first mode.
-     * @param secondMode     the action to execute when switching to the second mode.
+     * @param firstMode  the action to execute when switching to the first mode.
+     * @param secondMode the action to execute when switching to the second mode.
      */
     public ToggleComponent(Runnable firstMode, Runnable secondMode) {
         this.firstMode = firstMode;
@@ -86,20 +86,21 @@ public abstract class ToggleComponent extends FlexLayout {
     }
 
     /**
+     * Get the mode state
+     *
+     * @return the mode state
+     */
+    public boolean getMode() {
+        return mode;
+    }
+
+    /**
      * Manually sets the mode state without triggering any associated actions.
      *
      * @param mode true to firstMode mode; false to second one.
      */
     public void setMode(boolean mode) {
         this.mode = mode;
-    }
-
-    /**
-     * Get the mode state
-     * @return the mode state
-     */
-    public boolean getMode() {
-        return mode;
     }
 
     /**

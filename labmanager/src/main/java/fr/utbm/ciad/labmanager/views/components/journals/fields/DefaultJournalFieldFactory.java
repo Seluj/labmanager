@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.journals.fields;
 
-import java.util.function.Consumer;
-
 import com.vaadin.flow.function.SerializableBiConsumer;
 import fr.utbm.ciad.labmanager.data.journal.Journal;
 import fr.utbm.ciad.labmanager.security.AuthenticatedUser;
@@ -29,8 +27,11 @@ import fr.utbm.ciad.labmanager.views.components.journals.editors.JournalEditorFa
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
-/** Factory for building the fields related to the journals.
- * 
+import java.util.function.Consumer;
+
+/**
+ * Factory for building the fields related to the journals.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -40,35 +41,36 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultJournalFieldFactory implements JournalFieldFactory {
 
-	private final JournalService journalService;
+    private final JournalService journalService;
 
-	private final JournalEditorFactory journalEditorFactory;
+    private final JournalEditorFactory journalEditorFactory;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructor.
-	 *
-	 * @param journalService the service for accessing the journal JPA entities.
-	 * @param journalEditorFactory factory for creating the journal editors.
-	 * @param authenticatedUser the user that is currently authenticated.
-	 */
-	public DefaultJournalFieldFactory(JournalService journalService, JournalEditorFactory journalEditorFactory, AuthenticatedUser authenticatedUser) {
-		this.journalService = journalService;
-		this.journalEditorFactory = journalEditorFactory;
-		this.authenticatedUser = authenticatedUser;
-	}
+    /**
+     * Constructor.
+     *
+     * @param journalService       the service for accessing the journal JPA entities.
+     * @param journalEditorFactory factory for creating the journal editors.
+     * @param authenticatedUser    the user that is currently authenticated.
+     */
+    public DefaultJournalFieldFactory(JournalService journalService, JournalEditorFactory journalEditorFactory, AuthenticatedUser authenticatedUser) {
+        this.journalService = journalService;
+        this.journalEditorFactory = journalEditorFactory;
+        this.authenticatedUser = authenticatedUser;
+    }
 
-	@Override
-	public SingleJournalNameField createSingleNameField(
-			SerializableBiConsumer<Journal, Consumer<Journal>> creationWithUiCallback,
-			SerializableBiConsumer<Journal, Consumer<Journal>> creationWithoutUiCallback) {
-		return new SingleJournalNameField(this.journalService, creationWithUiCallback, creationWithoutUiCallback);
-	}
+    @Override
+    public SingleJournalNameField createSingleNameField(
+            SerializableBiConsumer<Journal, Consumer<Journal>> creationWithUiCallback,
+            SerializableBiConsumer<Journal, Consumer<Journal>> creationWithoutUiCallback) {
+        return new SingleJournalNameField(this.journalService, creationWithUiCallback, creationWithoutUiCallback);
+    }
 
-	@Override
-	public SingleJournalNameField createSingleNameField(String creationTitle, Logger logger) {
-		return new SingleJournalNameField(this.journalService, this.journalEditorFactory, this.authenticatedUser,
-				creationTitle, logger);
-	}
+    @Override
+    public SingleJournalNameField createSingleNameField(String creationTitle, Logger logger) {
+        return new SingleJournalNameField(this.journalService, this.journalEditorFactory, this.authenticatedUser,
+                creationTitle, logger);
+    }
 
 }

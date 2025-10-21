@@ -21,7 +21,7 @@ public class ComponentContainerWithContextMenu extends ComponentContainer {
     /**
      * Default Constructor
      */
-    public ComponentContainerWithContextMenu(){
+    public ComponentContainerWithContextMenu() {
         super();
         this.contextMenu = ContextMenuFactory.createContextMenu(ContextMenuFactory.MenuType.BASIC, this);
     }
@@ -32,7 +32,7 @@ public class ComponentContainerWithContextMenu extends ComponentContainer {
      * @param component the component to be managed within this container.
      * @param menuType  the type of context menu to create and associate with this container.
      */
-    public ComponentContainerWithContextMenu(Component component, ContextMenuFactory.MenuType menuType){
+    public ComponentContainerWithContextMenu(Component component, ContextMenuFactory.MenuType menuType) {
         super(component);
         this.contextMenu = ContextMenuFactory.createContextMenu(menuType, this);
     }

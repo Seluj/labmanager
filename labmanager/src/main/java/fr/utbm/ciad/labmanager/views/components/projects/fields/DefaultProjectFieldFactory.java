@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.projects.fields;
 
-import java.util.function.Consumer;
-
 import com.vaadin.flow.function.SerializableBiConsumer;
 import fr.utbm.ciad.labmanager.data.project.Project;
 import fr.utbm.ciad.labmanager.services.project.ProjectService;
@@ -30,8 +28,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory for building the fields related to the supervisions.
- * 
+import java.util.function.Consumer;
+
+/**
+ * Factory for building the fields related to the supervisions.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -41,44 +42,45 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultProjectFieldFactory implements ProjectFieldFactory {
 
-	private final ProjectService projectService;
+    private final ProjectService projectService;
 
-	private final PersonFieldFactory personFieldFactory;
+    private final PersonFieldFactory personFieldFactory;
 
-	private final MessageSourceAccessor messages;
+    private final MessageSourceAccessor messages;
 
-	/** Constructor.
-	 *
-	 * @param projectService the service for accessing the project entities from the JPA database.
-	 * @param personFieldFactory the factory for creating the person fields.
-	 * @param messages accessor to the localized messages.
-	 */
-	public DefaultProjectFieldFactory(
-			@Autowired ProjectService projectService,
-			@Autowired PersonFieldFactory personFieldFactory,
-			@Autowired MessageSourceAccessor messages) {
-		this.projectService = projectService;
-		this.personFieldFactory = personFieldFactory;
-		this.messages = messages;
-	}
-	
-	@Override
-	public MultiProjectNameField createMultiProjectNameField(
-			SerializableBiConsumer<Project, Consumer<Project>> creationWithUiCallback,
-			SerializableBiConsumer<Project, Consumer<Project>> creationWithoutUiCallback,
-			Consumer<Project> initializer) {
-		return new MultiProjectNameField(this.projectService,
-				creationWithUiCallback, creationWithoutUiCallback, initializer);
-	}
+    /**
+     * Constructor.
+     *
+     * @param projectService     the service for accessing the project entities from the JPA database.
+     * @param personFieldFactory the factory for creating the person fields.
+     * @param messages           accessor to the localized messages.
+     */
+    public DefaultProjectFieldFactory(
+            @Autowired ProjectService projectService,
+            @Autowired PersonFieldFactory personFieldFactory,
+            @Autowired MessageSourceAccessor messages) {
+        this.projectService = projectService;
+        this.personFieldFactory = personFieldFactory;
+        this.messages = messages;
+    }
 
-	@Override
-	public ProjectBudgetListGridField createProjectBudgetField() {
-		return new ProjectBudgetListGridField(this.messages);
-	}
+    @Override
+    public MultiProjectNameField createMultiProjectNameField(
+            SerializableBiConsumer<Project, Consumer<Project>> creationWithUiCallback,
+            SerializableBiConsumer<Project, Consumer<Project>> creationWithoutUiCallback,
+            Consumer<Project> initializer) {
+        return new MultiProjectNameField(this.projectService,
+                creationWithUiCallback, creationWithoutUiCallback, initializer);
+    }
 
-	@Override
-	public ProjectMemberListGridField createProjectMemberField(Logger logger) {
-		return new ProjectMemberListGridField(this.personFieldFactory, this.messages, logger);
-	}
+    @Override
+    public ProjectBudgetListGridField createProjectBudgetField() {
+        return new ProjectBudgetListGridField(this.messages);
+    }
+
+    @Override
+    public ProjectMemberListGridField createProjectMemberField(Logger logger) {
+        return new ProjectMemberListGridField(this.personFieldFactory, this.messages, logger);
+    }
 
 }

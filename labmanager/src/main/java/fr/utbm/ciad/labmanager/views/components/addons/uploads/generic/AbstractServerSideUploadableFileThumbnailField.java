@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,12 +19,6 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.uploads.generic;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.function.SerializableFunction;
@@ -37,7 +31,10 @@ import fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory;
 import org.arakhne.afc.vmutil.FileSystem;
 import org.slf4j.Logger;
 
-/** A field that enables to upload a binary file to the server and shows its graphical representation
+import java.io.*;
+
+/**
+ * A field that enables to upload a binary file to the server and shows its graphical representation
  * named the thumbnail..
  * This field does not assume that the field's data is of a specific type.
  * Subclasses must implement function to handle the upload file data.
@@ -53,164 +50,166 @@ import org.slf4j.Logger;
  */
 public abstract class AbstractServerSideUploadableFileThumbnailField<T> extends AbstractServerSideUploadableFileImageViewerField<T> {
 
-	private static final long serialVersionUID = -3720879038691372485L;
+    private static final long serialVersionUID = -3720879038691372485L;
 
-	private final DownloadableFileManager fileManager;
+    private final DownloadableFileManager fileManager;
 
-	private final SerializableSupplier<File> filenameSupplier;
+    private final SerializableSupplier<File> filenameSupplier;
 
-	private byte[] thumbnail = null;
+    private byte[] thumbnail = null;
 
-	/** Default constructor.
-	 *
-	 * @param fileManager the manager of the server-side files.
-	 * @param filenameSupplier provides the client-side name that should be considered as
-	 *     the field's value for the uploaded file.
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 */
-	public AbstractServerSideUploadableFileThumbnailField(DownloadableFileManager fileManager,
-			SerializableSupplier<File> filenameSupplier, SerializableSupplier<Logger> loggerSupplier) {
-		super(loggerSupplier);
-		this.fileManager = fileManager;
-		this.filenameSupplier = filenameSupplier;
-	}
+    /**
+     * Default constructor.
+     *
+     * @param fileManager      the manager of the server-side files.
+     * @param filenameSupplier provides the client-side name that should be considered as
+     *                         the field's value for the uploaded file.
+     * @param loggerSupplier   the dynamic supplier of the loggers.
+     */
+    public AbstractServerSideUploadableFileThumbnailField(DownloadableFileManager fileManager,
+                                                          SerializableSupplier<File> filenameSupplier, SerializableSupplier<Logger> loggerSupplier) {
+        super(loggerSupplier);
+        this.fileManager = fileManager;
+        this.filenameSupplier = filenameSupplier;
+    }
 
-	/** Constructor.
-	 *
-	 * @param fileManager the manager of the server-side files.
-	 * @param filenameSupplier provides the client-side name that should be considered as
-	 *     the field's value for the uploaded file.
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 */
-	public AbstractServerSideUploadableFileThumbnailField(DownloadableFileManager fileManager,
-			SerializableFunction<String, File> filenameSupplier, SerializableSupplier<Logger> loggerSupplier) {
-		super(loggerSupplier);
-		this.fileManager = fileManager;
-		this.filenameSupplier = () -> {
-			final var file = getClientSideFilename();
-			final String ext;
-			if (file != null) {
-				ext = FileSystem.extension(file);
-			} else {
-				ext = FileManager.PDF_FILE_EXTENSION;
-			}
-			return filenameSupplier.apply(ext);
-		};
-	}
+    /**
+     * Constructor.
+     *
+     * @param fileManager      the manager of the server-side files.
+     * @param filenameSupplier provides the client-side name that should be considered as
+     *                         the field's value for the uploaded file.
+     * @param loggerSupplier   the dynamic supplier of the loggers.
+     */
+    public AbstractServerSideUploadableFileThumbnailField(DownloadableFileManager fileManager,
+                                                          SerializableFunction<String, File> filenameSupplier, SerializableSupplier<Logger> loggerSupplier) {
+        super(loggerSupplier);
+        this.fileManager = fileManager;
+        this.filenameSupplier = () -> {
+            final var file = getClientSideFilename();
+            final String ext;
+            if (file != null) {
+                ext = FileSystem.extension(file);
+            } else {
+                ext = FileManager.PDF_FILE_EXTENSION;
+            }
+            return filenameSupplier.apply(ext);
+        };
+    }
 
-	/** Replies the file manager for the server-side files.
-	 *
-	 * @return the file manager.
-	 */
-	protected DownloadableFileManager getFileManager() {
-		return this.fileManager;
-	}
+    /**
+     * Replies the file manager for the server-side files.
+     *
+     * @return the file manager.
+     */
+    protected DownloadableFileManager getFileManager() {
+        return this.fileManager;
+    }
 
-	/** Replies the supplier of filename for the uploaded data.
-	 *
-	 * @return the filename supplier.
-	 */
-	protected SerializableSupplier<File> getFilenameSupplier() {
-		return this.filenameSupplier;
-	}
+    /**
+     * Replies the supplier of filename for the uploaded data.
+     *
+     * @return the filename supplier.
+     */
+    protected SerializableSupplier<File> getFilenameSupplier() {
+        return this.filenameSupplier;
+    }
 
-	@Override
-	protected void updateImage(Image viewer, Button clearButton) {
-		final var fm = getFileManager();
-		final var fns = getFilenameSupplier();
-		final var mm = getMemoryReceiver();
-		var defaultImage = true;
-		StreamResource source = null;
-		if (fm != null && mm != null && fns != null) {
-			final var filename = fns.get();
-			final var thumbnailName = toClientSideThumbnailFile(filename);
-			try (final var thumbnailStream = new ByteArrayOutputStream()) {
-				try (final var fileStream = mm.getInputStream()) {
-					fm.generateThumbnail(filename.getName(), fileStream, thumbnailStream, getLogger());
-				}
-				//
-				thumbnailStream.flush();
-				this.thumbnail = thumbnailStream.toByteArray();
-				//
-				final InputStreamFactory factory = () -> {
-					return new ByteArrayInputStream(this.thumbnail);
-				};
-				source = new StreamResource(thumbnailName.getName(), factory);
-				clearButton.setEnabled(true);
-				defaultImage = false;
-			} catch (IOException ex) {
-				//
-			}
-		}
-		if (defaultImage) {
-			source = ComponentFactory.newEmptyBackgroundStreamImage();
-			clearButton.setEnabled(false);
-		}
-		viewer.setSrc(source);
-	}
+    @Override
+    protected void updateImage(Image viewer, Button clearButton) {
+        final var fm = getFileManager();
+        final var fns = getFilenameSupplier();
+        final var mm = getMemoryReceiver();
+        var defaultImage = true;
+        StreamResource source = null;
+        if (fm != null && mm != null && fns != null) {
+            final var filename = fns.get();
+            final var thumbnailName = toClientSideThumbnailFile(filename);
+            try (final var thumbnailStream = new ByteArrayOutputStream()) {
+                try (final var fileStream = mm.getInputStream()) {
+                    fm.generateThumbnail(filename.getName(), fileStream, thumbnailStream, getLogger());
+                }
+                //
+                thumbnailStream.flush();
+                this.thumbnail = thumbnailStream.toByteArray();
+                //
+                final InputStreamFactory factory = () -> {
+                    return new ByteArrayInputStream(this.thumbnail);
+                };
+                source = new StreamResource(thumbnailName.getName(), factory);
+                clearButton.setEnabled(true);
+                defaultImage = false;
+            } catch (IOException ex) {
+                //
+            }
+        }
+        if (defaultImage) {
+            source = ComponentFactory.newEmptyBackgroundStreamImage();
+            clearButton.setEnabled(false);
+        }
+        viewer.setSrc(source);
+    }
 
-	@Override
-	protected void resetProperties() {
-		super.resetProperties();
-		this.thumbnail = null;
-	}
+    @Override
+    protected void resetProperties() {
+        super.resetProperties();
+        this.thumbnail = null;
+    }
 
-	/** Replies the filename of the thumbnail that corresponds to the given filename.
-	 *
-	 * @param clientPath the input filename, using client-side notation.
-	 * @return the thumbnail filename, with client-side notation.
-	 */
-	protected File toClientSideThumbnailFile(File clientPath) {
-		final var fm = getFileManager();
-		if (fm != null) {
-			final var thumbnail = fm.toThumbnailFilename(clientPath);
-			if (thumbnail != null) {
-				return thumbnail;
-			}
-		}
-		return null;
-	}
+    /**
+     * Replies the filename of the thumbnail that corresponds to the given filename.
+     *
+     * @param clientPath the input filename, using client-side notation.
+     * @return the thumbnail filename, with client-side notation.
+     */
+    protected File toClientSideThumbnailFile(File clientPath) {
+        final var fm = getFileManager();
+        if (fm != null) {
+            final var thumbnail = fm.toThumbnailFilename(clientPath);
+            return thumbnail;
+        }
+        return null;
+    }
 
-	/** Replies the filename of the thumbnail that corresponds to the given filename.
-	 *
-	 * @param clientPath the input filename, using client-side notation.
-	 * @return the thumbnail filename, with server-side notation.
-	 */
-	protected File toServerSideThumbnailFile(File clientPath) {
-		final var fm = getFileManager();
-		if (fm != null) {
-			final var thumbnail = fm.toThumbnailFilename(clientPath);
-			final var targetFile = fm.normalizeForServerSide(thumbnail);
-			if (targetFile != null) {
-				return targetFile;
-			}
-		}
-		return null;
-	}
+    /**
+     * Replies the filename of the thumbnail that corresponds to the given filename.
+     *
+     * @param clientPath the input filename, using client-side notation.
+     * @return the thumbnail filename, with server-side notation.
+     */
+    protected File toServerSideThumbnailFile(File clientPath) {
+        final var fm = getFileManager();
+        if (fm != null) {
+            final var thumbnail = fm.toThumbnailFilename(clientPath);
+            final var targetFile = fm.normalizeForServerSide(thumbnail);
+            return targetFile;
+        }
+        return null;
+    }
 
-	@Override
-	public void saveUploadedFileOnServer(File output) throws IOException {
-		super.saveUploadedFileOnServer(output);
-		// Generate the thumbnail for the uploaded file
-		if (this.thumbnail != null) {
-			final var thumbnailFile = toServerSideThumbnailFile(output);
-			try (final var outputStream = new FileOutputStream(thumbnailFile)) {
-				try (final var inputStream = new ByteArrayInputStream(this.thumbnail)) {
-					inputStream.transferTo(outputStream);
-				}
-			}
-		} else {
-			final var fm = getFileManager();
-			if (fm != null) {
-				fm.regenerateThumbnail(output, getLogger());
-			}
-		}
-	}
-	
-	@Override
-	public void saveUploadedFileOnServer() throws IOException {
-		final var filename = getFileManager().normalizeForServerSide(getFilenameSupplier().get());
-		saveUploadedFileOnServer(filename);
-	}
+    @Override
+    public void saveUploadedFileOnServer(File output) throws IOException {
+        super.saveUploadedFileOnServer(output);
+        // Generate the thumbnail for the uploaded file
+        if (this.thumbnail != null) {
+            final var thumbnailFile = toServerSideThumbnailFile(output);
+            try (final var outputStream = new FileOutputStream(thumbnailFile)) {
+                try (final var inputStream = new ByteArrayInputStream(this.thumbnail)) {
+                    inputStream.transferTo(outputStream);
+                }
+            }
+        } else {
+            final var fm = getFileManager();
+            if (fm != null) {
+                fm.regenerateThumbnail(output, getLogger());
+            }
+        }
+    }
+
+    @Override
+    public void saveUploadedFileOnServer() throws IOException {
+        final var filename = getFileManager().normalizeForServerSide(getFilenameSupplier().get());
+        saveUploadedFileOnServer(filename);
+    }
 
 }

@@ -1,16 +1,5 @@
 package fr.utbm.ciad.labmanager.views.components.publications.editors.wizard;
 
-import static fr.utbm.ciad.labmanager.views.ViewConstants.DBLP_BASE_URL;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.DBLP_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.DOI_BASE_URL;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.DOI_ICON;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.HAL_BASE_URL;
-import static fr.utbm.ciad.labmanager.views.ViewConstants.HAL_ICON;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.function.Consumer;
-
 import com.vaadin.componentfactory.ToggleButton;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -26,23 +15,8 @@ import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.i18n.LocaleChangeEvent;
 import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
-import fr.utbm.ciad.labmanager.data.publication.AbstractConferenceBasedPublication;
-import fr.utbm.ciad.labmanager.data.publication.AbstractJournalBasedPublication;
-import fr.utbm.ciad.labmanager.data.publication.ConferenceBasedPublication;
-import fr.utbm.ciad.labmanager.data.publication.JournalBasedPublication;
-import fr.utbm.ciad.labmanager.data.publication.Publication;
-import fr.utbm.ciad.labmanager.data.publication.PublicationLanguage;
-import fr.utbm.ciad.labmanager.data.publication.PublicationType;
-import fr.utbm.ciad.labmanager.data.publication.type.Book;
-import fr.utbm.ciad.labmanager.data.publication.type.BookChapter;
-import fr.utbm.ciad.labmanager.data.publication.type.ConferencePaper;
-import fr.utbm.ciad.labmanager.data.publication.type.JournalEdition;
-import fr.utbm.ciad.labmanager.data.publication.type.JournalPaper;
-import fr.utbm.ciad.labmanager.data.publication.type.KeyNote;
-import fr.utbm.ciad.labmanager.data.publication.type.MiscDocument;
-import fr.utbm.ciad.labmanager.data.publication.type.Patent;
-import fr.utbm.ciad.labmanager.data.publication.type.Report;
-import fr.utbm.ciad.labmanager.data.publication.type.Thesis;
+import fr.utbm.ciad.labmanager.data.publication.*;
+import fr.utbm.ciad.labmanager.data.publication.type.*;
 import fr.utbm.ciad.labmanager.data.scientificaxis.ScientificAxis;
 import fr.utbm.ciad.labmanager.data.scientificaxis.ScientificAxisComparator;
 import fr.utbm.ciad.labmanager.security.AuthenticatedUser;
@@ -63,15 +37,7 @@ import fr.utbm.ciad.labmanager.views.components.addons.entities.EntityCreationSt
 import fr.utbm.ciad.labmanager.views.components.addons.logger.DelegateContextualLoggerFactory;
 import fr.utbm.ciad.labmanager.views.components.addons.markdown.MarkdownField;
 import fr.utbm.ciad.labmanager.views.components.addons.uploads.pdf.ServerSideUploadablePdfField;
-import fr.utbm.ciad.labmanager.views.components.addons.validators.DisjointEntityIterableValidator;
-import fr.utbm.ciad.labmanager.views.components.addons.validators.DoiValidator;
-import fr.utbm.ciad.labmanager.views.components.addons.validators.HalIdValidator;
-import fr.utbm.ciad.labmanager.views.components.addons.validators.IsbnValidator;
-import fr.utbm.ciad.labmanager.views.components.addons.validators.IssnValidator;
-import fr.utbm.ciad.labmanager.views.components.addons.validators.NotEmptyStringValidator;
-import fr.utbm.ciad.labmanager.views.components.addons.validators.NotNullDateValidator;
-import fr.utbm.ciad.labmanager.views.components.addons.validators.NotNullEntityValidator;
-import fr.utbm.ciad.labmanager.views.components.addons.validators.UrlValidator;
+import fr.utbm.ciad.labmanager.views.components.addons.validators.*;
 import fr.utbm.ciad.labmanager.views.components.addons.value.ComboListField;
 import fr.utbm.ciad.labmanager.views.components.conferences.editors.ConferenceEditorFactory;
 import fr.utbm.ciad.labmanager.views.components.conferences.fields.ConferenceFieldFactory;
@@ -85,6 +51,12 @@ import fr.utbm.ciad.labmanager.views.components.publications.editors.regular.Abs
 import fr.utbm.ciad.labmanager.views.components.scientificaxes.editors.ScientificAxisEditorFactory;
 import org.hibernate.Hibernate;
 import org.springframework.context.support.MessageSourceAccessor;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.function.Consumer;
+
+import static fr.utbm.ciad.labmanager.views.ViewConstants.*;
 
 /**
  * Implementation for the editor of the information related to a publication. It is directly linked for
@@ -106,30 +78,30 @@ public abstract class AbstractPublicationEditorWizard extends AbstractPublicatio
     /**
      * Constructor.
      *
-     * @param context                   the context for editing the entity.
-     * @param supportedTypes            list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
-     * @param relinkEntityWhenSaving    indicates if the entity should be relinked when it is saved.
-     * @param enableTypeSelector        indicates if the type selector is enabled or disabled.
-	 * @param mandatoryAbstractText indicates if the abstract text is considered as mandatory or not.
-	 * @param publicationCreationStatusComputer the tool for computer the creation status for the publication.
-     * @param fileManager               the manager of files at the server-side.
-     * @param publicationService        the service for accessing the JPA entities for publications.
-     * @param personService             the service for accessing the JPA entities for persons.
-	 * @param personEditorFactory the factory for creating the person editors.
-	 * @param personFieldFactory the factory for creating the person fields.
-     * @param userService               the service for accessing the JPA entities for users.
-     * @param journalService            the service for accessing the JPA entities for journal.
-     * @param journalEditorFactory the factory for creating journal editors.
-     * @param journalFieldFactory the factory for creating journal fields.
-     * @param conferenceService         the service for accessing the JPA entities for conference.
-     * @param conferenceEditorFactory the factory for creating the conference editors.
-     * @param conferenceFieldFactory the factory for creating the conference fields.
-     * @param axisService               service for accessing to the JPA entities of scientific axes.
-     * @param axisEditorFactory the factory for creating the scientific axis editors.
-     * @param authenticatedUser         the connected user.
-     * @param messages                  the accessor to the localized messages (Spring layer).
-	 * @param properties specification of properties that may be passed to the construction function {@code #create*}.
-	 * @since 4.0
+     * @param context                           the context for editing the entity.
+     * @param supportedTypes                    list of publication types that are supported by the editor. Only the publications of a type from this list could be edited.
+     * @param relinkEntityWhenSaving            indicates if the entity should be relinked when it is saved.
+     * @param enableTypeSelector                indicates if the type selector is enabled or disabled.
+     * @param mandatoryAbstractText             indicates if the abstract text is considered as mandatory or not.
+     * @param publicationCreationStatusComputer the tool for computer the creation status for the publication.
+     * @param fileManager                       the manager of files at the server-side.
+     * @param publicationService                the service for accessing the JPA entities for publications.
+     * @param personService                     the service for accessing the JPA entities for persons.
+     * @param personEditorFactory               the factory for creating the person editors.
+     * @param personFieldFactory                the factory for creating the person fields.
+     * @param userService                       the service for accessing the JPA entities for users.
+     * @param journalService                    the service for accessing the JPA entities for journal.
+     * @param journalEditorFactory              the factory for creating journal editors.
+     * @param journalFieldFactory               the factory for creating journal fields.
+     * @param conferenceService                 the service for accessing the JPA entities for conference.
+     * @param conferenceEditorFactory           the factory for creating the conference editors.
+     * @param conferenceFieldFactory            the factory for creating the conference fields.
+     * @param axisService                       service for accessing to the JPA entities of scientific axes.
+     * @param axisEditorFactory                 the factory for creating the scientific axis editors.
+     * @param authenticatedUser                 the connected user.
+     * @param messages                          the accessor to the localized messages (Spring layer).
+     * @param properties                        specification of properties that may be passed to the construction function {@code #create*}.
+     * @since 4.0
      */
     public AbstractPublicationEditorWizard(AbstractEntityService.EntityEditingContext<Publication> context,
                                            PublicationType[] supportedTypes,
@@ -143,9 +115,9 @@ public abstract class AbstractPublicationEditorWizard extends AbstractPublicatio
                                            AuthenticatedUser authenticatedUser, MessageSourceAccessor messages,
                                            ConstructionPropertiesBuilder properties) {
         super(context, null, supportedTypes, relinkEntityWhenSaving, enableTypeSelector, mandatoryAbstractText, publicationCreationStatusComputer,
-        		fileManager, publicationService, personService, personEditorFactory, personFieldFactory, userService, journalService, 
-        		journalEditorFactory, journalFieldFactory, conferenceService, conferenceEditorFactory, conferenceFieldFactory,
-        		axisService, axisEditorFactory, authenticatedUser, messages, properties);
+                fileManager, publicationService, personService, personEditorFactory, personFieldFactory, userService, journalService,
+                journalEditorFactory, journalFieldFactory, conferenceService, conferenceEditorFactory, conferenceFieldFactory,
+                axisService, axisEditorFactory, authenticatedUser, messages, properties);
         this.supportedTypes = supportedTypes;
         // Sort types by their natural order, that corresponds to the weight of the type
         Arrays.sort(this.supportedTypes, (a, b) -> Integer.compare(a.ordinal(), b.ordinal()));
@@ -161,8 +133,8 @@ public abstract class AbstractPublicationEditorWizard extends AbstractPublicatio
     protected void createEditorContent(VerticalLayout rootContainer) {
         if (isBaseAdmin()) {
             publicationEditorComponentWizard = new PublicationEditorComponentWizard(
-            		new DelegateContextualLoggerFactory(this.getEditingContext().getLogger()),
-            		createTypeSelector(), createGeneralDetails(), createIdentificationDetails(), createContentDetails(), createResourceDetails(), createReferenceDetails(), createAdministrationComponents(
+                    new DelegateContextualLoggerFactory(this.getEditingContext().getLogger()),
+                    createTypeSelector(), createGeneralDetails(), createIdentificationDetails(), createContentDetails(), createResourceDetails(), createReferenceDetails(), createAdministrationComponents(
                     content -> {
                         this.manualValidationForced = new ToggleButton();
                         content.add(this.manualValidationForced, 2);
@@ -172,9 +144,9 @@ public abstract class AbstractPublicationEditorWizard extends AbstractPublicatio
                     it -> it.bind(Publication::isValidated, Publication::setValidated)));
         } else {
             publicationEditorComponentWizard = new PublicationEditorComponentWizard(
-            		new DelegateContextualLoggerFactory(this.getEditingContext().getLogger()),
-            		createTypeSelector(), createGeneralDetails(), createIdentificationDetails(),
-            		createContentDetails(), createResourceDetails(), createReferenceDetails());
+                    new DelegateContextualLoggerFactory(this.getEditingContext().getLogger()),
+                    createTypeSelector(), createGeneralDetails(), createIdentificationDetails(),
+                    createContentDetails(), createResourceDetails(), createReferenceDetails());
         }
         rootContainer.add(publicationEditorComponentWizard);
 
@@ -238,7 +210,7 @@ public abstract class AbstractPublicationEditorWizard extends AbstractPublicatio
         this.title.setRequired(true);
         this.title.setClearButtonVisible(true);
         this.generalLayout.add(this.title, 2);
-        
+
         final var props = getProperties();
 
         this.authors = this.personFieldFactory.createMultiNameField(getTranslation(props.get(PROP_PERSON_CREATION)), getLogger(),
@@ -546,7 +518,7 @@ public abstract class AbstractPublicationEditorWizard extends AbstractPublicatio
     @Override
     public void localeChange(LocaleChangeEvent event) {
         super.localeChange(event);
-        
+
         final var props = getProperties();
 
         this.type.setLabel(getTranslation("views.publication.type")); //$NON-NLS-1$

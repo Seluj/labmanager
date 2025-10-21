@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,8 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a person supervision editor according to the editing context.
- * 
+/**
+ * Factory that is providing a person supervision editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -43,55 +44,53 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultSupervisionEditorFactory implements SupervisionEditorFactory {
 
-	private final SupervisionService supervisionService;
+    private final SupervisionService supervisionService;
 
-	private final MembershipFieldFactory membershipFieldFactory;
+    private final MembershipFieldFactory membershipFieldFactory;
 
-	private final SupervisionFieldFactory supervisionFieldFactory;
-	
-	private final AuthenticatedUser authenticatedUser;
+    private final SupervisionFieldFactory supervisionFieldFactory;
 
-	private final MessageSourceAccessor messages;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructor.
-	 * 
-	 * @param supervisionService the service for accessing the supervision JPA entities.
-	 * @param membershipFieldFactory the factory for creating the person membership fields.
-	 * @param supervisionFieldFactory the factory for creating the supervision fields.
-	 * @param organizationService the service for accessing the organization JPA entities.
-	 * @param organizationEditorFactory the factory for creating the organization editors.
-	 * @param axisService the service for accessing the scientific axis JPA entities.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public DefaultSupervisionEditorFactory(
-			@Autowired SupervisionService supervisionService,
-			@Autowired MembershipFieldFactory membershipFieldFactory,
-			@Autowired SupervisionFieldFactory supervisionFieldFactory,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.supervisionService = supervisionService;
-		this.membershipFieldFactory = membershipFieldFactory;
-		this.supervisionFieldFactory = supervisionFieldFactory;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-	}
-	
-	@Override
-	public EntityEditingContext<Supervision> createContextFor(Supervision supervision, Logger logger) {
-		return this.supervisionService.startEditing(supervision, logger);
-	}
+    private final MessageSourceAccessor messages;
 
-	@Override
-	public AbstractEntityEditor<Supervision> createAdditionEditor(EntityEditingContext<Supervision> context) {
-		return new EmbeddedSupervisionEditor(context, null, this.membershipFieldFactory,
-				this.supervisionFieldFactory, this.authenticatedUser, this.messages);
-	}
+    /**
+     * Constructor.
+     *
+     * @param supervisionService      the service for accessing the supervision JPA entities.
+     * @param membershipFieldFactory  the factory for creating the person membership fields.
+     * @param supervisionFieldFactory the factory for creating the supervision fields.
+     * @param authenticatedUser       the connected user.
+     * @param messages                the accessor to the localized messages (Spring layer).
+     */
+    public DefaultSupervisionEditorFactory(
+            @Autowired SupervisionService supervisionService,
+            @Autowired MembershipFieldFactory membershipFieldFactory,
+            @Autowired SupervisionFieldFactory supervisionFieldFactory,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.supervisionService = supervisionService;
+        this.membershipFieldFactory = membershipFieldFactory;
+        this.supervisionFieldFactory = supervisionFieldFactory;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+    }
 
-	@Override
-	public AbstractEntityEditor<Supervision> createUpdateEditor(EntityEditingContext<Supervision> context) {
-		return new EmbeddedSupervisionEditor(context, null, this.membershipFieldFactory,
-				this.supervisionFieldFactory, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public EntityEditingContext<Supervision> createContextFor(Supervision supervision, Logger logger) {
+        return this.supervisionService.startEditing(supervision, logger);
+    }
+
+    @Override
+    public AbstractEntityEditor<Supervision> createAdditionEditor(EntityEditingContext<Supervision> context) {
+        return new EmbeddedSupervisionEditor(context, null, this.membershipFieldFactory,
+                this.supervisionFieldFactory, this.authenticatedUser, this.messages);
+    }
+
+    @Override
+    public AbstractEntityEditor<Supervision> createUpdateEditor(EntityEditingContext<Supervision> context) {
+        return new EmbeddedSupervisionEditor(context, null, this.membershipFieldFactory,
+                this.supervisionFieldFactory, this.authenticatedUser, this.messages);
+    }
 
 }

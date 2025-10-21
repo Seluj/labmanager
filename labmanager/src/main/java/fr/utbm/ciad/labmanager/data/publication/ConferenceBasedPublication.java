@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,9 @@ package fr.utbm.ciad.labmanager.data.publication;
 import fr.utbm.ciad.labmanager.data.conference.Conference;
 import fr.utbm.ciad.labmanager.utils.ranking.CoreRanking;
 
-/** A publication that is associated to a conference.
- * 
+/**
+ * A publication that is associated to a conference.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -32,101 +33,109 @@ import fr.utbm.ciad.labmanager.utils.ranking.CoreRanking;
  */
 public interface ConferenceBasedPublication extends Production {
 
-	/** Replies the conference in which the publication was published.
-	 *
-	 * <p>In the example of the "14th International Conference on Systems", the conference is related to "International
-	 * Conference on Systems" and the "14" is not considered by this function.
-	 *
-	 * @return the conference.
-	 * @see #getConferenceOccurrenceNumber()
-	 */
-	Conference getConference();
+    /**
+     * Replies the decorator for a number depending on the given language.
+     *
+     * @param number   the number to decorate.
+     * @param language the language.
+     * @return the decorator.
+     */
+    static String getNumberDecorator(int number, PublicationLanguage language) {
+        switch (language) {
+            case FRENCH:
+                switch (number) {
+                    case 1:
+                        return "er"; //$NON-NLS-1$
+                    default:
+                        return "ème"; //$NON-NLS-1$
+                }
+            case GERMAN:
+            case ITALIAN:
+            case OTHER:
+            case ENGLISH:
+            default:
+                switch (number) {
+                    case 1:
+                        return "st"; //$NON-NLS-1$
+                    case 2:
+                        return "nd"; //$NON-NLS-1$
+                    case 3:
+                        return "rd"; //$NON-NLS-1$
+                    default:
+                        return "th"; //$NON-NLS-1$
+                }
+        }
+    }
 
-	/** Change the conference in which the publication was published.
-	 *
-	 * <p>In the example of the "14th International Conference on Systems", the conference is related to "International
-	 * Conference on Systems" and the "14" is not considered by this function.
-	 *
-	 * @param conference the conference.
-	 * @see #setConferenceOccurrenceNumber(int)
-	 */
-	void setConference(Conference conference);
+    /**
+     * Replies the conference in which the publication was published.
+     *
+     * <p>In the example of the "14th International Conference on Systems", the conference is related to "International
+     * Conference on Systems" and the "14" is not considered by this function.
+     *
+     * @return the conference.
+     * @see #getConferenceOccurrenceNumber()
+     */
+    Conference getConference();
 
-	/** Replies the number of the occurrence of the conference in which the publication was published.
-	 * <p>
-	 * In the example of the "14th International Conference on Systems", the occurrence number is "14".
-	 *
-	 * @return the conference occurrence number.
-	 * @see #getConference()
-	 */
-	int getConferenceOccurrenceNumber();
+    /**
+     * Change the conference in which the publication was published.
+     *
+     * <p>In the example of the "14th International Conference on Systems", the conference is related to "International
+     * Conference on Systems" and the "14" is not considered by this function.
+     *
+     * @param conference the conference.
+     * @see #setConferenceOccurrenceNumber(int)
+     */
+    void setConference(Conference conference);
 
-	/** Change the number of the occurrence of the conference in which the publication was published.
-	 * <p>
-	 * In the example of the "14th International Conference on Systems", the occurrence number is "14".
-	 *
-	 * @param number the conference occurrence number.
-	 * @see #setConference(Conference)
-	 */
-	void setConferenceOccurrenceNumber(int number);
+    /**
+     * Replies the number of the occurrence of the conference in which the publication was published.
+     * <p>
+     * In the example of the "14th International Conference on Systems", the occurrence number is "14".
+     *
+     * @return the conference occurrence number.
+     * @see #getConference()
+     */
+    int getConferenceOccurrenceNumber();
 
-	/** Replies the CORE index of the conference.
-	 *
-	 * @return the CORE ranking, never {@code null}.
-	 */
-	CoreRanking getCoreRanking();
+    /**
+     * Change the number of the occurrence of the conference in which the publication was published.
+     * <p>
+     * In the example of the "14th International Conference on Systems", the occurrence number is "14".
+     *
+     * @param number the conference occurrence number.
+     * @see #setConference(Conference)
+     */
+    void setConferenceOccurrenceNumber(int number);
 
-	/** Replies the decorator for a number depending on the given language.
-	 *
-	 * @param number the number to decorate.
-	 * @param language the language.
-	 * @return the decorator.
-	 */
-	static String getNumberDecorator(int number, PublicationLanguage language) {
-		switch (language) {
-		case FRENCH:
-			switch (number) {
-			case 1:
-				return "er"; //$NON-NLS-1$
-			default:
-				return "ème"; //$NON-NLS-1$
-			}
-		case GERMAN:
-		case ITALIAN:
-		case OTHER:
-		case ENGLISH:
-		default:
-			switch (number) {
-			case 1:
-				return "st"; //$NON-NLS-1$
-			case 2:
-				return "nd"; //$NON-NLS-1$
-			case 3:
-				return "rd"; //$NON-NLS-1$
-			default:
-				return "th"; //$NON-NLS-1$
-			}
-		}
-	}
+    /**
+     * Replies the CORE index of the conference.
+     *
+     * @return the CORE ranking, never {@code null}.
+     */
+    CoreRanking getCoreRanking();
 
-	/** Deprecated.
-	 * 
-	 * @param name deprecated.
-	 * @deprecated Don't use.
-	 */
-	@Deprecated(forRemoval = true)
-	default void setScientificEventName(String name) {
-		//
-	}
+    /**
+     * Deprecated.
+     *
+     * @param name deprecated.
+     * @deprecated Don't use.
+     */
+    @Deprecated(forRemoval = true)
+    default void setScientificEventName(String name) {
+        //
+    }
 
-	/** Deprecated.
-	 * 
-	 * @param name deprecated.
-	 * @deprecated Don't use.
-	 */
-	@Deprecated(forRemoval = true)
-	default void setPublisher(String name) {
-		//
-	}
+    /**
+     * Deprecated.
+     *
+     * @param name deprecated.
+     * @deprecated Don't use.
+     */
+    @Deprecated(forRemoval = true)
+    default void setPublisher(String name) {
+        //
+    }
 
 }

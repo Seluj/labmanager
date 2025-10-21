@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,10 +27,11 @@ import fr.utbm.ciad.labmanager.utils.io.filemanager.DownloadableFileManager;
 import fr.utbm.ciad.labmanager.views.components.addons.entities.EntityCreationStatusComputer;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of organization address information that may be embedded. This editor does not provide
+/**
+ * Editor of organization address information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited address.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -39,22 +40,23 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public final class EmbeddedAddressEditor extends AbstractAddressEditor {
 
-	private static final long serialVersionUID = 7033019483159095081L;
+    private static final long serialVersionUID = 7033019483159095081L;
 
-	/** Constructor.
-	 *
-	 * @param context the context for editing the entity.
-	 * @param addressCreationStatusComputer the tool for computer the creation status for the organization adddresses.
-	 * @param fileManager the manager of files at the server-side.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public EmbeddedAddressEditor(EntityEditingContext<OrganizationAddress> context,
-			EntityCreationStatusComputer<OrganizationAddress> addressCreationStatusComputer,
-			DownloadableFileManager fileManager, AuthenticatedUser authenticatedUser,
-			MessageSourceAccessor messages) {
-		super(context, addressCreationStatusComputer, false, fileManager, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
-		createEditorContentAndLinkBeans();
-	}
+    /**
+     * Constructor.
+     *
+     * @param context                       the context for editing the entity.
+     * @param addressCreationStatusComputer the tool for computer the creation status for the organization adddresses.
+     * @param fileManager                   the manager of files at the server-side.
+     * @param authenticatedUser             the connected user.
+     * @param messages                      the accessor to the localized messages (Spring layer).
+     */
+    public EmbeddedAddressEditor(EntityEditingContext<OrganizationAddress> context,
+                                 EntityCreationStatusComputer<OrganizationAddress> addressCreationStatusComputer,
+                                 DownloadableFileManager fileManager, AuthenticatedUser authenticatedUser,
+                                 MessageSourceAccessor messages) {
+        super(context, addressCreationStatusComputer, false, fileManager, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
+        createEditorContentAndLinkBeans();
+    }
 
 }

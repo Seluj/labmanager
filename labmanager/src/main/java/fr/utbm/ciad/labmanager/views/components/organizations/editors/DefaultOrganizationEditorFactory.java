@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,8 +34,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing an organization editor according to the editing context.
- * 
+/**
+ * Factory that is providing an organization editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,62 +46,63 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultOrganizationEditorFactory implements OrganizationEditorFactory {
 
-	private final OrganizationCreationStatusComputer organizationCreationStatusComputer;
-	
-	private final DownloadableFileManager fileManager;
+    private final OrganizationCreationStatusComputer organizationCreationStatusComputer;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final DownloadableFileManager fileManager;
 
-	private final MessageSourceAccessor messages;
+    private final AuthenticatedUser authenticatedUser;
 
-	private final ResearchOrganizationService organizationService;
+    private final MessageSourceAccessor messages;
 
-	private final OrganizationAddressService addressService;
+    private final ResearchOrganizationService organizationService;
 
-	private final AddressEditorFactory addressEditorFactory;
+    private final OrganizationAddressService addressService;
 
-	/** Constructor.
-	 * 
-	 * @param organizationCreationStatusComputer the tool for computer the creation status for the research organizations.
-	 * @param fileManager the manager of files at the server-side.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 * @param organizationService the service for accessing the organizations.
-	 * @param addressService the service for accessing the organization addresses.
-	 * @param addressEditorFactory the factory for creating the address editors.
-	 */
-	public DefaultOrganizationEditorFactory(
-			@Autowired OrganizationCreationStatusComputer organizationCreationStatusComputer,
-			@Autowired DownloadableFileManager fileManager,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ResearchOrganizationService organizationService,
-			@Autowired OrganizationAddressService addressService,
-			@Autowired AddressEditorFactory addressEditorFactory) {
-		this.organizationCreationStatusComputer = organizationCreationStatusComputer;
-		this.fileManager = fileManager;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-		this.organizationService = organizationService;
-		this.addressService = addressService;
-		this.addressEditorFactory = addressEditorFactory;
-	}
+    private final AddressEditorFactory addressEditorFactory;
 
-	@Override
-	public EntityEditingContext<ResearchOrganization> createContextFor(ResearchOrganization organization, Logger logger) {
-		return this.organizationService.startEditing(organization, logger);
-	}
-	
-	@Override
-	public AbstractEntityEditor<ResearchOrganization> createAdditionEditor(EntityEditingContext<ResearchOrganization> context) {
-		return new EmbeddedOrganizationEditor(context, this.organizationCreationStatusComputer, this.fileManager, this.authenticatedUser, this.messages,
-				this.organizationService, this.addressService, this, this.addressEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param organizationCreationStatusComputer the tool for computer the creation status for the research organizations.
+     * @param fileManager                        the manager of files at the server-side.
+     * @param authenticatedUser                  the connected user.
+     * @param messages                           the accessor to the localized messages (Spring layer).
+     * @param organizationService                the service for accessing the organizations.
+     * @param addressService                     the service for accessing the organization addresses.
+     * @param addressEditorFactory               the factory for creating the address editors.
+     */
+    public DefaultOrganizationEditorFactory(
+            @Autowired OrganizationCreationStatusComputer organizationCreationStatusComputer,
+            @Autowired DownloadableFileManager fileManager,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ResearchOrganizationService organizationService,
+            @Autowired OrganizationAddressService addressService,
+            @Autowired AddressEditorFactory addressEditorFactory) {
+        this.organizationCreationStatusComputer = organizationCreationStatusComputer;
+        this.fileManager = fileManager;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+        this.organizationService = organizationService;
+        this.addressService = addressService;
+        this.addressEditorFactory = addressEditorFactory;
+    }
 
-	@Override
-	public AbstractEntityEditor<ResearchOrganization> createUpdateEditor(EntityEditingContext<ResearchOrganization> context) {
-		return new EmbeddedOrganizationEditor(context, this.organizationCreationStatusComputer, this.fileManager, this.authenticatedUser, this.messages,
-				this.organizationService, this.addressService, this, this.addressEditorFactory);
-	}
+    @Override
+    public EntityEditingContext<ResearchOrganization> createContextFor(ResearchOrganization organization, Logger logger) {
+        return this.organizationService.startEditing(organization, logger);
+    }
+
+    @Override
+    public AbstractEntityEditor<ResearchOrganization> createAdditionEditor(EntityEditingContext<ResearchOrganization> context) {
+        return new EmbeddedOrganizationEditor(context, this.organizationCreationStatusComputer, this.fileManager, this.authenticatedUser, this.messages,
+                this.organizationService, this.addressService, this, this.addressEditorFactory);
+    }
+
+    @Override
+    public AbstractEntityEditor<ResearchOrganization> createUpdateEditor(EntityEditingContext<ResearchOrganization> context) {
+        return new EmbeddedOrganizationEditor(context, this.organizationCreationStatusComputer, this.fileManager, this.authenticatedUser, this.messages,
+                this.organizationService, this.addressService, this, this.addressEditorFactory);
+    }
 
 }

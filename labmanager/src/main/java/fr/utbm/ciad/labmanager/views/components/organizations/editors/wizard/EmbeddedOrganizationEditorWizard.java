@@ -31,7 +31,8 @@ import fr.utbm.ciad.labmanager.views.components.organizationaddresses.editors.Ad
 import fr.utbm.ciad.labmanager.views.components.organizations.editors.OrganizationEditorFactory;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of organization information that may be embedded. This editor does not provide
+/**
+ * Editor of organization information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited organization. This editor is a wizard.
  *
@@ -44,33 +45,34 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public final class EmbeddedOrganizationEditorWizard extends AbstractOrganizationEditorWizard {
 
-	// FIXME: Update this wizard to be consistent and bug free
-	
+    // FIXME: Update this wizard to be consistent and bug free
+
     private static final long serialVersionUID = -5119278327562827799L;
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param context the context for editing the entity.
-	 * @param organizationCreationStatusComputer the tool for computer the creation status for the research organizations.
-     * @param fileManager the manager of files at the server-side.
-     * @param authenticatedUser the connected user.
-     * @param messages the accessor to the localized messages (Spring layer).
-     * @param organizationService the service for accessing the organizations.
-     * @param addressService the service for accessing the organization addresses.
-	 * @param organizationEditorFactory the factory of the organization editor.
-	 * @param addressEditorFactory the factory of the organization address editor.
+     * @param context                            the context for editing the entity.
+     * @param organizationCreationStatusComputer the tool for computer the creation status for the research organizations.
+     * @param fileManager                        the manager of files at the server-side.
+     * @param authenticatedUser                  the connected user.
+     * @param messages                           the accessor to the localized messages (Spring layer).
+     * @param organizationService                the service for accessing the organizations.
+     * @param addressService                     the service for accessing the organization addresses.
+     * @param organizationEditorFactory          the factory of the organization editor.
+     * @param addressEditorFactory               the factory of the organization address editor.
      */
     public EmbeddedOrganizationEditorWizard(EntityEditingContext<ResearchOrganization> context,
-    		EntityCreationStatusComputer<ResearchOrganization> organizationCreationStatusComputer,
-    		DownloadableFileManager fileManager,
-    		AuthenticatedUser authenticatedUser, MessageSourceAccessor messages,
-    		ResearchOrganizationService organizationService,
-    		OrganizationAddressService addressService,
-    		OrganizationEditorFactory organizationEditorFactory,
-    		AddressEditorFactory addressEditorFactory) {
+                                            EntityCreationStatusComputer<ResearchOrganization> organizationCreationStatusComputer,
+                                            DownloadableFileManager fileManager,
+                                            AuthenticatedUser authenticatedUser, MessageSourceAccessor messages,
+                                            ResearchOrganizationService organizationService,
+                                            OrganizationAddressService addressService,
+                                            OrganizationEditorFactory organizationEditorFactory,
+                                            AddressEditorFactory addressEditorFactory) {
         super(context, organizationCreationStatusComputer,
-        		false, fileManager, authenticatedUser, messages, organizationService, addressService,
-        		organizationEditorFactory, addressEditorFactory, ConstructionPropertiesBuilder.create());
+                false, fileManager, authenticatedUser, messages, organizationService, addressService,
+                organizationEditorFactory, addressEditorFactory, ConstructionPropertiesBuilder.create());
         createEditorContentAndLinkBeans();
     }
 

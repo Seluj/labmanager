@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,55 +27,58 @@ import fr.utbm.ciad.labmanager.views.ViewConstants;
 import fr.utbm.ciad.labmanager.views.components.addons.logger.ContextualLoggerFactory;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Abstract implementation of a list of entities based on a grid view.
+/**
+ * Abstract implementation of a list of entities based on a grid view.
  *
  * @param <T> the type of the entities, that must be {@link IdentifiableEntity} to be able to provide their id.
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.0
  * @see #AbstractEntityTreeListView
+ * @since 4.0
  */
 public abstract class AbstractEntityListView<T extends IdentifiableEntity> extends AbstractGridBaseEntityListView<T, T, Grid<T>> {
 
-	private static final long serialVersionUID = 7445326290206390705L;
+    private static final long serialVersionUID = 7445326290206390705L;
 
-	/** Constructor.
-	 *
-	 * @param entityType the type of the entities to be listed.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param deletionTitleMessageKey the key in the localized messages for the dialog box title related to a deletion.
-	 * @param deletionMessageKey the key in the localized messages for the message related to a deletion.
-	 * @param deletionSuccessMessageKey the key in the localized messages for the messages related to a deletion success.
-	 * @param deletionErrorMessageKey the key in the localized messages for the messages related to an error of deletion.
-	 * @param properties specification of properties that may be passed to the construction function {@link #createFilters()},
-	 *     {@link #createGrid()} and {@link #createMenuBar()} and {@link #createMobileFilters()}.
-	 * @since 4.0
-	 */
-	public AbstractEntityListView(Class<T> entityType, AuthenticatedUser authenticatedUser, MessageSourceAccessor messages, ContextualLoggerFactory loggerFactory, ConstructionPropertiesBuilder properties) {
-		super(entityType, authenticatedUser, messages, loggerFactory, properties);
-	}
+    /**
+     * Constructor.
+     *
+     * @param entityType                the type of the entities to be listed.
+     * @param authenticatedUser         the connected user.
+     * @param messages                  the accessor to the localized messages (spring layer).
+     * @param loggerFactory             the factory to be used for the composite logger.
+     * @param deletionTitleMessageKey   the key in the localized messages for the dialog box title related to a deletion.
+     * @param deletionMessageKey        the key in the localized messages for the message related to a deletion.
+     * @param deletionSuccessMessageKey the key in the localized messages for the messages related to a deletion success.
+     * @param deletionErrorMessageKey   the key in the localized messages for the messages related to an error of deletion.
+     * @param properties                specification of properties that may be passed to the construction function {@link #createFilters()},
+     *                                  {@link #createGrid()} and {@link #createMenuBar()} and {@link #createMobileFilters()}.
+     * @since 4.0
+     */
+    public AbstractEntityListView(Class<T> entityType, AuthenticatedUser authenticatedUser, MessageSourceAccessor messages, ContextualLoggerFactory loggerFactory, ConstructionPropertiesBuilder properties) {
+        super(entityType, authenticatedUser, messages, loggerFactory, properties);
+    }
 
-	@Override
-	protected Grid<T> createGridInstance() {
-		return new Grid<>(getEntityType(), false);
-	}
+    @Override
+    protected Grid<T> createGridInstance() {
+        return new Grid<>(getEntityType(), false);
+    }
 
-	@Override
-	protected final void initializeDataInGrid(Grid<T> grid, AbstractFilters<T> filters) {
-		final var dataView = grid.setItems(getFetchCallback(filters));
-		dataView.setItemCountEstimate(ViewConstants.GRID_PAGE_SIZE * 10);
-		dataView.setItemCountEstimateIncrease(ViewConstants.GRID_PAGE_SIZE);
-	}
+    @Override
+    protected final void initializeDataInGrid(Grid<T> grid, AbstractFilters<T> filters) {
+        final var dataView = grid.setItems(getFetchCallback(filters));
+        dataView.setItemCountEstimate(ViewConstants.GRID_PAGE_SIZE * 10);
+        dataView.setItemCountEstimateIncrease(ViewConstants.GRID_PAGE_SIZE);
+    }
 
-	/** Replies the callback for fetching the data from the database.
-	 *
-	 * @param filters the filtering object to provide to the JPA service.
-	 * @return the callback
-	 */
-	protected abstract FetchCallback<T, Void> getFetchCallback(AbstractFilters<T> filters);
+    /**
+     * Replies the callback for fetching the data from the database.
+     *
+     * @param filters the filtering object to provide to the JPA service.
+     * @return the callback
+     */
+    protected abstract FetchCallback<T, Void> getFetchCallback(AbstractFilters<T> filters);
 
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-/** JPA repository for the declarations of the holders of associated structures.
- * 
+/**
+ * JPA repository for the declarations of the holders of associated structures.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,11 +34,12 @@ import java.util.List;
  */
 public interface AssociatedStructureHolderRepository extends JpaRepository<AssociatedStructureHolder, Long> {
 
-	/** Replies the list of holders that corresponds to the persons with the give identifier.
-	 *
-	 * @param id the identifier of the person.
-	 * @return the list of associate structures' holders.
-	 */
-	List<AssociatedStructureHolder> findDistinctByPersonId(long id);
+    /**
+     * Replies the list of holders that corresponds to the persons with the give identifier.
+     *
+     * @param id the identifier of the person.
+     * @return the list of associate structures' holders.
+     */
+    List<AssociatedStructureHolder> findDistinctByPersonId(long id);
 
 }

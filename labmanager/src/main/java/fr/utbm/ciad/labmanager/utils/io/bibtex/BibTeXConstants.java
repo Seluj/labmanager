@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.utils.io.bibtex;
 
 import org.springframework.http.MediaType;
 
-/** Constants for BibTeX.
- * 
+/**
+ * Constants for BibTeX.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,26 +32,28 @@ import org.springframework.http.MediaType;
  */
 public interface BibTeXConstants {
 
-	/** Mime type for BibTeX.
-	 */
-	String MIME_TYPE_VALUE = "application/x-bibtex"; //$NON-NLS-1$
+    /**
+     * Mime type for BibTeX.
+     */
+    String MIME_TYPE_VALUE = "application/x-bibtex"; //$NON-NLS-1$
 
-	/** Mime type and charset (UTF-8) for BibTeX.
-	 */
-	String MIME_TYPE_UTF8_VALUE = MIME_TYPE_VALUE + ";charset=utf-8"; //$NON-NLS-1$
-
-	/** Mime type for BibTeX.
-	 */
-	MediaType MIME_TYPE = MediaType.parseMediaType(MIME_TYPE_VALUE);
-
-	/** Mime type and charset (UTF-8) for BibTeX.
-	 */
-	MediaType MIME_TYPE_UTF8 = MediaType.parseMediaType(MIME_TYPE_UTF8_VALUE);
-
-	/** Standard filename extension for BibTeX files.
-	 *
-	 * @since 4.0
-	 */
-	String FILENAME_EXTENSION = ".bib"; //$NON-NLS-1$
+    /**
+     * Mime type and charset (UTF-8) for BibTeX.
+     */
+    String MIME_TYPE_UTF8_VALUE = MIME_TYPE_VALUE + ";charset=utf-8"; //$NON-NLS-1$
+    /**
+     * Mime type and charset (UTF-8) for BibTeX.
+     */
+    MediaType MIME_TYPE_UTF8 = MediaType.parseMediaType(MIME_TYPE_UTF8_VALUE);
+    /**
+     * Mime type for BibTeX.
+     */
+    MediaType MIME_TYPE = MediaType.parseMediaType(MIME_TYPE_VALUE);
+    /**
+     * Standard filename extension for BibTeX files.
+     *
+     * @since 4.0
+     */
+    String FILENAME_EXTENSION = ".bib"; //$NON-NLS-1$
 
 }

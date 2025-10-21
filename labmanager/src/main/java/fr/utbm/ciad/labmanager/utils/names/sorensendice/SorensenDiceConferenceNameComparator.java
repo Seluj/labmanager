@@ -6,8 +6,9 @@ import info.debatty.java.stringsimilarity.interfaces.NormalizedStringSimilarity;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-/** Utilities for comparing conference names using the Sorensen Dice algorithm.
- * 
+/**
+ * Utilities for comparing conference names using the Sorensen Dice algorithm.
+ *
  * @author $Author: jferlin$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -20,8 +21,9 @@ public class SorensenDiceConferenceNameComparator extends AbstractConferenceName
 
     private static final double SIMILARITY_LEVEL = 0.7;
 
-	/** Constructor with default similarity level.
-	 */
+    /**
+     * Constructor with default similarity level.
+     */
     public SorensenDiceConferenceNameComparator() {
         setSimilarityLevel(SIMILARITY_LEVEL);
     }

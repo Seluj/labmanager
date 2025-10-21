@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,15 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.converters;
 
-import java.util.regex.Pattern;
-
 import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
-/** A converter that is removing the spaces at the ends of the input string and replacing any keyword separator by a coma character.
- * 
+import java.util.regex.Pattern;
+
+/**
+ * A converter that is removing the spaces at the ends of the input string and replacing any keyword separator by a coma character.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,28 +36,26 @@ import com.vaadin.flow.data.converter.Converter;
  */
 public class StringToKeywordsConverter implements Converter<String, String> {
 
-	private static final long serialVersionUID = 2062988250883892074L;
+    private static final long serialVersionUID = 2062988250883892074L;
+    private static final String DEFAULT_SEPARATOR = ","; //$NON-NLS-1$
+    private static final Pattern SEPARATORS = Pattern.compile("\\s*[,;:_.]\\s*"); //$NON-NLS-1$
 
-	private static Pattern SEPARATORS = Pattern.compile("\\s*[,;:_.]\\s*"); //$NON-NLS-1$
-	
-	private static final String DEFAULT_SEPARATOR = ","; //$NON-NLS-1$
-	
-	@Override
-	public Result<String> convertToModel(String value, ValueContext context) {
-		if (value == null) {
-			return Result.ok(""); //$NON-NLS-1$
-		}
-		final var matcher = SEPARATORS.matcher(value.trim());
-		final var result = matcher.replaceAll(DEFAULT_SEPARATOR + " "); //$NON-NLS-1$
-		return Result.ok(result);
-	}
+    @Override
+    public Result<String> convertToModel(String value, ValueContext context) {
+        if (value == null) {
+            return Result.ok(""); //$NON-NLS-1$
+        }
+        final var matcher = SEPARATORS.matcher(value.trim());
+        final var result = matcher.replaceAll(DEFAULT_SEPARATOR + " "); //$NON-NLS-1$
+        return Result.ok(result);
+    }
 
-	@Override
-	public String convertToPresentation(String value, ValueContext context) {
-		if (value == null) {
-			return ""; //$NON-NLS-1$
-		}
-		return value.trim();
-	}
+    @Override
+    public String convertToPresentation(String value, ValueContext context) {
+        if (value == null) {
+            return ""; //$NON-NLS-1$
+        }
+        return value.trim();
+    }
 
 }

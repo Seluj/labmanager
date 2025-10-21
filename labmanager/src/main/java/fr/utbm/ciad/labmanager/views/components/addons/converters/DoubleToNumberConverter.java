@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
-/** A converter from double to Number.
- * 
+/**
+ * A converter from double to Number.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,22 +34,22 @@ import com.vaadin.flow.data.converter.Converter;
  */
 public class DoubleToNumberConverter implements Converter<Double, Number> {
 
-	private static final long serialVersionUID = 2868844832005910755L;
+    private static final long serialVersionUID = 2868844832005910755L;
 
-	@Override
-	public Result<Number> convertToModel(Double value, ValueContext context) {
-		if (value == null) {
-			return Result.ok(Double.valueOf(0f));
-		}
-		return Result.ok(value);
-	}
+    @Override
+    public Result<Number> convertToModel(Double value, ValueContext context) {
+        if (value == null) {
+            return Result.ok(Double.valueOf(0f));
+        }
+        return Result.ok(value);
+    }
 
-	@Override
-	public Double convertToPresentation(Number value, ValueContext context) {
-		if (value == null) {
-			return Double.valueOf(0.);
-		}
-		return Double.valueOf(value.doubleValue());
-	}
+    @Override
+    public Double convertToPresentation(Number value, ValueContext context) {
+        if (value == null) {
+            return Double.valueOf(0.);
+        }
+        return Double.valueOf(value.doubleValue());
+    }
 
 }

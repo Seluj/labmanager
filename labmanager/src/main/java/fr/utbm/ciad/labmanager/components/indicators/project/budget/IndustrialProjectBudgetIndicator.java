@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,6 @@
 
 package fr.utbm.ciad.labmanager.components.indicators.project.budget;
 
-import java.util.Locale;
-
 import fr.utbm.ciad.labmanager.configuration.ConfigurationConstants;
 import fr.utbm.ciad.labmanager.data.project.Project;
 import fr.utbm.ciad.labmanager.data.project.ProjectCategory;
@@ -30,8 +28,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Sum the budgets of industrial projects.
- * 
+import java.util.Locale;
+
+/**
+ * Sum the budgets of industrial projects.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -41,34 +42,35 @@ import org.springframework.stereotype.Component;
 @Component
 public class IndustrialProjectBudgetIndicator extends AbstractProjectBudgetIndicator {
 
-	private static final long serialVersionUID = 4393514948039168916L;
+    private static final long serialVersionUID = 4393514948039168916L;
 
-	/** Constructor.
-	 *
-	 * @param messages the provider of messages.
-	 * @param constants the accessor to the constants.
-	 * @param projectService the service for accessing the projects.
-	 */
-	public IndustrialProjectBudgetIndicator(
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ConfigurationConstants constants,
-			@Autowired ProjectService projectService) {
-		super(messages, constants, projectService);
-	}
+    /**
+     * Constructor.
+     *
+     * @param messages       the provider of messages.
+     * @param constants      the accessor to the constants.
+     * @param projectService the service for accessing the projects.
+     */
+    public IndustrialProjectBudgetIndicator(
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ConfigurationConstants constants,
+            @Autowired ProjectService projectService) {
+        super(messages, constants, projectService);
+    }
 
-	@Override
-	public String getName(Locale locale) {
-		return getMessage(locale, "industrialProjectBudgetIndicator.name"); //$NON-NLS-1$
-	}
+    @Override
+    public String getName(Locale locale) {
+        return getMessage(locale, "industrialProjectBudgetIndicator.name"); //$NON-NLS-1$
+    }
 
-	@Override
-	public String getLabel(Unit unit, Locale locale) {
-		return getLabelWithYears(locale, "industrialProjectBudgetIndicator.label", unit.getLabel()); //$NON-NLS-1$
-	}
+    @Override
+    public String getLabel(Unit unit, Locale locale) {
+        return getLabelWithYears(locale, "industrialProjectBudgetIndicator.label", unit.getLabel()); //$NON-NLS-1$
+    }
 
-	@Override
-	public boolean isSelectableProject(Project project) {
-		return project != null && project.getCategory() == ProjectCategory.NOT_ACADEMIC_PROJECT;
-	}
+    @Override
+    public boolean isSelectableProject(Project project) {
+        return project != null && project.getCategory() == ProjectCategory.NOT_ACADEMIC_PROJECT;
+    }
 
 }

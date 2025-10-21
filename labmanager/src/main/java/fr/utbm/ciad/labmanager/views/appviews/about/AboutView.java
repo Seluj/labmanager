@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,8 +42,9 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-/** The view that show the application informations.
- * 
+/**
+ * The view that show the application informations.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -58,26 +59,27 @@ public class AboutView extends AbstractLoggerComposite<HorizontalLayout> impleme
     private static final long serialVersionUID = -3953932858588108431L;
 
     private static final int PERCENTAGE_IMAGE_SIZE = 60;
-    
+
     private static final String IMAGE_MARGINS = "0px 0px 50px 0px"; //$NON-NLS-1$
 
     private static final String COPYRIGHT_MARGINS = "50px 0px 0px 0px"; //$NON-NLS-1$
 
     private final String applicationName;
-    
-    /** Constructor.
+
+    /**
+     * Constructor.
      *
-     * @param applicationName the name of the current application.
-     * @param applicationImage the resource path to the image of the current application.
+     * @param applicationName          the name of the current application.
+     * @param applicationImage         the resource path to the image of the current application.
      * @param applicationCopyrightText the text of the copyright for the current application.
-	 * @param loggerFactory the factory to be used for the composite logger.
+     * @param loggerFactory            the factory to be used for the composite logger.
      */
-	public AboutView(@Value("${labmanager.application-name}") String applicationName,
-			@Value("${labmanager.application-image}") String applicationImage,
-			@Value("${labmanager.application-copyright}") String applicationCopyrightText,
-			@Autowired ContextualLoggerFactory loggerFactory) {
-		super(loggerFactory);
-		this.applicationName = applicationName;
+    public AboutView(@Value("${labmanager.application-name}") String applicationName,
+                     @Value("${labmanager.application-image}") String applicationImage,
+                     @Value("${labmanager.application-copyright}") String applicationCopyrightText,
+                     @Autowired ContextualLoggerFactory loggerFactory) {
+        super(loggerFactory);
+        this.applicationName = applicationName;
         getContent().setSizeFull();
         getContent().setSpacing(false);
         getContent().getStyle().set("flex-grow", "1"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -90,30 +92,30 @@ public class AboutView extends AbstractLoggerComposite<HorizontalLayout> impleme
         vlayout.getStyle().set("flex-grow", "1"); //$NON-NLS-1$ //$NON-NLS-2$
         vlayout.setJustifyContentMode(JustifyContentMode.CENTER);
         vlayout.setAlignItems(Alignment.CENTER);
-        
+
         final var imageResource = ComponentFactory.newStreamImage(applicationImage);
-		final var image = new Image(imageResource, applicationImage);
-		image.setMinWidth(PERCENTAGE_IMAGE_SIZE, Unit.PERCENTAGE);
-		image.setMaxWidth(PERCENTAGE_IMAGE_SIZE, Unit.PERCENTAGE);
-		image.getStyle().setMargin(IMAGE_MARGINS);
-		
-		final var title = new H1(this.applicationName);
+        final var image = new Image(imageResource, applicationImage);
+        image.setMinWidth(PERCENTAGE_IMAGE_SIZE, Unit.PERCENTAGE);
+        image.setMaxWidth(PERCENTAGE_IMAGE_SIZE, Unit.PERCENTAGE);
+        image.getStyle().setMargin(IMAGE_MARGINS);
 
-		final var version = new H3(getTranslation("views.about.version", Constants.MANAGER_VERSION, Constants.MANAGER_BUILD_ID)); //$NON-NLS-1$
+        final var title = new H1(this.applicationName);
 
-		final var copyright = new HorizontalLayout(VaadinIcon.COPYRIGHT.create(),
-				new Text(applicationCopyrightText));
-		copyright.getStyle().setMargin(COPYRIGHT_MARGINS);
-		copyright.setJustifyContentMode(JustifyContentMode.CENTER);
-		copyright.setAlignItems(Alignment.CENTER);
+        final var version = new H3(getTranslation("views.about.version", Constants.MANAGER_VERSION, Constants.MANAGER_BUILD_ID)); //$NON-NLS-1$
 
-		vlayout.add(image, title, version, copyright);
-		getContent().add(vlayout);
+        final var copyright = new HorizontalLayout(VaadinIcon.COPYRIGHT.create(),
+                new Text(applicationCopyrightText));
+        copyright.getStyle().setMargin(COPYRIGHT_MARGINS);
+        copyright.setJustifyContentMode(JustifyContentMode.CENTER);
+        copyright.setAlignItems(Alignment.CENTER);
+
+        vlayout.add(image, title, version, copyright);
+        getContent().add(vlayout);
     }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.about.list", this.applicationName); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.about.list", this.applicationName); //$NON-NLS-1$
+    }
 
 }

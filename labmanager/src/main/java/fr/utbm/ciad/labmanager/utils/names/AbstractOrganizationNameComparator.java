@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.utils.names;
 
 import fr.utbm.ciad.labmanager.utils.AbstractNormalizableStringComparator;
 
-/** Abstract implementation of utilities for comparing organization names.
- * 
+/**
+ * Abstract implementation of utilities for comparing organization names.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,17 +32,17 @@ import fr.utbm.ciad.labmanager.utils.AbstractNormalizableStringComparator;
  */
 public abstract class AbstractOrganizationNameComparator extends AbstractNormalizableStringComparator implements OrganizationNameComparator {
 
-	@Override
-	public double getSimilarity(String acronym1, String name1, String acronym2, String name2) {
-		final var normedAcronym1 = normalizeString(acronym1);
-		final var normedName1 = normalizeString(name1);
-		final var normedAcronym2 = acronym1 != acronym2 ? normalizeString(acronym2) : normedAcronym1;
-		final var normedName2 = name1 != name2 ? normalizeString(name2) : normedName1;
+    @Override
+    public double getSimilarity(String acronym1, String name1, String acronym2, String name2) {
+        final var normedAcronym1 = normalizeString(acronym1);
+        final var normedName1 = normalizeString(name1);
+        final var normedAcronym2 = acronym1 != acronym2 ? normalizeString(acronym2) : normedAcronym1;
+        final var normedName2 = name1 != name2 ? normalizeString(name2) : normedName1;
 
-		final var similarityComputer = getStringSimilarityComputer();
-		final var s1 = getSimilarity(similarityComputer, normedAcronym1, normedAcronym2);
-		final var s2 = getSimilarity(similarityComputer, normedName1, normedName2);
-		return Math.max(s1, s2);
-	}
+        final var similarityComputer = getStringSimilarityComputer();
+        final var s1 = getSimilarity(similarityComputer, normedAcronym1, normedAcronym2);
+        final var s2 = getSimilarity(similarityComputer, normedName1, normedName2);
+        return Math.max(s1, s2);
+    }
 
 }

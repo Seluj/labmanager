@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import java.util.Locale;
 
-/** Describe the role of a teaching in the activity.
- * 
+/**
+ * Describe the role of a teaching in the activity.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,47 +35,52 @@ import java.util.Locale;
  */
 public enum TeacherRole {
 
-	/** Creator of the activity.
-	 */
-	CREATOR,
+    /**
+     * Creator of the activity.
+     */
+    CREATOR,
 
-	/** Supervisor of the activity.
-	 */
-	SUPERVISOR,
+    /**
+     * Supervisor of the activity.
+     */
+    SUPERVISOR,
 
-	/** Participant to the activity.
-	 */
-	PARTICIPANT;
+    /**
+     * Participant to the activity.
+     */
+    PARTICIPANT;
 
-	private static final String MESSAGE_PREFIX = "teacherRole."; //$NON-NLS-1$
+    private static final String MESSAGE_PREFIX = "teacherRole."; //$NON-NLS-1$
 
-	/** Replies the label of the teacher role in the given language.
-	 *
-	 * @param messages the accessor to the localized labels.
-	 * @param locale the locale to use.
-	 * @return the label of the teacher role in the given  language.
-	 */
-	public String getLabel(MessageSourceAccessor messages, Locale locale) {
-		final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
-		return Strings.nullToEmpty(label);
-	}
+    /**
+     * Replies the teacher role that corresponds to the given name, with a case-insensitive
+     * test of the name.
+     *
+     * @param name the name of the teacher role, to search for.
+     * @return the teacher role.
+     * @throws IllegalArgumentException if the given name does not corresponds to a teacher role.
+     */
+    public static TeacherRole valueOfCaseInsensitive(String name) {
+        if (!Strings.isNullOrEmpty(name)) {
+            for (final var ranking : values()) {
+                if (name.equalsIgnoreCase(ranking.name())) {
+                    return ranking;
+                }
+            }
+        }
+        throw new IllegalArgumentException("Invalid teacher role: " + name); //$NON-NLS-1$
+    }
 
-	/** Replies the teacher role that corresponds to the given name, with a case-insensitive
-	 * test of the name.
-	 *
-	 * @param name the name of the teacher role, to search for.
-	 * @return the teacher role.
-	 * @throws IllegalArgumentException if the given name does not corresponds to a teacher role.
-	 */
-	public static TeacherRole valueOfCaseInsensitive(String name) {
-		if (!Strings.isNullOrEmpty(name)) {
-			for (final var ranking : values()) {
-				if (name.equalsIgnoreCase(ranking.name())) {
-					return ranking;
-				}
-			}
-		}
-		throw new IllegalArgumentException("Invalid teacher role: " + name); //$NON-NLS-1$
-	}
+    /**
+     * Replies the label of the teacher role in the given language.
+     *
+     * @param messages the accessor to the localized labels.
+     * @param locale   the locale to use.
+     * @return the label of the teacher role in the given  language.
+     */
+    public String getLabel(MessageSourceAccessor messages, Locale locale) {
+        final var label = messages.getMessage(MESSAGE_PREFIX + name(), locale);
+        return Strings.nullToEmpty(label);
+    }
 
 }

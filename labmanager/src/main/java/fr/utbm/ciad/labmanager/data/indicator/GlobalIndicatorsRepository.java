@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,9 @@ package fr.utbm.ciad.labmanager.data.indicator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-/** JPA repository for global indicators.
- * 
+/**
+ * JPA repository for global indicators.
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @version $Name$ $Revision$ $Date$
@@ -31,5 +32,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @mavenartifactid $ArtifactId$
  */
 public interface GlobalIndicatorsRepository extends JpaRepository<GlobalIndicators, Long>, JpaSpecificationExecutor<GlobalIndicators> {
-	//
+    //
 }

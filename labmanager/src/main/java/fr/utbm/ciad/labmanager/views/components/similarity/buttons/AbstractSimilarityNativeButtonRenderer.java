@@ -19,7 +19,8 @@ import java.util.Map;
 
 import static fr.utbm.ciad.labmanager.views.components.addons.ComponentFactory.getTranslation;
 
-/** Represent an abstract of a specific native button renderer for similarity.
+/**
+ * Represent an abstract of a specific native button renderer for similarity.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -57,7 +58,7 @@ public abstract class AbstractSimilarityNativeButtonRenderer<T> extends NativeBu
 
                 Button confirmButton = new Button(getTranslation("views.confirm"), confirmEvent -> {
                     try {
-                        List<T> selectedEntities= new ArrayList<>();
+                        List<T> selectedEntities = new ArrayList<>();
                         for (Map.Entry<T, Checkbox> entry : checkboxMap.entrySet()) {
                             if (entry.getValue().getValue()) { // Si la checkbox est cochée
                                 selectedEntities.add(entry.getKey());

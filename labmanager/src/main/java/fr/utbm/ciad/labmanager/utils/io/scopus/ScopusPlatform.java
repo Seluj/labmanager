@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,75 +19,72 @@
 
 package fr.utbm.ciad.labmanager.utils.io.scopus;
 
+import org.arakhne.afc.progress.Progression;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
 
-import org.arakhne.afc.progress.Progression;
-
-/** Accessor to the online Elsevier Scopus platform.
- * 
+/**
+ * Accessor to the online Elsevier Scopus platform.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 3.3
  * @see "https://www.scopus.com/"
+ * @since 3.3
  */
 public interface ScopusPlatform {
 
-	/** Replies the ranking descriptions for the person with the given URL.
-	 *
-	 * @param scProfile the URL to the profile of the person on Scopus.
-	 * @param progress progress monitor.
-	 * @return the ranking descriptions for the person, never {@code null}.
-	 * @throws Exception if rankings cannot be read.
-	 */
-	ScopusPerson getPersonRanking(URL scProfile, Progression progress) throws Exception;
+    /**
+     * Replies the ranking descriptions for the person with the given URL.
+     *
+     * @param scProfile the URL to the profile of the person on Scopus.
+     * @param progress  progress monitor.
+     * @return the ranking descriptions for the person, never {@code null}.
+     * @throws Exception if rankings cannot be read.
+     */
+    ScopusPerson getPersonRanking(URL scProfile, Progression progress) throws Exception;
 
-	/** Replies the ranking descriptions for the person with the given identifier.
-	 *
-	 * @param personId the identifier of the person on Scopus.
-	 * @param progress progress monitor.
-	 * @return the ranking descriptions for the person, never {@code null}.
-	 * @throws Exception if rankings cannot be read.
-	 */
-	default ScopusPerson getPersonRanking(String personId, Progression progress) throws Exception {
-		final var apiUrl = new URI("https://www.scopus.com/authid/detail.uri?authorId=" + personId).toURL(); //$NON-NLS-1$
-		return getPersonRanking(apiUrl, progress);
-	}
+    /**
+     * Replies the ranking descriptions for the person with the given identifier.
+     *
+     * @param personId the identifier of the person on Scopus.
+     * @param progress progress monitor.
+     * @return the ranking descriptions for the person, never {@code null}.
+     * @throws Exception if rankings cannot be read.
+     */
+    default ScopusPerson getPersonRanking(String personId, Progression progress) throws Exception {
+        final var apiUrl = new URI("https://www.scopus.com/authid/detail.uri?authorId=" + personId).toURL(); //$NON-NLS-1$
+        return getPersonRanking(apiUrl, progress);
+    }
 
-	/** Accessor to the online Scopus platform.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 3.3
-	 * @see "https://www.scopus.com/"
-	 */
-	public class ScopusPerson implements Serializable {
+    /**
+     * Accessor to the online Scopus platform.
+     *
+     * @param hindex    The h-index of the person.
+     * @param citations The number of citations for the person.
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @see "https://www.scopus.com/"
+     * @since 3.3
+     */
+        record ScopusPerson(int hindex, int citations) implements Serializable {
 
-		private static final long serialVersionUID = 8357860848328947999L;
+            private static final long serialVersionUID = 8357860848328947999L;
 
-		/** The h-index of the person.
-		 */
-		public final int hindex;
+        /**
+         * Constructor.
+         *
+         * @param hindex    the H-index of the person
+         * @param citations the number of citations for the person.
+         */
+        public ScopusPerson {
+        }
 
-		/** The number of citations for the person.
-		 */
-		public final int citations;
-
-		/** Constructor.
-		 *
-		 * @param hindex the H-index of the person
-		 * @param citations the number of citations for the person.
-		 */
-		public ScopusPerson(int hindex, int citations) {
-			this.hindex = hindex;
-			this.citations = citations;
-		}
-
-	}
+        }
 
 }

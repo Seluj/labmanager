@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,12 @@ package fr.utbm.ciad.labmanager.utils;
 
 import org.springframework.http.MediaType;
 
-/** Description of a downloadable file.
+/**
+ * Description of a downloadable file.
  *
  * @param filenameExtension the extension of the filename for the downloadable file.
- * @param mime the MIME type.
- * @param content the content of the file.
+ * @param mime              the MIME type.
+ * @param content           the content of the file.
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,5 +34,5 @@ import org.springframework.http.MediaType;
  * @since 4.0
  */
 public record DownloadableFileDescription(String filenameExtension, MediaType mime, byte[] content) {
-	//
+    //
 }

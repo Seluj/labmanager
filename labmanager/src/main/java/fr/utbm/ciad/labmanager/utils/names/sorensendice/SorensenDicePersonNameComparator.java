@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-/** Utilities for comparing person names using the Sorensen Dice algorithm.
- * 
+/**
+ * Utilities for comparing person names using the Sorensen Dice algorithm.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -39,20 +40,21 @@ import org.springframework.stereotype.Component;
 @Primary
 public class SorensenDicePersonNameComparator extends AbstractPersonNameComparator {
 
-	private static final double SIMILARITY_LEVEL = 0.7;
+    private static final double SIMILARITY_LEVEL = 0.7;
 
-	/** Constructor.
-	 *
-	 * @param nameParser the parser for persons' names.
-	 */
-	public SorensenDicePersonNameComparator(@Autowired PersonNameParser nameParser) {
-		super(nameParser);
-		setSimilarityLevel(SIMILARITY_LEVEL);
-	}
+    /**
+     * Constructor.
+     *
+     * @param nameParser the parser for persons' names.
+     */
+    public SorensenDicePersonNameComparator(@Autowired PersonNameParser nameParser) {
+        super(nameParser);
+        setSimilarityLevel(SIMILARITY_LEVEL);
+    }
 
-	@Override
-	protected NormalizedStringSimilarity createStringSimilarityComputer() {
-		return new SorensenDice();
-	}
+    @Override
+    protected NormalizedStringSimilarity createStringSimilarityComputer() {
+        return new SorensenDice();
+    }
 
 }

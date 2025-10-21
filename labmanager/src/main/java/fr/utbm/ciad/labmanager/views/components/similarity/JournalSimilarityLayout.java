@@ -2,14 +2,10 @@ package fr.utbm.ciad.labmanager.views.components.similarity;
 
 import com.vaadin.flow.component.grid.Grid;
 import fr.utbm.ciad.labmanager.data.journal.Journal;
-import fr.utbm.ciad.labmanager.data.organization.ResearchOrganization;
 import fr.utbm.ciad.labmanager.services.journal.JournalMergingService;
-import fr.utbm.ciad.labmanager.services.organization.OrganizationMergingService;
 import fr.utbm.ciad.labmanager.utils.names.JournalNameOrPublisherComparator;
-import fr.utbm.ciad.labmanager.utils.names.OrganizationNameComparator;
 import fr.utbm.ciad.labmanager.views.components.similarity.buttons.AbstractSimilarityNativeButtonRenderer;
 import fr.utbm.ciad.labmanager.views.components.similarity.buttons.JournalSimilarityNativeButtonRenderer;
-import fr.utbm.ciad.labmanager.views.components.similarity.buttons.OrganizationSimilarityNativeButtonRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +13,9 @@ import java.util.Set;
 
 public class JournalSimilarityLayout extends AbstractSimilarityLayout<Journal> {
 
-    private JournalMergingService  journalMergingService;
+    private final JournalMergingService journalMergingService;
 
-    private JournalNameOrPublisherComparator nameComparator;
+    private final JournalNameOrPublisherComparator nameComparator;
 
     public JournalSimilarityLayout(JournalMergingService journalMergingService, JournalNameOrPublisherComparator nameComparator) {
         super();

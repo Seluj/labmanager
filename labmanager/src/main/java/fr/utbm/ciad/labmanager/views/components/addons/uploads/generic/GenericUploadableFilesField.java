@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,12 +19,13 @@
 
 package fr.utbm.ciad.labmanager.views.components.addons.uploads.generic;
 
-import java.util.List;
-
 import com.vaadin.flow.function.SerializableSupplier;
 import org.slf4j.Logger;
 
-/** A field that enables to upload files (whatever the content), and provides the file bytes.
+import java.util.List;
+
+/**
+ * A field that enables to upload files (whatever the content), and provides the file bytes.
  * This field does not assumes that the data is linked to a backend JPA.
  *
  * <p>CAUTION: Data is in memory only until the subclasses are using this stream.
@@ -40,34 +41,35 @@ import org.slf4j.Logger;
  */
 public class GenericUploadableFilesField extends AbstractUploadableFilesField<UploadBuffer> {
 
-	private static final long serialVersionUID = -7315122911322363884L;
+    private static final long serialVersionUID = -7315122911322363884L;
 
-	/** Constructor.
-	 *
-	 * @param loggerSupplier the dynamic supplier of the loggers.
-	 * @param fileExtensions the file extensions that are accepted by the field. Providing 
-	 *    this argument is equivalent to a call to {@link #setAcceptedFileTypes(String...)}.
-	 */
-	public GenericUploadableFilesField(SerializableSupplier<Logger> loggerSupplier, String...fileExtensions) {
-		super(loggerSupplier);
-		if (fileExtensions != null && fileExtensions.length > 0) {
-			setAcceptedFileTypes(fileExtensions);
-		}
-	}
+    /**
+     * Constructor.
+     *
+     * @param loggerSupplier the dynamic supplier of the loggers.
+     * @param fileExtensions the file extensions that are accepted by the field. Providing
+     *                       this argument is equivalent to a call to {@link #setAcceptedFileTypes(String...)}.
+     */
+    public GenericUploadableFilesField(SerializableSupplier<Logger> loggerSupplier, String... fileExtensions) {
+        super(loggerSupplier);
+        if (fileExtensions != null && fileExtensions.length > 0) {
+            setAcceptedFileTypes(fileExtensions);
+        }
+    }
 
-	@Override
-	protected void uploadSucceeded(String filename) {
-		updateValue();
-	}
+    @Override
+    protected void uploadSucceeded(String filename) {
+        updateValue();
+    }
 
-	@Override
-	protected List<UploadBuffer> generateModelValue() {
-		return getUploadBuffers();
-	}
+    @Override
+    protected List<UploadBuffer> generateModelValue() {
+        return getUploadBuffers();
+    }
 
-	@Override
-	protected void setPresentationValue(List<UploadBuffer> newPresentationValue) {
-		setUploadBuffers(newPresentationValue);
-	}
+    @Override
+    protected void setPresentationValue(List<UploadBuffer> newPresentationValue) {
+        setUploadBuffers(newPresentationValue);
+    }
 
 }

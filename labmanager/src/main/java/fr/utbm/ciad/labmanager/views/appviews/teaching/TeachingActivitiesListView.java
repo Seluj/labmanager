@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,8 +33,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Enable to edit the teaching activities.
- * 
+/**
+ * Enable to edit the teaching activities.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,30 +46,31 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class TeachingActivitiesListView extends StandardTeachingActivitiesListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = -3394037347708282892L;
+    private static final long serialVersionUID = -3394037347708282892L;
 
-	/** Constructor.
-	 *
-	 * @param fileManager the manager of the downloadable files.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param teachingService the service for accessing the teaching activities.
-	 * @param teachingEditorFactory the factory for creating the teaching activity editors.
-	 */
-	public TeachingActivitiesListView(
-			@Autowired DownloadableFileManager fileManager,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired TeachingService teachingService,
-			@Autowired TeachingActivityEditorFactory teachingEditorFactory) {
-		super(fileManager, authenticatedUser, messages, loggerFactory, teachingService, teachingEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param fileManager           the manager of the downloadable files.
+     * @param authenticatedUser     the connected user.
+     * @param messages              the accessor to the localized messages (spring layer).
+     * @param loggerFactory         the factory to be used for the composite logger.
+     * @param teachingService       the service for accessing the teaching activities.
+     * @param teachingEditorFactory the factory for creating the teaching activity editors.
+     */
+    public TeachingActivitiesListView(
+            @Autowired DownloadableFileManager fileManager,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired TeachingService teachingService,
+            @Autowired TeachingActivityEditorFactory teachingEditorFactory) {
+        super(fileManager, authenticatedUser, messages, loggerFactory, teachingService, teachingEditorFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.teaching_activities.activities.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.teaching_activities.activities.list"); //$NON-NLS-1$
+    }
 
 }

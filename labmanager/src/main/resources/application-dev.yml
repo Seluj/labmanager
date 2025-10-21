@@ -107,6 +107,7 @@ vaadin:
     - /api/**/*
 
 labmanager:
+  disable-cas-login: true
   cas-servers:
     utbm:
       key: "13792c4f-5188-46da-922d-3f1cee3f85c8"
@@ -123,7 +124,7 @@ labmanager:
   application-name: CIAD Lab Manager
   application-image: /images/ciadpicture.svg
   application-copyright: Copyright CIAD Laboratory, Université de Technologie de Belfort Montbéliard 2019-2024. This program is under the terms of the GNU Affero General Public License.
-  application-port: 8080
+  application-port: 8085
   application-url: https://localhost:${labmanager.application-port}/LabManager
   default-organization: CIAD
   default-super-organization: UTBM

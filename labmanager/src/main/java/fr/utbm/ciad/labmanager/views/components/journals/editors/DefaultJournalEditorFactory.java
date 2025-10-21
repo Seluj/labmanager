@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,8 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a journal editor according to the editing context.
- * 
+/**
+ * Factory that is providing a journal editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -42,45 +43,46 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultJournalEditorFactory implements JournalEditorFactory {
 
-	private final JournalCreationStatusComputer journalCreationStatusComputer;
-	
-	private final JournalService journalService;
+    private final JournalCreationStatusComputer journalCreationStatusComputer;
 
-	private final AuthenticatedUser authenticatedUser;
+    private final JournalService journalService;
 
-	private final MessageSourceAccessor messages;
+    private final AuthenticatedUser authenticatedUser;
 
-	/** Constructor.
-	 * 
-	 * @param journalCreationStatusComputer the tool for computer the creation status for the journals.
-	 * @param journalService the service for accessing to the journel entities.
-	 * @param authenticatedUser the connected user.
-	 * @param messages accessor to the localized messages.
-	 */
-	public DefaultJournalEditorFactory(
-			@Autowired JournalCreationStatusComputer journalCreationStatusComputer,
-			@Autowired JournalService journalService,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages) {
-		this.journalCreationStatusComputer = journalCreationStatusComputer;
-		this.journalService = journalService;
-		this.authenticatedUser = authenticatedUser;
-		this.messages = messages;
-	}
+    private final MessageSourceAccessor messages;
 
-	@Override
-	public EntityEditingContext<Journal> createContextFor(Journal journal, Logger logger) {
-		return this.journalService.startEditing(journal, logger);
-	}
+    /**
+     * Constructor.
+     *
+     * @param journalCreationStatusComputer the tool for computer the creation status for the journals.
+     * @param journalService                the service for accessing to the journel entities.
+     * @param authenticatedUser             the connected user.
+     * @param messages                      accessor to the localized messages.
+     */
+    public DefaultJournalEditorFactory(
+            @Autowired JournalCreationStatusComputer journalCreationStatusComputer,
+            @Autowired JournalService journalService,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages) {
+        this.journalCreationStatusComputer = journalCreationStatusComputer;
+        this.journalService = journalService;
+        this.authenticatedUser = authenticatedUser;
+        this.messages = messages;
+    }
 
-	@Override
-	public AbstractEntityEditor<Journal> createAdditionEditor(EntityEditingContext<Journal> context) {
-		return new EmbeddedJournalEditor(context, this.journalCreationStatusComputer, this.journalService, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public EntityEditingContext<Journal> createContextFor(Journal journal, Logger logger) {
+        return this.journalService.startEditing(journal, logger);
+    }
 
-	@Override
-	public AbstractEntityEditor<Journal> createUpdateEditor(EntityEditingContext<Journal> context) {
-		return new EmbeddedJournalEditor(context, this.journalCreationStatusComputer, this.journalService, this.authenticatedUser, this.messages);
-	}
+    @Override
+    public AbstractEntityEditor<Journal> createAdditionEditor(EntityEditingContext<Journal> context) {
+        return new EmbeddedJournalEditor(context, this.journalCreationStatusComputer, this.journalService, this.authenticatedUser, this.messages);
+    }
+
+    @Override
+    public AbstractEntityEditor<Journal> createUpdateEditor(EntityEditingContext<Journal> context) {
+        return new EmbeddedJournalEditor(context, this.journalCreationStatusComputer, this.journalService, this.authenticatedUser, this.messages);
+    }
 
 }

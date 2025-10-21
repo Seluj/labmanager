@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import fr.utbm.ciad.labmanager.services.AbstractEntityService.EntityEditingConte
 import fr.utbm.ciad.labmanager.views.components.addons.entities.AbstractEntityEditor;
 import org.slf4j.Logger;
 
-/** Factory that is providing a project editor according to the editing context.
- * 
+/**
+ * Factory that is providing a project editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,48 +35,53 @@ import org.slf4j.Logger;
  */
 public interface ProjectEditorFactory {
 
-	/** Replies the editing context for the given project.
-	 *
-	 * @param project the project to be edited.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editing context.
-	 */
-	EntityEditingContext<Project> createContextFor(Project project, Logger logger);
+    /**
+     * Replies the editing context for the given project.
+     *
+     * @param project the project to be edited.
+     * @param logger  the logger to be associated to the context.
+     * @return the editing context.
+     */
+    EntityEditingContext<Project> createContextFor(Project project, Logger logger);
 
-	/** Create an editor that may be used for creating a new project.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<Project> createAdditionEditor(EntityEditingContext<Project> context);
+    /**
+     * Create an editor that may be used for creating a new project.
+     *
+     * @param context the context for editing the entity.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<Project> createAdditionEditor(EntityEditingContext<Project> context);
 
-	/** Create an editor that may be used for creating a new project.
-	 * 
-	 * @param project the project to be edited.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Project> createAdditionEditor(Project project, Logger logger) {
-		final var context = createContextFor(project, logger);
-		return this.createAdditionEditor(context);
-	}
+    /**
+     * Create an editor that may be used for creating a new project.
+     *
+     * @param project the project to be edited.
+     * @param logger  the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Project> createAdditionEditor(Project project, Logger logger) {
+        final var context = createContextFor(project, logger);
+        return this.createAdditionEditor(context);
+    }
 
-	/** Create an editor that may be used for updating an existing project.
-	 * 
-	 * @param context the context for editing the entity.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<Project> createUpdateEditor(EntityEditingContext<Project> context);
+    /**
+     * Create an editor that may be used for updating an existing project.
+     *
+     * @param context the context for editing the entity.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<Project> createUpdateEditor(EntityEditingContext<Project> context);
 
-	/** Create an editor that may be used for updating an existing project.
-	 * 
-	 * @param project the project to be edited.
-	 * @param logger the logger to be associated to the context.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Project> createUpdateEditor(Project project, Logger logger) {
-		final var context = createContextFor(project, logger);
-		return this.createUpdateEditor(context);
-	}
+    /**
+     * Create an editor that may be used for updating an existing project.
+     *
+     * @param project the project to be edited.
+     * @param logger  the logger to be associated to the context.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Project> createUpdateEditor(Project project, Logger logger) {
+        final var context = createContextFor(project, logger);
+        return this.createUpdateEditor(context);
+    }
 
 }

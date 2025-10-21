@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,8 +30,9 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
-/** Data in the wizard for updating the conference ranking.
- * 
+/**
+ * Data in the wizard for updating the conference ranking.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -40,133 +41,140 @@ import java.util.stream.Stream;
  */
 public class ConferenceRankingUpdate extends AbstractContextData {
 
-	private static final long serialVersionUID = 1506566568548752541L;
+    private static final long serialVersionUID = 1506566568548752541L;
+    private final Map<Long, ConferenceRankingInformation> core = new TreeMap<>();
+    private int year = LocalDate.now().getYear() - 1;
+    private List<Conference> conferences = new ArrayList<>();
 
-	private int year = LocalDate.now().getYear() - 1;
+    /**
+     * Constructor.
+     */
+    public ConferenceRankingUpdate() {
+        //
+    }
 
-	private List<Conference> conferences = new ArrayList<>();
+    private static CoreRanking extractKnownValue(CoreRanking oldValue, CoreRanking newValue) {
+        if (newValue != null) {
+            return CoreRanking.normalize(oldValue);
+        }
+        return null;
+    }
 
-	private final Map<Long, ConferenceRankingInformation> core = new TreeMap<>();
+    private static CoreRanking extractValue(CoreRanking oldValue, CoreRanking newValue) {
+        final var ov = CoreRanking.normalize(oldValue);
+        final var nv = CoreRanking.normalize(newValue);
+        if (ov != nv) {
+            return newValue;
+        }
+        return null;
+    }
 
-	/** Constructor.
-	 */
-	public ConferenceRankingUpdate() {
-		//
-	}
+    /**
+     * Replies the year for the ranking updates.
+     *
+     * @return the year.
+     */
+    public synchronized int getYear() {
+        return this.year;
+    }
 
-	/** Replies the year for the ranking updates.
-	 *
-	 * @return the year.
-	 */
-	public synchronized int getYear() {
-		return this.year;
-	}
+    /**
+     * Set the year for the ranking updates.
+     *
+     * @param year the year.
+     */
+    public synchronized void setYear(int year) {
+        this.year = year;
+    }
 
-	/** Set the year for the ranking updates.
-	 *
-	 * @param year the year.
-	 */
-	public synchronized void setYear(int year) {
-		this.year = year;
-	}
+    /**
+     * Replies the list of conferences.
+     *
+     * @return the conferences.
+     */
+    public synchronized List<Conference> getConferences() {
+        return this.conferences;
+    }
 
-	/** Replies the list of conferences.
-	 * 
-	 * @return the conferences.
-	 */
-	public synchronized List<Conference> getConferences() {
-		return this.conferences;
-	}
+    /**
+     * Change the list of conferences.
+     *
+     * @param conferences the conferences.
+     */
+    public synchronized void setConferences(List<Conference> conferences) {
+        assert conferences != null;
+        this.conferences = conferences;
+    }
 
-	/** Change the list of conferences.
-	 * 
-	 * @param conferences the conferences.
-	 */
-	public synchronized void setConferences(List<Conference> conferences) {
-		assert conferences != null;
-		this.conferences = conferences;
-	}
+    /**
+     * Remove all the references to the Worankings.
+     */
+    public synchronized void clearRankings() {
+        this.core.clear();
+    }
 
-	/** Remove all the references to the Worankings.
-	 */
-	public synchronized void clearRankings() {
-		this.core.clear();
-	}
+    /**
+     * Add ranking for the conference with the given identifier.
+     *
+     * @param conferenceId the identifier of the conference.
+     * @param knownRanking the CORE ranking of the conference that is already known.
+     * @param newRanking   the new CORE ranking for the conference.
+     */
+    public synchronized void addRanking(long conferenceId, CoreRanking knownRanking, CoreRanking newRanking) {
+        this.core.put(Long.valueOf(conferenceId), new ConferenceRankingInformation(knownRanking, newRanking));
+    }
 
-	/** Add ranking for the conference with the given identifier.
-	 *
-	 * @param conferenceId the identifier of the conference.
-	 * @param knownRanking the CORE ranking of the conference that is already known. 
-	 * @param newRanking the new CORE ranking for the conference. 
-	 */
-	public synchronized void addRanking(long conferenceId, CoreRanking knownRanking, CoreRanking newRanking) {
-		this.core.put(Long.valueOf(conferenceId), new ConferenceRankingInformation(knownRanking, newRanking));
-	}
+    /**
+     * Replies all the update information about the conferences.
+     *
+     * @return the stream of information, one entry per conference.
+     */
+    public Stream<ConferenceNewInformation> getConferenceUpdates() {
+        final var defaultRanking = new ConferenceRankingInformation(CoreRanking.NR, CoreRanking.NR);
+        return getConferences().stream().map(conference -> {
+            final var conferenceId = Long.valueOf(conference.getId());
 
-	/** Replies all the update information about the conferences.
-	 *
-	 * @return the stream of information, one entry per conference.
-	 */
-	public Stream<ConferenceNewInformation> getConferenceUpdates() {
-		final var defaultRanking = new ConferenceRankingInformation(CoreRanking.NR, CoreRanking.NR);
-		return getConferences().stream().map(conference -> {
-			final var conferenceId = Long.valueOf(conference.getId());
-			
-			final var core = this.core.getOrDefault(conferenceId, defaultRanking);
-			final var coreRanking = extractValue(core.knownRanking(), core.newRanking());
+            final var core = this.core.getOrDefault(conferenceId, defaultRanking);
+            final var coreRanking = extractValue(core.knownRanking(), core.newRanking());
 
-			if (coreRanking != null) {
-				return new ConferenceNewInformation(conference,
-						extractKnownValue(core.knownRanking(), coreRanking), coreRanking);
-			}
-			return null;
-		}).filter(it -> it != null);
-	}
+            if (coreRanking != null) {
+                return new ConferenceNewInformation(conference,
+                        extractKnownValue(core.knownRanking(), coreRanking), coreRanking);
+            }
+            return null;
+        }).filter(it -> it != null);
+    }
 
-	private static CoreRanking extractKnownValue(CoreRanking oldValue, CoreRanking newValue) {
-		if (newValue != null) {
-			return CoreRanking.normalize(oldValue);
-		}
-		return null;
-	}
+    /**
+     * Description of the ranking information for a conference.
+     *
+     * @param knownRanking the ranking of the conference that is already known.
+     * @param newRanking   the new ranking for the conference.
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    public record ConferenceRankingInformation(CoreRanking knownRanking, CoreRanking newRanking) {
+        //
+    }
 
-	private static CoreRanking extractValue(CoreRanking oldValue, CoreRanking newValue) {
-		final var ov = CoreRanking.normalize(oldValue);
-		final var nv = CoreRanking.normalize(newValue);
-		if (ov != nv) {
-			return newValue;
-		}
-		return null;
-	}
-
-	/** Description of the ranking information for a conference.
-	 * 
-	 * @param knownRanking the ranking of the conference that is already known. 
-	 * @param newRanking the new ranking for the conference. 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	public record ConferenceRankingInformation(CoreRanking knownRanking, CoreRanking newRanking) {
-		//
-	}
-
-	/** Description of the information for a conference.
-	 * 
-	 * @param conference the conference.
-	 * @param oldRanking the old CORE ranking, or {@code null}. 
-	 * @param newRanking the ew CORE ranking, or {@code null}. 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	public record ConferenceNewInformation(Conference conference,
-			CoreRanking oldRanking, CoreRanking newRanking) {
-		//
-	}
+    /**
+     * Description of the information for a conference.
+     *
+     * @param conference the conference.
+     * @param oldRanking the old CORE ranking, or {@code null}.
+     * @param newRanking the ew CORE ranking, or {@code null}.
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    public record ConferenceNewInformation(Conference conference,
+                                           CoreRanking oldRanking, CoreRanking newRanking) {
+        //
+    }
 
 }

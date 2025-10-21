@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-/** Wrapper for the network connection that supports proxy configuration or not depending on the local configuration.
- * 
+/**
+ * Wrapper for the network connection that supports proxy configuration or not depending on the local configuration.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -33,13 +34,14 @@ import java.net.URL;
  */
 public interface NetConnection {
 
-	/** Read the image that it referenced by the given URL.
-	 *
-	 * @param url the url of the image to be read.
-	 * @return the image.
-	 * @throws IOException if the image cannot be read. The exception gives details on the reason of the failure.
-	 */
-	BufferedImage getImageFromURL(URL url) throws IOException;
+    /**
+     * Read the image that it referenced by the given URL.
+     *
+     * @param url the url of the image to be read.
+     * @return the image.
+     * @throws IOException if the image cannot be read. The exception gives details on the reason of the failure.
+     */
+    BufferedImage getImageFromURL(URL url) throws IOException;
 
 }
 

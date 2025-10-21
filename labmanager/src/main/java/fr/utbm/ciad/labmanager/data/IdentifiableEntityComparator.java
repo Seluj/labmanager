@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.data;
 
 import java.util.Comparator;
 
-/** Comparator of identifiable entities. This comparator is based on the identifiers only.
- * 
+/**
+ * Comparator of identifiable entities. This comparator is based on the identifiers only.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,18 +32,18 @@ import java.util.Comparator;
  */
 public class IdentifiableEntityComparator implements Comparator<IdentifiableEntity> {
 
-	@Override
-	public int compare(IdentifiableEntity o1, IdentifiableEntity o2) {
-		if (o1 == o2) {
-			return 0;
-		}
-		if (o1 == null) {
-			return Integer.MIN_VALUE;
-		}
-		if (o2 == null) {
-			return Integer.MAX_VALUE;
-		}
-		return Long.compare(o1.getId(), o2.getId());
-	}
+    @Override
+    public int compare(IdentifiableEntity o1, IdentifiableEntity o2) {
+        if (o1 == o2) {
+            return 0;
+        }
+        if (o1 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (o2 == null) {
+            return Integer.MAX_VALUE;
+        }
+        return Long.compare(o1.getId(), o2.getId());
+    }
 
 }

@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.utils.io.youtube;
 
 import java.net.URL;
 
-/** Utilities for YouTube.
- * 
+/**
+ * Utilities for YouTube.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,11 +32,12 @@ import java.net.URL;
  */
 public interface YouTubeTools {
 
-	/** Convert a link to a standard YouTube to the equivalent link to the embeded video. 
-	 *
-	 * @param videoLink the link to the standard video.
-	 * @return the link to the embedded video.
-	 */
-	URL embeddedVideoLink(URL videoLink);
+    /**
+     * Convert a link to a standard YouTube to the equivalent link to the embeded video.
+     *
+     * @param videoLink the link to the standard video.
+     * @return the link to the embedded video.
+     */
+    URL embeddedVideoLink(URL videoLink);
 
 }

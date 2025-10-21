@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,8 +33,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** List of all the projects.
- * 
+/**
+ * List of all the projects.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,30 +46,31 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class ProjectsListView extends StandardProjectListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = 5681894363702948200L;
+    private static final long serialVersionUID = 5681894363702948200L;
 
-	/** Constructor.
-	 *
-	 * @param fileManager the manager of the filenames for the uploaded files.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param projectService the service for accessing the projects.
-	 * @param projectEditorFactory the factory for creating the project editors.
-	 */
-	public ProjectsListView(
-			@Autowired DownloadableFileManager fileManager,
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired ProjectService projectService,
-			@Autowired ProjectEditorFactory projectEditorFactory) {
-		super(fileManager, authenticatedUser, messages, loggerFactory, projectService, projectEditorFactory);
-	}
+    /**
+     * Constructor.
+     *
+     * @param fileManager          the manager of the filenames for the uploaded files.
+     * @param authenticatedUser    the connected user.
+     * @param messages             the accessor to the localized messages (spring layer).
+     * @param loggerFactory        the factory to be used for the composite logger.
+     * @param projectService       the service for accessing the projects.
+     * @param projectEditorFactory the factory for creating the project editors.
+     */
+    public ProjectsListView(
+            @Autowired DownloadableFileManager fileManager,
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired ProjectService projectService,
+            @Autowired ProjectEditorFactory projectEditorFactory) {
+        super(fileManager, authenticatedUser, messages, loggerFactory, projectService, projectEditorFactory);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.projects.projects.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.projects.projects.list"); //$NON-NLS-1$
+    }
 
 }

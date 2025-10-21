@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,8 +27,9 @@ import com.vaadin.flow.function.SerializableBiConsumer;
 import com.vaadin.flow.function.SerializableFunction;
 import org.arakhne.afc.util.OutputParameter;
 
-/** A renderer that could be using for displaying badges in grids, combos, etc.
- * 
+/**
+ * A renderer that could be using for displaying badges in grids, combos, etc.
+ *
  * @param <ITEM> the type of the data that is displayed.
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
@@ -38,73 +39,76 @@ import org.arakhne.afc.util.OutputParameter;
  */
 public class BadgeRenderer<ITEM> extends ComponentRenderer<Component, ITEM> {
 
-	private static final long serialVersionUID = 3215157356978585101L;
+    private static final long serialVersionUID = 3215157356978585101L;
 
-	/** Constructor.
-	 *
-	 * @param componentFunction callback function that takes data as first argument.
-	 *     The second argument is a function that must be called to set the badge set (first argument)
-	 *     and the badge text (second argument).
-	 */
-	public BadgeRenderer(SerializableBiConsumer<ITEM, ComponentCreator> componentFunction) {
-		super(createComponentFunction(componentFunction));
-	}
+    /**
+     * Constructor.
+     *
+     * @param componentFunction callback function that takes data as first argument.
+     *                          The second argument is a function that must be called to set the badge set (first argument)
+     *                          and the badge text (second argument).
+     */
+    public BadgeRenderer(SerializableBiConsumer<ITEM, ComponentCreator> componentFunction) {
+        super(createComponentFunction(componentFunction));
+    }
 
-	private static <ITEM> SerializableFunction<ITEM, Component> createComponentFunction(SerializableBiConsumer<ITEM, ComponentCreator> componentFunction) {
-		return it -> {
-			final var component = new OutputParameter<Component>();
-			final ComponentCreator creator = (badgeState, badgeText, badgeLabel) -> {
-				final var state = BadgeState.orDefault(badgeState);
-				final var vaadinIcon = state.getIcon();
-				final var isEmpty = Strings.isNullOrEmpty(badgeText);
-				Component createdComponent = null;
-				if (vaadinIcon != null) {
-					final var icon = vaadinIcon.create();
-					icon.getStyle().set("padding", "var(--lumo-space-xs)"); //$NON-NLS-1$ //$NON-NLS-2$
-					if (isEmpty) {
-						createdComponent = icon;
-					} else {
-						createdComponent = new Span(icon, new Span(badgeText));
-					}
-				} else if (isEmpty) {
-					throw new IllegalStateException();
-				} else {
-					createdComponent = new Span(badgeText);
-				}
-				assert createdComponent != null;
-				state.assignTo(createdComponent);
-				if (!Strings.isNullOrEmpty(badgeLabel)) {
-					// Accessible label
-				    createdComponent.getElement().setAttribute("aria-label", badgeLabel); //$NON-NLS-1$
-				    // Tooltip
-				    createdComponent.getElement().setAttribute("title", badgeLabel); //$NON-NLS-1$
-				}
-				component.set(createdComponent);
-			};
-			componentFunction.accept(it, creator);
-			return component.get();
-		};
-	}
+    private static <ITEM> SerializableFunction<ITEM, Component> createComponentFunction(SerializableBiConsumer<ITEM, ComponentCreator> componentFunction) {
+        return it -> {
+            final var component = new OutputParameter<Component>();
+            final ComponentCreator creator = (badgeState, badgeText, badgeLabel) -> {
+                final var state = BadgeState.orDefault(badgeState);
+                final var vaadinIcon = state.getIcon();
+                final var isEmpty = Strings.isNullOrEmpty(badgeText);
+                Component createdComponent = null;
+                if (vaadinIcon != null) {
+                    final var icon = vaadinIcon.create();
+                    icon.getStyle().set("padding", "var(--lumo-space-xs)"); //$NON-NLS-1$ //$NON-NLS-2$
+                    if (isEmpty) {
+                        createdComponent = icon;
+                    } else {
+                        createdComponent = new Span(icon, new Span(badgeText));
+                    }
+                } else if (isEmpty) {
+                    throw new IllegalStateException();
+                } else {
+                    createdComponent = new Span(badgeText);
+                }
+                assert createdComponent != null;
+                state.assignTo(createdComponent);
+                if (!Strings.isNullOrEmpty(badgeLabel)) {
+                    // Accessible label
+                    createdComponent.getElement().setAttribute("aria-label", badgeLabel); //$NON-NLS-1$
+                    // Tooltip
+                    createdComponent.getElement().setAttribute("title", badgeLabel); //$NON-NLS-1$
+                }
+                component.set(createdComponent);
+            };
+            componentFunction.accept(it, creator);
+            return component.get();
+        };
+    }
 
-	/** The creator of a badge component.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
-	 */
-	@FunctionalInterface
-	public interface ComponentCreator {
+    /**
+     * The creator of a badge component.
+     *
+     * @author $Author: sgalland$
+     * @version $Name$ $Revision$ $Date$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 4.0
+     */
+    @FunctionalInterface
+    public interface ComponentCreator {
 
-		/** Create the component.
-		 *
-		 * @param state the stage of the badge.
-		 * @param badgeText the text to put in the badge.
-		 * @param badgeLabel the accessibility and tooltip label.
-		 */
-		void create(BadgeState state, String badgeText, String badgeLabel);
-		
-	}
+        /**
+         * Create the component.
+         *
+         * @param state      the stage of the badge.
+         * @param badgeText  the text to put in the badge.
+         * @param badgeLabel the accessibility and tooltip label.
+         */
+        void create(BadgeState state, String badgeText, String badgeLabel);
+
+    }
 
 }

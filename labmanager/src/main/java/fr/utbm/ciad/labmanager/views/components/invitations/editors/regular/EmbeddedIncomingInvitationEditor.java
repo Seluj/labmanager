@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,10 +27,11 @@ import fr.utbm.ciad.labmanager.views.components.addons.entities.EntityCreationSt
 import fr.utbm.ciad.labmanager.views.components.persons.fields.PersonFieldFactory;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Editor of incoming invitation information that may be embedded. This editor does not provide
+/**
+ * Editor of incoming invitation information that may be embedded. This editor does not provide
  * the components for saving the information. It is the role of the component that
  * is embedding this editor to save the edited incoming invitation.
- * 
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -39,22 +40,23 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public final class EmbeddedIncomingInvitationEditor extends AbstractIncomingInvitationEditor {
 
-	private static final long serialVersionUID = 6505292453855603181L;
+    private static final long serialVersionUID = 6505292453855603181L;
 
-	/** Constructor.
-	 *
-	 * @param context the editing context for the incoming invitation.
-	 * @param invitationCreationStatusComputer the tool for computer the creation status for the person invitations.
-	 * @param personFieldFactory the factory for creating the person fields.
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (Spring layer).
-	 */
-	public EmbeddedIncomingInvitationEditor(EntityEditingContext<PersonInvitation> context,
-			EntityCreationStatusComputer<PersonInvitation> invitationCreationStatusComputer,
-			PersonFieldFactory personFieldFactory, AuthenticatedUser authenticatedUser,
-			MessageSourceAccessor messages) {
-		super(context, invitationCreationStatusComputer, false, personFieldFactory, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
-		createEditorContentAndLinkBeans();
-	}
+    /**
+     * Constructor.
+     *
+     * @param context                          the editing context for the incoming invitation.
+     * @param invitationCreationStatusComputer the tool for computer the creation status for the person invitations.
+     * @param personFieldFactory               the factory for creating the person fields.
+     * @param authenticatedUser                the connected user.
+     * @param messages                         the accessor to the localized messages (Spring layer).
+     */
+    public EmbeddedIncomingInvitationEditor(EntityEditingContext<PersonInvitation> context,
+                                            EntityCreationStatusComputer<PersonInvitation> invitationCreationStatusComputer,
+                                            PersonFieldFactory personFieldFactory, AuthenticatedUser authenticatedUser,
+                                            MessageSourceAccessor messages) {
+        super(context, invitationCreationStatusComputer, false, personFieldFactory, authenticatedUser, messages, ConstructionPropertiesBuilder.create());
+        createEditorContentAndLinkBeans();
+    }
 
 }

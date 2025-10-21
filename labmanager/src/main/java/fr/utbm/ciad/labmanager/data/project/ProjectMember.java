@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,8 +33,9 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.Objects;
 
-/** Description of a member of a project.
- * 
+/**
+ * Description of a member of a project.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,136 +46,146 @@ import java.util.Objects;
 @Table(name = "ProjectMembers")
 public class ProjectMember implements Serializable, AttributeProvider, Comparable<ProjectMember>, IdentifiableEntity {
 
-	private static final long serialVersionUID = 7198080633760598725L;
+    private static final long serialVersionUID = 7198080633760598725L;
 
-	/** Identifier of the member.
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(nullable = false)
-	private long id;
+    /**
+     * Identifier of the member.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
+    private long id;
 
-	/** Promoter or director of the candidate.
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Person person;
+    /**
+     * Promoter or director of the candidate.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Person person;
 
-	/** Role of the member.
-	 */
-	@Column
-	@Enumerated(EnumType.STRING)
-	private Role role = Role.PARTICIPANT;
+    /**
+     * Role of the member.
+     */
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.PARTICIPANT;
 
-	/** Construct an empty member.
-	 */
-	public ProjectMember() {
-		//
-	}
+    /**
+     * Construct an empty member.
+     */
+    public ProjectMember() {
+        //
+    }
 
-	@Override
-	public int hashCode() {
-		if (this.id != 0) {
-			return Long.hashCode(this.id);
-		}
-		var h = HashCodeUtils.start();
-		h = HashCodeUtils.add(h, this.person);
-		return h;
-	}
+    @Override
+    public int hashCode() {
+        if (this.id != 0) {
+            return Long.hashCode(this.id);
+        }
+        var h = HashCodeUtils.start();
+        h = HashCodeUtils.add(h, this.person);
+        return h;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj) {
-			return true;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final var other = (ProjectMember) obj;
-		if (this.id != 0 && other.id != 0) {
-			return this.id == other.id;
-		}
-		return Objects.equals(this.person, other.person);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final var other = (ProjectMember) obj;
+        if (this.id != 0 && other.id != 0) {
+            return this.id == other.id;
+        }
+        return Objects.equals(this.person, other.person);
+    }
 
-	@Override
-	public int compareTo(ProjectMember o) {
-		return EntityUtils.getPreferredProjectMemberComparator().compare(this, o);
-	}
+    @Override
+    public int compareTo(ProjectMember o) {
+        return EntityUtils.getPreferredProjectMemberComparator().compare(this, o);
+    }
 
-	@Override
-	public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
-		if (getRole() != null) {
-			consumer.accept("role", getRole()); //$NON-NLS-1$
-		}
-	}
+    @Override
+    public void forEachAttribute(MessageSourceAccessor messages, Locale locale, AttributeConsumer consumer) throws IOException {
+        if (getRole() != null) {
+            consumer.accept("role", getRole()); //$NON-NLS-1$
+        }
+    }
 
-	@Override
-	public long getId() {
-		return this.id;
-	}
+    @Override
+    public long getId() {
+        return this.id;
+    }
 
-	/** Change the membership identifier.
-	 *
-	 * @param id the identifier.
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
+    /**
+     * Change the membership identifier.
+     *
+     * @param id the identifier.
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	/** Replies the member person.
-	 *
-	 * @return the person.
-	 */
-	public Person getPerson() {
-		return this.person;
-	}
+    /**
+     * Replies the member person.
+     *
+     * @return the person.
+     */
+    public Person getPerson() {
+        return this.person;
+    }
 
-	/** Change the member person.
-	 *
-	 * @param person the person.
-	 */
-	public void setPerson(Person person) {
-		this.person = person;
-	}
+    /**
+     * Change the member person.
+     *
+     * @param person the person.
+     */
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
-	/** Replies the role of the member in the project.
-	 *
-	 * @return the role.
-	 */
-	public Role getRole() {
-		return this.role;
-	}
+    /**
+     * Replies the role of the member in the project.
+     *
+     * @return the role.
+     */
+    public Role getRole() {
+        return this.role;
+    }
 
-	/** Change the role of the member in the project.
-	 *
-	 * @param role the role.
-	 */
-	public void setRole(Role role) {
-		if (role == null) {
-			this.role = Role.PARTICIPANT;
-		} else {
-			this.role = role;
-		}
-	}
+    /**
+     * Change the role of the member in the project.
+     *
+     * @param role the role.
+     */
+    public void setRole(Role role) {
+        if (role == null) {
+            this.role = Role.PARTICIPANT;
+        } else {
+            this.role = role;
+        }
+    }
 
-	/** Change the role of the member.
-	 *
-	 * @param role the role of the member.
-	 */
-	public final void setRole(String role) {
-		if (Strings.isNullOrEmpty(role)) {
-			setRole((Role) null);
-		} else {
-			setRole(Role.valueOfCaseInsensitive(role));
-		}
-	}
+    /**
+     * Change the role of the member.
+     *
+     * @param role the role of the member.
+     */
+    public final void setRole(String role) {
+        if (Strings.isNullOrEmpty(role)) {
+            setRole((Role) null);
+        } else {
+            setRole(Role.valueOfCaseInsensitive(role));
+        }
+    }
 
-	@Override
-	public String toString() {
-		return EntityUtils.toString(this);
-	}
+    @Override
+    public String toString() {
+        return EntityUtils.toString(this);
+    }
 
 }

@@ -1,8 +1,9 @@
 package fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.factory.item;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardBasicComponentItem;
 import fr.utbm.ciad.labmanager.utils.localStorage.factory.LocalStorageItemFactory;
+import fr.utbm.ciad.labmanager.views.components.dashboard.localstorage.component.DashboardBasicComponentItem;
 
 /**
  * Factory class for creating DashBoardComponentItem instances from a string representation (e.g., JSON).
@@ -19,7 +20,7 @@ public class DashboardBasicComponentItemFactory implements LocalStorageItemFacto
 
     @Override
     public DashboardBasicComponentItem createItem(String jsonValue) {
-        if(jsonValue == null){
+        if (jsonValue == null) {
             return new DashboardBasicComponentItem();
         }
         ObjectMapper objectMapper = new ObjectMapper();

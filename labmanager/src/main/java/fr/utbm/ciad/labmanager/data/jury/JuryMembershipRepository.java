@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 import java.util.Optional;
 
-/** JPA repository for jury memberships.
- * 
+/**
+ * JPA repository for jury memberships.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -35,48 +36,53 @@ import java.util.Optional;
  */
 public interface JuryMembershipRepository extends JpaRepository<JuryMembership, Long>, JpaSpecificationExecutor<JuryMembership> {
 
-	/** Replies the list of memberships that are associated to the person with the given identifier.
-	 *
-	 * @param personId the identifier of the person.
-	 * @return the list of memberships.
-	 * @deprecated no replacement
-	 */
-	List<JuryMembership> findAllByPersonId(long personId);
+    /**
+     * Replies the list of memberships that are associated to the person with the given identifier.
+     *
+     * @param personId the identifier of the person.
+     * @return the list of memberships.
+     * @deprecated no replacement
+     */
+    List<JuryMembership> findAllByPersonId(long personId);
 
-	/** Replies the list of memberships that are associated to the candidate with the given identifier.
-	 *
-	 * @param candidateId the identifier of the candidate.
-	 * @return the list of memberships.
-	 * @deprecated no replacement
-	 */
-	List<JuryMembership> findAllByCandidateId(long candidateId);
+    /**
+     * Replies the list of memberships that are associated to the candidate with the given identifier.
+     *
+     * @param candidateId the identifier of the candidate.
+     * @return the list of memberships.
+     * @deprecated no replacement
+     */
+    List<JuryMembership> findAllByCandidateId(long candidateId);
 
-	/** Replies the list of memberships that are associated to the promoter with the given identifier.
-	 *
-	 * @param promoterId the identifier of the promoter.
-	 * @return the list of memberships.
-	 * @deprecated no replacement
-	 */
-	List<JuryMembership> findAllByPromotersId(long promoterId);
+    /**
+     * Replies the list of memberships that are associated to the promoter with the given identifier.
+     *
+     * @param promoterId the identifier of the promoter.
+     * @return the list of memberships.
+     * @deprecated no replacement
+     */
+    List<JuryMembership> findAllByPromotersId(long promoterId);
 
-	/** Replies a membership that corresponds to the person, candidate and type.
-	 *
-	 * @param personId the identifier of the person.
-	 * @param candidateId the identifier of the candidate.
-	 * @param type the type of membership.
-	 * @return the membership from the database.
-	 * @deprecated no replacement
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	Optional<JuryMembership> findByPersonIdAndCandidateIdAndType(long personId, long candidateId, JuryMembershipType type);
+    /**
+     * Replies a membership that corresponds to the person, candidate and type.
+     *
+     * @param personId    the identifier of the person.
+     * @param candidateId the identifier of the candidate.
+     * @param type        the type of membership.
+     * @return the membership from the database.
+     * @deprecated no replacement
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    Optional<JuryMembership> findByPersonIdAndCandidateIdAndType(long personId, long candidateId, JuryMembershipType type);
 
-	/** Count the number of jury memberships for the participant with the given id.
-	 *
-	 * @param id the identifier of the participant.
-	 * @return the count of supervisions.
-	 * @deprecated no replacement
-	 */
-	@Deprecated(since = "4.0", forRemoval = true)
-	int countDistinctByPersonId(long id);
+    /**
+     * Count the number of jury memberships for the participant with the given id.
+     *
+     * @param id the identifier of the participant.
+     * @return the count of supervisions.
+     * @deprecated no replacement
+     */
+    @Deprecated(since = "4.0", forRemoval = true)
+    int countDistinctByPersonId(long id);
 
 }

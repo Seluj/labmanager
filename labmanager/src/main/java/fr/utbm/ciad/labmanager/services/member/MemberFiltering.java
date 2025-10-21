@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,8 +19,9 @@
 
 package fr.utbm.ciad.labmanager.services.member;
 
-/** Member filtering.
- * 
+/**
+ * Member filtering.
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @version $Name$ $Revision$ $Date$
@@ -30,16 +31,20 @@ package fr.utbm.ciad.labmanager.services.member;
  */
 @Deprecated(since = "4.0", forRemoval = true)
 public enum MemberFiltering {
-	/** All members.
-	 */
-	ALL,
-	/** Active members, who are currently members of the research organization.
-	 */
-	ACTIVES,
-	/** Former members, who were members of the research organization and are outside.
-	 */
-	FORMERS,
-	/** Future members, who are not yet members of the research organization.
-	 */
-	FUTURES;
+    /**
+     * All members.
+     */
+    ALL,
+    /**
+     * Active members, who are currently members of the research organization.
+     */
+    ACTIVES,
+    /**
+     * Former members, who were members of the research organization and are outside.
+     */
+    FORMERS,
+    /**
+     * Future members, who are not yet members of the research organization.
+     */
+    FUTURES
 }

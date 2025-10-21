@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-/** Factory that is providing a publication editor according to the editing context.
- * 
+/**
+ * Factory that is providing a publication editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -36,25 +37,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class DefaultSupervisionFieldFactory implements SupervisionFieldFactory {
 
-	private final PersonFieldFactory personFieldFactory;
+    private final PersonFieldFactory personFieldFactory;
 
-	private final MessageSourceAccessor messages;
+    private final MessageSourceAccessor messages;
 
-	/** Constructor.
-	 *
-	 * @param personFieldFactory the factory for creating the person fields.
-	 * @param messages accessor to the localized messages.
-	 */
-	public DefaultSupervisionFieldFactory(
-			@Autowired PersonFieldFactory personFieldFactory,
-			@Autowired MessageSourceAccessor messages) {
-		this.personFieldFactory = personFieldFactory;
-		this.messages = messages;
-	}
+    /**
+     * Constructor.
+     *
+     * @param personFieldFactory the factory for creating the person fields.
+     * @param messages           accessor to the localized messages.
+     */
+    public DefaultSupervisionFieldFactory(
+            @Autowired PersonFieldFactory personFieldFactory,
+            @Autowired MessageSourceAccessor messages) {
+        this.personFieldFactory = personFieldFactory;
+        this.messages = messages;
+    }
 
-	@Override
-	public SupervisorListGridField createSupervisorField(Logger logger) {
-		return new SupervisorListGridField(this.personFieldFactory, this.messages, logger);
-	}
+    @Override
+    public SupervisorListGridField createSupervisorField(Logger logger) {
+        return new SupervisorListGridField(this.personFieldFactory, this.messages, logger);
+    }
 
 }

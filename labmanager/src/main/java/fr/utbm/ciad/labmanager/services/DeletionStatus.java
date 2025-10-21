@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,14 @@
 
 package fr.utbm.ciad.labmanager.services;
 
+import org.springframework.context.support.MessageSourceAccessor;
+
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.springframework.context.support.MessageSourceAccessor;
-
-/** Abstract implementation of a Spring boot service.
- * 
+/**
+ * Abstract implementation of a Spring boot service.
+ *
  * @author $Author: sgalland$
  * @author $Author: tmartine$
  * @version $Name$ $Revision$ $Date$
@@ -34,37 +35,40 @@ import org.springframework.context.support.MessageSourceAccessor;
  */
 public interface DeletionStatus extends Serializable {
 
-	/** Default status for valid deletion.
-	 */
-	static final DeletionStatus OK = new DeletionStatus() {
+    /**
+     * Default status for valid deletion.
+     */
+    DeletionStatus OK = new DeletionStatus() {
 
-		private static final long serialVersionUID = -2185083045918120523L;
+        private static final long serialVersionUID = -2185083045918120523L;
 
-		@Override
-		public boolean isOk() {
-			return true;
-		}
+        @Override
+        public boolean isOk() {
+            return true;
+        }
 
-		@Override
-		public Throwable getException(MessageSourceAccessor messages, Locale locale) {
-			return null;
-		}
-		
-	};
+        @Override
+        public Throwable getException(MessageSourceAccessor messages, Locale locale) {
+            return null;
+        }
 
-	/** Indicates if the deletion is possible without error.
-	 *
-	 * @return {@code true} if deletion is possible; {@code false}
-	 *      if deletion is not possible.
-	 */
-	boolean isOk();
+    };
 
-	/** If the status represents an error, the corresponding exception is replied.
-	 *
-	 * @param messages the provider of localized messages.
-	 * @param locale the locale to use for generating the messages.
-	 * @return the error or {@code null} if the status represents a valid state.
-	 */
-	Throwable getException(MessageSourceAccessor messages, Locale locale);
+    /**
+     * Indicates if the deletion is possible without error.
+     *
+     * @return {@code true} if deletion is possible; {@code false}
+     * if deletion is not possible.
+     */
+    boolean isOk();
+
+    /**
+     * If the status represents an error, the corresponding exception is replied.
+     *
+     * @param messages the provider of localized messages.
+     * @param locale   the locale to use for generating the messages.
+     * @return the error or {@code null} if the status represents a valid state.
+     */
+    Throwable getException(MessageSourceAccessor messages, Locale locale);
 
 }

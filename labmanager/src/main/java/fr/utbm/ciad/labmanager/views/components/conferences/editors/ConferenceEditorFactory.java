@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,9 @@ import fr.utbm.ciad.labmanager.services.AbstractEntityService.EntityEditingConte
 import fr.utbm.ciad.labmanager.views.components.addons.entities.AbstractEntityEditor;
 import org.slf4j.Logger;
 
-/** Factory that is providing a conference editor according to the editing context.
- * 
+/**
+ * Factory that is providing a conference editor according to the editing context.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -34,50 +35,55 @@ import org.slf4j.Logger;
  */
 public interface ConferenceEditorFactory {
 
-	/** Replies the editing context for the given conference.
-	 *
-	 * @param conference the conference to be edited.
-	 * @param logger the logger to be used.
-	 * @return the editing context.
-	 */
-	EntityEditingContext<Conference> createContextFor(Conference conference, Logger logger);
+    /**
+     * Replies the editing context for the given conference.
+     *
+     * @param conference the conference to be edited.
+     * @param logger     the logger to be used.
+     * @return the editing context.
+     */
+    EntityEditingContext<Conference> createContextFor(Conference conference, Logger logger);
 
-	/** Create an editor that may be used for creating a new conference.
-	 * 
-	 * @param context the editing context for the conference.
-	 * @param logger the logger to be used.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<Conference> createAdditionEditor(EntityEditingContext<Conference> context);
+    /**
+     * Create an editor that may be used for creating a new conference.
+     *
+     * @param context the editing context for the conference.
+     * @param logger  the logger to be used.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<Conference> createAdditionEditor(EntityEditingContext<Conference> context);
 
-	/** Create an editor that may be used for creating a new conference.
-	 * 
-	 * @param conference the conference to be edited.
-	 * @param logger the logger to be used.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Conference> createAdditionEditor(Conference conference, Logger logger) {
-		final var context = createContextFor(conference, logger);
-		return createAdditionEditor(context);
-	}
+    /**
+     * Create an editor that may be used for creating a new conference.
+     *
+     * @param conference the conference to be edited.
+     * @param logger     the logger to be used.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Conference> createAdditionEditor(Conference conference, Logger logger) {
+        final var context = createContextFor(conference, logger);
+        return createAdditionEditor(context);
+    }
 
-	/** Create an editor that may be used for updating an existing conference.
-	 * 
-	 * @param context the editing context for the conference.
-	 * @param logger the logger to be used.
-	 * @return the editor, never {@code null}.
-	 */
-	AbstractEntityEditor<Conference> createUpdateEditor(EntityEditingContext<Conference> context);
+    /**
+     * Create an editor that may be used for updating an existing conference.
+     *
+     * @param context the editing context for the conference.
+     * @param logger  the logger to be used.
+     * @return the editor, never {@code null}.
+     */
+    AbstractEntityEditor<Conference> createUpdateEditor(EntityEditingContext<Conference> context);
 
-	/** Create an editor that may be used for creating an exsiting conference.
-	 * 
-	 * @param conference the conference to be edited.
-	 * @param logger the logger to be used.
-	 * @return the editor, never {@code null}.
-	 */
-	default AbstractEntityEditor<Conference> createUpdateEditor(Conference conference, Logger logger) {
-		final var context = createContextFor(conference, logger);
-		return createAdditionEditor(context);
-	}
+    /**
+     * Create an editor that may be used for creating an exsiting conference.
+     *
+     * @param conference the conference to be edited.
+     * @param logger     the logger to be used.
+     * @return the editor, never {@code null}.
+     */
+    default AbstractEntityEditor<Conference> createUpdateEditor(Conference conference, Logger logger) {
+        final var context = createContextFor(conference, logger);
+        return createAdditionEditor(context);
+    }
 
 }

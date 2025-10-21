@@ -24,7 +24,7 @@ public class ComponentContainer extends FlexLayout implements InterfaceComponent
     /**
      * Default Constructor
      */
-    public ComponentContainer(){
+    public ComponentContainer() {
         this(new FlexLayout());
     }
 
@@ -40,17 +40,17 @@ public class ComponentContainer extends FlexLayout implements InterfaceComponent
     }
 
     @Override
+    public Component getComponent() {
+        return component;
+    }
+
+    @Override
     public void setComponent(Component component) {
         if (isEmpty()) {
             this.component = component;
             setComponentStyle();
             add(this.component);
         }
-    }
-
-    @Override
-    public Component getComponent() {
-        return component;
     }
 
     @Override
@@ -69,18 +69,18 @@ public class ComponentContainer extends FlexLayout implements InterfaceComponent
     }
 
     @Override
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return component == null;
-    }
-
-    @Override
-    public void setAfterResizingInstructions(Consumer<ComponentContainer> afterResizingInstructions) {
-        this.afterResizingInstructions = afterResizingInstructions;
     }
 
     @Override
     public Consumer<ComponentContainer> getAfterResizingInstructions() {
         return afterResizingInstructions;
+    }
+
+    @Override
+    public void setAfterResizingInstructions(Consumer<ComponentContainer> afterResizingInstructions) {
+        this.afterResizingInstructions = afterResizingInstructions;
     }
 
     @Override
@@ -129,14 +129,14 @@ public class ComponentContainer extends FlexLayout implements InterfaceComponent
     /**
      * Initialize the container style and layout properties.
      */
-    protected void setStyle(){
+    protected void setStyle() {
         setToTheFore(true);
     }
 
     /**
      * Initialize the component style and layout properties.
      */
-    protected void setComponentStyle(){
+    protected void setComponentStyle() {
         component.getStyle().setZIndex(1);
         getStyle().setWidth(component.getStyle().get("width"))
                 .setHeight(component.getStyle().get("height"));
@@ -145,8 +145,8 @@ public class ComponentContainer extends FlexLayout implements InterfaceComponent
     /**
      * Executes the instructions defined for after resizing, if they are set.
      */
-    protected void afterResizingInstructionsCall(){
-        if(afterResizingInstructions != null){
+    protected void afterResizingInstructionsCall() {
+        if (afterResizingInstructions != null) {
             afterResizingInstructions.accept(this);
         }
     }
@@ -165,22 +165,22 @@ public class ComponentContainer extends FlexLayout implements InterfaceComponent
 
         getElement().executeJs(jsCode);
 
-        getElement().addEventListener("custom-resize",event ->
+        getElement().addEventListener("custom-resize", event ->
                 adaptComponentSize());
     }
 
-    public void setTransparency(boolean transparent){
-        if(transparent){
+    public void setTransparency(boolean transparent) {
+        if (transparent) {
             getStyle().setOpacity("0.5");
-        }else{
+        } else {
             getStyle().setOpacity("1");
         }
     }
 
-    public void setToTheFore(boolean toTheFore){
-        if(toTheFore){
+    public void setToTheFore(boolean toTheFore) {
+        if (toTheFore) {
             getStyle().setZIndex(2);
-        }else{
+        } else {
             getStyle().setZIndex(0);
         }
     }

@@ -1,8 +1,5 @@
 package fr.utbm.ciad.labmanager.views.components.journals.editors.wizard;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -14,7 +11,11 @@ import fr.utbm.ciad.labmanager.views.components.addons.wizard.AbstractLabManager
 import fr.utbm.ciad.labmanager.views.components.addons.wizard.AbstractLabManagerWizard;
 import io.overcoded.vaadin.wizard.config.WizardConfigurationProperties;
 
-/** Wizard for adding a journal.
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Wizard for adding a journal.
  *
  * @author $Author: sgalland$
  * @author $Author: erenon$
@@ -25,73 +26,77 @@ import io.overcoded.vaadin.wizard.config.WizardConfigurationProperties;
  */
 public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journal> {
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param descriptionDetailComponents the description detail components.
-     * @param rankingInformationComponents the ranking information components.
+     * @param descriptionDetailComponents    the description detail components.
+     * @param rankingInformationComponents   the ranking information components.
      * @param publisherInformationComponents the publisher information components.
      */
     public JournalEditorComponentWizard(ContextualLoggerFactory loggerFactory,
-    		VerticalLayout descriptionDetailComponents, VerticalLayout rankingInformationComponents, VerticalLayout publisherInformationComponents) {
+                                        VerticalLayout descriptionDetailComponents, VerticalLayout rankingInformationComponents, VerticalLayout publisherInformationComponents) {
         this(defaultWizardConfiguration(null, false), loggerFactory,
                 new Journal(), descriptionDetailComponents, rankingInformationComponents, publisherInformationComponents);
     }
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param descriptionDetailComponents the description detail components.
-     * @param rankingInformationComponents the ranking information components.
+     * @param descriptionDetailComponents    the description detail components.
+     * @param rankingInformationComponents   the ranking information components.
      * @param publisherInformationComponents the publisher information components.
-     * @param administrationComponents the administration detail components.
+     * @param administrationComponents       the administration detail components.
      */
     public JournalEditorComponentWizard(ContextualLoggerFactory loggerFactory,
-    		VerticalLayout descriptionDetailComponents, VerticalLayout rankingInformationComponents, VerticalLayout publisherInformationComponents, VerticalLayout administrationComponents) {
+                                        VerticalLayout descriptionDetailComponents, VerticalLayout rankingInformationComponents, VerticalLayout publisherInformationComponents, VerticalLayout administrationComponents) {
         this(defaultWizardConfiguration(null, false), loggerFactory,
-                new Journal(), descriptionDetailComponents, rankingInformationComponents, publisherInformationComponents,administrationComponents);
+                new Journal(), descriptionDetailComponents, rankingInformationComponents, publisherInformationComponents, administrationComponents);
     }
 
-    public boolean isNewEntity(){
-        return true;
-    }
-
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param properties the wizard configuration properties.
-     * @param context the context.
-     * @param descriptionDetailComponents the description detail components.
-     * @param rankingInformationComponents the ranking information components.
+     * @param properties                     the wizard configuration properties.
+     * @param context                        the context.
+     * @param descriptionDetailComponents    the description detail components.
+     * @param rankingInformationComponents   the ranking information components.
      * @param publisherInformationComponents the publisher information components.
      */
     protected JournalEditorComponentWizard(WizardConfigurationProperties properties, ContextualLoggerFactory loggerFactory,
-    		Journal context, VerticalLayout descriptionDetailComponents, VerticalLayout rankingInformationComponents, VerticalLayout publisherInformationComponents) {
+                                           Journal context, VerticalLayout descriptionDetailComponents, VerticalLayout rankingInformationComponents, VerticalLayout publisherInformationComponents) {
         super(properties, loggerFactory, context, Arrays.asList(
-                new DescriptionDetailComponent(context,descriptionDetailComponents),
+                new DescriptionDetailComponent(context, descriptionDetailComponents),
                 new RankingInformationComponent(context, rankingInformationComponents),
                 new PublisherInformationComponent(context, publisherInformationComponents)
-                ));
+        ));
     }
 
-    /** Constructor.
+    /**
+     * Constructor.
      *
-     * @param properties the wizard configuration properties.
-     * @param context the context.
-     * @param descriptionDetailComponents the description detail components.
-     * @param rankingInformationComponents the ranking information components.
+     * @param properties                     the wizard configuration properties.
+     * @param context                        the context.
+     * @param descriptionDetailComponents    the description detail components.
+     * @param rankingInformationComponents   the ranking information components.
      * @param publisherInformationComponents the publisher information components.
-     * @param administrationComponents the administration detail components.
+     * @param administrationComponents       the administration detail components.
      */
     protected JournalEditorComponentWizard(WizardConfigurationProperties properties, ContextualLoggerFactory loggerFactory,
-    		Journal context,VerticalLayout descriptionDetailComponents, VerticalLayout rankingInformationComponents, VerticalLayout publisherInformationComponents, VerticalLayout administrationComponents) {
+                                           Journal context, VerticalLayout descriptionDetailComponents, VerticalLayout rankingInformationComponents, VerticalLayout publisherInformationComponents, VerticalLayout administrationComponents) {
         super(properties, loggerFactory, context, Arrays.asList(
-                new DescriptionDetailComponent(context,descriptionDetailComponents),
+                new DescriptionDetailComponent(context, descriptionDetailComponents),
                 new RankingInformationComponent(context, rankingInformationComponents),
                 new PublisherInformationComponent(context, publisherInformationComponents),
                 new JournalAdministration(context, administrationComponents)
-                ));
+        ));
     }
 
+    public boolean isNewEntity() {
+        return true;
+    }
 
-    /** Wizard step to input description details.
+    /**
+     * Wizard step to input description details.
      *
      * @author $Author: sgalland$
      * @author $Author: erenon$
@@ -102,7 +107,8 @@ public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journ
      */
     protected static class DescriptionDetailComponent extends AbstractLabManagerFormWizardStep<Journal> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
+
         public DescriptionDetailComponent(Journal context, VerticalLayout content) {
             super(context, content.getTranslation("views.journals.description_informations"), 1);
             this.content = content;
@@ -118,11 +124,7 @@ public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journ
             List<Component> components = content.getChildren().toList();
             TextField title = (TextField) components.get(0).getChildren().toList().get(0);
 
-            if(title.isEmpty()){
-                return false;
-            }
-
-            return true;
+            return !title.isEmpty();
         }
 
         @Override
@@ -145,7 +147,8 @@ public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journ
 
     }
 
-    /** Wizard step to input ranking details.
+    /**
+     * Wizard step to input ranking details.
      *
      * @author $Author: sgalland$
      * @author $Author: erenon$
@@ -156,7 +159,8 @@ public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journ
      */
     protected static class RankingInformationComponent extends AbstractLabManagerFormWizardStep<Journal> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
+
         public RankingInformationComponent(Journal context, VerticalLayout content) {
             super(context, content.getTranslation("views.journals.ranking_informations"), 2);
             this.content = content;
@@ -186,7 +190,8 @@ public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journ
 
     }
 
-    /** Wizard step to input publisher informations.
+    /**
+     * Wizard step to input publisher informations.
      *
      * @author $Author: sgalland$
      * @author $Author: erenon$
@@ -197,7 +202,8 @@ public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journ
      */
     protected static class PublisherInformationComponent extends AbstractLabManagerFormWizardStep<Journal> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
+
         public PublisherInformationComponent(Journal context, VerticalLayout content) {
             super(context, content.getTranslation("views.journals.publisher_informations"), 3);
             this.content = content;
@@ -213,10 +219,7 @@ public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journ
             List<Component> components = content.getChildren().toList();
             TextField publisherName = (TextField) components.get(0).getChildren().toList().get(0);
 
-            if(publisherName.isEmpty()){
-                return false;
-            }
-            return true;
+            return !publisherName.isEmpty();
         }
 
         @Override
@@ -238,7 +241,8 @@ public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journ
 
     }
 
-    /** Wizard step to input administration details.
+    /**
+     * Wizard step to input administration details.
      *
      * @author $Author: sgalland$
      * @author $Author: erenon$
@@ -249,7 +253,8 @@ public class JournalEditorComponentWizard extends AbstractLabManagerWizard<Journ
      */
     protected static class JournalAdministration extends AbstractLabManagerFormWizardStep<Journal> {
 
-        private VerticalLayout content;
+        private final VerticalLayout content;
+
         public JournalAdministration(Journal context, VerticalLayout content) {
             super(context, content.getTranslation("views.publication.administration_details"), 4);
             this.content = content;

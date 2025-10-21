@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.utils.io.od;
 
 import fr.utbm.ciad.labmanager.utils.io.ExporterConfigurator;
 
-/** Utilities for exporting an activity report based on RIPEC standard to Open Document Text.
- * 
+/**
+ * Utilities for exporting an activity report based on RIPEC standard to Open Document Text.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,12 +32,13 @@ import fr.utbm.ciad.labmanager.utils.io.ExporterConfigurator;
  */
 public interface OpenDocumentTextRipecExporter {
 
-	/** Replies the ODT representation of the RIPEC-C3 document.
-	 *
-	 * @param configurator the configurator for the export, never {@code null}.
-	 * @return the ODT representation of the report.
-	 * @throws Exception if the report cannot be generated to ODT.
-	 */
-	byte[] exportRipecC3(ExporterConfigurator configurator) throws Exception;
+    /**
+     * Replies the ODT representation of the RIPEC-C3 document.
+     *
+     * @param configurator the configurator for the export, never {@code null}.
+     * @return the ODT representation of the report.
+     * @throws Exception if the report cannot be generated to ODT.
+     */
+    byte[] exportRipecC3(ExporterConfigurator configurator) throws Exception;
 
 }

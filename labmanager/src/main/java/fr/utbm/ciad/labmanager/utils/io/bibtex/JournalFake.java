@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,9 @@ package fr.utbm.ciad.labmanager.utils.io.bibtex;
 
 import fr.utbm.ciad.labmanager.data.journal.Journal;
 
-/** Fake of a journal.
- * 
+/**
+ * Fake of a journal.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -31,23 +32,24 @@ import fr.utbm.ciad.labmanager.data.journal.Journal;
  */
 public class JournalFake extends Journal {
 
-	private static final long serialVersionUID = 8594111079867959152L;
+    private static final long serialVersionUID = 8594111079867959152L;
 
-	/** Constructor.
-	 *
-	 * @param name the name of the journal.
-	 * @param publisher the name of the journal publisher.
-	 * @param issn the ISSN number of the journal.
-	 */
-	public JournalFake(String name, String publisher, String issn) {
-		setJournalName(name);
-		setPublisher(publisher);
-		setISSN(issn);
-	}
+    /**
+     * Constructor.
+     *
+     * @param name      the name of the journal.
+     * @param publisher the name of the journal publisher.
+     * @param issn      the ISSN number of the journal.
+     */
+    public JournalFake(String name, String publisher, String issn) {
+        setJournalName(name);
+        setPublisher(publisher);
+        setISSN(issn);
+    }
 
-	@Override
-	public boolean isFakeEntity() {
-		return true;
-	}
+    @Override
+    public boolean isFakeEntity() {
+        return true;
+    }
 
 }

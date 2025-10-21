@@ -37,7 +37,7 @@ public interface Grid {
     /**
      * Removes a specified component from a given grid cell.
      *
-     * @param cell The cell from which the component is being removed.
+     * @param cell      The cell from which the component is being removed.
      * @param component The draggable component to remove.
      */
     void removeComponent(DropCell cell, Component component);

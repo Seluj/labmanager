@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 
-/** Comparator of project budgets.
- * 
+/**
+ * Comparator of project budgets.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -37,48 +38,49 @@ import java.util.Comparator;
 @Primary
 public class ProjectBudgetComparator implements Comparator<ProjectBudget> {
 
-	/** Constructor.
-	 */
-	public ProjectBudgetComparator() {
-		//
-	}
+    /**
+     * Constructor.
+     */
+    public ProjectBudgetComparator() {
+        //
+    }
 
-	@Override
-	public int compare(ProjectBudget o1, ProjectBudget o2) {
-		if (o1 == o2) {
-			return 0;
-		}
-		if (o1 == null) {
-			return Integer.MIN_VALUE;
-		}
-		if (o2 == null) {
-			return Integer.MAX_VALUE;
-		}
-		var cmp = compareFundingScheme(o1.getFundingScheme(), o2.getFundingScheme());
-		if (cmp != 0) {
-			return cmp;
-		}
-		return Float.compare(o1.getBudget(), o2.getBudget());
-	}
+    /**
+     * Null-safe comparison the two funding schemes.
+     *
+     * @param v0 the first value.
+     * @param v1 the second value.
+     * @return the result of the comparison.
+     */
+    protected static int compareFundingScheme(FundingScheme v0, FundingScheme v1) {
+        if (v0 == v1) {
+            return 0;
+        }
+        if (v0 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (v1 == null) {
+            return Integer.MAX_VALUE;
+        }
+        return v0.compareTo(v1);
+    }
 
-
-	/** Null-safe comparison the two funding schemes.
-	 * 
-	 * @param v0 the first value.
-	 * @param v1 the second value.
-	 * @return the result of the comparison.
-	 */
-	protected static int compareFundingScheme(FundingScheme v0, FundingScheme v1) {
-		if (v0 == v1) {
-			return 0;
-		}
-		if (v0 == null) {
-			return Integer.MIN_VALUE;
-		}
-		if (v1 == null) {
-			return Integer.MAX_VALUE;
-		}
-		return v0.compareTo(v1);
-	}
+    @Override
+    public int compare(ProjectBudget o1, ProjectBudget o2) {
+        if (o1 == o2) {
+            return 0;
+        }
+        if (o1 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (o2 == null) {
+            return Integer.MAX_VALUE;
+        }
+        var cmp = compareFundingScheme(o1.getFundingScheme(), o2.getFundingScheme());
+        if (cmp != 0) {
+            return cmp;
+        }
+        return Float.compare(o1.getBudget(), o2.getBudget());
+    }
 
 }

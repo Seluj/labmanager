@@ -1,6 +1,6 @@
 /*
  * $Id$
- * 
+ *
  * Copyright (c) 2019-2024, CIAD Laboratory, Universite de Technologie de Belfort Montbeliard
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,8 +33,9 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
-/** Enable to edit the memberships for a person.
- * 
+/**
+ * Enable to edit the memberships for a person.
+ *
  * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
@@ -45,30 +46,31 @@ import org.springframework.context.support.MessageSourceAccessor;
 @RolesAllowed({UserRole.RESPONSIBLE_GRANT, UserRole.ADMIN_GRANT})
 public class MembershipsListView extends StandardMembershipListView implements HasDynamicTitle {
 
-	private static final long serialVersionUID = -557163925957008625L;
+    private static final long serialVersionUID = -557163925957008625L;
 
-	/** Constructor.
-	 * 
-	 * @param authenticatedUser the connected user.
-	 * @param messages the accessor to the localized messages (spring layer).
-	 * @param loggerFactory the factory to be used for the composite logger.
-	 * @param membershipService the service for accessing the memberships.
-	 * @param membershipEditorFactory the factory for creating the person membership editors.
-	 * @param organizationService the service for accessing the JPA entities for research organizations.
-	 */
-	public MembershipsListView(
-			@Autowired AuthenticatedUser authenticatedUser,
-			@Autowired MessageSourceAccessor messages,
-			@Autowired ContextualLoggerFactory loggerFactory,
-			@Autowired MembershipService membershipService,
-			@Autowired MembershipEditorFactory membershipEditorFactory,
-			@Autowired ResearchOrganizationService organizationService) {
-		super(authenticatedUser, messages, loggerFactory, membershipService, membershipEditorFactory, organizationService);
-	}
+    /**
+     * Constructor.
+     *
+     * @param authenticatedUser       the connected user.
+     * @param messages                the accessor to the localized messages (spring layer).
+     * @param loggerFactory           the factory to be used for the composite logger.
+     * @param membershipService       the service for accessing the memberships.
+     * @param membershipEditorFactory the factory for creating the person membership editors.
+     * @param organizationService     the service for accessing the JPA entities for research organizations.
+     */
+    public MembershipsListView(
+            @Autowired AuthenticatedUser authenticatedUser,
+            @Autowired MessageSourceAccessor messages,
+            @Autowired ContextualLoggerFactory loggerFactory,
+            @Autowired MembershipService membershipService,
+            @Autowired MembershipEditorFactory membershipEditorFactory,
+            @Autowired ResearchOrganizationService organizationService) {
+        super(authenticatedUser, messages, loggerFactory, membershipService, membershipEditorFactory, organizationService);
+    }
 
-	@Override
-	public String getPageTitle() {
-		return getTranslation("views.membership.memberships.list"); //$NON-NLS-1$
-	}
+    @Override
+    public String getPageTitle() {
+        return getTranslation("views.membership.memberships.list"); //$NON-NLS-1$
+    }
 
 }

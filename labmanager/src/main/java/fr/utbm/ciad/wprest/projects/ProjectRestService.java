@@ -8,10 +8,10 @@ import fr.utbm.ciad.labmanager.data.project.ProjectStatus;
 import fr.utbm.ciad.labmanager.services.project.ProjectService;
 import fr.utbm.ciad.wprest.data.DateRange;
 import fr.utbm.ciad.wprest.data.PersonOnWebsite;
-import fr.utbm.ciad.wprest.projects.data.dto.ProjectDataDto;
 import fr.utbm.ciad.wprest.projects.data.ProjectLinksData;
 import fr.utbm.ciad.wprest.projects.data.ProjectOrganizationData;
 import fr.utbm.ciad.wprest.projects.data.ProjectParticipantData;
+import fr.utbm.ciad.wprest.projects.data.dto.ProjectDataDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,10 +20,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -85,6 +91,7 @@ public class ProjectRestService {
 
     /**
      * Get all public projects
+     *
      * @return the whole list of projects
      */
     @Operation(summary = "Gets all public projects",
@@ -95,7 +102,7 @@ public class ProjectRestService {
                             content = @Content(schema = @Schema(implementation = ProjectDataDto.class), array = @ArraySchema(schema = @Schema(implementation = ProjectDataDto.class)))),
                     @ApiResponse(responseCode = "404", description = "No project found"),
             })
-    
+
     @GetMapping("/all")
     public ResponseEntity<List<ProjectDataDto>> getAllProjects(
 
@@ -107,6 +114,7 @@ public class ProjectRestService {
 
     /**
      * Get all public projects data from a given list
+     *
      * @param projects - the list of projects to extract data from
      * @return - a list of the data associated to each project
      */
@@ -121,6 +129,7 @@ public class ProjectRestService {
 
     /**
      * Get the different organizations names
+     *
      * @param project - the project
      * @return - the organization data
      */
@@ -140,6 +149,7 @@ public class ProjectRestService {
 
     /**
      * Gets the information related to the page of a project
+     *
      * @param project - the project to get information from.
      * @return - the project information DTO
      */

@@ -45,16 +45,15 @@ public final class EmbeddedPersonEditorWizard extends AbstractPersonEditorWizard
     /**
      * Constructor.
      *
-     * @param userContext       the editing context for the user.
-	 * @param personCreationStatusComputer the tool for computer the creation status for the persons.
-     * @param authenticatedUser the connected user.
-     * @param messages          the accessor to the localized messages (Spring layer).
+     * @param userContext                  the editing context for the user.
+     * @param personCreationStatusComputer the tool for computer the creation status for the persons.
+     * @param authenticatedUser            the connected user.
+     * @param messages                     the accessor to the localized messages (Spring layer).
      */
     public EmbeddedPersonEditorWizard(UserEditingContext userContext,
-    		EntityCreationStatusComputer<Person> personCreationStatusComputer, AuthenticatedUser authenticatedUser,
-    		MessageSourceAccessor messages,
-    		PersonService personService,
-    		Object x) {
+                                      EntityCreationStatusComputer<Person> personCreationStatusComputer, AuthenticatedUser authenticatedUser,
+                                      MessageSourceAccessor messages,
+                                      PersonService personService) {
         super(userContext, personCreationStatusComputer, false, authenticatedUser, messages, personService, ConstructionPropertiesBuilder.create());
         createEditorContentAndLinkBeans();
     }
